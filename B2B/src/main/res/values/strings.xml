@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">同至相伴B2B</string>
+
+    <string name="login_phone"><font size="12">请输入手机号</font></string>
+    <string name="login_pass"><font size="12">请输入密码</font></string>
+    <string name="yzm_pass"><font size="12">请输入验证码</font></string>
+    <string name="new_paww"><font size="12">请输入新密码</font></string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="open_shop1"><font size="12">请与门店招牌上的一样</font></string>
+    <string name="open_shop2"><font size="12">请填写联系人姓名</font></string>
+    <string name="open_shop3"><font size="12">请输入手机号</font></string>
+    <string name="open_shop4"><font size="12">填写详细地址(详细至门牌号,请与营业执照一致</font></string>
+
+    <string name="input_pass"><font size="12">请输入密码</font></string>
+
+    <string name="agin_input_pass"><font size="12">请再次输入密码</font></string>
+</resources>

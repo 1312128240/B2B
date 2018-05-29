@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntrance2Activity">
+<include
+    android:id="@+id/open_shop_entrance2_actionbar"
+    layout="@layout/base_red_actionbar"/>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/colorBlack"
+                android:gravity="center"
+                android:textSize="17sp"
+                android:layout_marginTop="20dp"
+                android:text="开店前请准备好以下图片资料"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <include layout="@layout/open_shop_footer" />
+
+            <Button
+                android:id="@+id/btn_start_open_shop"
+                android:gravity="center"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="20dp"
+                android:textColor="@color/colorWhite"
+                android:text="已准备好,申请开店"
+                android:background="@drawable/bg1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+
+</LinearLayout>

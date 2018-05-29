@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:background="@color/colorWhite"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="门店招牌照片"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="需拍出完整的门匾,门框(建议正对门店2米处拍摄)"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_upload_sign"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:background="@drawable/bg1"
+                android:gravity="center"
+                android:tag="123"
+                android:text="点击上传"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/iv_upload1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_weight="0.8"
+            android:src="@mipmap/apply_bg_1" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="店内照片"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="需真实反映服务环境"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_upload_shop_photo"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:background="@drawable/bg1"
+                android:gravity="center"
+                android:tag="124"
+                android:text="点击上传"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_upload2"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_weight="0.8"
+            android:src="@mipmap/apply_bg_2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="155dp"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:padding="12dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="营业执照"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:text="需文字清晰,边框完整,露出国微"
+                android:textColor="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/tv_upload_business_license"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:background="@drawable/bg1"
+                android:gravity="center"
+                android:tag="125"
+                android:text="点击上传"
+                android:textColor="@color/colorWhite" />
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/iv_upload3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="25dp"
+            android:layout_weight="0.8"
+            android:src="@mipmap/apply_bg_3" />
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_submit_open_shop"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="30dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg1"
+        android:gravity="center"
+        android:text="提交资料"
+        android:textColor="@color/colorWhite"
+        android:textSize="17sp" />
+</LinearLayout>

@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.LoginActivity">
+
+    <include
+        android:id="@+id/login_actionbar"
+        layout="@layout/base_actionbar" />
+
+    <com.androidkun.xtablayout.XTabLayout
+        android:id="@+id/tab_login"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        app:xTabIndicatorColor="#fa3314"
+        app:xTabIndicatorWidth="100dp"
+        app:xTabSelectedTextColor="#fa3314"
+        app:xTabTextColor="#515151"
+        app:xTabTextSize="15sp">
+
+    </com.androidkun.xtablayout.XTabLayout>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="45dp">
+
+
+        <EditText
+            android:id="@+id/et_login_phone"
+            android:layout_width="210dp"
+            android:layout_height="40dp"
+            android:background="@null"
+            android:drawableLeft="@mipmap/login_icon_phone"
+            android:drawablePadding="8dp"
+            android:ellipsize="end"
+            android:hint="@string/login_phone"
+            android:inputType="number"
+            android:lines="1"
+            android:textCursorDrawable="@drawable/cursor_color" />
+        <car.tzxb.b2b.Views.CountDown.CountDownTextView
+            android:id="@+id/tv_get_yzm"
+            android:visibility="invisible"
+            android:layout_marginLeft="10dp"
+            android:textSize="12sp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/count_time_bg"
+            android:text="获取验证码"
+            android:gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGray1" />
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/et_login_pass"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:drawableLeft="@mipmap/login_icon_password"
+            android:drawablePadding="8dp"
+            android:ellipsize="end"
+            android:hint="@string/login_pass"
+            android:lines="1"
+            android:textCursorDrawable="@drawable/cursor_color" />
+
+        <ImageView
+            android:id="@+id/iv_pass_visible"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@mipmap/login_icon_cansee"
+            android:visibility="invisible" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="300dp"
+        android:layout_height="1dp"
+        android:background="@color/colorLightGray1" />
+
+    <car.tzxb.b2b.Views.MorphButton.MorphingButton
+        android:id="@+id/mor_button"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_marginTop="30dp"
+        android:text="登录"
+        android:textColor="@color/colorWhite" />
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/tv_open_shop"
+        android:textColor="@color/red1"
+        android:layout_weight="1"
+        android:text="商家注册"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_find_password"
+        android:textColor="@color/colorLightGray2"
+        android:gravity="end"
+        android:layout_weight="1"
+        android:text="忘记密码"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+</LinearLayout>

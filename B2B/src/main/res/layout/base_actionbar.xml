@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorWhite"
+    android:padding="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="65dp">
+    <TextView
+        android:id="@+id/tv_actionbar_back"
+        android:drawableLeft="@mipmap/navigationbar_icon_return"
+        android:drawablePadding="8dp"
+        android:text="返回"
+        android:textSize="19sp"
+        android:layout_alignParentBottom="true"
+        android:textColor="@color/colorBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_actionbar_title"
+        android:textColor="@color/colorBlack"
+        android:gravity="center"
+        android:textSize="19sp"
+        android:ellipsize="end"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="150dp"
+        android:lines="1"
+        android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_alignParentBottom="true"
+        android:id="@+id/iv_actionbar_right"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@color/colorBlack"
+        android:id="@+id/tv_actionbar_right"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

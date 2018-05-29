@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_tjr_top"
+        android:background="@color/colorWhite"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="320dp">
+
+        <TextView
+            android:textColor="@color/colorBlack"
+            android:textSize="16sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="选择推荐人" />
+        <TextView
+            android:background="@color/colorLightGray1"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp" />
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_tjr"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
+</RelativeLayout>

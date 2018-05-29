@@ -1,0 +1,123 @@
+package car.tzxb.b2b;
+
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+import com.ashokvarma.bottomnavigation.BottomNavigationBar;
+import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+
+import butterknife.BindView;
+import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
+import car.tzxb.b2b.fragments.ClassifyFragment;
+import car.tzxb.b2b.fragments.HomeFragment;
+import car.tzxb.b2b.fragments.JoinFragment;
+import car.tzxb.b2b.fragments.MyFragment;
+import car.tzxb.b2b.fragments.ShoppingCarFragment;
+
+public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener{
+    @BindView(R.id.navigation_bar)
+    BottomNavigationBar navigationBar;
+    private HomeFragment homeFragment;
+    private ClassifyFragment classfragment;
+    private JoinFragment joinfragment;
+    private ShoppingCarFragment shoppingfragment;
+    private MyFragment myfragment;
+    private Fragment currentFragment;
+
+    @Override
+    public void initParms(Bundle parms) {
+
+    }
+
+
+    @Override
+    public int bindLayout() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public void doBusiness(Context mContext) {
+              initNavigationBar();
+    }
+
+    private void initNavigationBar() {
+        navigationBar.setMode(BottomNavigationBar.MODE_FIXED);
+        navigationBar.setTabSelectedListener(this);
+        navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
+        navigationBar.setActiveColor("#FA3314").setInActiveColor("#303030").setBarBackgroundColor("#FFFFFF");
+        navigationBar.addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_home, "首页").setInactiveIconResource(R.mipmap.laberbar_icon_home2))
+                .addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_df, "分类").setInactiveIconResource(R.mipmap.laberbar_icon_df2))
+                .addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_joinin, "项目加盟").setInactiveIconResource(R.mipmap.laberbar_icon_joinin2))
+                .addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_sc, "购物车").setInactiveIconResource(R.mipmap.laberbar_icon_sc2))
+                .addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_my, "我的").setInactiveIconResource(R.mipmap.laberbar_icon_my2))
+                .setFirstSelectedPosition(0)
+                .initialise(); //所有的设置需在调用该方法前完成
+
+         initFragment();
+    }
+
+    private void initFragment() {
+        homeFragment = new HomeFragment();
+        classfragment = new ClassifyFragment();
+        joinfragment = new JoinFragment();
+        shoppingfragment = new ShoppingCarFragment();
+        myfragment = new MyFragment();
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.add(R.id.main_framelayout, homeFragment).commit();
+        currentFragment = homeFragment;
+    }
+
+    @Override
+    public void onTabSelected(int position) {
+        switch (position){
+            case 0:
+                switchFragment(homeFragment);
+                break;
+            case 1:
+                switchFragment(classfragment);
+                break;
+            case 2:
+                switchFragment(joinfragment);
+                break;
+            case 3:
+                switchFragment(shoppingfragment);
+                break;
+            case 4:
+                switchFragment(myfragment);
+                break;
+        }
+    }
+
+    @Override
+    public void onTabUnselected(int position) {
+
+    }
+
+    @Override
+    public void onTabReselected(int position) {
+
+    }
+
+    private void switchFragment(Fragment fragment) {
+        //判断当前显示的Fragment是不是切换的Fragment
+        if(currentFragment != fragment) {
+            //判断切换的Fragment是否已经添加过
+            if (!fragment.isAdded()) {
+                //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).add(R.id.main_framelayout,fragment).commit();
+            } else {
+                //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
+                getSupportFragmentManager().beginTransaction().hide(currentFragment).show(fragment).commit();
+            }
+            currentFragment = fragment;
+        }
+    }
+}
