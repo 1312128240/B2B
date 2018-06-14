@@ -59,6 +59,130 @@ public class BaseDataListBean {
         private String tag;
         private String img;
         private String Username;
+        private String dealer;
+        private String img_url;
+        private String goods_name;
+        private String is_point_product;
+        private String is_balance_product;
+        private String shop_id;
+        private String category_id;
+        private String cate_title;
+        private String product_title;
+        private String market_price;
+        private String seal_price;
+        private String cost_point;
+        private String discount_price;
+        private String point;
+        private String sales;
+        private String color_id;
+        private String network_id;
+        private String miaoshu;
+        private String brand_id;
+        private String offset;
+        private String pic;
+        private String p_title;
+        private String goods_id;
+        private String product_id;
+        public String getDealer() {
+            return dealer;
+        }
+
+        public String getGoods_id() {
+            return goods_id;
+        }
+
+        public String getProduct_id() {
+            return product_id;
+        }
+
+        public String getImg_url() {
+            return img_url;
+        }
+
+        public String getGoods_name() {
+            return goods_name;
+        }
+
+        public String getIs_point_product() {
+            return is_point_product;
+        }
+
+        public String getIs_balance_product() {
+            return is_balance_product;
+        }
+
+        public String getShop_id() {
+            return shop_id;
+        }
+
+        public String getCategory_id() {
+            return category_id;
+        }
+
+        public String getCate_title() {
+            return cate_title;
+        }
+
+        public String getProduct_title() {
+            return product_title;
+        }
+
+        public String getMarket_price() {
+            return market_price;
+        }
+
+        public String getSeal_price() {
+            return seal_price;
+        }
+
+        public String getCost_point() {
+            return cost_point;
+        }
+
+        public String getDiscount_price() {
+            return discount_price;
+        }
+
+        public String getPoint() {
+            return point;
+        }
+
+        public String getSales() {
+            return sales;
+        }
+
+        public String getColor_id() {
+            return color_id;
+        }
+
+        public String getNetwork_id() {
+            return network_id;
+        }
+
+        public String getMiaoshu() {
+            return miaoshu;
+        }
+
+        public String getBrand_id() {
+            return brand_id;
+        }
+
+        public String getOffset() {
+            return offset;
+        }
+
+        public String getPic() {
+            return pic;
+        }
+
+        public String getP_title() {
+            return p_title;
+        }
+
+
+
+
+
         public String getUsername() {
             return Username;
         }

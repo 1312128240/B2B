@@ -3,6 +3,7 @@ package car.tzxb.b2b.Uis;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
@@ -31,6 +32,10 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.myview.CountDown.CountDownTextView;
+import car.myview.CustomToast.MyToast;
+import car.myview.MorphButton.MorphingButton;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
@@ -42,9 +47,6 @@ import car.tzxb.b2b.Uis.Setting.FindPassWordActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
-import car.tzxb.b2b.Views.CountDown.CountDownTextView;
-import car.tzxb.b2b.Views.CustomToast.MyToast;
-import car.tzxb.b2b.Views.MorphButton.MorphingButton;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -65,6 +67,8 @@ public class LoginActivity extends MyBaseAcitivity {
     ImageView iv_pass_visiable;
     @BindView(R.id.tv_get_yzm)
     CountDownTextView tv_get_yzm;
+    @BindView(R.id.tv_actionbar_back)
+    TextView tv_back;
     private int index;
     private boolean flag1;
 
@@ -84,8 +88,13 @@ public class LoginActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("同致相伴");
-
+        tv_back.setVisibility(View.INVISIBLE);
         initUi();
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     private void initUi() {

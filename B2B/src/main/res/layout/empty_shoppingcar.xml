@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+ <TextView
+     android:text="购物车居然是空的"
+     android:textSize="15sp"
+     android:drawablePadding="10dp"
+     android:textColor="@color/colorBlack"
+     android:paddingTop="100dp"
+     android:layout_gravity="center"
+     android:drawableTop="@mipmap/bp_bg_sc"
+     android:gravity="center_horizontal"
+     android:layout_weight="1"
+     android:layout_width="match_parent"
+     android:layout_height="0dp" />
+
+    <TextView
+        android:text="先去逛逛"
+        android:gravity="center"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorWhite"
+        android:background="@drawable/bg1"
+        android:layout_width="120dp"
+        android:layout_height="30dp" />
+    <TextView
+        android:layout_weight="1"
+        android:drawableBottom="@mipmap/ic_launcher"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+</LinearLayout>

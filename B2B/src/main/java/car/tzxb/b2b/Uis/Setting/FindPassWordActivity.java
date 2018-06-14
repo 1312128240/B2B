@@ -1,10 +1,7 @@
 package car.tzxb.b2b.Uis.Setting;
 
-import android.app.ActivityOptions;
 import android.content.Context;
-import android.content.Intent;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -15,26 +12,24 @@ import android.widget.TextView;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
-import com.example.mylibrary.HttpClient.url;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.myview.CountDown.CountDownTextView;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
-import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.StringUtil;
-import car.tzxb.b2b.Views.CountDown.CountDownTextView;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-import static com.example.mylibrary.HttpClient.url.baseUrl;
 
 public class FindPassWordActivity extends MyBaseAcitivity {
 
@@ -63,6 +58,11 @@ public class FindPassWordActivity extends MyBaseAcitivity {
     public void doBusiness(Context mContext) {
         tv_title.setText("找回密码");
         initTextWatch();
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     private void initTextWatch() {

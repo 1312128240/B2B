@@ -38,14 +38,13 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     // 两次点击按钮之间的点击间隔不能少于1000毫秒
     private  final int MIN_CLICK_DELAY_TIME = 1000;
     private  long lastClickTime;
-
+    private BasePresenter presenter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle bundle = getIntent().getExtras();
         initParms(bundle);
-
         mContextView = LayoutInflater.from(this).inflate(bindLayout(), null);
         if (mAllowFullScreen) {
             requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -53,7 +52,8 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
         if (isSetStatusBar) {
             steepStatusBar();
         }
-         setContentView(mContextView);
+          setContentView(mContextView);
+          presenter = bindPresenter();
           ButterKnife.bind(this);
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -215,5 +215,23 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     public void setScreenRoate(boolean isAllowScreenRoate) {
         this.isAllowScreenRoate = isAllowScreenRoate;
     }
+    /**
+     * 绑定presenter，主要用于销毁工作
+     *
+     * @return
+     */
+    protected abstract BasePresenter bindPresenter();
 
+    /**
+     * 如果重写了此方法，一定要调用super.onDestroy();
+     */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (presenter != null) {
+            presenter.onDestroy();
+            presenter = null;
+            System.gc();
+        }
+    }
 }

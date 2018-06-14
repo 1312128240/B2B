@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.R;
 
@@ -60,6 +61,11 @@ public class OpenShopEntrance2Activity extends MyBaseAcitivity {
         iv2.setImageResource(R.mipmap.apply_bg_6);
 
 
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     @OnClick(R.id.tv_actionbar_back)

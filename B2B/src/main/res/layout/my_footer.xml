@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的订单"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="查看全部"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+
+    <RadioGroup
+        android:id="@+id/rg_order_status"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/rb_all"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_payment"
+            android:gravity="center"
+            android:text="待付款"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_dfk"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_pd"
+            android:gravity="center"
+            android:text="待发货"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_dfu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_gtbr"
+            android:gravity="center"
+            android:text="待收货"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_dpj"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_tbe"
+            android:gravity="center"
+            android:text="待评价"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_tk"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_service"
+            android:gravity="center"
+            android:text="退款/售后"
+            android:textColor="@color/colorBlack" />
+    </RadioGroup>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的资产"
+            android:textColor="@color/colorBlack" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="查看全部"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+    <RadioGroup
+        android:id="@+id/rg_coffers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:padding="8dp">
+
+        <RadioButton
+            android:id="@+id/rb_balance_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6dp"
+            android:text="优惠券" />
+
+        <RadioButton
+            android:id="@+id/rb_yhq_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6dp"
+            android:text="金币" />
+
+        <RadioButton
+            android:id="@+id/rb_jf_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6dp"
+            android:text="积分" />
+
+        <RadioButton
+            android:id="@+id/rb_redpackager_number"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6dp"
+            android:text="余额" />
+
+    </RadioGroup>
+    <TextView
+        android:text="我的服务"
+        android:padding="10dp"
+        android:textColor="@color/colorBlack"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <RadioGroup
+        android:id="@+id/rg_my_service"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="10dp">
+
+        <RadioButton
+            android:id="@+id/rb_jfsc"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_dfkgfg"
+            android:gravity="center"
+            android:text="积分商城"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_address"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_position"
+            android:gravity="center"
+            android:text="收货地址"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_my_pj"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/pj"
+            android:gravity="center"
+            android:text="我的评价"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_my_kf"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_fdd"
+            android:gravity="center"
+            android:text="在线客服"
+            android:textColor="@color/colorBlack" />
+
+    </RadioGroup>
+    <TextView
+        android:text="猜你在找"
+        android:textColor="@color/colorBlack"
+        android:padding="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

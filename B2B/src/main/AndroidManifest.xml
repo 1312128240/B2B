@@ -58,7 +58,13 @@
         <activity android:name=".Uis.OpenShopPackage.OpenShopEntranceActivity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopEntrance2Activity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopMapActivity" />
-        <activity android:name=".Uis.Setting.FindPassWordActivity"></activity>
+        <activity android:name=".Uis.Setting.FindPassWordActivity" />
+        <activity android:name=".Uis.GoodsXqPackage.GoodsXqActivity" />
+        <activity android:name=".Uis.ClassifyPackage.GoodsClassifyActivity" />
+        <activity android:name=".Uis.MeCenter.MyAddressActivity" />
+        <activity android:name=".Uis.MeCenter.EditAddressActivity" />
+
+        <activity android:name=".Uis.MeCenter.CollectActivity"></activity>
     </application>
 
 </manifest>

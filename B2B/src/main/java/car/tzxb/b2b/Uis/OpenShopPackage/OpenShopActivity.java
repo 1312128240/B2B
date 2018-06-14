@@ -46,19 +46,18 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.myview.CustomToast.MyToast;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.AnimationUtil;
-import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.GlideLoader;
 import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.SPUtil;
-import car.tzxb.b2b.Views.CustomToast.MyToast;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
-import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.Views.PopWindow.ChosePopWindow;
 import car.tzxb.b2b.Views.PopWindow.TjrPop;
 import car.tzxb.b2b.config.Constant;
@@ -131,6 +130,11 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     public void doBusiness(Context mContext) {
         tv_title.setText("填写信息");
         tv_lxr_mobile.setText(mobile);
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     @OnClick(R.id.tv_actionbar_back)

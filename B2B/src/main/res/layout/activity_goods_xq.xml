@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/goods_xq_parent"
+    tools:context="car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity">
+    <View
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"/>
+    <RelativeLayout
+        android:id="@+id/xq_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingLeft="10dp"
+        android:paddingRight="15dp">
+
+        <ImageView
+            android:id="@+id/iv_xq_back"
+            android:layout_centerVertical="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/navigationbar_icon_return" />
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/xq_tab"
+            android:layout_width="160dp"
+            android:layout_height="45dp"
+            android:layout_centerHorizontal="true"
+            app:tabIndicatorColor="@color/red"
+            app:tabSelectedTextColor="@color/red" />
+
+        <ImageView
+            android:id="@+id/iv_xq_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+            android:layout_toLeftOf="@+id/iv_xq_share"
+            android:src="@drawable/navbar_icon_nc" />
+
+        <ImageView
+            android:id="@+id/iv_xq_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/navbar_icon_share" />
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/xq_vp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </android.support.v4.view.ViewPager>
+
+    <RadioGroup
+        android:id="@+id/rg_xq"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_xq_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/list_icon_seller"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="卖家" />
+
+        <RadioButton
+            android:id="@+id/rb_xq_sc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/list_icon_shop"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="店铺"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_to_gwc"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginRight="6dp"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawableTop="@mipmap/list_icon_shopcar"
+            android:gravity="center"
+            android:paddingTop="5dp"
+            android:text="购物车"
+            android:textColor="@color/colorBlack" />
+
+
+        <RadioButton
+            android:id="@+id/rb_add_shoppingcar"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@color/red"
+            android:button="@null"
+            android:gravity="center"
+            android:text="加入购物车"
+            android:textColor="@color/colorWhite" />
+    </RadioGroup>
+
+</LinearLayout>

@@ -40,7 +40,7 @@
             android:lines="1"
             android:textCursorDrawable="@drawable/cursor_color" />
 
-        <car.tzxb.b2b.Views.CountDown.CountDownTextView
+        <car.myview.CountDown.CountDownTextView
             android:id="@+id/tv_open_shop_get_yzm"
             android:layout_width="75dp"
             android:layout_height="30dp"
@@ -48,6 +48,7 @@
             android:gravity="center"
             android:text="获取验证码"
             android:textSize="12sp" />
+
     </LinearLayout>
 
     <TextView

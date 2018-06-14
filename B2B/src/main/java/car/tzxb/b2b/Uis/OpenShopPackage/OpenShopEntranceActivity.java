@@ -2,20 +2,17 @@ package car.tzxb.b2b.Uis.OpenShopPackage;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Path;
 import android.support.design.widget.Snackbar;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
@@ -26,15 +23,15 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.myview.CountDown.CountDownTextView;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
-import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.StringUtil;
-import car.tzxb.b2b.Views.CountDown.CountDownTextView;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -88,6 +85,11 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
             initTextWatch2();
         }
 
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     @OnClick(R.id.btn_open_shop_next)
@@ -277,7 +279,6 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
         intent.putExtra("password", agin_pass);
         intent.putExtra("from","apply");
         startActivity(intent);
-
     }
 
     @OnClick(R.id.tv_open_shop_get_yzm)
@@ -353,7 +354,9 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
-                        int status =Integer.parseInt(et_phone.getText().toString());
+                        apply(phone,yzm);
+                       // int status =Integer.parseInt(et_phone.getText().toString());
+                      /*  int status=Integer.valueOf(et_phone.getText().toString());
                         switch (status) {
                             case 0:   //账号已经审核通过
                                 showPassDialogFragment();
@@ -366,7 +369,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
                                 break;
                             case 3:    //审核未通过
                                 break;
-                        }
+                        }*/
                     }
                 });
 

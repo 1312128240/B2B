@@ -49,6 +49,7 @@ public class ChosePopWindow extends PopupWindow {
         final View popView = LayoutInflater.from(context).inflate(R.layout.chose_photo_pop, null);
         RecyclerView recyclerView=popView.findViewById(R.id.recy_choose);
         TextView tv_cancle =  popView.findViewById(R.id.tv_chose_cancle);
+        final View top=popView.findViewById(R.id.ll_chose_parent);
         setContentView(popView);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -61,7 +62,7 @@ public class ChosePopWindow extends PopupWindow {
         popView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int height = popView.findViewById(R.id.ll_chose_parent).getTop();
+                int height =top.getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {

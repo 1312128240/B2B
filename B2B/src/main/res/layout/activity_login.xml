@@ -43,7 +43,7 @@
             android:inputType="number"
             android:lines="1"
             android:textCursorDrawable="@drawable/cursor_color" />
-        <car.tzxb.b2b.Views.CountDown.CountDownTextView
+        <car.myview.CountDown.CountDownTextView
             android:id="@+id/tv_get_yzm"
             android:visibility="invisible"
             android:layout_marginLeft="10dp"
@@ -95,7 +95,7 @@
         android:layout_height="1dp"
         android:background="@color/colorLightGray1" />
 
-    <car.tzxb.b2b.Views.MorphButton.MorphingButton
+    <car.myview.MorphButton.MorphingButton
         android:id="@+id/mor_button"
         android:layout_width="300dp"
         android:layout_height="45dp"

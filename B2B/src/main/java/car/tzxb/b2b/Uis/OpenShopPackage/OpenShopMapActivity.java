@@ -2,18 +2,10 @@ package car.tzxb.b2b.Uis.OpenShopPackage;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
-
-import com.baidu.location.BDLocation;
-import com.baidu.location.BDLocationListener;
-import com.baidu.location.LocationClient;
-import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
@@ -34,6 +26,7 @@ import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -77,6 +70,11 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         mSearch.setOnGetGeoCodeResultListener(this);
         mSearch.geocode(new GeoCodeOption().city(city).address(address));
         initMap();
+    }
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     private void initMap() {
@@ -146,7 +144,7 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
         mSearch.destroy();

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorWhite"
+    android:layout_width="match_parent"
+    android:layout_height="45dp">
+
+    <TextView
+        android:id="@+id/tv_filter_zh"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="综合"
+        android:textColor="@color/colorBlack" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_filter_xl"
+            android:layout_width="wrap_content"
+            android:drawablePadding="3dp"
+            android:layout_height="match_parent"
+            android:drawableRight="@drawable/list_icon_sort_default"
+            android:gravity="center"
+            android:text="销量"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_filter_jg"
+            android:layout_width="wrap_content"
+            android:drawablePadding="3dp"
+            android:layout_height="match_parent"
+            android:drawableRight="@drawable/list_icon_sort_default"
+            android:gravity="center"
+            android:text="价格"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_filter_sx"
+            android:layout_width="wrap_content"
+            android:drawablePadding="3dp"
+            android:layout_height="match_parent"
+            android:drawableRight="@drawable/list_icon_sort_sx"
+            android:gravity="center"
+            android:text="筛选"
+            android:textColor="@color/colorBlack" />
+    </LinearLayout>
+</LinearLayout>

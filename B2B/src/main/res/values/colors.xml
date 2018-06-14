@@ -5,12 +5,13 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="colorBlack">#303030</color>
+    <color name="colorBlack2">#ff000000</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="colorLightGray3">#f5f5f5</color>
     <color name="colorLightGray1">#E1E1E1</color>
     <color name="colorLightGray2">#949494</color>
+
+
     <color name="red1">#FA3314</color>
-    <color name="mb_gray">#ffdedede</color>
-    <color name="mb_blue">#ff0099cc</color>
-    <color name="mb_blue_dark">#ff00719b</color>
 
 </resources>

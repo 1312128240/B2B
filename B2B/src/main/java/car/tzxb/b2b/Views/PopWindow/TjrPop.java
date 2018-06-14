@@ -27,11 +27,11 @@ import java.util.List;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
-import car.tzxb.b2b.Views.CustomToast.MyToast;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -56,6 +56,7 @@ public class TjrPop extends PopupWindow {
     private void initPop(Context context) {
         final View popView = LayoutInflater.from(context).inflate(R.layout.open_shop_tjr, null);
         recyclerView = popView.findViewById(R.id.recy_tjr);
+        final View top=popView.findViewById(R.id.ll_tjr_top);
         setContentView(popView);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -68,7 +69,7 @@ public class TjrPop extends PopupWindow {
         popView.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int height = popView.findViewById(R.id.ll_tjr_top).getTop();
+                int height =top.getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {

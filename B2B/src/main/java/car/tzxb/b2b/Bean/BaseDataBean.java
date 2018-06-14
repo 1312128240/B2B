@@ -1,5 +1,7 @@
 package car.tzxb.b2b.Bean;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2018/5/24 0024.
  */
@@ -43,6 +45,25 @@ public class BaseDataBean {
         private String mobile;
         private String shop_name;
         private String is_del;
+        private List<DataBean.CategoryBean> category;
+        private List<DataBean.BrandBean> brand;
+
+        public List<DataBean.CategoryBean> getCategory() {
+            return category;
+        }
+
+        public void setCategory(List<DataBean.CategoryBean> category) {
+            this.category = category;
+        }
+
+        public List<DataBean.BrandBean> getBrand() {
+            return brand;
+        }
+
+        public void setBrand(List<DataBean.BrandBean> brand) {
+            this.brand = brand;
+        }
+
 
         public String getID() {
             return ID;
@@ -98,6 +119,86 @@ public class BaseDataBean {
 
         public void setIs_del(String is_del) {
             this.is_del = is_del;
+        }
+        public static class CategoryBean {
+
+            private String id;
+            private String title;
+            private String sort_id;
+            private String img_url;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getSort_id() {
+                return sort_id;
+            }
+
+            public void setSort_id(String sort_id) {
+                this.sort_id = sort_id;
+            }
+
+            public String getImg_url() {
+                return img_url;
+            }
+
+            public void setImg_url(String img_url) {
+                this.img_url = img_url;
+            }
+        }
+
+        public static class BrandBean {
+
+
+            private String id;
+            private String title;
+            private String sort_id;
+            private String img_url;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getTitle() {
+                return title;
+            }
+
+            public void setTitle(String title) {
+                this.title = title;
+            }
+
+            public String getSort_id() {
+                return sort_id;
+            }
+
+            public void setSort_id(String sort_id) {
+                this.sort_id = sort_id;
+            }
+
+            public String getImg_url() {
+                return img_url;
+            }
+
+            public void setImg_url(String img_url) {
+                this.img_url = img_url;
+            }
         }
     }
 }

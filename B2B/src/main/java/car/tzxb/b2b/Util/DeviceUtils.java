@@ -54,11 +54,15 @@ public class DeviceUtils {
 
 
     /**
-     *	pxתdp
+     * px转dp
+     * @param ctx
+     * @param pxValue
+     * @return
+     */
 
      public static int px2dip(Context ctx,float pxValue) {
      final float scale = ctx.getResources().getDisplayMetrics().density;
      return (int) (pxValue / scale + 0.5f);
-     } */
+     }
 
 }

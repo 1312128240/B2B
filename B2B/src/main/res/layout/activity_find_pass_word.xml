@@ -35,7 +35,7 @@
             android:lines="1"
             android:textCursorDrawable="@drawable/cursor_color" />
 
-        <car.tzxb.b2b.Views.CountDown.CountDownTextView
+        <car.myview.CountDown.CountDownTextView
             android:id="@+id/tv_find_yzm"
             android:layout_width="80dp"
             android:layout_height="match_parent"
