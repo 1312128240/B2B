@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.mylibrary.HttpClient.OkHttpUtils;
 
 import butterknife.ButterKnife;
 
@@ -19,7 +22,7 @@ import butterknife.ButterKnife;
 public abstract class MyBaseFragment extends Fragment {
     private BasePresenter presenter = null;
     public Context mContext;
-
+    protected final String TAG = this.getClass().getSimpleName();
 
     @Nullable
     @Override
@@ -63,6 +66,8 @@ public abstract class MyBaseFragment extends Fragment {
             presenter = null;
             System.gc();
         }
+
+        OkHttpUtils.getInstance().cancelTag(TAG);
     }
 
 }

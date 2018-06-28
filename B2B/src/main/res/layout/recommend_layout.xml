@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:background="@color/colorWhite"
     android:padding="10dp"
+    android:id="@+id/recommend_parent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
    <ImageView
@@ -11,6 +12,7 @@
        android:layout_height="wrap_content" />
     <TextView
         android:id="@+id/tv_recommend_title"
+        android:ellipsize="end"
         android:text="嘉实多新磁护"
         android:layout_below="@+id/iv_recommend"
         android:textColor="@color/colorBlack2"

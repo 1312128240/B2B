@@ -3,7 +3,7 @@
     android:background="@color/colorWhite"
     android:padding="10dp"
     android:layout_width="match_parent"
-    android:layout_height="65dp">
+    android:layout_height="60dp">
     <TextView
         android:id="@+id/tv_actionbar_back"
         android:drawableLeft="@mipmap/navigationbar_icon_return"

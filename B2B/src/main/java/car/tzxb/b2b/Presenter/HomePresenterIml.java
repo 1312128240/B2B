@@ -6,22 +6,23 @@ import java.util.Map;
 
 import car.tzxb.b2b.BasePackage.BaseCallbackListener;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
-import car.tzxb.b2b.Bean.BaseStringBean;
+import car.tzxb.b2b.Bean.BaseDataBean;
+import car.tzxb.b2b.Bean.HomeBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
-import car.tzxb.b2b.Model.JoinModelIml;
+import car.tzxb.b2b.Model.HomeModelIml;
 import car.tzxb.b2b.Model.ModelIml;
 
 /**
  * Created by Administrator on 2018/5/30 0030.
  */
 
-public class JoinPresenterIml implements MvpContact.Presenter {
+public class HomePresenterIml implements MvpContact.Presenter {
     private MvpViewInterface view;
-    private MvpContact.Model JoinModel;
+    private MvpContact.Model homeModel;
 
-    public JoinPresenterIml(MvpViewInterface View) {
+    public HomePresenterIml(MvpViewInterface View) {
         this.view = View;
-        JoinModel = new JoinModelIml();
+        homeModel = new HomeModelIml();
 
     }
 
@@ -32,7 +33,6 @@ public class JoinPresenterIml implements MvpContact.Presenter {
      */
     @Override
     public void onDestroy() {
-        Log.i("Mvp", "onStart(LoginPresenterIml.java:82):View已经被销毁了");
         view = null;
         System.gc();
     }
@@ -44,19 +44,18 @@ public class JoinPresenterIml implements MvpContact.Presenter {
 
     @Override
     public void PresenterGetData(String url, Map<String, String> params) {
-        view.showLoading();
-        JoinModel.ModelGetData(url, params, new BaseCallbackListener<BaseStringBean>() {
+
+        homeModel.ModelGetData(url, params, new BaseCallbackListener<HomeBean>() {
             @Override
-            public void onSucceed(BaseStringBean result) {
+            public void onSucceed(HomeBean result) {
                 view.showData(result);
-                view.closeLoading();
 
             }
 
             @Override
             public void onError(Throwable errorMsg) {
                 Log.i("mvp回调错误",errorMsg.toString());
-                view.closeLoading();
+
             }
         });
     }

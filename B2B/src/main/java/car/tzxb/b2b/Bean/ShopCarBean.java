@@ -12,9 +12,28 @@ public class ShopCarBean {
     private String msg;
     private String status;
     private double totals;
-
     private String number;
     private List<DataBean> data;
+    private double offset;
+    private double amount_pay;
+
+    public double getOffset() {
+        return offset;
+    }
+
+    public void setOffset(double offset) {
+        this.offset = offset;
+    }
+
+    public double getAmount_pay() {
+        return amount_pay;
+    }
+
+    public void setAmount_pay(double amount_pay) {
+        this.amount_pay = amount_pay;
+    }
+
+
 
     public String getMsg() {
         return msg;
@@ -62,9 +81,18 @@ public class ShopCarBean {
 
         private String shops_name;
         private String types;
+        private String shop_id;
         private int coun;
         private List<DataChildBean> data_child;
         private boolean isCheck;
+
+        public String getShop_id() {
+            return shop_id;
+        }
+
+        public void setShop_id(String shop_id) {
+            this.shop_id = shop_id;
+        }
 
         public boolean isCheck() {
             return isCheck;

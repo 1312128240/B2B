@@ -1,10 +1,13 @@
 package car.tzxb.b2b.fragments;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -25,22 +28,26 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.ShopCarBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
+import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.ShoppingCarPresenterIml;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.Order.OrderActivity;
+import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
 public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterface, CheckBox.OnCheckedChangeListener {
 
     MvpContact.Presenter presenter = new ShoppingCarPresenterIml(this);
-    @BindView(R.id.recy_shopping_car)
-    RecyclerView recyclerView;
+
     @BindView(R.id.tv_actionbar_back)
     TextView tv_back;
     @BindView(R.id.tv_actionbar_title)
@@ -49,6 +56,8 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     TextView tv_right;
     @BindView(R.id.empty_shopping_car)
     View empty;
+    @BindView(R.id.recy_shopping_car)
+    RecyclerView recyclerView;
     @BindView(R.id.ll_shoppingcar_content)
     LinearLayout content;
     @BindView(R.id.cb_shoppingcar_all)
@@ -63,6 +72,8 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     private boolean isShow = true;
     private double total;
     private int total_num;
+    private MainActivity mainActivity;
+
 
     @Override
     public int getLayoutResId() {
@@ -75,34 +86,38 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         tv_title.setText("购物车");
         tv_right.setText("编缉");
 
-        String url = "https://wx.aiucar.com/mobile_api/orders/action_orders.php?m=car_lists";
-        Map<String, String> params = new HashMap<>();
-        params.put("userid", "390");
-        params.put("shop_id", "-1");
-        presenter.PresenterGetData(url, params);
+        getData();
+    }
 
+    private void getData() {
+        Log.i("可见fragment","aaa");
+        //显示，更新数据
+        String url = Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list";
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", "88");
+
+        presenter.PresenterGetData(url, params);
     }
 
 
     @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (hidden){
+            //隐藏
+            Log.i("隐藏fragment","aaa");
+        }else {
+            getData();
+            Log.i("到可见时更新数据",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id=88");
+        }
+    }
 
+    @Override
     protected BasePresenter bindPresenter() {
         return presenter;
     }
 
-    private void initUi(List<ShopCarBean.DataBean> lists) {
 
-        if (lists.size() != 0) {
-
-            initRecy();
-
-        } else {
-
-            empty.setVisibility(View.VISIBLE);
-
-        }
-
-    }
 
     private void initRecy() {
         content.setVisibility(View.VISIBLE);
@@ -180,47 +195,52 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         tv_delete.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
+                                String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", "88");
 
-                                OkHttpUtils
-                                        .get()
-                                        .tag(this)
-                                        .url("https://wx.aiucar.com/mobile_api/orders/action_orders_shoppingcars.php?m=del")
-                                        .addParams("id", dataChildBean.getAid())
-                                        .build()
-                                        .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                                            @Override
-                                            public void onError(Call call, Exception e, int id) {
-
-                                            }
-
-                                            @Override
-                                            public void onResponse(BaseStringBean response, int id) {
-
-                                                if("1".equals(String.valueOf(response.getStatus()))){
-                                                     del(InnerList,position);
-                                                     if(InnerList.size()==0){
-                                                         adapter.del(beanList,i);
-                                                     }
-                                                     if(beanList.size()==0){
-                                                         cb_all.setChecked(false);
-                                                         content.setVisibility(View.GONE);
-                                                         empty.setVisibility(View.VISIBLE);
-                                                     }
-
-                                                     if(dataBean.isCheck()){
-                                                         total-=dataChildBean.getTotal();
-                                                         total_num-=1;
-                                                         tv_total_num.setText("结算(" + total_num + ")");
-                                                         tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
-                                                     }
+                                if (mainActivity.isFastClick()) {
+                                    Log.i("删除购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del" + "&car_id=" + dataChildBean.getAid() + "&user_id=" + userId);
+                                    OkHttpUtils
+                                            .get()
+                                            .tag(this)
+                                            .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del")
+                                            .addParams("car_id", dataChildBean.getAid())
+                                            .addParams("user_id", userId)
+                                            .build()
+                                            .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
 
                                                 }
-                                            }
-                                        });
+
+                                                @Override
+                                                public void onResponse(BaseStringBean response, int id) {
+
+                                                    if ("1".equals(String.valueOf(response.getStatus()))) {
+                                                        del(InnerList, position);
+                                                        if (InnerList.size() == 0) {
+                                                            adapter.del(beanList, i);
+                                                        }
+                                                        if (beanList.size() == 0) {
+                                                            cb_all.setChecked(false);
+                                                            content.setVisibility(View.GONE);
+                                                            empty.setVisibility(View.VISIBLE);
+                                                        }
+
+                                                        if (dataBean.isCheck()) {
+                                                            total -= dataChildBean.getTotal();
+                                                            total_num -= 1;
+                                                            tv_total_num.setText("结算(" + total_num + ")");
+                                                            tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
+                                                        }
+
+                                                    }
+                                                }
+                                            });
+                                }
                             }
                         });
-                    }
 
+                    }
 
                 };
                 InnerRecy.setAdapter(childBeanCommonAdapter);
@@ -286,8 +306,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
             tv_right.setText("编辑");
             isShow = true;
             adapter.notifyDataSetChanged();
-            //保存编缉完成的数量
-            //saveData();
         }
     }
 
@@ -296,10 +314,22 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     public void showData(Object o) {
         ShopCarBean bean = (ShopCarBean) o;
         beanList = bean.getData();
+        if (beanList.size() != 0) {
 
-        initUi(beanList);
+            initRecy();
 
+        } else {
 
+            empty.setVisibility(View.VISIBLE);
+
+        }
+
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        mainActivity = (MainActivity) activity;
     }
 
     @Override
@@ -310,6 +340,12 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     @Override
     public void closeLoading() {
 
+    }
+
+    @Override
+    public void showErro() {
+
+        empty.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -345,4 +381,52 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
 
     }
 
+     @OnClick(R.id.tv_shoppingcar_total_number)
+    public void goOrder(){
+
+        List<ShopCarBean.DataBean> isCheckList=new ArrayList<>();
+         for (int i = 0; i <beanList.size() ; i++) {
+             ShopCarBean.DataBean dataBean = beanList.get(i);
+             if(dataBean.isCheck()){
+                 isCheckList.add(dataBean);
+             }
+         }
+         if(isCheckList.size()==0){
+             MyToast.makeTextAnim(MyApp.getContext(),"您还没有选择商品",0, Gravity.CENTER,0,0).show();
+             return;
+         }
+
+         GoOrder(isCheckList);
+
+     }
+
+    private void GoOrder(List<ShopCarBean.DataBean> isCheckList) {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        StringBuilder sb3 = new StringBuilder();
+        StringBuilder sb4 = new StringBuilder();
+        ShopCarBean.DataBean dataBean=null;
+        ShopCarBean.DataBean.DataChildBean childBean=null;
+        for (int i = 0; i < isCheckList.size(); i++) {
+             dataBean = isCheckList.get(i);
+            //门店id
+            sb1.append(dataBean.getShop_id()).append(",");
+            List<ShopCarBean.DataBean.DataChildBean> childBeanList = isCheckList.get(i).getData_child();
+            for (int j = 0; j < childBeanList.size(); j++) {
+                 childBean = childBeanList.get(j);
+                //购物车id
+                sb2.append(childBean.getAid()).append(",");
+                //数量
+                sb3.append(childBean.getNumber()).append(",");
+                //产品id
+                sb4.append(childBean.getPro_id()).append(",");
+            }
+        }
+        Intent intent = new Intent(getActivity(), OrderActivity.class);
+        intent.putExtra("shopId", sb1.toString());
+        intent.putExtra("carId", sb2.toString());
+        intent.putExtra("num", sb3.toString());
+        intent.putExtra("proId", sb4.toString());
+        startActivity(intent);
+    }
 }

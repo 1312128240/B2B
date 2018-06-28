@@ -1,44 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/goods_xq_parent"
+    android:descendantFocusability="blocksDescendants"
     tools:context="car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity">
-    <View
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="20dp"/>
+
     <RelativeLayout
         android:id="@+id/xq_toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:background="@color/white"
+        android:paddingTop="30dp"
         android:paddingLeft="10dp"
         android:paddingRight="15dp">
 
         <ImageView
             android:id="@+id/iv_xq_back"
-            android:layout_centerVertical="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@mipmap/navigationbar_icon_return" />
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/xq_tab"
+        <RadioGroup
+            android:id="@+id/rg_tab"
             android:layout_width="160dp"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:layout_centerHorizontal="true"
-            app:tabIndicatorColor="@color/red"
-            app:tabSelectedTextColor="@color/red" />
+            android:orientation="horizontal" />
 
         <ImageView
             android:id="@+id/iv_xq_sc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginRight="15dp"
             android:layout_toLeftOf="@+id/iv_xq_share"
             android:src="@drawable/navbar_icon_nc" />
@@ -48,7 +43,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
             android:src="@drawable/navbar_icon_share" />
     </RelativeLayout>
 

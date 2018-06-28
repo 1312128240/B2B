@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tolas="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.youth.banner.Banner
+        android:id="@+id/home_banner"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:background="@color/colorWhite">
+
+    </com.youth.banner.Banner>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_track"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@color/colorWhite"
+        android:nestedScrollingEnabled="false">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="@color/colorWhite">
+
+        <ImageView
+            android:id="@+id/activity_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/iv_activity1"
+            android:layout_width="95dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="15dp"
+            tolas:src="@mipmap/ic_launcher" />
+
+        <ImageView
+            android:id="@+id/iv_activity2"
+            android:layout_width="95dp"
+            android:layout_height="120dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/iv_activity1"
+            tolas:src="@mipmap/ic_launcher" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:paddingLeft="10dp"
+        android:background="@color/colorWhite">
+
+        <ImageView
+            android:id="@+id/iv_app_notifi"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            tolas:src="@mipmap/ic_launcher" />
+        <TextView
+            android:text="HOT"
+            android:layout_margin="6dp"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_headline"
+            android:textColor="@color/colorBlack2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            tolas:text="b2b正式上线" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        android:layout_marginTop="8dp"
+        android:layout_height="105dp">
+
+        <ImageView
+            android:id="@+id/iv_self_produc1"
+            android:layout_width="0dp"
+            android:layout_marginRight="1dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tolas:src="@mipmap/ic_launcher" />
+        <TextView
+            android:background="@color/colorLightGray3"
+            android:layout_width="2dp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/iv_self_produc2"
+            android:layout_marginLeft="1dp"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            tolas:src="@mipmap/ic_launcher" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_home_find_shop"
+        android:layout_width="match_parent"
+        android:layout_height="195dp">
+        <ImageView
+            android:id="@+id/iv_find_shop_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+        <LinearLayout
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_find_shop1"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_marginRight="1dp"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/iv_find_shop2"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_home_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="35dp"
+        android:background="@color/colorWhite">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_home_goods"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp"
+        android:nestedScrollingEnabled="false">
+
+    </android.support.v7.widget.RecyclerView>
+
+</merge>

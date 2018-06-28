@@ -5,6 +5,7 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -13,9 +14,11 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
+import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseStringBean;
@@ -44,6 +47,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     RadioButton rb_collect_shop;
     @BindView(R.id.rb_browse_record)
     RadioButton rb_browse_record;
+
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_my;
@@ -67,6 +71,11 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         }else {
 
         }
+    }
+    @OnClick(R.id.tv_exit_app)
+    public void exit(){
+        SPUtil.getInstance(MyApp.getContext()).dele("UserId");
+        MyToast.makeTextAnim(MyApp.getContext(),"退出成功",1, Gravity.BOTTOM,0,0).show();
     }
 
     private void initRecommend() {

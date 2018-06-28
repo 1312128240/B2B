@@ -1,10 +1,12 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/goods_xq_parent"
     tools:context="car.tzxb.b2b.fragments.GoodsFragment">
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/xq_nestedview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -16,8 +18,10 @@
             <include layout="@layout/goods_xq_header" />
 
             <include layout="@layout/goods_xq_footer" />
-            
+
+
+
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 
-</FrameLayout>
+</RelativeLayout>

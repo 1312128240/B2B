@@ -18,5 +18,7 @@
     <string name="agin_input_pass"><font size="12">请再次输入密码</font></string>
 
     <string name="classify"><font size="12">搜索商品</font></string>
+
+    <string name="mesg"><font size="12">选填:给商家留言(50字以内)</font></string>
     <!--  tv_seales.setText(Html.fromHtml("销量:  "+"<font color='#ff0000'><big>" + dataChildBean.getSales_count()+ "</big>"));-->
 </resources>

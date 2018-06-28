@@ -34,10 +34,25 @@ public class SPUtil {
         editor.putString(key, value).commit();
     }
 
-    //获取用户id
+    /**
+     * @param key  UserId
+     * @param defValue
+     * @return
+     */
     public String getUserId(String key, String defValue) {
         return sp.getString(key, defValue);
     }
+
+    /**删除
+     * @param key
+     *
+     */
+    public void dele(String key){
+
+       editor.remove(key).commit();
+
+    }
+
     //保存用户手机号
     public void putMobile(String key,String value){
         editor.putString(key,value).commit();
@@ -46,4 +61,6 @@ public class SPUtil {
     public String getMobile(String key,String defValue){
         return sp.getString(key,defValue);
     }
+
+
 }

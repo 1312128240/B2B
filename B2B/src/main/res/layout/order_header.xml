@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/red"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="买家已付款"
+            android:textColor="@color/colorWhite" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商家正在准备发货"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_consignee_name"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/colorBlack2"
+            tools:text="无双剑姬" />
+
+        <TextView
+            android:id="@+id/tv_consignee_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_consignee_name"
+            android:layout_toRightOf="@+id/tv_consignee_name"
+            android:textColor="@color/colorBlack2"
+            tools:text="159895417321" />
+
+        <TextView
+            android:id="@+id/tv_consignee_address"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/tv_consignee_name"
+            android:layout_below="@+id/tv_consignee_name"
+            android:textColor="@color/gray"
+            android:ellipsize="end"
+            tools:text="广东省深圳市观澜湖"
+            android:layout_marginRight="50dp"
+            android:lines="1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="10dp"
+            android:src="@mipmap/store_icon_right" />
+        <ImageView
+            android:id="@+id/iv_fgx"
+            android:layout_below="@+id/tv_consignee_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:src="@drawable/dd_nav_fgx" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_order_goods"
+            android:layout_width="match_parent"
+            android:layout_height="140px"
+            android:layout_weight="1"
+            android:paddingLeft="10dp">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <TextView
+            android:id="@+id/tv_order_number"
+            android:layout_width="200px"
+            android:layout_height="140px"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="center"
+            android:paddingRight="10dp"
+            android:text="共6件"
+            android:textColor="@color/colorBlack2" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="35dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="配送方式"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="送货上门"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="20px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="支付方式"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="center"
+            android:text="在线支付"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="2px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="发票信息"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="center"
+            android:text="暂不支持发票"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+
+</merge>

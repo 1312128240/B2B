@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tolas="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+ <car.myview.CircleImageView.CircleImageView
+     android:id="@+id/civ_ev"
+     android:background="@mipmap/ic_launcher"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_ev_title"
+        android:layout_marginTop="15dp"
+        android:layout_toRightOf="@+id/civ_ev"
+        android:textColor="@color/colorBlack2"
+        tolas:text="同致相伴"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:textColor="@color/colorBlack"
+        android:layout_alignLeft="@+id/tv_ev_title"
+        android:text="宝贝收到了"
+        android:layout_below="@+id/civ_ev"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>

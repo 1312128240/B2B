@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="20px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="优惠券"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="center"
+            android:text="无可用"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="2px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="积分"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="center"
+            android:text="无可用"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginTop="20px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="商品总价"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:id="@+id/tv_goods_total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="¥215.00"
+            android:textColor="@color/red" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="服务费"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:id="@+id/tv_goods_total_offset"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="¥0.00"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginBottom="50dp"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="满减折扣"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="- ¥0.00"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+</merge>

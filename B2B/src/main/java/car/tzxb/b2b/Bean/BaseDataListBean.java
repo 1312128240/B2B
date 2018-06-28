@@ -59,6 +59,9 @@ public class BaseDataListBean {
         private String tag;
         private String img;
         private String Username;
+        private String stock_distributor_all;
+        private String id;
+        private String name;
         private String dealer;
         private String img_url;
         private String goods_name;
@@ -83,6 +86,19 @@ public class BaseDataListBean {
         private String p_title;
         private String goods_id;
         private String product_id;
+
+        public String getStock_distributor_all() {
+            return stock_distributor_all;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+
+        public String getName() {
+            return name;
+        }
         public String getDealer() {
             return dealer;
         }

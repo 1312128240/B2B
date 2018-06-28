@@ -38,13 +38,14 @@ public class ShoppingCarPresenterIml implements MvpContact.Presenter {
             @Override
             public void onSucceed(ShopCarBean result) {
                 view.showData(result);
-                view.closeLoading();
+               // view.closeLoading();
             }
 
             @Override
             public void onError(Throwable errorMsg) {
                 Log.i("mvp回调错误",errorMsg.toString());
                 view.closeLoading();
+                view.showErro();
             }
         });
     }

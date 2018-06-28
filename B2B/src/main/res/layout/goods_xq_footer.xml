@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_pj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -12,12 +13,14 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/tv_goods_xq_evaluate_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="客户评价"
             android:textColor="@color/colorBlack" />
 
         <TextView
+            android:id="@+id/tv_goods_xq_evaluate_hpl"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
@@ -28,14 +31,18 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_ev"
         android:layout_width="match_parent"
-        android:layout_height="200dp">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_pj">
 
     </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
+        android:id="@+id/ll_all_pj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/recy_ev"
         android:background="@color/colorWhite"
         android:gravity="center"
         android:padding="15dp">
@@ -44,20 +51,22 @@
         <TextView
             android:layout_width="105dp"
             android:layout_height="25dp"
-            android:background="@drawable/bg6"
+            android:background="@drawable/bg7"
             android:gravity="center"
             android:text="查看全部评价"
             android:textColor="@color/red" />
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_shop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_all_pj"
         android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
         android:paddingRight="10dp">
 
-        <ImageView
+        <car.myview.CircleImageView.XCRoundRectImageView
             android:id="@+id/iv_goods_xq_shop"
             android:layout_width="40dp"
             android:layout_height="40dp"
@@ -65,6 +74,7 @@
             android:src="@drawable/bucket_no_picture" />
 
         <TextView
+            android:id="@+id/tv_goods_xq_shop_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/iv_goods_xq_shop"
@@ -74,6 +84,7 @@
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/tv_goods_xq_shop_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/iv_goods_xq_shop"
@@ -98,8 +109,10 @@
     </RelativeLayout>
 
     <LinearLayout
+        android:id="@+id/ll_come_shop"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_below="@+id/rl_shop"
         android:layout_marginTop="1dp"
         android:background="@color/colorWhite">
 
@@ -125,15 +138,40 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_shop_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_come_shop"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
         android:padding="10dp"
         android:text="店铺热销"
         android:textColor="@color/colorBlack" />
 
     <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_hot"
         android:layout_width="match_parent"
-        android:layout_height="120dp">
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_shop_hot"
+        android:background="@color/colorWhite">
 
     </android.support.v7.widget.RecyclerView>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_xq_img"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/recy_hot"
+        android:background="@color/colorWhite"
+        android:padding="10dp"
+        android:text="商品详情"
+        android:textColor="@color/colorBlack2" />
+
+    <car.myview.MyListView
+        android:id="@+id/lv_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_xq_img">
+
+    </car.myview.MyListView>
+</merge>

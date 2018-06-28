@@ -17,7 +17,6 @@
 
      <RadioGroup
          android:id="@+id/rg_collect_swich"
-         android:background="@drawable/bg6"
          android:gravity="center"
          android:layout_centerHorizontal="true"
          android:orientation="horizontal"
@@ -27,7 +26,7 @@
              android:id="@+id/rb_goods"
              android:textSize="13sp"
              android:padding="2dp"
-             android:background="@drawable/bg_swich"
+
              android:textColor="@color/textview"
              android:button="@null"
              android:text="收藏商品"
@@ -37,7 +36,7 @@
              android:id="@+id/rb_shop"
              android:textSize="13sp"
              android:padding="2dp"
-             android:background="@drawable/bg_swich"
+
              android:textColor="@color/textview"
              android:button="@null"
              android:text="收藏店铺"

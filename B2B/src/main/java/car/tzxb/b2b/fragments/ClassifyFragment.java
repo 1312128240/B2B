@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -72,8 +73,8 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
         recy_gods.setLayoutManager(new GridLayoutManager(getContext(),3));
         recy_gods.setNestedScrollingEnabled(false);
 
-        final int width= DeviceUtils.dip2px(MyApp.getContext(),45);
-        final int height=DeviceUtils.dip2px(MyApp.getContext(),45);
+        final int i= DeviceUtils.dip2px(MyApp.getContext(),45);
+
         final int top=DeviceUtils.dip2px(MyApp.getContext(),30);
         //商品
         godsAdapter = new CommonAdapter<BaseDataBean.DataBean.CategoryBean>(MyApp.getContext(), R.layout.iv_layout,goodsBeanlist) {
@@ -83,7 +84,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                 RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.setMargins(0,top,0,0);
                 iv.setLayoutParams(params);
-                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(width,height).into(iv);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i,i).into(iv);
                 //标题
                 holder.setText(R.id.iv_layout_title,bean.getTitle());
             }
@@ -114,7 +115,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                 RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 params.setMargins(0,top,0,0);
                 iv.setLayoutParams(params);
-                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(width,height).into(iv);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i,i).into(iv);
                 //标题
                 holder.setText(R.id.iv_layout_title,bean.getTitle());
             }
@@ -162,5 +163,10 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
     @Override
     public void closeLoading() {
        // http://172.20.10.142/mobile_api//mobile_api/item/index.php?c=Goods&m=ProductList&cate=207&brand=6&pagesize=10&page=0&search=%E5%90%8C%E8%87%B4%E5%93%81%E7%89%8C&price=asc&sales=desc&network_ids=4,5
+    }
+
+    @Override
+    public void showErro() {
+
     }
 }

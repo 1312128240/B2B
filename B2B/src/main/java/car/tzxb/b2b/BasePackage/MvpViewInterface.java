@@ -21,4 +21,8 @@ public interface MvpViewInterface<T> {
      */
     void closeLoading();
 
+    /**
+     * 显示错误的结果
+     */
+    void showErro();
 }

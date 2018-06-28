@@ -46,7 +46,9 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -63,8 +65,12 @@
         <activity android:name=".Uis.ClassifyPackage.GoodsClassifyActivity" />
         <activity android:name=".Uis.MeCenter.MyAddressActivity" />
         <activity android:name=".Uis.MeCenter.EditAddressActivity" />
-
-        <activity android:name=".Uis.MeCenter.CollectActivity"></activity>
+        <activity android:name=".Uis.MeCenter.CollectActivity" />
+        <activity android:name=".Uis.GoodsXqPackage.ShoppingCarActivity" />
+        <activity android:name=".Uis.Order.OrderActivity" />
+        <activity android:name=".Uis.Order.GoodsListActivity" />
+        <activity android:name=".wxapi.WXPayEntryActivity" />
+        <activity android:name=".Uis.Order.OrderXqActivity"></activity>
     </application>
 
 </manifest>

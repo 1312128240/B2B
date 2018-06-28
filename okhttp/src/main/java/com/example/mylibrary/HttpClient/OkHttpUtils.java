@@ -43,8 +43,7 @@ public class OkHttpUtils
     }
 
 
-    public static OkHttpUtils initClient(OkHttpClient okHttpClient)
-    {
+    public static OkHttpUtils initClient(OkHttpClient okHttpClient) {
         if (mInstance == null)
         {
             synchronized (OkHttpUtils.class)
@@ -213,7 +212,7 @@ public class OkHttpUtils
             }
 
         }
-        Log.i("执行取消访问",tag+"");
+        Log.i("此类执行取消访问",tag+"");
 
     }
     public Object Tag(Object tag){

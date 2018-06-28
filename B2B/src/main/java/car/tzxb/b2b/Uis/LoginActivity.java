@@ -261,18 +261,73 @@ public class LoginActivity extends MyBaseAcitivity {
                 Snackbar.make(tv_title, "请输入验证码", Snackbar.LENGTH_SHORT).show();
                 return;
             }
-
-            PassLogin(index,"test06", pass);
+            if(index==0){
+                passLogin(phone,pass);
+            }else {
+                yzmLogin(phone,pass);
+            }
+           // PassLogin(index,phone, pass);
         }
     }
 
-    private void PassLogin(int index,String phone,String pass) {
-        String login_type = null;
-        if (index == 0) {
-            login_type = "password";
-        } else {
-            login_type = "mobile";
-        }
+    private void yzmLogin(String phone,String yzm) {
+        String login_type = "mobile";
+     /*   //密码加密------------------------------------------------------------------------
+        String strA = "pwd=" + pass;
+        String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
+        String pwdMd5 = StringUtil.stringToMD5(strB);
+        StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);*/
+        //生成签名才能获取验证码
+        Long time = new Date().getTime() / 1000;
+        String m = "login";
+        String stringA = "login_type=" + login_type + "&m=" + m + "&pwd=" + yzm + "&timestamp=" + time + "&usern=" + phone + "&key=6ljH6wpC4vDPy%Ruqlr4JJmG0kLo%^yN";
+        String sign = StringUtil.stringToMD5(stringA);
+        StringBuilder Upsign = StringUtil.UpperLowerCase(sign);
+
+        Log.i("登录", Constant.baseUrl + "login/login.php?&m=login" + "&usern=" + phone + "&pwd=" + yzm + "&timestamp=" + time + "&login_type=" + login_type + "&sign=" + Upsign);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "login/login.php?&m=login")
+                .addParams("usern", phone)
+                .addParams("pwd", yzm)
+                .addParams("timestamp", String.valueOf(time))
+                .addParams("login_type", login_type)
+                .addParams("sign", Upsign.toString())
+                .build()
+                .execute(new GenericsCallback<BaseDataBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataBean response, int id) {
+                        if (response.getStatus() == 1) {
+                            String userId = response.getData().getID();
+                            String mobile = response.getData().getMobile();
+                            SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
+                            SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
+                            MorphingButton.Params params = MorphingButton.Params.create()
+                                    .duration(500)
+                                    .cornerRadius(56)
+                                    .width(100)
+                                    .height(100)
+                                    .color(Color.parseColor("#FA3314"))
+                                    .icon(R.mipmap.ic_done);
+                            morphingButton.morph(params);
+                            MyToast.makeTextAnim(MyApp.getContext(), "登录成功", 0, Gravity.BOTTOM, 0, 50).show();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
+                        }
+                    }
+                });
+    }
+
+    private void passLogin(String phone,String pass) {
+
+        String login_type = "password";
         //密码加密------------------------------------------------------------------------
         String strA = "pwd=" + pass;
         String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
@@ -319,10 +374,14 @@ public class LoginActivity extends MyBaseAcitivity {
                                     .icon(R.mipmap.ic_done);
                             morphingButton.morph(params);
                             MyToast.makeTextAnim(MyApp.getContext(), "登录成功", 0, Gravity.BOTTOM, 0, 50).show();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
                         }
                     }
                 });
     }
+
+
 
     @OnClick(R.id.tv_get_yzm)
     public void getYzm() {
@@ -377,14 +436,20 @@ public class LoginActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.tv_find_password)
     public void find(){
-        startActivity(FindPassWordActivity.class);
+        if(isFastClick()){
+            startActivity(FindPassWordActivity.class);
+        }
+
     }
 
     @OnClick(R.id.tv_open_shop)
     public void open() {
-        Intent intent=new Intent(this,OpenShopEntranceActivity.class);
-        intent.putExtra("from","login");
-        startActivity(intent);
+        if(isFastClick()){
+            Intent intent=new Intent(this,OpenShopEntranceActivity.class);
+            intent.putExtra("from","login");
+            startActivity(intent);
+        }
+
     }
 
 

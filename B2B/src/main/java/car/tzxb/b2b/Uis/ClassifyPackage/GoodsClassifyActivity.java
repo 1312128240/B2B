@@ -24,6 +24,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.mylibrary.HttpClient.OkHttpUtils;
+import com.example.mylibrary.HttpClient.callback.GenericsCallback;
+import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,14 +44,17 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataListBean;
+import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.GoodsClassifyPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
+import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.AddShoppingCarPop;
 import car.tzxb.b2b.config.Constant;
+import okhttp3.Call;
 
 
 public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInterface {
@@ -78,7 +84,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
     private String price;
     private String sales;
     private String network_ids;
-    private String url=Constant.baseUrl+"item/index.php?c=Goods&m=ProductList";
+    private String url=Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList";
 
     @Override
     public void initParms(Bundle parms) {
@@ -140,42 +146,43 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
         recyclerview.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.commn_item, beanList) {
             @Override
-            protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
+            protected void convert(ViewHolder holder, final BaseDataListBean.DataBean bean, int position) {
                 //图片
                 ImageView iv = holder.getView(R.id.iv_category);
                 Glide.with(MyApp.getContext()).load(bean.getImg_url()).into(iv);
                 //名字
-                holder.setText(R.id.tv_catagroy_name,"\t\t\t"+bean.getProduct_title());
+                holder.setText(R.id.tv_catagroy_name,"\t\t\t"+bean.getGoods_name());
                 //价钱
                 TextView tv_price=holder.getView(R.id.tv_category_pice);
                 tv_price.setText(Html.fromHtml("¥"+"<big>"+bean.getSeal_price()+"</big>"));
                 //销量
                 holder.setText(R.id.tv_maker_price,"月销量: "+bean.getSales());
                 //商品类型
-                TextView tv=holder.getView(R.id.tv_goods_type);
-                GradientDrawable gd=new GradientDrawable();
-                gd.setCornerRadius(5);
-                gd.setStroke(1,Color.parseColor("#ff0000"));
-                tv.setBackground(gd);
-                tv.setText(bean.getDealer());
+                holder.setText(R.id.tv_goods_type,bean.getDealer());
                 //加入购物车
                 ImageView iv_gwc = holder.getView(R.id.iv_gwc_icon);
                 iv_gwc.setVisibility(View.VISIBLE);
-                iv_gwc.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                       showPop();
-                    }
+
+                    iv_gwc.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                           if(isFastClick()){
+                               getChildGoods(bean.getId());
+                           }
+
+                        }
 
 
-                });
+                    });
             }
         };
         recyclerview.setAdapter(adapter);
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                BaseDataListBean.DataBean bean=beanList.get(position);
                 Intent intent=new Intent(GoodsClassifyActivity.this, GoodsXqActivity.class);
+                intent.putExtra("mainId",bean.getId());
                 startActivity(intent);
             }
 
@@ -186,10 +193,66 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
         });
     }
 
-    private void showPop() {
-        AddShoppingCarPop window=new AddShoppingCarPop(this);
-        window.show(drawerLayout);
+    private void getChildGoods(String mainId) {
+        Log.i("查询的子商品",Constant.baseUrl+"item/index.php?c=Goods&m=GetProductsInfo"+"&id="+mainId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"item/index.php?c=Goods&m=GetProductsInfo")
+                .addParams("id",mainId)
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataListBean response, int id) {
+                        if(response.getStatus()==1){
+                            List<BaseDataListBean.DataBean> list=response.getData();
+                            AddShoppingCarPop window=new AddShoppingCarPop(GoodsClassifyActivity.this,list);
+                            window.show(drawerLayout);
+                            window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
+                                @Override
+                                public void Click(int number, String pro_id, String shop_id, String type) {
+                                    // Log.i("传过来的",number+"____"+pro_id+"_____"+shop_id+"_____"+type);
+                                    String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+                                    Log.i("添加购物车路径",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar"+"&number="+number+
+                                            "&pro_id="+pro_id+"&shop_id="+shop_id+"&type="+type+"&motion_id=1"+"&user_id="+userId);
+                                    OkHttpUtils
+                                            .get()
+                                            .tag(this)
+                                            .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar")
+                                            .addParams("number",String.valueOf(number))
+                                            .addParams("pro_id",pro_id)
+                                            .addParams("shop_id",shop_id)
+                                            .addParams("type",type)
+                                            .addParams("motion_id","1")
+                                            .addParams("user_id","88")
+                                            .build()
+                                            .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                                                @Override
+                                                public void onError(Call call, Exception e, int id) {
+
+                                                    MyToast.makeTextAnim(MyApp.getContext(),e.toString(),0,Gravity.CENTER,0,0).show();
+                                                }
+
+                                                @Override
+                                                public void onResponse(BaseStringBean response, int id) {
+
+                                                    MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+
+                                                }
+                                            });
+                                }
+                            });
+                        }
+
+                    }
+                });
     }
+
 
     @Override
     public void showLoading() {
@@ -198,6 +261,11 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
 
     @Override
     public void closeLoading() {
+
+    }
+
+    @Override
+    public void showErro() {
 
     }
 

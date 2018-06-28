@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_my_dialog_parent"
-    android:layout_width="260dp"
-    android:background="@drawable/bg2"
+    android:layout_width="180dp"
     android:layout_height="wrap_content">
    <TextView
        android:id="@+id/tv_alter_dialog_hint"

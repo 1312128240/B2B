@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/iv_layout_parent"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tolas="http://schemas.android.com/tools">
   <car.myview.CircleImageView.CircleImageView
       android:id="@+id/iv_item"
       android:layout_centerHorizontal="true"
@@ -13,7 +15,7 @@
         android:layout_marginTop="10dp"
         android:layout_below="@+id/iv_item"
         android:layout_centerHorizontal="true"
-        android:text="分类"
+        tolas:text="分类"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

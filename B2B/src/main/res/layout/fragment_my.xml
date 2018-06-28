@@ -1,18 +1,17 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<car.myview.ZoomInScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FAFAFA"
-    tools:context="car.tzxb.b2b.fragments.MyFragment">
-      <car.myview.ZoomInScrollView
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
-          <LinearLayout
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
-              <include layout="@layout/my_header"/>
-              <include layout="@layout/my_footer"/>
-          </LinearLayout>
-      </car.myview.ZoomInScrollView>
-</RelativeLayout>
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include layout="@layout/my_header" />
+
+        <include layout="@layout/my_footer" />
+
+    </LinearLayout>
+
+</car.myview.ZoomInScrollView>
+

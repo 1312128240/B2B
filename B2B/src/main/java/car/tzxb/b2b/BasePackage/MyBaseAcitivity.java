@@ -17,7 +17,10 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.mylibrary.HttpClient.OkHttpUtils;
+
 import butterknife.ButterKnife;
+import car.tzxb.b2b.Util.ActivityManager;
 
 import static car.tzxb.b2b.MyApp.isDebug;
 
@@ -39,7 +42,7 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     private  final int MIN_CLICK_DELAY_TIME = 1000;
     private  long lastClickTime;
     private BasePresenter presenter = null;
-
+    protected final String TAG = this.getClass().getSimpleName();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,9 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
           setContentView(mContextView);
           presenter = bindPresenter();
           ButterKnife.bind(this);
+
+        ActivityManager.getInstance().addActivity(this);
+
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
@@ -228,10 +234,13 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         if (presenter != null) {
             presenter.onDestroy();
             presenter = null;
             System.gc();
         }
+        OkHttpUtils.getInstance().cancelTag(TAG);
+        ActivityManager.getInstance().deleteActivity(this);
     }
 }

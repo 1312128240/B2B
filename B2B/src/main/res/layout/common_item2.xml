@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tolas="http://schemas.android.com/tools"
+    android:padding="2dp"
+    android:background="@color/colorWhite"
+    android:id="@+id/common_item2_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+ <ImageView
+     android:id="@+id/iv_goods"
+     android:layout_centerHorizontal="true"
+     android:background="@drawable/bg5"
+     android:padding="1dp"
+     android:src="@mipmap/ic_launcher"
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_goods_item_title"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlack2"
+        android:layout_below="@+id/iv_goods"
+        tolas:text="嘉实多新款磁护"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_goods_item_price"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/tv_goods_item_title"
+        android:textColor="@color/colorBlack2"
+        tolas:text="¥278"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
