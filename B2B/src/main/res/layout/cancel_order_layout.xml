@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/ll_cancle_order_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_chose_parent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_pop_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="10dp"
+                android:text="取消订单"
+                android:textColor="@color/gray"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="0.5dp"
+                android:background="@color/garyLight" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_cancle_order"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
+
+            </android.support.v7.widget.RecyclerView>
+
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_dismiss_cancle_order"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg2"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/titleBlue2"
+            android:textSize="18sp" />
+    </LinearLayout>
+</RelativeLayout>

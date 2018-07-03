@@ -47,6 +47,43 @@ public class BaseDataBean {
         private String is_del;
         private List<DataBean.CategoryBean> category;
         private List<DataBean.BrandBean> brand;
+        private double total_fee;
+        private String order_seqno;
+        private String order_id;
+        private String count_seqnos;
+
+        public double getTotal_fee() {
+            return total_fee;
+        }
+
+        public void setTotal_fee(double total_fee) {
+            this.total_fee = total_fee;
+        }
+
+        public String getOrder_seqno() {
+            return order_seqno;
+        }
+
+        public void setOrder_seqno(String order_seqno) {
+            this.order_seqno = order_seqno;
+        }
+
+        public String getOrder_id() {
+            return order_id;
+        }
+
+        public void setOrder_id(String order_id) {
+            this.order_id = order_id;
+        }
+
+        public String getCount_seqnos() {
+            return count_seqnos;
+        }
+
+        public void setCount_seqnos(String count_seqnos) {
+            this.count_seqnos = count_seqnos;
+        }
+
 
         public List<DataBean.CategoryBean> getCategory() {
             return category;

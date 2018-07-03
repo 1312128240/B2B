@@ -5,6 +5,7 @@ import android.support.annotation.IdRes;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -27,6 +28,7 @@ import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
+import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
 import car.tzxb.b2b.Util.SPUtil;
 
 
@@ -47,7 +49,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     RadioButton rb_collect_shop;
     @BindView(R.id.rb_browse_record)
     RadioButton rb_browse_record;
-
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_my;
@@ -58,12 +59,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
        rg_order.setOnCheckedChangeListener(this);
        rg_service.setOnCheckedChangeListener(this);
        rg_collect.setOnCheckedChangeListener(this);
-        initUi();
+       initUi();
        initRecommend();
     }
 
     private void initUi() {
-        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String userId=  SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         if(userId==null){
             rb_collect_goods.setText("0"+"\n收藏商品");
             rb_collect_shop.setText("0"+"\n收藏店铺");
@@ -77,7 +78,19 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         SPUtil.getInstance(MyApp.getContext()).dele("UserId");
         MyToast.makeTextAnim(MyApp.getContext(),"退出成功",1, Gravity.BOTTOM,0,0).show();
     }
-
+      @OnClick(R.id.tv_all_order)
+      public void all_order(){
+          String userId=  SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+          Intent intent=new Intent();
+          if(userId==null){
+              intent.setClass(getActivity(),LoginActivity.class);
+              startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+              return;
+          }
+          intent.setClass(getActivity(),OrderStatusActivity.class);
+          intent.putExtra("index",0);
+          startActivity(intent);
+      }
     private void initRecommend() {
         String [] str={"哈哈哈哈","呵呵呵","嗯嗯嗯","哦哦哦","好好好"};
         List<BaseStringBean> lists=new ArrayList<>();
@@ -112,32 +125,60 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
         RadioButton rb=radioGroup.findViewById(i);
         rb.setChecked(false);
-        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String userId=  SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+
         if(userId==null){
             Intent intent=new Intent(getActivity(), LoginActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
-
+         Intent intent=new Intent();
            switch (i){
                case R.id.rb_address:
-                   Intent intent1=new Intent(getActivity(), MyAddressActivity.class);
-                   startActivity(intent1);
+
+                   intent.setClass(getActivity(),MyAddressActivity.class);
+
                    break;
                case R.id.rb_collect_goods:
-                   Intent intent2=new Intent(getActivity(), CollectActivity.class);
-                   intent2.putExtra("index",1);
-                   startActivity(intent2);
+
+                 intent.setClass(getActivity(),CollectActivity.class);
+
                    break;
                case R.id.rb_collect_shop:
-                   Intent intent3=new Intent(getActivity(), CollectActivity.class);
-                   intent3.putExtra("index",2);
-                   startActivity(intent3);
+
+                  intent.setClass(getActivity(),CollectActivity.class);
                    break;
                case R.id.rb_browse_record:
-                   Snackbar.make(rg_order,"浏览记录",Snackbar.LENGTH_LONG).show();
+
+                   intent.setClass(getActivity(),CollectActivity.class);
+                   break;
+               case R.id.rb_all:
+                   intent.setClass(getActivity(),OrderStatusActivity.class);
+                   intent.putExtra("type","all");
+                   intent.putExtra("index",0);
+                   break;
+               case R.id.rb_dfk:
+                   intent.setClass(getActivity(),OrderStatusActivity.class);
+                   intent.putExtra("type","stay_payment");
+                   intent.putExtra("index",1);
+                   break;
+               case R.id.rb_dfh:
+                   intent.setClass(getActivity(),OrderStatusActivity.class);
+                   intent.putExtra("type","stay_shipment");
+                   intent.putExtra("index",2);
+                   break;
+               case R.id.rb_dsh:
+                   intent.setClass(getActivity(),OrderStatusActivity.class);
+                   intent.putExtra("type","stay_take");
+                   intent.putExtra("index",3);
+                   break;
+               case R.id.rb_dpj:
+                   intent.setClass(getActivity(),OrderStatusActivity.class);
+                   intent.putExtra("type","stay_evaluate");
+                   intent.putExtra("index",4);
                    break;
            }
+           startActivity(intent);
 
     }
 

@@ -3,24 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="car.tzxb.b2b.Uis.AddressManager.MyAddressActivity">
+    tools:context="car.tzxb.b2b.Uis.MeCenter.MyAddressActivity">
 
-    <include layout="@layout/base_actionbar" />
+    <include
+        android:id="@+id/my_address_actionbar"
+        layout="@layout/base_actionbar" />
 
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_address"
+        android:layout_marginTop="1.5dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_add_myaddress"
+        android:layout_below="@+id/my_address_actionbar">
+
+    </android.support.v7.widget.RecyclerView>
     <TextView
+        android:id="@+id/tv_empth_address"
         android:layout_width="wrap_content"
+        android:visibility="gone"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:drawablePadding="6dp"
         android:drawableTop="@drawable/dz_bg_sc"
+        android:gravity="center"
         android:text="你还木有收货地址"
         android:textColor="@color/colorBlack" />
-
-    <Button
-        android:id="@+id/btn_add_address"
+    <LinearLayout
+        android:id="@+id/ll_add_myaddress"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorWhite"
-        android:text="添加收货地址" />
+        android:background="@color/red"
+        android:gravity="center">
+
+
+        <TextView
+            android:id="@+id/btn_add_address"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:drawableLeft="@drawable/dz_icon_tj"
+            android:drawablePadding="5dp"
+            android:gravity="center"
+            android:text="添加收货地址"
+            android:textColor="@color/colorWhite" />
+    </LinearLayout>
 </RelativeLayout>

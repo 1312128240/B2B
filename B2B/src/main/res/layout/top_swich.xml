@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@color/colorWhite"
+    android:gravity="bottom"
+    android:paddingBottom="5dp">
+
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:src="@mipmap/navigationbar_icon_return" />
+
+    <RadioGroup
+        android:id="@+id/rg_order_swich"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rb_visit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/left_swich"
+            android:button="@null"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:textColor="@color/textview"
+            android:textSize="13sp"
+            tools:text="送货上门" />
+
+        <RadioButton
+            android:id="@+id/rb_self"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@drawable/right_swich"
+            android:button="@null"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="门店自取"
+            android:textColor="@color/textview"
+            android:textSize="13sp" />
+    </RadioGroup>
+
+</RelativeLayout>

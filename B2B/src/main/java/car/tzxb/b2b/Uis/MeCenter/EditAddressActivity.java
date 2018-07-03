@@ -1,16 +1,22 @@
 package car.tzxb.b2b.Uis.MeCenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Gravity;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.mylibrary.HttpClient.OkHttpUtils;
+import com.example.mylibrary.HttpClient.callback.GenericsCallback;
+import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import com.lljjcoder.citypickerview.widget.CityPicker;
 
 import butterknife.BindView;
@@ -18,12 +24,18 @@ import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
+import car.tzxb.b2b.Bean.BaseDataBean;
+import car.tzxb.b2b.Bean.BaseStringBean;
+import car.tzxb.b2b.Bean.MyAddressBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.AnimationUtil;
+import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.config.Constant;
+import okhttp3.Call;
 
 
-public class EditAddressActivity extends MyBaseAcitivity{
+public class EditAddressActivity extends MyBaseAcitivity {
 
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
@@ -35,8 +47,19 @@ public class EditAddressActivity extends MyBaseAcitivity{
     EditText et_phone;
     @BindView(R.id.et_consignee_region)
     EditText et_region;
+    @BindView(R.id.cb_default_address)
+    CheckBox cb;
+    private String id;
+    private String province;
+    private String city;
+    private String district;
+    private String isDefault;
+    private MyAddressBean.DataBean.AddressBean bean;
+
     @Override
     public void initParms(Bundle parms) {
+
+        bean = (MyAddressBean.DataBean.AddressBean) getIntent().getSerializableExtra("bean");
 
     }
 
@@ -47,8 +70,23 @@ public class EditAddressActivity extends MyBaseAcitivity{
 
     @Override
     public void doBusiness(Context mContext) {
-                 tv_title.setText("新增地址");
+        tv_title.setText("新增地址");
         textWatch();
+        if (bean != null) { //是否是修改
+            et_name.setText(bean.getUser_name());
+            et_phone.setText(bean.getMobile());
+            tv_location.setText(bean.getProvince() + "-" + bean.getCity() + "-" + bean.getArea());
+            et_region.setText(bean.getAddress());
+            if("1".equals(bean.getStatus())){
+                cb.setChecked(true);
+            }else {
+                cb.setChecked(false);
+            }
+            id=bean.getID();
+        }else {
+
+            id="-1";
+        }
     }
 
     private void textWatch() {
@@ -109,7 +147,7 @@ public class EditAddressActivity extends MyBaseAcitivity{
     }
 
     @OnClick(R.id.tv_consignee_location)
-    public void city(){
+    public void city() {
         if (isFastClick()) {
             CityPicker cityPicker = new CityPicker.Builder(this)
                     .textSize(14)
@@ -135,11 +173,11 @@ public class EditAddressActivity extends MyBaseAcitivity{
                 @Override
                 public void onSelected(String... citySelected) {
                     //省份
-                    String province = citySelected[0];
+                    province = citySelected[0];
                     //城市
-                   String city = citySelected[1];
+                    city = citySelected[1];
                     //区县（如果设定了两级联动，那么该项返回空）
-                    String district = citySelected[2];
+                    district = citySelected[2];
                     //邮编
                     String code = citySelected[3];
                     String address = province.trim() + "," + city.trim() + "," + district.trim();
@@ -156,40 +194,88 @@ public class EditAddressActivity extends MyBaseAcitivity{
             });
         }
     }
+
     @OnClick(R.id.tv_actionbar_back)
-    public void bcak(){
+    public void bcak() {
         onBackPressed();
     }
+
     @OnClick(R.id.btn_save_address)
-    public void save(){
-        String name=et_name.getText().toString();
-        String phone=et_phone.getText().toString();
-        String location=tv_location.getText().toString();
-        String region=et_region.getText().toString();
-        if(TextUtils.isEmpty(name)){
-            AnimationUtil.Sharke(MyApp.getContext(),et_name);
-            Snackbar.make(tv_title,"收货人姓名不能为空",Snackbar.LENGTH_SHORT).show();
+    public void save() {
+        String name = et_name.getText().toString();
+        String phone = et_phone.getText().toString();
+        String location = tv_location.getText().toString();
+        String region = et_region.getText().toString();
+        if (TextUtils.isEmpty(name) || name.length() < 2) {
+            AnimationUtil.Sharke(MyApp.getContext(), et_name);
+            MyToast.makeTextAnim(MyApp.getContext(), "收货人姓名至少2个字符", 0, Gravity.CENTER, 0, 0).show();
+            return;
+        } else if (name.length() > 15) {
+            AnimationUtil.Sharke(MyApp.getContext(), et_name);
+            MyToast.makeTextAnim(MyApp.getContext(), "收货人姓名至多15个字符", 0, Gravity.CENTER, 0, 0).show();
             return;
         }
-        if(TextUtils.isEmpty(phone)){
-            AnimationUtil.Sharke(MyApp.getContext(),et_phone);
-            Snackbar.make(tv_title,"收货人手机号未填写",Snackbar.LENGTH_SHORT).show();
-            return;
-        }else if(phone.length()<11){
-            AnimationUtil.Sharke(MyApp.getContext(),et_phone);
-            Snackbar.make(tv_title,"手机号填写不正确",Snackbar.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(phone) || phone.length() < 11) {
+            AnimationUtil.Sharke(MyApp.getContext(), et_phone);
+            MyToast.makeTextAnim(MyApp.getContext(), "请输入11位手机号码", 0, Gravity.CENTER, 0, 0).show();
             return;
         }
-        if(TextUtils.isEmpty(location)){
-            AnimationUtil.Sharke(MyApp.getContext(),tv_location);
-            Snackbar.make(tv_title,"未选择收货人地区",Snackbar.LENGTH_SHORT).show();
+
+        if (TextUtils.isEmpty(location)) {
+            AnimationUtil.Sharke(MyApp.getContext(), tv_location);
+            MyToast.makeTextAnim(MyApp.getContext(), "请选择所在地区", 0, Gravity.CENTER, 0, 0).show();
             return;
         }
-        if(TextUtils.isEmpty(region)){
-            AnimationUtil.Sharke(MyApp.getContext(),et_region);
-            Snackbar.make(tv_title,"请填写收货人详细地址",Snackbar.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(region) || region.length() < 5) {
+            AnimationUtil.Sharke(MyApp.getContext(), et_region);
+            MyToast.makeTextAnim(MyApp.getContext(), "详细地址描述信息不得少于5个字符", 0, Gravity.CENTER, 0, 0).show();
             return;
         }
-        MyToast.makeTextAnim(this,"完成",0, Gravity.CENTER,0,0).show();
+
+        //http://172.20.10.142/mobile_api/orders/address.php?m=add_ress&id=-1&user_id=446&name=我s&mobile=13075127899&province=广东&city=深圳&area=龙华&street=新区&address=大道
+
+        saveInfor(name, phone, region);
+    }
+
+    private void saveInfor(String name, String phone, final String region) {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        if (cb.isChecked()) {
+            isDefault = "1";
+        } else {
+            isDefault = "0";
+        }
+
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "orders/address.php?m=add_ress")
+                .addParams("id", id)
+                .addParams("user_id", userId)
+                .addParams("name", name)
+                .addParams("mobile", phone)
+                .addParams("province", province)
+                .addParams("city", city)
+                .addParams("area", district)
+                .addParams("street", "")
+                .addParams("address", region)
+                .addParams("status", isDefault)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        Log.i("保存地址", response.getMsg() + "");
+                        if (response.getStatus() == 1) {
+                            onBackPressed();
+                        } else {
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 1, Gravity.CENTER, 0, 0).show();
+                        }
+                    }
+                });
     }
 }

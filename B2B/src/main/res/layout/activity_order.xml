@@ -1,67 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.Order.OrderActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="@color/colorWhite"
-        android:paddingTop="25dp"
-        android:paddingBottom="5dp">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:src="@mipmap/navigationbar_icon_return" />
-
-        <RadioGroup
-            android:id="@+id/rg_order_swich"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_centerHorizontal="true"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <RadioButton
-                android:id="@+id/rb_visit"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/left_swich"
-                android:button="@null"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="送货上门"
-                android:textColor="@color/textview"
-                android:textSize="13sp" />
-
-            <RadioButton
-                android:id="@+id/rb_self"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@drawable/right_swich"
-                android:button="@null"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="门店自取"
-                android:textColor="@color/textview"
-                android:textSize="13sp" />
-        </RadioGroup>
-
-    </RelativeLayout>
-
-
+    <include android:id="@+id/top_swich"
+              layout="@layout/top_swich"/>
 
     <android.support.v4.widget.NestedScrollView
-      android:layout_marginTop="1dp"
-      android:layout_weight="1"
+      android:layout_marginTop="1.5dp"
+      android:layout_below="@+id/top_swich"
+      android:layout_above="@+id/ll_order_footerbar"
       android:layout_width="match_parent"
-      android:layout_height="0dp">
+      android:layout_height="wrap_content">
       <LinearLayout
           android:orientation="vertical"
           android:layout_width="match_parent"
@@ -76,6 +28,7 @@
   </android.support.v4.widget.NestedScrollView>
 
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:id="@+id/ll_order_footerbar"
         android:background="@color/colorWhite"
         android:layout_width="match_parent"
@@ -98,4 +51,4 @@
             android:layout_height="match_parent" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

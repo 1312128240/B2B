@@ -194,6 +194,7 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
             flag = true;
         }
         lastClickTime = curClickTime;
+        Log.i("点击超时",flag+"");
         return flag;
     }
 

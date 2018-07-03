@@ -10,9 +10,6 @@ import android.view.ViewGroup;
 import car.tzxb.b2b.R;
 
 
-/**
- * Created by Administrator on 2018/4/21 0021.
- */
 
 public class LoadingDialog extends DialogFragment {
 

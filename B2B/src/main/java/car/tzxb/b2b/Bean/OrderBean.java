@@ -100,6 +100,16 @@ public class OrderBean implements Serializable{
 
             private String shop_id;
             private String shop_name;
+            private String mesg;
+            public String getMesg() {
+                return mesg;
+            }
+
+            public void setMesg(String mesg) {
+                this.mesg = mesg;
+            }
+
+
             private List<DataChildBean> data_child;
 
             public String getShop_id() {

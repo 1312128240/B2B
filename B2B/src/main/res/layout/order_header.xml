@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <LinearLayout
+        android:id="@+id/ll_order_status"
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/red"
@@ -13,9 +15,10 @@
         android:padding="10dp">
 
         <TextView
+            android:id="@+id/tv_order_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="买家已付款"
+            tools:text="买家已付款"
             android:textColor="@color/colorWhite" />
 
         <TextView
@@ -26,9 +29,10 @@
     </LinearLayout>
 
     <RelativeLayout
-        android:background="@color/colorWhite"
+        android:id="@+id/rl_choice_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
 
         <TextView
             android:id="@+id/tv_consignee_name"
@@ -57,37 +61,40 @@
             android:layout_height="wrap_content"
             android:layout_alignLeft="@id/tv_consignee_name"
             android:layout_below="@+id/tv_consignee_name"
-            android:textColor="@color/gray"
-            android:ellipsize="end"
-            tools:text="广东省深圳市观澜湖"
             android:layout_marginRight="50dp"
-            android:lines="1"/>
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/gray"
+            tools:text="广东省深圳市观澜湖" />
 
         <ImageView
+            android:id="@+id/iv_chose_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:src="@mipmap/store_icon_right" />
+
         <ImageView
             android:id="@+id/iv_fgx"
-            android:layout_below="@+id/tv_consignee_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_consignee_address"
             android:layout_marginTop="15dp"
             android:src="@drawable/dd_nav_fgx" />
     </RelativeLayout>
 
     <LinearLayout
+        android:background="@color/colorWhite"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="140px"
         android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recy_order_goods"
-            android:layout_width="match_parent"
-            android:layout_height="140px"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:paddingLeft="10dp">
 
@@ -96,11 +103,11 @@
         <TextView
             android:id="@+id/tv_order_number"
             android:layout_width="200px"
-            android:layout_height="140px"
+            android:layout_height="match_parent"
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="center"
             android:paddingRight="10dp"
-            android:text="共6件"
+            tools:text="共6件"
             android:textColor="@color/colorBlack2" />
 
     </LinearLayout>
@@ -110,7 +117,7 @@
         android:layout_height="80px"
         android:layout_marginTop="1dp"
         android:background="@color/colorWhite"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingRight="35dp">
 
         <TextView
@@ -122,6 +129,7 @@
             android:textColor="@color/colorBlack2" />
 
         <TextView
+            android:id="@+id/tv_distribution"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -134,7 +142,7 @@
         android:layout_height="80px"
         android:layout_marginTop="20px"
         android:background="@color/colorWhite"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingRight="10dp">
 
         <TextView
@@ -146,6 +154,7 @@
             android:textColor="@color/colorBlack2" />
 
         <TextView
+            android:id="@+id/tv_pay_type"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:drawablePadding="10dp"
@@ -160,7 +169,7 @@
         android:layout_height="80px"
         android:layout_marginTop="2px"
         android:background="@color/colorWhite"
-        android:paddingLeft="10dp"
+        android:paddingLeft="15dp"
         android:paddingRight="10dp">
 
         <TextView
@@ -182,4 +191,4 @@
     </LinearLayout>
 
 
-</merge>
+</LinearLayout>

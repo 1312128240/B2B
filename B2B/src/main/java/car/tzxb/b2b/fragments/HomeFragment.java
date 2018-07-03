@@ -138,16 +138,16 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     private void initBottom(HomeBean bean) {
         //自营
         List<HomeBean.DataBean.ProductTypeBean> selfBean=bean.getData().getProductType();
-        Glide.with(getContext()).load(selfBean.get(0).getImg_url()).into(iv_self1);
-        Glide.with(getContext()).load(selfBean.get(1).getImg_url()).into(iv_self2);
+        Glide.with(getContext()).load(selfBean.get(0).getImg_url()).dontAnimate().into(iv_self1);
+        Glide.with(getContext()).load(selfBean.get(1).getImg_url()).dontAnimate().into(iv_self2);
         //发现好店
         List<HomeBean.DataBean.FindShopBean> findShopBean=bean.getData().getFindShop();
         String img1=findShopBean.get(0).getImg_url();
         String img2=findShopBean.get(1).getImg_url();
-        Glide.with(getContext()).load(img1).into(iv_find_shop1);
-        Glide.with(getContext()).load(img2).into(iv_find_shop2);
+        Glide.with(getContext()).load(img1).dontAnimate().into(iv_find_shop1);
+        Glide.with(getContext()).load(img2).dontAnimate().into(iv_find_shop2);
         HomeBean.DataBean.FindShopBGBean bgBean=bean.getData().getFindShop_BG();
-        Glide.with(getContext()).load(bgBean.getImg_url()).into(iv_find_shop_bg);
+        Glide.with(getContext()).load(bgBean.getImg_url()).dontAnimate().into(iv_find_shop_bg);
         //商品筛选
         final List<HomeBean.DataBean.CategoryBean> categoryBeanList=bean.getData().getCategory();
         for (int i = 0; i <categoryBeanList.size() ; i++) {
@@ -320,9 +320,9 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
         recy_track.setAdapter(ButtonAdapter);
         //活动背景
         List<HomeBean.DataBean.OnSaleBean> saleBean=bean.getData().getOnSale();
-        Glide.with(getContext()).load(saleBean.get(0).getImg_url()).into(iv_activity_bg);
-        Glide.with(getContext()).load(saleBean.get(1).getImg_url()).into(iv_activity1);
-        Glide.with(getContext()).load(saleBean.get(2).getImg_url()).into(iv_activity2);
+        Glide.with(getContext()).load(saleBean.get(0).getImg_url()).dontAnimate().into(iv_activity_bg);
+        Glide.with(getContext()).load(saleBean.get(1).getImg_url()).dontAnimate().into(iv_activity1);
+        Glide.with(getContext()).load(saleBean.get(2).getImg_url()).dontAnimate().into(iv_activity2);
         //头条内容
         HomeBean.DataBean.HotImageBean hotImageBean=bean.getData().getHotImage();
         String title= bean.getData().getHotActicle();

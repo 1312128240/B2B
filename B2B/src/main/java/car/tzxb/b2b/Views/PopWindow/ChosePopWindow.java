@@ -99,7 +99,7 @@ public class ChosePopWindow extends PopupWindow {
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                         String str=lists.get(position);
                        if(str!=null){
-                           listener.click(str);
+                           listener.click(str,position+1);
                        }
                        dismiss();
 
@@ -137,6 +137,6 @@ public class ChosePopWindow extends PopupWindow {
         this.listener=clickListener;
     }
    public interface ClickListener{
-       void click(String str);
+       void click(String str,int position);
    }
 }

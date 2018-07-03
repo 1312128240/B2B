@@ -12,12 +12,7 @@ import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.R;
 
 public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener {
-  @BindView(R.id.rg_collect_swich)
-    RadioGroup rg_swich;
-    @BindView(R.id.rb_goods)
-    RadioButton rb_goods;
-    @BindView(R.id.rb_shop)
-    RadioButton rb_shop;
+
     private int index;
 
     @Override
@@ -37,11 +32,7 @@ public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     }
 
     private void initUi() {
-        if(index==1){
-            rb_goods.setChecked(true);
-        }else {
-            rb_shop.setChecked(true);
-        }
+
     }
 
 

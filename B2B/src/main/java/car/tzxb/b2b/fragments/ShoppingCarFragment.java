@@ -73,6 +73,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     private double total;
     private int total_num;
     private MainActivity mainActivity;
+    private String userId;
 
 
     @Override
@@ -90,11 +91,11 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     }
 
     private void getData() {
-        Log.i("可见fragment","aaa");
+        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         //显示，更新数据
         String url = Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list";
         Map<String, String> params = new HashMap<>();
-        params.put("user_id", "88");
+        params.put("user_id", userId);
 
         presenter.PresenterGetData(url, params);
     }
@@ -105,10 +106,11 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         super.onHiddenChanged(hidden);
         if (hidden){
             //隐藏
-            Log.i("隐藏fragment","aaa");
+            Log.i("隐藏购物车fragment","aaa");
         }else {
+            userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
             getData();
-            Log.i("到可见时更新数据",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id=88");
+            Log.i("到可见时更新数据",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id="+userId);
         }
     }
 
@@ -195,7 +197,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         tv_delete.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", "88");
+
 
                                 if (mainActivity.isFastClick()) {
                                     Log.i("删除购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del" + "&car_id=" + dataChildBean.getAid() + "&user_id=" + userId);
@@ -383,21 +385,23 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
 
      @OnClick(R.id.tv_shoppingcar_total_number)
     public void goOrder(){
+       if(isFastClick()) {
 
-        List<ShopCarBean.DataBean> isCheckList=new ArrayList<>();
-         for (int i = 0; i <beanList.size() ; i++) {
-             ShopCarBean.DataBean dataBean = beanList.get(i);
-             if(dataBean.isCheck()){
-                 isCheckList.add(dataBean);
-             }
-         }
-         if(isCheckList.size()==0){
-             MyToast.makeTextAnim(MyApp.getContext(),"您还没有选择商品",0, Gravity.CENTER,0,0).show();
-             return;
-         }
+           List<ShopCarBean.DataBean> isCheckList = new ArrayList<>();
+           for (int i = 0; i < beanList.size(); i++) {
+               ShopCarBean.DataBean dataBean = beanList.get(i);
+               if (dataBean.isCheck()) {
+                   isCheckList.add(dataBean);
+               }
+           }
+           if (isCheckList.size() == 0) {
+               MyToast.makeTextAnim(MyApp.getContext(), "您还没有选择商品", 0, Gravity.CENTER, 0, 0).show();
+               return;
+           }
 
-         GoOrder(isCheckList);
+           GoOrder(isCheckList);
 
+       }
      }
 
     private void GoOrder(List<ShopCarBean.DataBean> isCheckList) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -266,17 +267,11 @@ public class LoginActivity extends MyBaseAcitivity {
             }else {
                 yzmLogin(phone,pass);
             }
-           // PassLogin(index,phone, pass);
         }
     }
 
     private void yzmLogin(String phone,String yzm) {
         String login_type = "mobile";
-     /*   //密码加密------------------------------------------------------------------------
-        String strA = "pwd=" + pass;
-        String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
-        String pwdMd5 = StringUtil.stringToMD5(strB);
-        StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);*/
         //生成签名才能获取验证码
         Long time = new Date().getTime() / 1000;
         String m = "login";
@@ -305,19 +300,7 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
-                            String userId = response.getData().getID();
-                            String mobile = response.getData().getMobile();
-                            SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
-                            SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
-                            MorphingButton.Params params = MorphingButton.Params.create()
-                                    .duration(500)
-                                    .cornerRadius(56)
-                                    .width(100)
-                                    .height(100)
-                                    .color(Color.parseColor("#FA3314"))
-                                    .icon(R.mipmap.ic_done);
-                            morphingButton.morph(params);
-                            MyToast.makeTextAnim(MyApp.getContext(), "登录成功", 0, Gravity.BOTTOM, 0, 50).show();
+                            startAnmi(response);
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
                         }
@@ -361,26 +344,34 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
-                            String userId = response.getData().getID();
-                            String mobile = response.getData().getMobile();
-                            SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
-                            SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
-                            MorphingButton.Params params = MorphingButton.Params.create()
-                                    .duration(500)
-                                    .cornerRadius(56)
-                                    .width(100)
-                                    .height(100)
-                                    .color(Color.parseColor("#FA3314"))
-                                    .icon(R.mipmap.ic_done);
-                            morphingButton.morph(params);
-                            MyToast.makeTextAnim(MyApp.getContext(), "登录成功", 0, Gravity.BOTTOM, 0, 50).show();
+                            startAnmi(response);
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
                         }
                     }
                 });
     }
+          public void startAnmi(BaseDataBean bean){
+              String userId = bean.getData().getID();
+              String mobile = bean.getData().getMobile();
+              SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
+              SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
+              MorphingButton.Params params = MorphingButton.Params.create()
+                      .duration(500)
+                      .cornerRadius(56)
+                      .width(100)
+                      .height(100)
+                      .color(Color.parseColor("#FA3314"))
+                      .icon(R.mipmap.ic_done);
+              morphingButton.morph(params);
+              new Handler().postDelayed(new Runnable() {
+                  @Override
+                  public void run() {
+                      onBackPressed();
+                  }
+              },1000);
 
+          }
 
 
     @OnClick(R.id.tv_get_yzm)

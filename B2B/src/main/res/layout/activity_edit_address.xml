@@ -138,6 +138,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <CheckBox
+            android:id="@+id/cb_default_address"
             android:button="@null"
             android:background="@drawable/check_box_select"
             android:layout_width="wrap_content"

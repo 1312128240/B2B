@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 
@@ -23,7 +25,9 @@ public abstract class MyBaseFragment extends Fragment {
     private BasePresenter presenter = null;
     public Context mContext;
     protected final String TAG = this.getClass().getSimpleName();
-
+    // 两次点击按钮之间的点击间隔不能少于1000毫秒
+    private  final int MIN_CLICK_DELAY_TIME = 1000;
+    private  long lastClickTime;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,4 +74,17 @@ public abstract class MyBaseFragment extends Fragment {
         OkHttpUtils.getInstance().cancelTag(TAG);
     }
 
+    /**
+     * 防止快速点击
+     */
+
+    public  boolean isFastClick() {
+        boolean flag = false;
+        long curClickTime = System.currentTimeMillis();
+        if ((curClickTime - lastClickTime) >= MIN_CLICK_DELAY_TIME) {
+            flag = true;
+        }
+        lastClickTime = curClickTime;
+        return flag;
+    }
 }

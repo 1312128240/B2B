@@ -70,7 +70,8 @@
         <activity android:name=".Uis.Order.OrderActivity" />
         <activity android:name=".Uis.Order.GoodsListActivity" />
         <activity android:name=".wxapi.WXPayEntryActivity" />
-        <activity android:name=".Uis.Order.OrderXqActivity"></activity>
+        <activity android:name=".Uis.Order.OrderXqActivity" />
+        <activity android:name=".Uis.Order.OrderStatusActivity"></activity>
     </application>
 
 </manifest>

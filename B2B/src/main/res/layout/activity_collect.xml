@@ -3,54 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
- <RelativeLayout
-     android:gravity="bottom"
-     android:paddingLeft="10dp"
-     android:paddingRight="10dp"
-     android:paddingBottom="10dp"
-     android:layout_width="match_parent"
-     android:layout_height="65dp">
-     <ImageView
-         android:src="@mipmap/navigationbar_icon_return"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" />
+   <include layout="@layout/top_swich"/>
 
-     <RadioGroup
-         android:id="@+id/rg_collect_swich"
-         android:gravity="center"
-         android:layout_centerHorizontal="true"
-         android:orientation="horizontal"
-         android:layout_width="wrap_content"
-         android:layout_height="25dp">
-         <RadioButton
-             android:id="@+id/rb_goods"
-             android:textSize="13sp"
-             android:padding="2dp"
-
-             android:textColor="@color/textview"
-             android:button="@null"
-             android:text="收藏商品"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent" />
-         <RadioButton
-             android:id="@+id/rb_shop"
-             android:textSize="13sp"
-             android:padding="2dp"
-
-             android:textColor="@color/textview"
-             android:button="@null"
-             android:text="收藏店铺"
-             android:layout_width="wrap_content"
-             android:layout_height="match_parent" />
-     </RadioGroup>
-
-     <TextView
-         android:layout_alignParentRight="true"
-         android:textColor="@color/colorBlack2"
-         android:text="编缉"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" />
- </RelativeLayout>
     <TextView
         android:gravity="center"
         android:drawablePadding="10dp"

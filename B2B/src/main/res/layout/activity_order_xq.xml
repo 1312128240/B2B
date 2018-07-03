@@ -18,7 +18,9 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-          <include layout="@layout/order_header"/>
+            <include layout="@layout/order_header"/>
+
+            <include layout="@layout/order_xq_footer"/>
 
         </LinearLayout>
 
@@ -26,13 +28,46 @@
 
 
     <LinearLayout
+        android:id="@+id/ll_order_status_infor"
+        android:background="@color/colorWhite"
         android:layout_width="match_parent"
-        android:layout_height="45dp">
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="10dp">
+
         <TextView
-            android:text="取消订单"
-            android:textColor="@color/colorBlack2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:id="@+id/tv_view3"
+            android:visibility="invisible"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+        <TextView
+            android:id="@+id/tv_view2"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+        <TextView
+            android:id="@+id/tv_view1"
+            android:textColor="#ff4e3c"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg7"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
     </LinearLayout>
 
 </LinearLayout>

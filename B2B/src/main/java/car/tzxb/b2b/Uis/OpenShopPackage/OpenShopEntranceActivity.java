@@ -247,7 +247,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
             return;
         }
 
-        isRegister(mobile,yzm);
+        isRegister(phone,yzm);
     }
 
     private void next2() {
@@ -354,7 +354,13 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
-                        apply(phone,yzm);
+                       // apply(phone,yzm);
+                        if(response.getStatus()==1){
+                            //手机号没有申请过走正常申请流程
+                            apply(phone,yzm);
+                        }else {
+                            showDialgoFragment(response.getMsg());
+                        }
                        // int status =Integer.parseInt(et_phone.getText().toString());
                       /*  int status=Integer.valueOf(et_phone.getText().toString());
                         switch (status) {
@@ -375,7 +381,29 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
     }
 
-    private void showEditInfor(final String phone) {
+    private void showDialgoFragment(String msg) {
+        AlterDialogFragment dialogFragment=new AlterDialogFragment();
+        dialogFragment.setCancelable(false);
+        Bundle bundle = new Bundle();
+        bundle.putString("title", msg);
+        bundle.putString("ok","知道了");
+        bundle.putString("no","好的");
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getSupportFragmentManager(),"pass");
+        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+            @Override
+            public void cancle() {
+                onBackPressed();
+            }
+
+            @Override
+            public void sure() {
+                onBackPressed();
+            }
+        });
+    }
+
+ /*   private void showEditInfor(final String phone) {
         final AlterDialogFragment dialogFragment=new AlterDialogFragment();
         dialogFragment.setCancelable(false);
         Bundle bundle = new Bundle();
@@ -416,7 +444,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
                onBackPressed();
             }
         });
-    }
+    }*/
 
     public void apply(final String phone, String yzm){
 

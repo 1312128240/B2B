@@ -38,9 +38,6 @@ public class BaseDataListBean {
     }
 
     public static class DataBean {
-
-
-
         private String ID;
         private String shop_name;
         private String shop_img;

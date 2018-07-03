@@ -3,7 +3,7 @@ package car.tzxb.b2b.Uis.OpenShopPackage;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -57,6 +57,7 @@ import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.GlideLoader;
 import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Util.StringUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.Views.PopWindow.ChosePopWindow;
 import car.tzxb.b2b.Views.PopWindow.TjrPop;
@@ -105,8 +106,8 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     public StringBuilder sb3 = new StringBuilder();
     private String mobile;
     private String password=null;
-    private String type;
-     private String recommend;
+    private int  type;
+    private String recommend;
     private String tjr;
     private String city;
     private final int REQUEST_CODE_LOCATION = 101;
@@ -195,14 +196,15 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     //店铺类型
     @OnClick(R.id.tv_open_shop_type)
     public void type() {
-        String[] str = {"一般合作店", "城市中心店", "社区中心店", "线下加盟店", "普通加盟店"};
+        String[] str = {"一般合作店", "城市中心店", "社区中心店", "线下加盟店"};
+
         List<String> lists = Arrays.asList(str);
         ChosePopWindow cpw = new ChosePopWindow(MyApp.getContext(), lists);
         cpw.showPow(parent);
         cpw.setClickListener(new ChosePopWindow.ClickListener() {
             @Override
-            public void click(String str) {
-                type = str;
+            public void click(String str,int i) {
+                type = i;
                 tv_type.setText(str);
             }
         });
@@ -227,7 +229,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
         cpw.setClickListener(new ChosePopWindow.ClickListener() {
             @Override
-            public void click(String str) {
+            public void click(String str,int i) {
                 if ("相册".equals(str)) {
                     selectPhoto();
                 }
@@ -446,7 +448,6 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
         }
 
-
     }
 
     @OnClick(R.id.tv_submit_open_shop)
@@ -465,7 +466,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 MyToast.makeTextAnim(this, "请输入联系人名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
-            if (TextUtils.isEmpty(type)) {
+            if (type==0) {
                 MyToast.makeTextAnim(this, "请选择门店主营类型", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
@@ -491,10 +492,16 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 return;
             }
 
+            //密码加密
+            String strA = "password=" + password;
+            String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
+            String pwdMd5 = StringUtil.stringToMD5(strB);
+            StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);
 
             Log.i("注册返回", Constant.baseUrl + "user_type/register.php?m=register" + "&mobile=" + mobile + "&username=" + shop_lxr_name + "&password=" + password
                     + "&group=4" + "&type=4" + "&selcity=" + address + "&tjr="+tjr + "&recommend="+recommend+ "&shop_name=" + shop_name + "&shop_address=" + shop_lxr_address
                     + "&shop_img=" + sb1 + "," + sb2 + "&user_zhizhao=" + sb3);
+
             //开始注册
             OkHttpUtils
                     .post()
@@ -502,9 +509,9 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                     .url(Constant.baseUrl + "user_type/register.php?m=register")
                     .addParams("mobile", mobile)
                     .addParams("username", shop_lxr_name)
-                    .addParams("password", password)
+                    .addParams("password", Uppass.toString())
                     .addParams("group", "4")
-                    .addParams("type", type)
+                    .addParams("shop_type", String.valueOf(type))
                     .addParams("tell", shop_lxr_tell)
                     .addParams("selcity", address)
                     .addParams("tjr", tjr+"")
@@ -552,6 +559,8 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         dialogFragment.setCancelable(false);
         Bundle bundle = new Bundle();
         bundle.putString("title", "提交成功!申请结果将会以短信形式通知您,请注意查收");
+        bundle.putString("ok","知道了");
+        bundle.putString("no","好的");
         dialogFragment.setArguments(bundle);
         dialogFragment.show(getSupportFragmentManager(),"Exit");
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {

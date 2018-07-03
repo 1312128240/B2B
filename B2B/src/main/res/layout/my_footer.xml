@@ -19,6 +19,7 @@
             android:textColor="@color/colorBlack" />
 
         <TextView
+            android:id="@+id/tv_all_order"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -47,7 +48,7 @@
             android:drawablePadding="10dp"
             android:drawableTop="@mipmap/my_icon_payment"
             android:gravity="center"
-            android:text="待付款"
+            android:text="全部"
             android:textColor="@color/colorBlack" />
 
         <RadioButton
@@ -59,17 +60,29 @@
             android:drawablePadding="10dp"
             android:drawableTop="@mipmap/my_icon_pd"
             android:gravity="center"
-            android:text="待发货"
+            android:text="待付款"
             android:textColor="@color/colorBlack" />
 
         <RadioButton
-            android:id="@+id/rb_dfu"
+            android:id="@+id/rb_dfh"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:button="@null"
             android:drawablePadding="10dp"
             android:drawableTop="@mipmap/my_icon_gtbr"
+            android:gravity="center"
+            android:text="待发货"
+            android:textColor="@color/colorBlack" />
+
+        <RadioButton
+            android:id="@+id/rb_dsh"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:button="@null"
+            android:drawablePadding="10dp"
+            android:drawableTop="@mipmap/my_icon_tbe"
             android:gravity="center"
             android:text="待收货"
             android:textColor="@color/colorBlack" />
@@ -81,21 +94,9 @@
             android:layout_weight="1"
             android:button="@null"
             android:drawablePadding="10dp"
-            android:drawableTop="@mipmap/my_icon_tbe"
-            android:gravity="center"
-            android:text="待评价"
-            android:textColor="@color/colorBlack" />
-
-        <RadioButton
-            android:id="@+id/rb_tk"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:button="@null"
-            android:drawablePadding="10dp"
             android:drawableTop="@mipmap/my_icon_service"
             android:gravity="center"
-            android:text="退款/售后"
+            android:text="待评价"
             android:textColor="@color/colorBlack" />
     </RadioGroup>
     <LinearLayout

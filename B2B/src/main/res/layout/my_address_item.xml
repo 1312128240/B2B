@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/colorWhite"
+    android:layout_marginBottom="8dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_address_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="6dp"
+        android:textColor="@color/colorBlack2"
+        tools:text="精准而优雅" />
+
+    <TextView
+        android:id="@+id/tv_address_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="6dp"
+        android:textColor="@color/colorBlack2"
+        tools:text="186251456" />
+    <TextView
+        android:id="@+id/tv_detailed_address"
+        android:lines="1"
+        android:ellipsize="end"
+        tools:text="xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        android:textColor="@color/colorLightGray2"
+        android:layout_below="@+id/tv_address_name"
+        android:layout_alignLeft="@+id/tv_address_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:background="#f5f5f5"
+        android:id="@+id/tv_line"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_below="@+id/tv_detailed_address"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+    <CheckBox
+        android:id="@+id/cb_default_address"
+        android:drawablePadding="5dp"
+        android:layout_marginBottom="6dp"
+        android:layout_below="@+id/tv_line"
+        android:layout_alignLeft="@+id/tv_detailed_address"
+        android:drawableLeft="@drawable/check_box_select"
+        android:text="默认地址"
+        android:button="@null"
+        android:scaleX="0.9"
+        android:scaleY="0.9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_modify_address"
+        android:layout_alignTop="@+id/cb_default_address"
+        android:drawableLeft="@drawable/dz_icon_bj"
+        android:layout_toLeftOf="@+id/tv_del_address"
+        android:textColor="@color/colorBlack2"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="2dp"
+        android:drawablePadding="2dp"
+        android:text="修改"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+     <TextView
+         android:id="@+id/tv_del_address"
+         android:drawablePadding="2dp"
+         android:layout_marginTop="2dp"
+         android:drawableLeft="@drawable/dz_icon_delete"
+         android:layout_marginRight="10dp"
+         android:layout_alignTop="@+id/cb_default_address"
+         android:layout_alignParentRight="true"
+         android:textColor="@color/colorBlack2"
+         android:text="删除"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content" />
+</RelativeLayout>

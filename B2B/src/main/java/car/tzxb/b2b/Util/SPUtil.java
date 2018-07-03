@@ -47,13 +47,18 @@ public class SPUtil {
      * @param key
      *
      */
-    public void dele(String key){
+    public String dele(String key){
 
        editor.remove(key).commit();
 
+        return key;
     }
 
-    //保存用户手机号
+    /**
+     * Mobile
+     * @param key
+     * @param value
+     */
     public void putMobile(String key,String value){
         editor.putString(key,value).commit();
     }

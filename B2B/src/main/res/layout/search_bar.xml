@@ -1,56 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:focusable="true"
-    android:background="@color/colorWhite"
-    android:focusableInTouchMode="true"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="65dp">
-    <LinearLayout
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
+    android:layout_height="65dp"
+    android:background="@color/colorWhite"
+    android:focusable="true"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:focusableInTouchMode="true">
+
+    <ImageView
+        android:id="@+id/iv_search_bar_left"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="13dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp"
-        android:paddingBottom="5dp">
+        android:src="@mipmap/navigationbar_icon_return" />
+
+    <EditText
+        android:id="@+id/et_classify"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg4"
+        android:drawableLeft="@mipmap/rhxi_tab_lefdj"
+        android:drawablePadding="10dp"
+        android:hint="@string/classify"
+        android:imeOptions="actionSearch"
+        android:paddingLeft="10dp"
+        android:singleLine="true"
+        android:textCursorDrawable="@drawable/cursor_color"
+        android:textSize="13sp" />
+
+    <FrameLayout
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/iv_search_bar_left"
+            android:id="@+id/iv_search_bar_right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/navigationbar_icon_return" />
+            android:layout_gravity="center"
+            android:src="@drawable/list_icon_shopcar" />
 
-        <EditText
-            android:id="@+id/et_classify"
-            android:layout_width="match_parent"
-            android:textSize="13sp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:singleLine="true"
-            android:background="@drawable/bg4"
-            android:drawableLeft="@mipmap/rhxi_tab_lefdj"
-            android:drawablePadding="10dp"
-            android:hint="@string/classify"
-            android:imeOptions="actionSearch"
-            android:paddingLeft="10dp"
-            android:textCursorDrawable="@drawable/cursor_color" />
-        <FrameLayout
+        <car.myview.BageView.BadgeView
+            android:id="@+id/bv_classify"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <ImageView
-                android:id="@+id/iv_search_bar_right"
-                android:src="@drawable/list_icon_shopcar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv_classify"
-                android:textSize="8sp"
-                android:layout_gravity="end"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </FrameLayout>
-    </LinearLayout>
-</RelativeLayout>
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="8sp" />
+    </FrameLayout>
+
+</LinearLayout>
