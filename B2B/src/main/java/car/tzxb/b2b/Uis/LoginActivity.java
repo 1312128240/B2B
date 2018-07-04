@@ -151,7 +151,7 @@ public class LoginActivity extends MyBaseAcitivity {
                     String body = str.substring(0, str.length() - 1);
                     etLoginPhone.setText(body);
                     etLoginPhone.setSelection(body.length());
-                }else if(s.length()==11){
+                } else if (s.length() == 11) {
                     hideSoftInput();
                 }
             }
@@ -216,7 +216,7 @@ public class LoginActivity extends MyBaseAcitivity {
                         String body = str.substring(0, str.length() - 1);
                         etLoginPass.setText(body);
                         etLoginPass.setSelection(body.length());
-                    }else if(s.length()==4){
+                    } else if (s.length() == 4) {
                         hideSoftInput();
                     }
                 }
@@ -242,7 +242,7 @@ public class LoginActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.mor_button)
     public void login() {
-        if(isFastClick()) {
+        if (isFastClick()) {
 
             String phone = etLoginPhone.getText().toString();
             String pass = etLoginPass.getText().toString();
@@ -262,15 +262,15 @@ public class LoginActivity extends MyBaseAcitivity {
                 Snackbar.make(tv_title, "请输入验证码", Snackbar.LENGTH_SHORT).show();
                 return;
             }
-            if(index==0){
-                passLogin(phone,pass);
-            }else {
-                yzmLogin(phone,pass);
+            if (index == 0) {
+                passLogin(phone, pass);
+            } else {
+                yzmLogin(phone, pass);
             }
         }
     }
 
-    private void yzmLogin(String phone,String yzm) {
+    private void yzmLogin(String phone, String yzm) {
         String login_type = "mobile";
         //生成签名才能获取验证码
         Long time = new Date().getTime() / 1000;
@@ -300,15 +300,16 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
+                            hideSoftInput();
                             startAnmi(response);
-                        }else {
+                        } else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
                         }
                     }
                 });
     }
 
-    private void passLogin(String phone,String pass) {
+    private void passLogin(String phone, String pass) {
 
         String login_type = "password";
         //密码加密------------------------------------------------------------------------
@@ -344,62 +345,65 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
+                            hideSoftInput();
                             startAnmi(response);
-                        }else {
+                        } else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
                         }
                     }
                 });
     }
-          public void startAnmi(BaseDataBean bean){
-              String userId = bean.getData().getID();
-              String mobile = bean.getData().getMobile();
-              SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
-              SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
-              MorphingButton.Params params = MorphingButton.Params.create()
-                      .duration(500)
-                      .cornerRadius(56)
-                      .width(100)
-                      .height(100)
-                      .color(Color.parseColor("#FA3314"))
-                      .icon(R.mipmap.ic_done);
-              morphingButton.morph(params);
-              new Handler().postDelayed(new Runnable() {
-                  @Override
-                  public void run() {
-                      onBackPressed();
-                  }
-              },1000);
 
-          }
+    public void startAnmi(BaseDataBean bean) {
+        String userId = bean.getData().getID();
+        String mobile = bean.getData().getMobile();
+        SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
+        SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
+        MorphingButton.Params params = MorphingButton.Params.create()
+                .duration(500)
+                .cornerRadius(56)
+                .width(100)
+                .height(100)
+                .color(Color.parseColor("#FA3314"))
+                .icon(R.mipmap.ic_done);
+        morphingButton.morph(params);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                onBackPressed();
+            }
+        }, 1000);
+
+    }
 
 
     @OnClick(R.id.tv_get_yzm)
     public void getYzm() {
-        String mobile=etLoginPhone.getText().toString();
-        if(TextUtils.isEmpty(mobile)){
-            AnimationUtil.Sharke(MyApp.getContext(),etLoginPhone);
-            Snackbar.make(tv_title,"请输入手机号",Snackbar.LENGTH_SHORT).show();
+        String mobile = etLoginPhone.getText().toString();
+        if (TextUtils.isEmpty(mobile)) {
+            AnimationUtil.Sharke(MyApp.getContext(), etLoginPhone);
+            Snackbar.make(tv_title, "请输入手机号", Snackbar.LENGTH_SHORT).show();
             return;
         }
 
-        String m="login";
+        String m = "login";
         Long time = new Date().getTime() / 1000;
-        String stringA = "m=" + m + "&mobile=" + mobile + "&timestamp=" + time  + "&key=6ljH6wpC4vDPy%Ruqlr4JJmG0kLo%^yN";
-        String sign =StringUtil.stringToMD5(stringA);
-        StringBuilder Upsign=StringUtil.UpperLowerCase(sign);
+        String stringA = "m=" + m + "&mobile=" + mobile + "&timestamp=" + time + "&key=6ljH6wpC4vDPy%Ruqlr4JJmG0kLo%^yN";
+        String sign = StringUtil.stringToMD5(stringA);
+        StringBuilder Upsign = StringUtil.UpperLowerCase(sign);
         /**
          * 获取验证码
          */
-        Log.i("好烦啊",Constant.baseUrl+"messages/send.php?"+"&m="+m+"&mobile="+mobile+"&sign="+sign+"&timestamp="+time);
+        Log.i("好烦啊", Constant.baseUrl + "messages/send.php?" + "&m=" + m + "&mobile=" + mobile + "&sign=" + sign + "&timestamp=" + time);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"messages/send.php?")
-                .addParams("m",m)
-                .addParams("mobile",mobile)
-                .addParams("sign",Upsign.toString())
-                .addParams("timestamp",String.valueOf(time))
+                .url(Constant.baseUrl + "messages/send.php?")
+                .addParams("m", m)
+                .addParams("mobile", mobile)
+                .addParams("sign", Upsign.toString())
+                .addParams("timestamp", String.valueOf(time))
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -409,16 +413,16 @@ public class LoginActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                        String code=response.getCode();
-                        if("OK".equals(code)){
-                            Snackbar.make(tv_get_yzm,"验证码已发送至您的手机,请查收!",Snackbar.LENGTH_SHORT).show();
+                        String code = response.getCode();
+                        if ("OK".equals(code)) {
+                            Snackbar.make(tv_get_yzm, "验证码已发送至您的手机,请查收!", Snackbar.LENGTH_SHORT).show();
                             tv_get_yzm.start();
-                        }else if("isv.OUT_OF_SERVICE".equals(code)){
-                            Snackbar.make(tv_get_yzm,"此号码已停机",Snackbar.LENGTH_SHORT).show();
-                        }else if("isv.MOBILE_NUMBER_ILLEGAL".equals(code)){
-                            Snackbar.make(tv_get_yzm,"手机号码不正确",Snackbar.LENGTH_SHORT).show();
-                        }else if("isv.BUSINESS_LIMIT_CONTROL".equals(code)){
-                            Snackbar.make(tv_get_yzm,"此手机号因发送频繁,被限制获取",Snackbar.LENGTH_SHORT).show();
+                        } else if ("isv.OUT_OF_SERVICE".equals(code)) {
+                            Snackbar.make(tv_get_yzm, "此号码已停机", Snackbar.LENGTH_SHORT).show();
+                        } else if ("isv.MOBILE_NUMBER_ILLEGAL".equals(code)) {
+                            Snackbar.make(tv_get_yzm, "手机号码不正确", Snackbar.LENGTH_SHORT).show();
+                        } else if ("isv.BUSINESS_LIMIT_CONTROL".equals(code)) {
+                            Snackbar.make(tv_get_yzm, "此手机号因发送频繁,被限制获取", Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -426,8 +430,8 @@ public class LoginActivity extends MyBaseAcitivity {
     }
 
     @OnClick(R.id.tv_find_password)
-    public void find(){
-        if(isFastClick()){
+    public void find() {
+        if (isFastClick()) {
             startActivity(FindPassWordActivity.class);
         }
 
@@ -435,9 +439,9 @@ public class LoginActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.tv_open_shop)
     public void open() {
-        if(isFastClick()){
-            Intent intent=new Intent(this,OpenShopEntranceActivity.class);
-            intent.putExtra("from","login");
+        if (isFastClick()) {
+            Intent intent = new Intent(this, OpenShopEntranceActivity.class);
+            intent.putExtra("from", "login");
             startActivity(intent);
         }
 

@@ -43,6 +43,7 @@ import car.tzxb.b2b.Presenter.HomePresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
+import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -251,10 +252,12 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     }
      public void getBrandData(String category,String brands){
          Log.i("首页品牌商品",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&cate="+category+"&brand="+brands);
+         String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
          OkHttpUtils
                  .get()
                  .tag(this)
                  .url(Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList")
+                 .addParams("user_id",userId)
                  .addParams("cate",category)
                  .addParams("brand",brands)
                  .build()

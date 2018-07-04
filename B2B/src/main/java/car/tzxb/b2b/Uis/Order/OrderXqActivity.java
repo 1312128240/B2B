@@ -152,24 +152,36 @@ public class OrderXqActivity extends MyBaseAcitivity {
         //隐藏投诉商家
         tv_ts.setVisibility(View.INVISIBLE);
 
-        //底部标识
-        if("0".equals(bean.getPayment_status())){    //待付款
+        if ("待付款".equals(bean.getStatus())) {    //待付款
+            tv1.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
             tv1.setText("付款");
             tv2.setText("取消订单");
-        }else if("1".equals(bean.getPayment_status())){ //待发货
+        } else if ("待发货".equals(bean.getStatus())) { //待发货
+            tv1.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
             tv1.setText("提醒发货");
             tv2.setText("查看物流");
-        }else if("2".equals(bean.getPayment_status())){ //待收货
+        } else if ("待收货".equals(bean.getStatus())) { //待收货
+            tv1.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
             tv1.setText("确认收货");
             tv2.setText("物流详情");
-        }else if("3".equals(bean.getPayment_status())){ //待评价
+        } else if ("待评价".equals(bean.getStatus())) { //待评价
+            tv1.setVisibility(View.VISIBLE);
+            tv2.setVisibility(View.VISIBLE);
+            tv3.setVisibility(View.VISIBLE);
             tv1.setText("晒单评价");
             tv2.setText("物流详情");
+            tv3.setText("删除订单");
+        }else if("已取消".equals(bean.getStatus())){
             tv3.setVisibility(View.VISIBLE);
             tv3.setText("删除订单");
         }
 
     }
+
+
 
     private void initRecy() {
 

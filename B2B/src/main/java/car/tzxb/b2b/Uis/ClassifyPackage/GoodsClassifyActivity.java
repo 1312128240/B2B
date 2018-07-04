@@ -1,5 +1,6 @@
 package car.tzxb.b2b.Uis.ClassifyPackage;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -50,6 +51,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.GoodsClassifyPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.AddShoppingCarPop;
@@ -151,7 +153,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
                 ImageView iv = holder.getView(R.id.iv_category);
                 Glide.with(MyApp.getContext()).load(bean.getImg_url()).into(iv);
                 //名字
-                holder.setText(R.id.tv_catagroy_name,"\t\t\t"+bean.getGoods_name());
+                holder.setText(R.id.tv_catagroy_name,"\u3000\u3000"+bean.getGoods_name());
                 //价钱
                 TextView tv_price=holder.getView(R.id.tv_category_pice);
                 tv_price.setText(Html.fromHtml("¥"+"<big>"+bean.getSeal_price()+"</big>"));
@@ -216,35 +218,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
                             window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
                                 @Override
                                 public void Click(int number, String pro_id, String shop_id, String type) {
-                                    // Log.i("传过来的",number+"____"+pro_id+"_____"+shop_id+"_____"+type);
-                                    String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-                                    Log.i("添加购物车路径",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar"+"&number="+number+
-                                            "&pro_id="+pro_id+"&shop_id="+shop_id+"&type="+type+"&motion_id=1"+"&user_id="+userId);
-                                    OkHttpUtils
-                                            .get()
-                                            .tag(this)
-                                            .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar")
-                                            .addParams("number",String.valueOf(number))
-                                            .addParams("pro_id",pro_id)
-                                            .addParams("shop_id",shop_id)
-                                            .addParams("type",type)
-                                            .addParams("motion_id","1")
-                                            .addParams("user_id","88")
-                                            .build()
-                                            .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                                                @Override
-                                                public void onError(Call call, Exception e, int id) {
-
-                                                    MyToast.makeTextAnim(MyApp.getContext(),e.toString(),0,Gravity.CENTER,0,0).show();
-                                                }
-
-                                                @Override
-                                                public void onResponse(BaseStringBean response, int id) {
-
-                                                    MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
-
-                                                }
-                                            });
+                                     putShoppingCar(number,pro_id,shop_id,type);
                                 }
                             });
                         }
@@ -267,6 +241,45 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
     @Override
     public void showErro() {
 
+    }
+    public void putShoppingCar(int number,String pro_id,String shop_id,String type){
+        // Log.i("传过来的",number+"____"+pro_id+"_____"+shop_id+"_____"+type);
+        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        if(userId==null){
+            Intent intent=new Intent(this, LoginActivity.class);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            return;
+        }
+
+        Log.i("添加购物车路径",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar"+"&number="+number+
+                "&pro_id="+pro_id+"&shop_id="+shop_id+"&type="+type+"&motion_id=1"+"&user_id="+userId);
+
+        http://172.20.10.142/mobile_api/orders/shopping_cars_moblie.php?m=add_shoppingcar&number=1&pro_id=4187&shop_id=12&type=0&motion_id=1&user_id=446
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar")
+                .addParams("number",String.valueOf(number))
+                .addParams("pro_id",pro_id)
+                .addParams("shop_id",shop_id)
+                .addParams("type",type)
+                .addParams("motion_id","1")
+                .addParams("user_id",userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                        MyToast.makeTextAnim(MyApp.getContext(),e.toString(),0,Gravity.CENTER,0,0).show();
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+
+                        MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+
+                    }
+                });
     }
 
     @OnClick(R.id.tv_filter_zh)
@@ -369,6 +382,8 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
 
     public Map CreateMap(String cate,String brand,String search,String price,String sales,String network_ids){
         Map<String,String> map=new HashMap<>();
+        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        map.put("user_id",userId);
         map.put("cate",cate);
         map.put("brand",brand);
         map.put("search",search);

@@ -73,7 +73,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     private double total;
     private int total_num;
     private MainActivity mainActivity;
-    private String userId;
+   // private String userId;
 
 
     @Override
@@ -91,12 +91,12 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     }
 
     private void getData() {
-        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String  userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         //显示，更新数据
         String url = Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list";
         Map<String, String> params = new HashMap<>();
         params.put("user_id", userId);
-
+        Log.i("创建fragment时",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id="+userId);
         presenter.PresenterGetData(url, params);
     }
 
@@ -104,13 +104,11 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (hidden){
-            //隐藏
-            Log.i("隐藏购物车fragment","aaa");
-        }else {
-            userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-            getData();
+        if (!hidden){
+            String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
             Log.i("到可见时更新数据",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id="+userId);
+            cb_all.setChecked(false);
+            getData();
         }
     }
 
@@ -198,7 +196,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                             @Override
                             public void onClick(View view) {
 
-
+                                String  userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
                                 if (mainActivity.isFastClick()) {
                                     Log.i("删除购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del" + "&car_id=" + dataChildBean.getAid() + "&user_id=" + userId);
                                     OkHttpUtils

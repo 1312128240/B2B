@@ -12,11 +12,20 @@ public class BaseStringBean {
     private String Expiration;
     private String SecurityToken;
     private String msg;
+    private String order;
     private int status;
     private boolean data;
-
     private String shop_name;
     private String ID;
+
+
+    public String getOrder() {
+        return order;
+    }
+
+    public void setOrder(String order) {
+        this.order = order;
+    }
 
     public BaseStringBean(String shop_name, String ID) {
         this.shop_name = shop_name;

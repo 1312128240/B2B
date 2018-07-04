@@ -244,42 +244,49 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
                                 window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
                                     @Override
                                     public void Click(int number, String pro_id, String shop_id, String type) {
-                                        // Log.i("传过来的",number+"____"+pro_id+"_____"+shop_id+"_____"+type);
-                                        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-                                        Log.i("添加购物车路径",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar"+"&number="+number+
-                                        "&pro_id="+pro_id+"&shop_id="+shop_id+"&type="+type+"&motion_id=1"+"&user_id="+userId);
-                                        OkHttpUtils
-                                                .get()
-                                                .tag(this)
-                                                .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar")
-                                                .addParams("number",String.valueOf(number))
-                                                .addParams("pro_id",pro_id)
-                                                .addParams("shop_id",shop_id)
-                                                .addParams("type",type)
-                                                .addParams("motion_id","1")
-                                                .addParams("user_id","88")
-                                                .build()
-                                                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                                                    @Override
-                                                    public void onError(Call call, Exception e, int id) {
-
-                                                        MyToast.makeTextAnim(MyApp.getContext(),e.toString(),0,Gravity.CENTER,0,0).show();
-                                                    }
-
-                                                    @Override
-                                                    public void onResponse(BaseStringBean response, int id) {
-
-                                                        MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
-
-                                                    }
-                                                });
+                                       putIn(number,pro_id,shop_id,type);
                                     }
                                 });
                             }
 
                         }
                     });
+    }
+    public void putIn(int number,String pro_id,String shop_id,String type){
 
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        if(userId==null){
+            Intent intent=new Intent(this,LoginActivity.class);
+            startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
+            return;
+        }
+        Log.i("添加购物车路径",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar"+"&number="+number+
+                "&pro_id="+pro_id+"&shop_id="+shop_id+"&type="+type+"&motion_id=1"+"&user_id="+userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=add_shoppingcar")
+                .addParams("number",String.valueOf(number))
+                .addParams("pro_id",pro_id)
+                .addParams("shop_id",shop_id)
+                .addParams("type",type)
+                .addParams("motion_id","1")
+                .addParams("user_id",userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                        MyToast.makeTextAnim(MyApp.getContext(),e.toString(),0,Gravity.CENTER,0,0).show();
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+
+                        MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+
+                    }
+                });
     }
 
     @Override

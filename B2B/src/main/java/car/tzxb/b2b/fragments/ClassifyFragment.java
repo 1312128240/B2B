@@ -15,7 +15,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import butterknife.BindView;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
@@ -31,6 +34,7 @@ import car.tzxb.b2b.Presenter.ClassifyPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.ClassifyPackage.GoodsClassifyActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
+import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.config.Constant;
 
@@ -60,8 +64,8 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
     @Override
     public void initData() {
-
-        String url= Constant.baseUrl+"item/index.php?c=Goods&m=Category";
+        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String url= Constant.baseUrl+"item/index.php?c=Goods&m=Category"+"&user_id="+userId;
         presenter.PresenterGetData(url,null);
         Log.i("分类",url);
         initUi();

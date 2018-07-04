@@ -263,7 +263,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface,Sc
        //-----------价钱销量信息-------------------
         tv_sales.setText("月销量: "+goods.getSales());
         tv_type.setText(goods.getDealer());
-        tv_goods_name.setText("\t\t\t"+goods.getTitle());
+        tv_goods_name.setText("\u3000\u3000"+goods.getTitle());
         tv_current_price.setText(Html.fromHtml("¥ "+"<big>"+goods.getPrice()+"</big>"));
         tv_cost_price.setText(Html.fromHtml("原价:¥"+goods.getM_price()));
         tv_cost_price.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰

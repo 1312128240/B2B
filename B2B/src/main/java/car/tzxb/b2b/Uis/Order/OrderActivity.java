@@ -73,6 +73,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     TextView tv_consignee_mobile;
     @BindView(R.id.tv_consignee_address)
     TextView tv_consignee_address;
+    @BindView(R.id.tv_finally_price)
+    TextView tv_finally_price;
     private String shopId;
     private String carId;
     private String num;
@@ -179,7 +181,10 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     private void initData() {
         tv_goods_total_price.setText("¥"+dataBean.getAmount_pay());
         tv_goods_offset.setText("¥"+dataBean.getOffset());
-
+        tv_num.setText("共"+dataBean.getGoods_kind_number()+"件"+"\n"+"(可留言)");
+        //实际付款为商品总价+服务费-折扣费
+      double finaprice= dataBean.getAmount_pay()+dataBean.getOffset();
+       tv_finally_price.setText(Html.fromHtml("实付款 "+"<big>"+"¥"+finaprice+"</big>"));
         recy_goods.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         //取出所有商品
         List<OrderBean.DataBean.GoodsBean> goodsBean=dataBean.getGoods();
@@ -192,7 +197,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
             }
         }
 
-        tv_num.setText("共"+lists.size()+"件"+"\n"+"(可留言)");
+
 
       CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean> adapter= new CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean>(MyApp.getContext(),R.layout.iv_item,lists) {
             @Override
@@ -242,8 +247,10 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         String mobile=SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
         String orderType=tv_distribution.getText().toString();
 
-        Log.i("提交订单",Constant.baseUrl + "orders/orders_mobile.php?m=order_add"+"&user_id="+userId+"&username="+mobile+"&dealer_name=剑姬"+"&dealer_mobile="
-         +"&message="+"&order_type="+orderType+"&expect_time="+"&pay_device=Android"+"&coupon_id=0"+"&is_car=0"+"&carid_proid="+carId);
+        Log.i("提交订单",Constant.baseUrl + "orders/orders_mobile.php?m=order_add"+"&user_id="+userId+"&username="+mobile+"&dealer_address="+dealer_address+
+                mobile+"&dealer_name="+dealer_name+"&dealer_mobile=" +dealer_mobile +"&message="+"&order_type="+orderType+
+                "&expect_time="+"&pay_device=Android"+"&coupon_id=0"+"&is_car=0"+"&carid_proid="+carId);
+
        if(isFastClick()) {
            OkHttpUtils
                    .get()
@@ -302,6 +309,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
             public void sure() {
                 Intent intent=new Intent(OrderActivity.this, WXPayEntryActivity.class);
                 intent.putExtra("total",total);
+                intent.putExtra("order_seqnos",response.getData().getCount_seqnos());
                 startActivity(intent);
             }
         });

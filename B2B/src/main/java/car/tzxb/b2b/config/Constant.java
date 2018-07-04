@@ -8,4 +8,8 @@ public class Constant {
 
     public static String baseUrl="http://172.20.10.142/mobile_api/";
 
+    /**
+     * 微信支付appID
+     */
+    public static String AppID="wx284ddc006d10854d";
 }

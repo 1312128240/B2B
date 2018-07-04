@@ -209,43 +209,61 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 TextView tv2 = holder.getView(R.id.tv_view2);
                 TextView tv3 = holder.getView(R.id.tv_view3);
 
-                if ("0".equals(bean.getPayment_status())) {    //待付款
+                if ("待付款".equals(bean.getStatus())) {    //待付款
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.VISIBLE);
+                    tv3.setVisibility(View.GONE);
                     tv1.setText("付款");
                     tv2.setText("取消订单");
-                } else if ("1".equals(bean.getPayment_status())) { //待发货
+                } else if ("待发货".equals(bean.getStatus())) { //待发货
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.VISIBLE);
+                    tv3.setVisibility(View.GONE);
                     tv1.setText("提醒发货");
                     tv2.setText("查看物流");
-                } else if ("2".equals(bean.getPayment_status())) { //待收货
+                } else if ("待收货".equals(bean.getStatus())) { //待收货
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.VISIBLE);
+                    tv3.setVisibility(View.GONE);
                     tv1.setText("确认收货");
                     tv2.setText("物流详情");
-                } else if ("3".equals(bean.getPayment_status())) { //待评价
+                } else if ("待评价".equals(bean.getStatus())) { //待评价
+                    tv1.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.VISIBLE);
+                    tv3.setVisibility(View.VISIBLE);
                     tv1.setText("晒单评价");
                     tv2.setText("物流详情");
-                    tv3.setVisibility(View.VISIBLE);
                     tv3.setText("删除订单");
+                }else if("已取消".equals(bean.getStatus())){
+                    tv1.setVisibility(View.GONE);
+                    tv2.setVisibility(View.GONE);
+                    tv3.setVisibility(View.VISIBLE);
+                    tv3.setText("已取消");
                 }
+
                 tv1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        if ("0".equals(bean.getPayment_status())) {
+                        if ("待付款".equals(bean.getStatus())) {
                             //去付款
                             intent.setClass(OrderStatusActivity.this, WXPayEntryActivity.class);
-                        } else if ("1".equals(bean.getPayment_status())) {
+                            startActivity(intent);
+                        } else if ("待发货".equals(bean.getStatus())) {
                             //提醒发货
-                        } else if ("2".equals(bean.getPayment_status())) {
+                        } else if ("待收货".equals(bean.getStatus())) {
                             //确认收货
-                        } else if ("3".equals(bean.getPayment_status())) {
+                        } else if ("待评价".equals(bean.getStatus())){
                             //晒单评价
                         }
-                        startActivity(intent);
+
                     }
                 });
                 tv2.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent();
-                        if ("0".equals(bean.getPayment_status())) {
+
+                        if ("待付款".equals(bean.getStatus())) {
                             //取消订单
                             final CancelOrderPop cop = new CancelOrderPop(MyApp.getContext());
                             cop.show(parent);
@@ -256,10 +274,11 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                                     cop.dismiss();
                                 }
                             });
-                        } else if ("1".equals(bean.getPayment_status())) {
+                        } else if ("待发货".equals(bean.getStatus())) {
                             //查看物流
-                        } else if ("2".equals(bean.getPayment_status()) || "3".equals(bean.getPayment_status())) {
+                        } else if ("待收货".equals(bean.getStatus())||"待评价".equals(bean.getStatus())) {
                             //物流详情
+
                         }
                     }
                 });
@@ -267,6 +286,9 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     @Override
                     public void onClick(View v) {
                         //删除订单
+                        if("待评价".equals(bean.getStatus())){
+
+                        }
                     }
                 });
 
@@ -279,7 +301,9 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
     private void cancleOrder(String orderId, String s) {
         //http://172.20.10.142/mobile_api/orders/order_list_mobile.php?m=order_cancel&user_id=446&order_id=159
+
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("取消的",Constant.baseUrl + "orders/order_list_mobile.php?m=order_cancel"+"&user_id="+userId+"&order_id="+orderId+"&return_reason=s");
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "orders/order_list_mobile.php?m=order_cancel")

@@ -1,5 +1,7 @@
 package car.tzxb.b2b.Bean;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.List;
 
 /**
@@ -51,6 +53,82 @@ public class BaseDataBean {
         private String order_seqno;
         private String order_id;
         private String count_seqnos;
+
+        private String appId;
+        private String timeStamp;
+        private String nonceStr;
+        @SerializedName("package")
+        private String packageX;
+        private String signType;
+        private String paySign;
+        private String partnerid;
+        private String prepayid;
+        public String getPrepayid() {
+            return prepayid;
+        }
+
+        public void setPrepayid(String prepayid) {
+            this.prepayid = prepayid;
+        }
+
+
+        public String getPartnerid() {
+            return partnerid;
+        }
+
+        public void setPartnerid(String partnerid) {
+            this.partnerid = partnerid;
+        }
+
+
+
+        public String getAppId() {
+            return appId;
+        }
+
+        public void setAppId(String appId) {
+            this.appId = appId;
+        }
+
+        public String getTimeStamp() {
+            return timeStamp;
+        }
+
+        public void setTimeStamp(String timeStamp) {
+            this.timeStamp = timeStamp;
+        }
+
+        public String getNonceStr() {
+            return nonceStr;
+        }
+
+        public void setNonceStr(String nonceStr) {
+            this.nonceStr = nonceStr;
+        }
+
+        public String getPackageX() {
+            return packageX;
+        }
+
+        public void setPackageX(String packageX) {
+            this.packageX = packageX;
+        }
+
+        public String getSignType() {
+            return signType;
+        }
+
+        public void setSignType(String signType) {
+            this.signType = signType;
+        }
+
+        public String getPaySign() {
+            return paySign;
+        }
+
+        public void setPaySign(String paySign) {
+            this.paySign = paySign;
+        }
 
         public double getTotal_fee() {
             return total_fee;

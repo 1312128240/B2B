@@ -2,6 +2,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="220dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@mipmap/my_top_bg">
 
     <ImageView
@@ -11,14 +12,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="30dp"
         android:src="@mipmap/my_icon_setup" />
-    <TextView
-        android:id="@+id/tv_exit_app"
-        android:text="退出"
-        android:textColor="@color/colorWhite"
-        android:layout_gravity="end"
-        android:layout_margin="20dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+
     <LinearLayout
         android:id="@+id/layout_user_info"
         android:layout_width="match_parent"
@@ -33,17 +27,54 @@
             android:layout_height="80dp"
             android:background="@mipmap/my_icon_dhi" />
 
-        <TextView
-            android:id="@+id/txt_user_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <FrameLayout
             android:layout_marginTop="6dp"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="无极剑圣"
-            android:textColor="@color/colorWhite"
-            android:textSize="15sp" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_user_name"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:gravity="center"
+                android:maxLines="1"
+                tools:text="无极剑圣"
+                android:visibility="invisible"
+                android:textColor="@color/colorWhite"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:id="@+id/ll_login_regist"
+                android:layout_gravity="center_horizontal"
+                android:visibility="invisible"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_regist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="注册"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:layout_width="1dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/tv_login"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="登录"
+                    android:textColor="@color/colorWhite" />
+            </LinearLayout>
+
+        </FrameLayout>
 
         <RadioGroup
             android:id="@+id/rg_collect"
@@ -56,34 +87,34 @@
 
             <RadioButton
                 android:id="@+id/rb_collect_goods"
-                android:lineSpacingExtra="3dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
+                android:lineSpacingExtra="3dp"
                 android:text="收藏商品"
                 android:textColor="@color/colorWhite" />
 
             <RadioButton
                 android:id="@+id/rb_collect_shop"
-                android:lineSpacingExtra="3dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
+                android:lineSpacingExtra="3dp"
                 android:text="收藏店铺"
                 android:textColor="@color/colorWhite" />
 
             <RadioButton
                 android:id="@+id/rb_browse_record"
-                android:lineSpacingExtra="3dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:button="@null"
                 android:gravity="center"
+                android:lineSpacingExtra="3dp"
                 android:text="浏览记录"
                 android:textColor="@color/colorWhite" />
 

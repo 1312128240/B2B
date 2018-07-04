@@ -42,11 +42,22 @@ public class OrderBean implements Serializable{
 
 
         private int shop_car;
-        private int offset;
-        private int amount_pay;
+       private double offset;
+        private double amount_pay;
         private int amount_cost_point;
         private int amount_point;
+        private String goods_kind_number;
         private List<GoodsBean> goods;
+        public String getGoods_kind_number() {
+            return goods_kind_number;
+        }
+
+        public void setGoods_kind_number(String goods_kind_number) {
+            this.goods_kind_number = goods_kind_number;
+        }
+
+
+
 
         public int getShop_car() {
             return shop_car;
@@ -56,19 +67,19 @@ public class OrderBean implements Serializable{
             this.shop_car = shop_car;
         }
 
-        public int getOffset() {
+        public double getOffset() {
             return offset;
         }
 
-        public void setOffset(int offset) {
+        public void setOffset(double offset) {
             this.offset = offset;
         }
 
-        public int getAmount_pay() {
+        public double getAmount_pay() {
             return amount_pay;
         }
 
-        public void setAmount_pay(int amount_pay) {
+        public void setAmount_pay(double amount_pay) {
             this.amount_pay = amount_pay;
         }
 

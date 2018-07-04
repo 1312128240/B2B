@@ -48,7 +48,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
     @BindView(R.id.tv_actionbar_right)
     TextView tv_right;
     MvpContact.Presenter presenter = new ShoppingCarPresenterIml(this);
-    @BindView(R.id.empty_shopping_car)
+    @BindView(R.id.activity_empty_shopping_car)
     View empty;
     @BindView(R.id.recy_shopping_car)
     RecyclerView recyclerView;
@@ -82,9 +82,10 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
              tv_right.setText("编缉");
 
         //获取数据
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         String url = Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list";
         Map<String, String> params = new HashMap<>();
-        params.put("user_id", "88");
+        params.put("user_id",userId);
 
         presenter.PresenterGetData(url, params);
     }
@@ -176,8 +177,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                         tv_delete.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", "88");
-
+                                String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
                                 if (isFastClick()) {
                                     Log.i("删除购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del" + "&car_id=" + dataChildBean.getAid() + "&user_id=" + userId);
                                     OkHttpUtils

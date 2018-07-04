@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.SettingsActivity">
+
+    <include layout="@layout/base_actionbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+        <car.myview.CircleImageView.CircleImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:background="@drawable/bucket_no_picture" />
+
+        <TextView
+            android:id="@+id/tv_user_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:text="1598954173"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorWhite"
+        android:drawableRight="@mipmap/store_icon_right"
+        android:padding="10dp"
+        android:text="会员中心"
+        android:textColor="@color/colorBlack2" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:drawableRight="@mipmap/store_icon_right"
+        android:padding="10dp"
+        android:text="账户安全"
+        android:textColor="@color/colorBlack2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="实名认证"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="未认证" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:drawableRight="@mipmap/store_icon_right"
+        android:padding="10dp"
+        android:text="意见反馈"
+        android:textColor="@color/colorBlack2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="关于同致相伴"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="v1.0.0" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="清除缓存"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="0.00M" />
+
+    </LinearLayout>
+
+ <Button
+     android:id="@+id/btn_exit_app"
+     android:background="@drawable/bg1"
+     android:visibility="invisible"
+     android:text="退出登录"
+     android:textColor="@color/colorWhite"
+     android:layout_marginTop="30dp"
+     android:layout_marginLeft="10dp"
+     android:layout_marginRight="10dp"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content" />
+</LinearLayout>
