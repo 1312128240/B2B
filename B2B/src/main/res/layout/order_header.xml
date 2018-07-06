@@ -16,12 +16,14 @@
 
         <TextView
             android:id="@+id/tv_order_status"
+            android:textSize="16sp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="买家已付款"
             android:textColor="@color/colorWhite" />
 
         <TextView
+            android:id="@+id/tv_order_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="商家正在准备发货"

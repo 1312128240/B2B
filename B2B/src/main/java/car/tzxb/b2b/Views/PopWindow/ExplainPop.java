@@ -2,6 +2,7 @@ package car.tzxb.b2b.Views.PopWindow;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,7 +13,9 @@ import android.widget.TextView;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 
+import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Util.DeviceUtils;
 
 
 /**
@@ -21,15 +24,17 @@ import car.tzxb.b2b.R;
 
 public class ExplainPop extends PopupWindow {
      private static volatile ExplainPop mInstance;
+     private Context mContext;
     public ExplainPop(Context context) {
         super(context);
-        initView(context);
+        this.mContext=context;
+        initView();
     }
 
-    public static ExplainPop initClient(Context context) {
+    public static ExplainPop getmInstance(Context context) {
         if (mInstance == null)
         {
-            synchronized (OkHttpUtils.class)
+            synchronized (ExplainPop.class)
             {
                 if (mInstance == null)
                 {
@@ -40,8 +45,8 @@ public class ExplainPop extends PopupWindow {
         return mInstance;
     }
 
-    private void initView(Context context) {
-        View view= LayoutInflater.from(context).inflate(R.layout.goods_xq_explain,null);
+    private void initView() {
+        View view= LayoutInflater.from(mContext).inflate(R.layout.goods_xq_explain,null);
         setContentView(view);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -73,5 +78,12 @@ public class ExplainPop extends PopupWindow {
             }
         });
     }
-
+      public void show(View parent){
+          if (DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())) {
+              int navigationHeight = DeviceUtils.getNavigationBarHeight(mContext);
+              showAtLocation(parent, Gravity.BOTTOM, 0, navigationHeight);
+          } else {
+              showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+          }
+      }
 }

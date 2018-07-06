@@ -163,17 +163,21 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface,Sc
 
     }
 
+    /**
+     * 底部图片
+     * @param product
+     */
     private void initdetails(List<GoodsXqBean.DataBean.ProductBean> product) {
 
         List<String> imgList=new ArrayList<>();
         for (int i = 0; i <product.size() ; i++) {
             imgList.addAll(product.get(i).getContents_mobi());
         }
-
-
-        DetailsAdapter detailsAdapter=new DetailsAdapter(getContext(),imgList);
+        Log.i("接收到数据了吗",imgList.size()+"");
+       DetailsAdapter detailsAdapter=new DetailsAdapter(getContext(),imgList);
 
         lv_details.setAdapter(detailsAdapter);
+
     }
 
     public void changStatus(String s){
@@ -270,27 +274,19 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface,Sc
         tv_city.setText(goods.getProvince()+goods.getCity()+goods.getArea());
         //商品收藏
         goodsActivity.collect(goods.getCollect());
-
     }
+
       //说明弹窗
     @OnClick(R.id.ll_goods_xq_explain)
     public void explain(){
-           ExplainPop ep=new ExplainPop(MyApp.getContext());
-            if (DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())) {
-                int navigationHeight = DeviceUtils.getNavigationBarHeight(mContext);
-               ep. showAtLocation(parent, Gravity.BOTTOM, 0, navigationHeight);
-            } else {
-               ep. showAtLocation(parent, Gravity.BOTTOM, 0, 0);
-            }
-
+        ExplainPop ep=ExplainPop.getmInstance(MyApp.getContext());
+        ep.show(parent);
     }
 
     @Override
     public void scollLv() {
         scrollView.fling(0);
         scrollView.smoothScrollTo(0, y);
-
-       // Log.i("到评论",offset+"");
     }
 
     @Override

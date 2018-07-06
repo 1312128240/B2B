@@ -9,6 +9,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -73,24 +74,23 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
     private void initUi() {
         iv_search_left.setImageResource(R.drawable.navbar_icon_scan);
-        iv_search_right.setImageResource(R.drawable.navbar_icon_news);
         recy_gods.setLayoutManager(new GridLayoutManager(getContext(),3));
         recy_gods.setNestedScrollingEnabled(false);
-
         final int i= DeviceUtils.dip2px(MyApp.getContext(),45);
 
         final int top=DeviceUtils.dip2px(MyApp.getContext(),30);
-        //商品
+        //商品分类
         godsAdapter = new CommonAdapter<BaseDataBean.DataBean.CategoryBean>(MyApp.getContext(), R.layout.iv_layout,goodsBeanlist) {
             @Override
             protected void convert(ViewHolder holder, BaseDataBean.DataBean.CategoryBean bean, int position) {
+                View parent=holder.getView(R.id.iv_layout_parent);
+                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0,top,0,0);
+                parent.setLayoutParams(layoutParams);
                 CircleImageView iv=holder.getView(R.id.iv_item);
-                RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0,top,0,0);
-                iv.setLayoutParams(params);
                 Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i,i).into(iv);
                 //标题
-                holder.setText(R.id.iv_layout_title,bean.getTitle());
+                holder.setText(R.id.iv_layout_title,bean.getCategory_name());
             }
         };
         recy_gods.setAdapter(godsAdapter);
@@ -109,16 +109,17 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
             }
         });
 
-        //分类
+        //品牌分类
         recy_brand.setLayoutManager(new GridLayoutManager(getContext(),3));
         recy_brand.setNestedScrollingEnabled(false);
         brandAdapter = new CommonAdapter<BaseDataBean.DataBean.BrandBean>(getContext(), R.layout.iv_layout,brandBeanlist) {
             @Override
             protected void convert(ViewHolder holder, BaseDataBean.DataBean.BrandBean bean, int position) {
+                View parent=holder.getView(R.id.iv_layout_parent);
+                RelativeLayout.LayoutParams layoutParams=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0,top,0,0);
+                parent.setLayoutParams(layoutParams);
                 CircleImageView iv=holder.getView(R.id.iv_item);
-                RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                params.setMargins(0,top,0,0);
-                iv.setLayoutParams(params);
                 Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i,i).into(iv);
                 //标题
                 holder.setText(R.id.iv_layout_title,bean.getTitle());
@@ -139,6 +140,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                 return false;
             }
         });
+
     }
 
     @Override

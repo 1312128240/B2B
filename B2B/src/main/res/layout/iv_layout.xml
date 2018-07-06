@@ -13,6 +13,7 @@
     <TextView
         android:id="@+id/iv_layout_title"
         android:layout_marginTop="10dp"
+        android:textColor="@color/colorBlack2"
         android:layout_below="@+id/iv_item"
         android:layout_centerHorizontal="true"
         tolas:text="分类"

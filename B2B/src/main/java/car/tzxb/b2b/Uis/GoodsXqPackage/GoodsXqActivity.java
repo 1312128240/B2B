@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import butterknife.BindView;
 import car.myview.CustomToast.MyToast;
+import car.myview.NoScollViewPager;
 import car.tzxb.b2b.Adapter.XqPagerAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
@@ -56,7 +57,7 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
     @BindView(R.id.iv_xq_sc)
     ImageView iv_sc;
     @BindView(R.id.xq_vp)
-    ViewPager vp;
+    NoScollViewPager vp;
     @BindView(R.id.rg_xq)
     RadioGroup rg;
     @BindView(R.id.goods_xq_parent)
@@ -91,6 +92,7 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
     @Override
     public void doBusiness(Context mContext) {
           inittab();
+          vp.isCanScoll(true);
           rg.setOnCheckedChangeListener(this);
           getData();
     }

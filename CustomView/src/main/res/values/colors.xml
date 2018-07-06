@@ -19,4 +19,11 @@
     <color name="material_blue">#ff03A9F4</color>
     <color name="material_yellow">#ffFFEB3B</color>
 
+
+    <color name="nodeColor">#cccccc</color>
+    <color name="nodeTextColor">#000000</color>
+    <color name="nodeRadiuColor">#F6A623</color>
+
+    <color name="uncompleted_text_color">#F8F8F8</color>
+    <color name="step_gray">#F5F5F5</color>
 </resources>

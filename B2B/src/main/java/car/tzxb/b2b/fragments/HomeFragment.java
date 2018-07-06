@@ -1,21 +1,22 @@
 package car.tzxb.b2b.fragments;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
-import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
@@ -29,6 +30,7 @@ import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
+import car.myview.CustomToast.MyToast;
 import car.myview.MyScrollView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
@@ -42,16 +44,17 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.HomePresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.LoginActivity;
+import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
+import car.tzxb.b2b.Uis.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyScrollView.OnScrollListener,WindowFocusChang,ViewTreeObserver.OnGlobalFocusChangeListener{
+public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyScrollView.OnScrollListener,
+        WindowFocusChang,ViewTreeObserver.OnGlobalFocusChangeListener,View.OnTouchListener{
     @BindView(R.id.iv_search_bar_left)
     ImageView iv_left;
     @BindView(R.id.home_banner)
@@ -88,8 +91,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     RecyclerView recy_goods;
     @BindView(R.id.iv_app_notifi)
     ImageView iv_notifi;
-    private String cate,brand;
-    private int bottom;
+    @BindView(R.id.iv_search_bar_right)
+    ImageView iv_right;
+    private String category,brands;
+    private int bottom,pager;
     List<BaseDataListBean.DataBean> brandList=new ArrayList<>();
     MvpContact.Presenter presenter=new HomePresenterIml(this);
     private CommonAdapter<BaseDataListBean.DataBean> brandAndGoodsAdapter;
@@ -104,6 +109,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     @Override
     public void initData() {
         iv_left.setImageResource(R.drawable.navbar_icon_scan);
+        iv_right.setImageResource(R.drawable.navbar_icon_news);
+        iv_right.setPadding(0,0,0,5);
         //获取数据
         String url= Constant.baseUrl+"item/index.php?c=Home&m=Index&user_id=1";
         presenter.PresenterGetData(url,null);
@@ -113,6 +120,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
         scrollView.setOnScrollListener(this);
         //实现windowChange监听
         scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
+        scrollView.setOnTouchListener(this);
     }
 
     @Override
@@ -130,9 +138,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     @Override
     public void showData(Object o) {
         HomeBean bean= (HomeBean) o;
-        //头部
         initHeader(bean);
-        //底部部分
         initBottom(bean);
     }
 
@@ -152,6 +158,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
         //商品筛选
         final List<HomeBean.DataBean.CategoryBean> categoryBeanList=bean.getData().getCategory();
         for (int i = 0; i <categoryBeanList.size() ; i++) {
+            category=categoryBeanList.get(0).getTitle();
             String title=categoryBeanList.get(i).getTitle();
             tabLayout.addTab(tabLayout.newTab().setText(title));
         }
@@ -159,8 +166,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 int index=tab.getPosition();
-                cate=categoryBeanList.get(index).getTitle();
-                getBrandData(cate,brand);
+                pager=0;
+                category=categoryBeanList.get(index).getTitle();
+                brands="";
+                getBrandData();
                 showLoadingDialog();
             }
 
@@ -181,25 +190,23 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
            @Override
            protected void convert(ViewHolder holder, HomeBean.DataBean.BrandBean brandBean, int position) {
                RelativeLayout parent=holder.getView(R.id.iv_layout_parent);
-               int top=DeviceUtils.dip2px(MyApp.getContext(),10);
-               int left=DeviceUtils.dip2px(MyApp.getContext(),15);
-               parent.setPadding(left,top,left,top);
-
+               int top=DeviceUtils.dip2px(MyApp.getContext(),15);
+               int i=DeviceUtils.dip2px(MyApp.getContext(),50);
+               parent.setPadding(top,top,top,top);
                  //图片
                ImageView iv=holder.getView(R.id.iv_item);
-               int width=DeviceUtils.dip2px(MyApp.getContext(),50);
-               int heigh=DeviceUtils.dip2px(MyApp.getContext(),50);
-               Glide.with(getContext()).load(brandBean.getImg_url()).asBitmap().override(width,heigh).into(iv);
+               Glide.with(getContext()).load(brandBean.getImg_url()).asBitmap().override(i,i).into(iv);
                //标题
                holder.setText(R.id.iv_layout_title,brandBean.getTitle());
            }
        };
-       recy_brand.setAdapter(brandAdapter);
+        recy_brand.setAdapter(brandAdapter);
         brandAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                      brand=brandBeanList.get(position).getId();
-                      getBrandData(cate,brand);
+                      brands=brandBeanList.get(position).getId();
+                      pager=0;
+                      getBrandData();
                       showLoadingDialog();
             }
 
@@ -209,10 +216,9 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
             }
         });
         //底部品牌商品
-        getBrandData(cate,brand);
-        recy_goods.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        getBrandData();
+        recy_goods.setLayoutManager(new GridLayoutManager(getContext(),2));
         recy_goods.addItemDecoration(new SpaceItemDecoration(10,2));
-
         brandAndGoodsAdapter = new CommonAdapter<BaseDataListBean.DataBean>(getContext(), R.layout.recommend_layout,brandList) {
              @Override
              protected void convert(ViewHolder holder, BaseDataListBean.DataBean dataBean, int position) {
@@ -248,23 +254,27 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
             }
         });
 
-
     }
-     public void getBrandData(String category,String brands){
-         Log.i("首页品牌商品",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&cate="+category+"&brand="+brands);
+
+     public void getBrandData(){
          String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+         Log.i("首页品牌商品",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&cate="+category+"&brand="+brands+"&page="+pager+"&pagesize=10"+"&user_id="+userId);
          OkHttpUtils
                  .get()
                  .tag(this)
                  .url(Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList")
                  .addParams("user_id",userId)
                  .addParams("cate",category)
+                 .addParams("page",String.valueOf(pager))
+                 .addParams("pagesize","10")
                  .addParams("brand",brands)
                  .build()
                  .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                      @Override
                      public void onError(Call call, Exception e, int id) {
-
+                         if(dialog!=null){
+                             dialog.dismiss();
+                         }
                      }
 
                      @Override
@@ -276,6 +286,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
                          if(dialog!=null){
                              dialog.dismiss();
                          }
+                         if(brandList.size()>0){
+                             pager++;
+                         }
+
                      }
                  });
      }
@@ -321,6 +335,42 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
             }
         };
         recy_track.setAdapter(ButtonAdapter);
+        ButtonAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                Intent intent=new Intent();
+                   switch (position){
+                       case 0:
+                           break;
+                       case 1:
+                           intent.setClass(getActivity(),VipHomePagerActivity.class);
+                           startActivity(intent);
+                           break;
+                       case 2:
+                           break;
+                       case 3:
+                           break;
+                       case 4:
+                           String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+                           if(userId==null){
+                               intent.setClass(getActivity(),LoginActivity.class);
+                               startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+                               return;
+                           }
+                           intent.setClass(getActivity(),OrderStatusActivity.class);
+                           intent.putExtra("type", "all");
+                           intent.putExtra("index", 0);
+                           startActivity(intent);
+                           break;
+                   }
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
+
         //活动背景
         List<HomeBean.DataBean.OnSaleBean> saleBean=bean.getData().getOnSale();
         Glide.with(getContext()).load(saleBean.get(0).getImg_url()).dontAnimate().into(iv_activity_bg);
@@ -332,6 +382,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
         Glide.with(getContext()).load(hotImageBean.getImg_url()).override(100,350).into(iv_notifi);
         tv_headerline.setText(title);
     }
+
 
     @Override
     public void showLoading() {
@@ -370,8 +421,76 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface,MyS
     public void onGlobalFocusChanged(View oldFocus, View newFocus) {
         onScroll(scrollView.getScrollY());
     }
+
      public void showLoadingDialog(){
          dialog = new LoadingDialog();
+         dialog.setCancelable(false);
          dialog.show(getFragmentManager(),"aaa");
      }
+
+    @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        // TODO Auto-generated method stub
+        switch(event.getAction()){
+            case MotionEvent.ACTION_MOVE:{
+                break;
+            }
+            case MotionEvent.ACTION_DOWN:{
+                break;
+            }
+            case MotionEvent.ACTION_UP:{
+                //当文本的measureheight 等于scroll滚动的长度+scroll的height
+                View view = ((ScrollView) v).getChildAt(0);
+                if(view.getMeasuredHeight()<=v.getScrollY()+v.getHeight()){
+                   // getBrandData();
+                    showLoadingDialog();
+                    LoadMore();
+                }
+                break;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 加载更多
+     */
+    private void LoadMore() {
+       Log.i("首页品牌商品加载更多",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&cate="+category+"&brand="+brands+"&page="+pager+"&pagesize=10");
+        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList")
+                .addParams("user_id",userId)
+                .addParams("cate",category)
+                .addParams("page",String.valueOf(pager))
+                .addParams("pagesize","10")
+                .addParams("brand",brands)
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        if(dialog!=null){
+                            dialog.dismiss();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataListBean response, int id) {
+                           List<BaseDataListBean.DataBean> tempList=response.getData();
+                           brandList.addAll(tempList);
+                           brandAndGoodsAdapter.add(brandList,true);
+                           if(dialog!=null){
+                               dialog.dismiss();
+                           }
+                           if(tempList.size()>0){
+                               pager++;
+                           }else {
+                               MyToast.makeTextAnim(MyApp.getContext(),"我也是有底线的",0, Gravity.CENTER,0,0).show();
+                           }
+                    }
+                });
+    }
+
 }

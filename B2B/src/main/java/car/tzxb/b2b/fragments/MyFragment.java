@@ -97,7 +97,9 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                   }
             }
         });
-
+        rb_collect_goods.setText("0" + "\n收藏商品");
+        rb_collect_shop.setText("0" + "\n收藏店铺");
+        rb_browse_record.setText("0" + "\n浏览记录");
     }
 
 
@@ -111,9 +113,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         String mobile=SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
         if (userId == null) {
-            rb_collect_goods.setText("0" + "\n收藏商品");
-            rb_collect_shop.setText("0" + "\n收藏店铺");
-            rb_browse_record.setText("0" + "\n浏览记录");
             ll_login_regist.setVisibility(View.VISIBLE);
             tv_username.setVisibility(View.INVISIBLE);
         }else {
@@ -145,6 +144,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         }
         intent.setClass(getActivity(), OrderStatusActivity.class);
         intent.putExtra("index", 0);
+        intent.putExtra("type", "all");
         startActivity(intent);
     }
 
@@ -210,18 +210,13 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         }
         Intent intent = new Intent();
         switch (i) {
-
             case R.id.rb_collect_goods:
-
                 intent.setClass(getActivity(), CollectActivity.class);
-
                 break;
             case R.id.rb_collect_shop:
-
                 intent.setClass(getActivity(), CollectActivity.class);
                 break;
             case R.id.rb_browse_record:
-
                 intent.setClass(getActivity(), CollectActivity.class);
                 break;
             case R.id.rb_all:
@@ -252,5 +247,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         }
         startActivity(intent);
     }
+
 
 }

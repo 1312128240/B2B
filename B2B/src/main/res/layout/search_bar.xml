@@ -41,19 +41,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_search_bar_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:src="@drawable/list_icon_shopcar" />
-
         <car.myview.BageView.BadgeView
             android:id="@+id/bv_classify"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:textSize="8sp" />
+
+        <ImageView
+            android:id="@+id/iv_search_bar_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/list_icon_shopcar" />
     </FrameLayout>
 
 </LinearLayout>

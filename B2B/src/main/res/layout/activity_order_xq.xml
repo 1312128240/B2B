@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/orderXq_parent"
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.Order.OrderXqActivity">
 
@@ -43,7 +44,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/bg5"
             android:padding="5dp"
-            android:text="提醒发货" />
+            android:text="删除订单" />
 
         <TextView
             android:id="@+id/tv_view2"

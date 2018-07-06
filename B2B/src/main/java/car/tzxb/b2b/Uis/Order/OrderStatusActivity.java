@@ -50,6 +50,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.Views.PopWindow.CancelOrderPop;
 import car.tzxb.b2b.config.Constant;
@@ -57,7 +58,7 @@ import car.tzxb.b2b.wxapi.WXPayEntryActivity;
 import okhttp3.Call;
 
 
-public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTabStrip.OnTabStripSelectedIndexListener,SpringView.OnFreshListener {
+public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTabStrip.OnTabStripSelectedIndexListener, SpringView.OnFreshListener {
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
     @BindView(R.id.nts_center)
@@ -94,16 +95,21 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
         tv_title.setText("我的订单");
         nts.setTabIndex(index);
         nts.setOnTabStripSelectedIndexListener(this);
-        showLoading();
-        getData(0);
-        initRecy();
         springView.setListener(this);
         springView.setHeader(new DefaultHeader(MyApp.getContext()));
         springView.setFooter(new DefaultFooter(MyApp.getContext()));
-
+        initRecy();
     }
 
-    private void getData(final int m) {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        pager=0;
+        Refresh();
+    }
+
+    private void Refresh() {
+        showLoading();
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("我的订单", Constant.baseUrl + "orders/order_list_mobile.php?m=order_lists" + "&user_id=" + userId + "&list=" + type + "&page=" + pager + "&pagesize=10");
         OkHttpUtils
@@ -118,22 +124,12 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 .execute(new GenericsCallback<OrderStatusBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        if(m==0){
-                            loadingDialog.dismiss();
-                        }else {
-                            springView.onFinishFreshAndLoad();
-                        }
-
+                        loadingDialog.dismiss();
                     }
 
                     @Override
                     public void onResponse(OrderStatusBean response, int id) {
-                        if(m==0){
-                            loadingDialog.dismiss();
-                        }else {
-                            springView.onFinishFreshAndLoad();
-                        }
-
+                        loadingDialog.dismiss();
                         beanList = response.getData().getOrder_list();
                         adapter.add(beanList, true);
                         if (beanList.size() > 0) {
@@ -143,6 +139,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 });
 
     }
+
 
     private void initRecy() {
 
@@ -208,25 +205,28 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 TextView tv1 = holder.getView(R.id.tv_view1);
                 TextView tv2 = holder.getView(R.id.tv_view2);
                 TextView tv3 = holder.getView(R.id.tv_view3);
-
+                TextView  tv_describe=holder.getView(R.id.tv_order_status_describe);
                 if ("待付款".equals(bean.getStatus())) {    //待付款
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("付款");
                     tv2.setText("取消订单");
+                    tv_describe.setText("等待付款");
                 } else if ("待发货".equals(bean.getStatus())) { //待发货
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("提醒发货");
                     tv2.setText("查看物流");
+                    tv_describe.setText("等待发货");
                 } else if ("待收货".equals(bean.getStatus())) { //待收货
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("确认收货");
                     tv2.setText("物流详情");
+                    tv_describe.setText("商家已发货");
                 } else if ("待评价".equals(bean.getStatus())) { //待评价
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
@@ -234,11 +234,13 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     tv1.setText("晒单评价");
                     tv2.setText("物流详情");
                     tv3.setText("删除订单");
-                }else if("已取消".equals(bean.getStatus())){
+                    tv_describe.setText("交易成功");
+                } else if ("已取消".equals(bean.getStatus())) {
                     tv1.setVisibility(View.GONE);
                     tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.VISIBLE);
                     tv3.setText("已取消");
+                    tv_describe.setText("交易关闭");
                 }
 
                 tv1.setOnClickListener(new View.OnClickListener() {
@@ -251,10 +253,32 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                             startActivity(intent);
                         } else if ("待发货".equals(bean.getStatus())) {
                             //提醒发货
+                            Reminder(bean.getAid());
                         } else if ("待收货".equals(bean.getStatus())) {
                             //确认收货
-                        } else if ("待评价".equals(bean.getStatus())){
+                            final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("title","确定完成订单吗");
+                            bundle.putString("ok","确定");
+                            bundle.putString("no","再想想");
+                            alterDialogFragment.setArguments(bundle);
+                            alterDialogFragment.show(getSupportFragmentManager(),"del");
+                            alterDialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+                                @Override
+                                public void cancle() {
+                                    alterDialogFragment.dismiss();
+                                }
+
+                                @Override
+                                public void sure() {
+                                    alterDialogFragment.dismiss();
+                                    Confirm(bean.getAid());
+                                }
+                            });
+
+                        } else if ("待评价".equals(bean.getStatus())) {
                             //晒单评价
+
                         }
 
                     }
@@ -276,18 +300,41 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                             });
                         } else if ("待发货".equals(bean.getStatus())) {
                             //查看物流
-                        } else if ("待收货".equals(bean.getStatus())||"待评价".equals(bean.getStatus())) {
-                            //物流详情
+                            Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
+                            intent.putExtra("orderId",bean.getAid());
+                            startActivity(intent);
 
+                        } else if ("待收货".equals(bean.getStatus()) || "待评价".equals(bean.getStatus())) {
+                            //物流详情
+                            Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
+                            intent.putExtra("orderId",bean.getAid());
+                            startActivity(intent);
                         }
                     }
                 });
                 tv3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //删除订单
                         if("待评价".equals(bean.getStatus())){
+                            final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
+                            Bundle bundle=new Bundle();
+                            bundle.putString("title","确定删除订单吗");
+                            bundle.putString("ok","确定");
+                            bundle.putString("no","再想想");
+                            alterDialogFragment.setArguments(bundle);
+                            alterDialogFragment.show(getSupportFragmentManager(),"del");
+                            alterDialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+                                @Override
+                                public void cancle() {
+                                    alterDialogFragment.dismiss();
+                                }
 
+                                @Override
+                                public void sure() {
+                                    alterDialogFragment.dismiss();
+                                    delOrder(bean.getAid());
+                                }
+                            });
                         }
                     }
                 });
@@ -298,12 +345,104 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
     }
 
+    /**
+     * 确认收货
+     */
+    private void Confirm(String orderId) {
+        //http://172.20.10.142/mobile_api/orders/order_list_mobile.php?m=order_confirm&user_id=446&order_id=93
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_confirm")
+                .addParams("user_id",userId)
+                .addParams("order_id",orderId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
 
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                            if(response.getStatus()==1){
+                                nts.setTabIndex(4);
+                                type="stay_evaluate";
+                                Refresh();
+                            }else {
+                                MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                            }
+                    }
+                });
+    }
+
+
+    /**
+     * 删除订单
+     * @param aid
+     */
+    private void delOrder(String aid) {
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_del")
+                .addParams("user_id",userId)
+                .addParams("order_id",aid)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        if(response.getStatus()==1){
+                            onBackPressed();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 提醒发货
+     * @param aid
+     */
+
+    private void Reminder(String aid) {
+             String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+             OkHttpUtils
+                     .get()
+                     .tag(this)
+                     .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_remind")
+                     .addParams("user_id",userId)
+                     .addParams("order_id",aid)
+                     .build()
+                     .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                         @Override
+                         public void onError(Call call, Exception e, int id) {
+
+                         }
+
+                         @Override
+                         public void onResponse(BaseStringBean response, int id) {
+                                MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                         }
+                     });
+    }
+
+    /**
+     * 取消订单
+     * @param orderId
+     * @param s
+     */
     private void cancleOrder(String orderId, String s) {
-        //http://172.20.10.142/mobile_api/orders/order_list_mobile.php?m=order_cancel&user_id=446&order_id=159
-
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        Log.i("取消的",Constant.baseUrl + "orders/order_list_mobile.php?m=order_cancel"+"&user_id="+userId+"&order_id="+orderId+"&return_reason=s");
+        Log.i("取消的", Constant.baseUrl + "orders/order_list_mobile.php?m=order_cancel" + "&user_id=" + userId + "&order_id=" + orderId + "&return_reason=s");
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "orders/order_list_mobile.php?m=order_cancel")
@@ -320,7 +459,13 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                        MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
+                       // MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
+                        if("1".equals(String.valueOf(response.getStatus()))){
+                             pager=0;
+                             Refresh();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                        }
                     }
                 });
     }
@@ -337,13 +482,21 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
         onBackPressed();
     }
 
-    public void showLoading(){
-        loadingDialog=new LoadingDialog();
-        loadingDialog.show(getSupportFragmentManager(),"loading");
+    public void showLoading() {
+        loadingDialog = new LoadingDialog();
+        loadingDialog.setCancelable(false);
+        loadingDialog.show(getSupportFragmentManager(), "loading");
     }
+
+
+    /**
+     * 点击tab切换
+     * @param title
+     * @param index
+     */
     @Override
     public void onStartTabSelected(String title, int index) {
-        showLoading();
+
     }
 
     @Override
@@ -366,11 +519,46 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 type = "stay_evaluate";
                 break;
         }
-        pager = 0;
-        getData(0);
+        pager=0;
+        Refresh();
     }
 
+    /*
+     *下拉刷新
+     */
+    private void pullDown() {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("我的订单", Constant.baseUrl + "orders/order_list_mobile.php?m=order_lists" + "&user_id=" + userId + "&list=" + type + "&page=" + pager + "&pagesize=10");
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "orders/order_list_mobile.php?m=order_lists")
+                .addParams("user_id", userId)
+                .addParams("list", type)
+                .addParams("page", String.valueOf(pager))
+                .addParams("pagesize", "10")
+                .build()
+                .execute(new GenericsCallback<OrderStatusBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        springView.onFinishFreshAndLoad();
+                    }
 
+                    @Override
+                    public void onResponse(OrderStatusBean response, int id) {
+                        springView.onFinishFreshAndLoad();
+                        beanList = response.getData().getOrder_list();
+                        adapter.add(beanList, true);
+                        if (beanList.size() > 0) {
+                            pager++;
+                        }
+                    }
+                });
+    }
+
+    /**
+     * 上拉加载更多
+     */
     private void LoadMore() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("我的订单加载更多", Constant.baseUrl + "orders/order_list_mobile.php?m=order_lists" + "&user_id=" + userId + "&list=" + type + "&page=" + pager + "&pagesize=10");
@@ -386,7 +574,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 .execute(new GenericsCallback<OrderStatusBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                          springView.onFinishFreshAndLoad();
+                        springView.onFinishFreshAndLoad();
                     }
 
                     @Override
@@ -405,15 +593,16 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
     }
 
+
     @Override
     public void onRefresh() {
-        pager=0;
-        getData(1);
+        pager = 0;
+        pullDown();
     }
 
 
     @Override
     public void onLoadmore() {
-       LoadMore();
+        LoadMore();
     }
 }

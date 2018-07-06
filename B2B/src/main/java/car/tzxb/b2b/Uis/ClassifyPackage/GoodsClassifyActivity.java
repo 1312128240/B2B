@@ -54,6 +54,7 @@ import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.Views.PopWindow.AddShoppingCarPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -87,6 +88,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
     private String sales;
     private String network_ids;
     private String url=Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList";
+    private LoadingDialog loadingDialog;
 
     @Override
     public void initParms(Bundle parms) {
@@ -230,12 +232,13 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
 
     @Override
     public void showLoading() {
-
+        loadingDialog = new LoadingDialog();
+        loadingDialog.show(getSupportFragmentManager(),"class");
     }
 
     @Override
     public void closeLoading() {
-
+          loadingDialog.dismiss();
     }
 
     @Override

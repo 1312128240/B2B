@@ -153,19 +153,6 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
 
     }
 
-   /* @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        setIntent(intent);
-
-       String from = getIntent().getStringExtra("from");
-
-        if ("xq".equals(from)) {
-            navigationBar.selectTab(2);
-        }
-
-    }*/
-
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

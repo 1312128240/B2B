@@ -32,6 +32,7 @@ public class GoodsClassifyPresenterIml implements MvpContact.Presenter {
 
     @Override
     public void PresenterGetData(String url, Map<String, String> params) {
+        view.showLoading();
        modelIml.ModelGetData(url, params, new BaseCallbackListener<BaseDataListBean>() {
            @Override
            public void onSucceed(BaseDataListBean result) {

@@ -72,7 +72,10 @@
         <activity android:name=".wxapi.WXPayEntryActivity" />
         <activity android:name=".Uis.Order.OrderXqActivity" />
         <activity android:name=".Uis.Order.OrderStatusActivity" />
-        <activity android:name=".Uis.MeCenter.SettingsActivity"></activity>
+        <activity android:name=".Uis.MeCenter.SettingsActivity" />
+        <activity android:name=".Uis.Order.LogisticsActivity" />
+        <activity android:name=".Uis.Vip.VipHomePagerActivity" />
+        <activity android:name=".Uis.Vip.VipCenterActivity"></activity>
     </application>
 
 </manifest>

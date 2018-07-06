@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="car.tzxb.b2b.Uis.Vip.VipHomePagerActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="235dp"
+        android:layout_below="@+id/vip_home_pager_actionbar"
+        android:scaleType="fitXY"
+        android:src="@drawable/vip_bg_1" />
+
+    <include
+        android:id="@+id/vip_home_pager_actionbar"
+        layout="@layout/base_actionbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="140dp"
+        android:background="@drawable/vip_bg_2">
+
+        <TextView
+            android:id="@+id/tv_regist_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:text="· 注册时间"
+            android:textColor="#8a793c" />
+
+        <TextView
+            android:id="@+id/tv_regist_vip_date"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_regist_date"
+            android:layout_below="@+id/tv_regist_date"
+            android:layout_marginLeft="5dp"
+            android:text="2018.12.15"
+            android:textColor="#625328" />
+
+        <TextView
+            android:id="@+id/tv_vip_tjr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_regist_vip_date"
+            android:layout_marginBottom="15dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="20dp"
+            android:text="· 推荐人"
+            android:textColor="#8a793c" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/tv_regist_date"
+            android:layout_below="@+id/tv_vip_tjr"
+            android:layout_marginLeft="5dp"
+            android:textSize="16sp"
+            android:text="云南总代理"
+            android:textColor="#625328" />
+
+        <TextView
+            android:id="@+id/tv_vip_mobile"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="80dp"
+            android:textSize="20sp"
+            android:layout_marginRight="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="123456789"
+            android:textColor="#625328" />
+
+        <TextView
+            android:text="用户名"
+            android:layout_below="@+id/tv_vip_mobile"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="15sp"
+            android:textColor="#8a793c"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+</RelativeLayout>
