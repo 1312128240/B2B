@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="260dp">
+
+    <ImageView
+        android:id="@+id/iv_sign_bg"
+        android:layout_marginRight="6dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/sign_bg" />
+
+    <ImageView
+        android:id="@+id/iv_close_sign"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_sign_bg"
+        android:src="@drawable/singin_icon_del" />
+
+    <TextView
+        android:text="签到成功"
+        android:textStyle="bold"
+        android:id="@+id/tv_sign_success"
+        android:textColor="@color/colorBlack2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="140dp"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_sign_gold"
+        android:text="恭喜您,今日签到获得2金币"
+        android:layout_below="@+id/tv_sign_success"
+        android:layout_marginTop="3dp"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/colorBlack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_check_gold"
+        android:text="前往查看"
+        android:background="@drawable/bg1"
+        android:layout_marginTop="30dp"
+        android:textColor="@color/colorWhite"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/tv_sign_gold"
+        android:layout_width="170dp"
+        android:layout_height="35dp" />
+</RelativeLayout>

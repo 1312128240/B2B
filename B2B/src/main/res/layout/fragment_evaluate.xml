@@ -1,13 +1,104 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="car.tzxb.b2b.fragments.EvaluateFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
+        android:layout_marginTop="1dp"
+        android:padding="10dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-</FrameLayout>
+
+        <RadioGroup
+            android:id="@+id/rg1"
+
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+           >
+            <RadioButton
+                android:id="@+id/rb_all_ev"
+                android:button="@null"
+                android:text="全部"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ev_rb_swich"
+                android:gravity="center"
+                android:textColor="@color/textview"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_yt_ev"
+                android:button="@null"
+                android:text="有图"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ev_rb_swich"
+                android:gravity="center"
+                android:textColor="@color/textview"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_hp_ev"
+                android:button="@null"
+                android:text="好评"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ev_rb_swich"
+                android:gravity="center"
+                android:textColor="@color/textview"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_zp_ev"
+                android:button="@null"
+                android:text="中评"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ev_rb_swich"
+                android:gravity="center"
+                android:textColor="@color/textview"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <RadioButton
+                android:id="@+id/rb_cp_ev"
+                android:button="@null"
+                android:text="差评"
+                android:padding="5dp"
+                android:layout_marginRight="5dp"
+                android:background="@drawable/ev_rb_swich"
+                android:gravity="center"
+                android:textColor="@color/textview"
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/tv_hpl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red"
+            android:textSize="15sp"
+            tools:text="%99" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_ev"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

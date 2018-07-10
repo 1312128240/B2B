@@ -13,8 +13,9 @@
     <color name="rect">#aae84e40</color>
     <color name="shadow">#25808080</color>
 
-
-    <color name="material_red">#ffF44336</color>
+    <color name="color_3">#505050</color>
+    <color name="color_6">#666666</color>
+  <!--  <color name="material_red">#ffF44336</color>
     <color name="material_green">#ff4CAF50</color>
     <color name="material_blue">#ff03A9F4</color>
     <color name="material_yellow">#ffFFEB3B</color>
@@ -25,5 +26,5 @@
     <color name="nodeRadiuColor">#F6A623</color>
 
     <color name="uncompleted_text_color">#F8F8F8</color>
-    <color name="step_gray">#F5F5F5</color>
+    <color name="step_gray">#F5F5F5</color>-->
 </resources>

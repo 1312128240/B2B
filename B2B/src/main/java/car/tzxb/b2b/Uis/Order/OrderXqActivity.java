@@ -185,37 +185,34 @@ public class OrderXqActivity extends MyBaseAcitivity {
         tv_consignee_name.setText(bean.getAccept_name());
         tv_consignee_mobile.setText(bean.getMobile());
         tv_consignee_address.setText(bean.getAddress());
+        //订单状态
+        tv_status.setText(bean.getStatus());
         //隐藏投诉商家
         tv_ts.setVisibility(View.INVISIBLE);
-
-        if ("待付款".equals(bean.getStatus())) {         //待付款
+        if ("等待付款".equals(bean.getStatus())) {         //待付款
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("付款");
             tv2.setText("取消订单");
-            tv_status.setText("等待买家付款");
             tv_hint.setText("23:59:59自动关闭");
-        } else if ("待发货".equals(bean.getStatus())) { //待发货
+        } else if ("等待发货".equals(bean.getStatus())) { //待发货
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("提醒发货");
             tv2.setText("查看物流");
-            tv_status.setText("买家已付款");
             tv_hint.setText("商家正在准备发货");
-        } else if ("待收货".equals(bean.getStatus())) { //待收货
+        } else if ("商家已发货".equals(bean.getStatus())) { //待收货
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("确认收货");
             tv2.setText("物流详情");
-            tv_status.setText("商家已发货");
             tv_hint.setText("请注意保持联络通畅");
-        } else if ("待评价".equals(bean.getStatus())) { //待评价
+        } else if ("交易成功".equals(bean.getStatus())) { //待评价
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv3.setVisibility(View.VISIBLE);
             tv1.setText("晒单评价");
             tv2.setText("物流详情");
-            tv_status.setText("交易已完成");
             tv_hint.setText("如有问题请及时联系商家");
 
         }else if("已取消".equals(bean.getStatus())){

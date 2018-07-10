@@ -75,7 +75,8 @@
         <activity android:name=".Uis.MeCenter.SettingsActivity" />
         <activity android:name=".Uis.Order.LogisticsActivity" />
         <activity android:name=".Uis.Vip.VipHomePagerActivity" />
-        <activity android:name=".Uis.Vip.VipCenterActivity"></activity>
+        <activity android:name=".Uis.Vip.VipCenterActivity" />
+        <activity android:name=".Uis.MeCenter.MyGoldActivity"></activity>
     </application>
 
 </manifest>

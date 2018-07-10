@@ -40,11 +40,36 @@
         android:padding="10dp"
         android:text="会员中心"
         android:textColor="@color/colorBlack2" />
-
-    <TextView
+    <LinearLayout
+        android:id="@+id/ll_setting_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="实名认证"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:textSize="13sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end"
+            android:text="新增/修改地址" />
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:background="@color/colorWhite"
         android:drawableRight="@mipmap/store_icon_right"
         android:padding="10dp"
@@ -54,7 +79,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:padding="10dp">
@@ -79,7 +104,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorWhite"
         android:drawableRight="@mipmap/store_icon_right"
         android:padding="10dp"
@@ -89,7 +114,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="1dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:padding="10dp">

@@ -32,12 +32,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
-import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
-import car.myview.Loading.ShapeLoadingDialog;
-import car.myview.Refesh.MaterialRefreshLayout;
-import car.myview.Refesh.MaterialRefreshListener;
 import car.myview.SpringView.DefaultFooter;
 import car.myview.SpringView.DefaultHeader;
 import car.myview.SpringView.SpringView;
@@ -318,7 +314,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                         if("待评价".equals(bean.getStatus())){
                             final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
                             Bundle bundle=new Bundle();
-                            bundle.putString("title","确定删除订单吗");
+                            bundle.putString("title","确认删除订单");
                             bundle.putString("ok","确定");
                             bundle.putString("no","再想想");
                             alterDialogFragment.setArguments(bundle);

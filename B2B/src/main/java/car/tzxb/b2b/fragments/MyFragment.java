@@ -116,9 +116,10 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             ll_login_regist.setVisibility(View.VISIBLE);
             tv_username.setVisibility(View.INVISIBLE);
         }else {
+            String phonenum = mobile.substring(0, 3) + "****" + mobile.substring(7, 11);
             ll_login_regist.setVisibility(View.INVISIBLE);
             tv_username.setVisibility(View.VISIBLE);
-            tv_username.setText(mobile);
+            tv_username.setText(phonenum);
         }
     }
 

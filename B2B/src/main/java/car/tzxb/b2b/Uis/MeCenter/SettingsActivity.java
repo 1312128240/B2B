@@ -91,4 +91,9 @@ public class SettingsActivity extends MyBaseAcitivity {
              }
          });
      }
+
+     @OnClick(R.id.ll_setting_address)
+    public void address(){
+         startActivity(MyAddressActivity.class);
+     }
 }

@@ -10,16 +10,22 @@
     </style>
 
 
-    <!--popwindow的弹出动画-->
+    <!--底部弹出动画-->
     <style name="mypopwindow_anim_style">
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
 
-   <!--dialog进出动画-->
+   <!--dialog掉落动画-->
     <style name="my_dialog_style" parent="android:Animation">
-        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>  //进入时的动画
-        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>    //退出时的动画
+        <item name="@android:windowEnterAnimation">@anim/dialog_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_exit</item>
+    </style>
+
+ <!--dialgo缩放动画-->
+    <style name="my_dialog_style2" parent="android:Animation">
+        <item name="@android:windowEnterAnimation">@anim/dialog_scale_enter</item>
+        <item name="@android:windowExitAnimation">@anim/dialog_scale_exit</item>
     </style>
 
 </resources>

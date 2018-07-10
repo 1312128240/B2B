@@ -1,12 +1,9 @@
 package car.tzxb.b2b.wxapi;
-
 import android.annotation.SuppressLint;
-import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.TextUtils;
@@ -15,15 +12,12 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alipay.sdk.app.PayTask;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-import com.google.gson.Gson;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -31,9 +25,7 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
-
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -63,7 +55,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private IWXAPI api;
     private String order_seqnos;
     private final int SDK_PAY_FLAG = 1;
-    //wx284ddc006d10854d
     @Override
     public void initParms(Bundle parms) {
         total = getIntent().getDoubleExtra("total",-1);
@@ -80,7 +71,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
         //注册微信支付
         api = WXAPIFactory.createWXAPI(this, Constant.AppID);
         api.handleIntent(getIntent(), this);
-
         initUi();
 
     }

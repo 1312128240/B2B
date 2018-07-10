@@ -5,10 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
@@ -37,7 +34,6 @@ import car.tzxb.b2b.Bean.GoodsXqBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.Interface.GoodsXqInterface;
 import car.tzxb.b2b.Interface.ScollListener;
-import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.GoodsXqPresenterIml;
 import car.tzxb.b2b.R;
@@ -101,7 +97,7 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
         String url= Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsInfo";
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         Map<String,String> map=new HashMap<>();
-        map.put("id",mainId);
+        map.put("id","534");
         map.put("user_id", userId);
         presenter.PresenterGetData(url,map);
     }
@@ -222,8 +218,6 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
     }
 
     private void AddShoppingCar() {
-
-
            Log.i("查询的子商品",Constant.baseUrl+"item/index.php?c=Goods&m=GetProductsInfo"+"&id="+mainId);
             OkHttpUtils
                     .get()
@@ -285,11 +279,15 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
 
-                        MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                        if(response.getStatus()==1){
+                            MyToast.makeTextAnim(MyApp.getContext(),"加入购物车成功",0,Gravity.CENTER,0,0).show();
+                        }
 
                     }
                 });
     }
+
+
 
     @Override
     public void showData(Object o) {
@@ -312,6 +310,10 @@ public  class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCh
     @Override
     public void showErro() {
 
+    }
+
+    public void setCurrent(int i){
+        vp.setCurrentItem(i);
     }
 
 }

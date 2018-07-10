@@ -25,12 +25,7 @@ public class AlterDialogFragment extends DialogFragment implements View.OnClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         //添加 动画
         Window  window = this.getDialog().getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        //设置dialog的动画
-        lp.windowAnimations = R.style.my_dialog_style;
-        window.setAttributes(lp);
-        window.setBackgroundDrawable(getResources().getDrawable(R.drawable.bg2));
-
+        window.setWindowAnimations(R.style.my_dialog_style);   //设置dialog的显示动画
         View view=inflater.inflate(R.layout.alter_dialog_fragement,null);
         TextView tv_cancle= view.findViewById(R.id.tv_alter_dialog_cancle);
         TextView tv_sure=  view.findViewById(R.id.tv_alter_dialog_sure);

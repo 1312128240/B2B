@@ -1,27 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tolas="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
- <car.myview.CircleImageView.CircleImageView
-     android:id="@+id/civ_ev"
-     android:background="@mipmap/ic_launcher"
-     android:layout_width="wrap_content"
-     android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:background="@color/colorWhite"
+    android:orientation="vertical"
+    android:padding="5dp">
+
+    <LinearLayout
+        android:id="@+id/ll_ev"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+
+        <ImageView
+            android:id="@+id/civ_ev"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tolas:background="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_ev_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@+id/civ_ev"
+            android:textColor="@color/colorBlack2"
+            tolas:text="同致相伴" />
+
+        <TextView
+            android:id="@+id/tv_ev_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:gravity="end"
+            android:textColor="@color/colorLightGray2"
+            tolas:text="2018-11-22" />
+    </LinearLayout>
+
+
     <TextView
-        android:id="@+id/tv_ev_title"
-        android:layout_marginTop="15dp"
-        android:layout_toRightOf="@+id/civ_ev"
-        android:textColor="@color/colorBlack2"
-        tolas:text="同致相伴"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:textColor="@color/colorBlack"
-        android:layout_alignLeft="@+id/tv_ev_title"
+        android:id="@+id/tv_ev_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="25dp"
         android:text="宝贝收到了"
-        android:layout_below="@+id/civ_ev"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-</RelativeLayout>
+        android:textColor="@color/colorBlack" />
+
+</LinearLayout>

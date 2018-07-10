@@ -49,6 +49,7 @@
 
 
         <TextView
+            android:id="@+id/tv_more_pj"
             android:layout_width="105dp"
             android:layout_height="25dp"
             android:background="@drawable/bg7"

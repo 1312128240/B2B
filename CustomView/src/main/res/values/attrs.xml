@@ -72,40 +72,6 @@
         <attr name="nts_active_color" format="color"/>
     </declare-styleable>
 
-
-    <!-- 下拉刷新  -->
-    <declare-styleable name="MaterialRefreshLayout">
-        <attr name="overlay" format="boolean"/>
-        <!-- style for MaterialWaveView  -->
-        <attr name="wave_height_type" format="enum">
-            <enum name="normal" value="0"/>
-            <enum name="higher" value="1"/>
-        </attr>
-        <attr name="wave_color" format="color"/>
-        <attr name="wave_show" format="boolean"/>
-        <!-- style for CircleProgressBar  -->
-        <attr name="progress_colors" format="reference"/>
-        <attr name="progress_stoke_width" format="dimension"/>
-        <attr name="progress_backgroud_color" format="color"/>
-        <attr name="progress_show_arrow" format="boolean"/>
-        <attr name="progress_arrow_width" format="dimension"/>
-        <attr name="progress_arrow_height" format="dimension"/>
-        <attr name="progress_show_circle_backgroud" format="boolean"/>
-        <attr name="progress_value" format="integer"/>
-        <attr name="progress_max_value" format="integer"/>
-        <attr name="progress_text_size" format="dimension"/>
-        <attr name="progress_text_color" format="color"/>
-        <attr name="progress_text_visibility" format="enum">
-            <enum name="visible" value="0"/>
-            <enum name="invisible" value="1"/>
-        </attr>
-        <attr name="progress_size_type" format="enum">
-            <enum name="normal" value="0"></enum>
-            <enum name="big" value="1"></enum>
-        </attr>
-        <attr name="isLoadMore" format="boolean"></attr>
-    </declare-styleable>
-
     <declare-styleable name="CircleProgressBar">
         <attr name="mlpb_inner_radius" format="dimension"/>
         <attr name="mlpb_background_color" format="color"/>
@@ -130,10 +96,24 @@
             <enum name="invisible" value="1"/>
         </attr>
     </declare-styleable>
-
-    <!--时间轴-->
-    <declare-styleable name="NodeProgressView">
-        <attr name="width" format="dimension"/>
-        <attr name="nodeRadius" format="dimension"/>
+  <!--折叠textview-->
+    <declare-styleable name="ExpandableTextView">
+        <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
+        <attr name="etv_EllipsisHint" format="reference|string" /><!--default is ..-->
+        <attr name="etv_ToExpandHint" format="reference|string" /><!--"to expand" hint string, default is "Expand"-->
+        <attr name="etv_ToShrinkHint" format="reference|string" /><!--"to shrink" hint string, default is "Shrink"-->
+        <attr name="etv_GapToExpandHint" format="reference|string" /><!--gap between "toExpandHint" and "trimmed text"-->
+        <attr name="etv_GapToShrinkHint" format="reference|string" /><!--gap between "toShrinkHint" and "trimmed text"-->
+        <attr name="etv_EnableToggle" format="reference|boolean" /><!--if toggle the state when click ExpandTextView-->
+        <attr name="etv_ToExpandHintShow" format="reference|boolean" /><!--if show "toExpandHint"-->
+        <attr name="etv_ToShrinkHintShow" format="reference|boolean" /><!--if show "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColor" format="reference|color" /><!--text color of "toExpandHint"-->
+        <attr name="etv_ToShrinkHintColor" format="reference|color" /><!--text color of "toShrinkHint"-->
+        <attr name="etv_ToExpandHintColorBgPressed" format="reference|color" /><!--background color if "toExpandHint" pressed-->
+        <attr name="etv_ToShrinkHintColorBgPressed" format="reference|color" /><!--background color if "toShrinkHint" pressed-->
+        <attr name="etv_InitState" format="enum"><!--init state, default is shrink-->
+            <enum name="shrink" value="0"/>
+            <enum name="expand" value="1"/>
+        </attr>
     </declare-styleable>
 </resources>
