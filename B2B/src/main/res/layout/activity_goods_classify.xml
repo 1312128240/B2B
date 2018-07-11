@@ -17,8 +17,8 @@
    <include layout="@layout/filter_bar"/>
 
    <android.support.v7.widget.RecyclerView
+       android:layout_marginTop="1dp"
        android:id="@+id/recy_goods_classify"
-       android:layout_marginTop="6dp"
        android:layout_width="match_parent"
        android:layout_height="match_parent">
 

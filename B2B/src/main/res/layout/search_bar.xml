@@ -6,6 +6,7 @@
     android:focusable="true"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
+    android:elevation="0.5dp"
     android:focusableInTouchMode="true">
 
     <ImageView

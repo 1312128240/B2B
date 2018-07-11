@@ -109,7 +109,8 @@
                 android:textStyle="bold" />
             <TextView
                 android:drawableLeft="@drawable/list_icon_explain"
-                android:drawablePadding="5dp"
+                android:drawablePadding="3dp"
+                android:textSize="13sp"
                 android:text="平台自营"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/colorBlack"
@@ -117,7 +118,8 @@
                 android:layout_height="wrap_content" />
             <TextView
                 android:drawableLeft="@drawable/list_icon_explain"
-                android:drawablePadding="5dp"
+                android:drawablePadding="3dp"
+                android:textSize="13sp"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/colorBlack"
                 android:text="12小时内发货"
@@ -127,7 +129,8 @@
                 android:drawableLeft="@drawable/list_icon_explain"
                 android:lines="1"
                 android:ellipsize="end"
-                android:drawablePadding="5dp"
+                android:drawablePadding="3dp"
+                android:textSize="13sp"
                 android:drawableRight="@mipmap/store_icon_right"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/colorBlack"

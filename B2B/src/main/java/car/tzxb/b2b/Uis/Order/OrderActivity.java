@@ -12,6 +12,7 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
@@ -75,6 +76,10 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     TextView tv_consignee_address;
     @BindView(R.id.tv_finally_price)
     TextView tv_finally_price;
+    @BindView(R.id.iv_fgx)
+    ImageView iv_fgx;
+    @BindView(R.id.tv_default_address)
+    TextView tv_default_address;
     private String shopId;
     private String carId;
     private String num;
@@ -103,6 +108,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         rb1.setChecked(true);
         rb1.setText("送货上门");
         rb2.setText("门店自取");
+        iv_fgx.setVisibility(View.VISIBLE);
+        tv_default_address.setVisibility(View.VISIBLE);
         getData();
     }
 
@@ -183,7 +190,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         tv_goods_offset.setText("¥"+dataBean.getOffset());
         tv_num.setText("共"+dataBean.getGoods_kind_number()+"件"+"\n"+"(可留言)");
         //实际付款为商品总价+服务费-折扣费
-      double finaprice= dataBean.getAmount_pay()+dataBean.getOffset();
+       double finaprice= dataBean.getAmount_pay()+dataBean.getOffset();
        tv_finally_price.setText(Html.fromHtml("实付款 "+"<big>"+"¥"+finaprice+"</big>"));
         recy_goods.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         //取出所有商品
@@ -308,7 +315,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
             @Override
             public void sure() {
                 Intent intent=new Intent(OrderActivity.this, WXPayEntryActivity.class);
-                intent.putExtra("total",total);
+                intent.putExtra("total",String.valueOf(total));
                 intent.putExtra("order_seqnos",response.getData().getCount_seqnos());
                 startActivity(intent);
             }

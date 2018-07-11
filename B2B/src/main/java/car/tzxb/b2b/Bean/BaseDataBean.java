@@ -53,16 +53,40 @@ public class BaseDataBean {
         private String order_seqno;
         private String order_id;
         private String count_seqnos;
-
-        private String appId;
-        private String timeStamp;
-        private String nonceStr;
+        private String appid;
+        private String timestamp;
+        private String noncestr;
         @SerializedName("package")
         private String packageX;
         private String signType;
         private String paySign;
         private String partnerid;
         private String prepayid;
+
+        public String getTimestamp() {
+            return timestamp;
+        }
+
+        public void setTimestamp(String timestamp) {
+            this.timestamp = timestamp;
+        }
+
+        public String getNoncestr() {
+            return noncestr;
+        }
+
+        public void setNoncestr(String noncestr) {
+            this.noncestr = noncestr;
+        }
+
+        public String getAppid() {
+            return appid;
+        }
+
+        public void setAppid(String appid) {
+            this.appid = appid;
+        }
+
         public String getPrepayid() {
             return prepayid;
         }
@@ -78,32 +102,6 @@ public class BaseDataBean {
 
         public void setPartnerid(String partnerid) {
             this.partnerid = partnerid;
-        }
-
-
-
-        public String getAppId() {
-            return appId;
-        }
-
-        public void setAppId(String appId) {
-            this.appId = appId;
-        }
-
-        public String getTimeStamp() {
-            return timeStamp;
-        }
-
-        public void setTimeStamp(String timeStamp) {
-            this.timeStamp = timeStamp;
-        }
-
-        public String getNonceStr() {
-            return nonceStr;
-        }
-
-        public void setNonceStr(String nonceStr) {
-            this.nonceStr = nonceStr;
         }
 
         public String getPackageX() {

@@ -1,12 +1,13 @@
 package car.tzxb.b2b.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/7/2 0002.
  */
 
-public class OrderXqBean {
+public class OrderXqBean implements Serializable {
 
     private DataBean data;
     private int status;
@@ -36,7 +37,7 @@ public class OrderXqBean {
         this.msg = msg;
     }
 
-    public static class DataBean {
+    public static class DataBean implements Serializable {
 
         private OrderDetailsBean order_details;
 
@@ -48,7 +49,7 @@ public class OrderXqBean {
             this.order_details = order_details;
         }
 
-        public static class OrderDetailsBean {
+        public static class OrderDetailsBean implements Serializable {
 
             private String shop_name;
             private String shop_mobile;
@@ -78,6 +79,8 @@ public class OrderXqBean {
             private String coupon_type;
             private String coupon_id;
             private String aid;
+            private String payment_time;
+            private String order_type;
             private String user_name;
             private Object refund_start_time;
             private Object refund_end_time;
@@ -90,6 +93,31 @@ public class OrderXqBean {
             private String payment_type;
             private String address;
             private int numbers;
+            private String express_start_time;
+
+            public String getOrder_type() {
+                return order_type;
+            }
+
+            public void setOrder_type(String order_type) {
+                this.order_type = order_type;
+            }
+
+            public String getPayment_time() {
+                return payment_time;
+            }
+
+            public void setPayment_time(String payment_time) {
+                this.payment_time = payment_time;
+            }
+
+            public String getExpress_start_time() {
+                return express_start_time;
+            }
+
+            public void setExpress_start_time(String express_start_time) {
+                this.express_start_time = express_start_time;
+            }
 
             public String getAddress() {
                 return address;

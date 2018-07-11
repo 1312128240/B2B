@@ -129,6 +129,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         //实现windowChange监听
         scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
         scrollView.setOnTouchListener(this);
+
     }
 
     @Override
@@ -149,6 +150,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         initHeader(bean);
         initBottom(bean);
     }
+
 
     private void initBottom(HomeBean bean) {
         //自营

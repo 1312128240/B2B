@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -54,8 +55,6 @@ public class OrderXqActivity extends MyBaseAcitivity {
     RecyclerView recy_img;
     @BindView(R.id.tv_order_number)
     TextView tv_number;
-    @BindView(R.id.tv_pay_type)
-    TextView tv_pay_type;
     @BindView(R.id.tv_order_time)
     TextView tv_time;
     @BindView(R.id.tv_order_no)
@@ -90,11 +89,37 @@ public class OrderXqActivity extends MyBaseAcitivity {
     TextView tv_hint;
     @BindView(R.id.tv_order_status)
     TextView tv_status;
+    @BindView(R.id.tv_order_paytime)
+    TextView tv_paytime;
+    @BindView(R.id.tv_distribution_type)
+    TextView tv_distribution_type;
+    @BindView(R.id.tv_distribution)
+    TextView tv_distribution;
+    @BindView(R.id.tv_pay_type1)
+    TextView tv_pay_type1;
+    @BindView(R.id.tv_pay_type2)
+    TextView tv_pay_type2;
+    @BindView(R.id.tv_invoice_type1)
+    TextView tv_invoice_type1;
+    @BindView(R.id.tv_invoice_type2)
+    TextView tv_invoice_type2;
+    @BindView(R.id.tv_delivery_time)
+    TextView tv_delivery_time;
+    @BindView(R.id.tv_closing_time)
+    TextView tv_closing_time;
+    @BindView(R.id.rl_order_logistics)
+    RelativeLayout rl_logistics;
+    @BindView(R.id.tv_order_deliver)
+    TextView tv_order_deliver;
+    @BindView(R.id.tv_order_logistics_time)
+    TextView tv_order_logistics_time;
+
     private String orderid;
     private OrderXqBean.DataBean.OrderDetailsBean bean;
 
     @Override
     public void initParms(Bundle parms) {
+
         orderid = getIntent().getStringExtra("orderid");
     }
 
@@ -112,10 +137,8 @@ public class OrderXqActivity extends MyBaseAcitivity {
     }
 
     private void initRecy() {
-
         recy_img.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         List<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> list=bean.getChild_data();
-        tv_number.setText("共"+list.size()+"件");
         CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> adapter= new CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean>(MyApp.getContext(),R.layout.iv_item,list) {
             @Override
             protected void convert(ViewHolder holder, OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean dataChildBean, int position) {
@@ -163,12 +186,17 @@ public class OrderXqActivity extends MyBaseAcitivity {
     }
 
     private void initUi() {
-      /*  //订单付款状态
-        tv_status.setText(bean.getStatus());*/
         //商品图片和数量
         initRecy();
         //支付方式
-        tv_pay_type.setText(bean.getPayment_type());
+        tv_pay_type1.setText(Html.fromHtml("支付方式:  "+"<font color='#949494'>" +bean.getPayment_type()+ "</font>"));
+        tv_pay_type2.setVisibility(View.INVISIBLE);
+        //配送方式
+        tv_distribution.setVisibility(View.INVISIBLE);
+        tv_distribution_type.setText(Html.fromHtml("配送方式:  "+"<font color='#949494'>" +bean.getOrder_type()+ "</font>"));
+        //发票类型
+        tv_invoice_type1.setText(Html.fromHtml("发票类型:  "+"<font color='#949494'>" +"暂不支持发票"+ "</font>"));
+        tv_invoice_type2.setVisibility(View.INVISIBLE);
         //订单编号
         tv_no.setText(bean.getOrder_seqno());
         //下单时间
@@ -187,26 +215,42 @@ public class OrderXqActivity extends MyBaseAcitivity {
         tv_consignee_address.setText(bean.getAddress());
         //订单状态
         tv_status.setText(bean.getStatus());
-        //隐藏投诉商家
-        tv_ts.setVisibility(View.INVISIBLE);
+        //支付时间
+        tv_paytime.setText(Html.fromHtml("支付时间:  "+"<font color='#949494'>" +bean.getPayment_time()+ "</font>"));
+        //发货时间
+        tv_delivery_time.setText(Html.fromHtml("发货时间:  "+"<font color='#949494'>" +bean.getExpress_start_time()+ "</font>"));
+        //成交时间
+        tv_closing_time.setText(Html.fromHtml("成交时间:  "+"<font color='#949494'>" +bean.getReceive_time()+ "</font>"));
+        //共几件
+        int number=bean.getChild_data().size();
         if ("等待付款".equals(bean.getStatus())) {         //待付款
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("付款");
             tv2.setText("取消订单");
             tv_hint.setText("23:59:59自动关闭");
+            tv_ts.setVisibility(View.INVISIBLE);
+            tv_number.setText("共"+number+"件");
         } else if ("等待发货".equals(bean.getStatus())) { //待发货
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("提醒发货");
             tv2.setText("查看物流");
             tv_hint.setText("商家正在准备发货");
+            tv_paytime.setVisibility(View.VISIBLE);
+            tv_number.setText("共"+number+"件"+"\n"+"(可退换)");
         } else if ("商家已发货".equals(bean.getStatus())) { //待收货
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
             tv1.setText("确认收货");
             tv2.setText("物流详情");
             tv_hint.setText("请注意保持联络通畅");
+            tv_paytime.setVisibility(View.VISIBLE);
+            tv_delivery_time.setVisibility(View.VISIBLE);
+            tv_number.setText("共"+number+"件"+"\n"+"(可退换)");
+            rl_logistics.setVisibility(View.VISIBLE);
+            tv_order_deliver.setText("商家已发货");
+            tv_order_logistics_time.setText(bean.getExpress_start_time());
         } else if ("交易成功".equals(bean.getStatus())) { //待评价
             tv1.setVisibility(View.VISIBLE);
             tv2.setVisibility(View.VISIBLE);
@@ -214,25 +258,32 @@ public class OrderXqActivity extends MyBaseAcitivity {
             tv1.setText("晒单评价");
             tv2.setText("物流详情");
             tv_hint.setText("如有问题请及时联系商家");
-
+            tv_paytime.setVisibility(View.VISIBLE);
+            tv_delivery_time.setVisibility(View.VISIBLE);
+            tv_closing_time.setVisibility(View.VISIBLE);
+            tv_number.setText("共"+number+"件"+"\n"+"(申请售后)");
+            rl_logistics.setVisibility(View.VISIBLE);
+            tv_order_deliver.setText("商品已签收");
+            tv_order_logistics_time.setText((String)bean.getReceive_time());
         }else if("已取消".equals(bean.getStatus())){
             tv3.setVisibility(View.VISIBLE);
             tv_status.setText("交易已关闭");
             tv_hint.setText("我不想买了");
+            tv_number.setText("共"+number+"件");
         }
 
     }
 
     @OnClick(R.id.tv_view1)
     public void view1(){
-         if("待付款".equals(bean.getStatus())){
+         if("等待付款".equals(bean.getStatus())){
              Intent intent=new Intent(this, WXPayEntryActivity.class);
              startActivity(intent);
-         }else if("待发货".equals(bean.getStatus())) {
+         }else if("等待发货".equals(bean.getStatus())) {
              Reminder();
-         }else if("待收货".equals(bean.getStatus())){
+         }else if("商家已发货".equals(bean.getStatus())){
              Confirm();
-         }else if("待评价".equals(bean.getStatus())){
+         }else if("交易成功".equals(bean.getStatus())){
              MyToast.makeTextAnim(MyApp.getContext(),"晒单评价",0,Gravity.CENTER,0,0).show();
          }
 
@@ -241,19 +292,14 @@ public class OrderXqActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.tv_view2)
     public void view2(){
-        if("待付款".equals(bean.getStatus())){
-            cancleOrder();
-        }else if("待发货".equals(bean.getStatus())) {
-            //查看物流
-            Intent intent=new Intent(OrderXqActivity.this,LogisticsActivity.class);
-            startActivity(intent);
-        }else if("待收货".equals(bean.getStatus())){
-            Intent intent=new Intent(OrderXqActivity.this,LogisticsActivity.class);
-            startActivity(intent);
-        }else if("待评价".equals(bean.getStatus())){
-            Intent intent=new Intent(OrderXqActivity.this,LogisticsActivity.class);
-            startActivity(intent);
-        }
+
+       if("等待付款".equals(bean.getStatus())){
+           cancleOrder();
+       }else {  //查看物流
+           Intent intent=new Intent(OrderXqActivity.this,LogisticsActivity.class);
+           intent.putExtra("orderId",bean.getAid());
+           startActivity(intent);
+       }
 
     }
 
@@ -443,6 +489,25 @@ public class OrderXqActivity extends MyBaseAcitivity {
         });
     }
 
+    /**
+     * 查看物流
+     */
+    @OnClick(R.id.rl_order_logistics)
+    public void logistics(){
+        Intent intent=new Intent(OrderXqActivity.this,LogisticsActivity.class);
+        intent.putExtra("orderId",bean.getAid());
+        startActivity(intent);
+    }
+
+    /**
+     * 查看订单留言
+     */
+    @OnClick(R.id.tv_order_number)
+    public void mesg(){
+        Intent intent=new Intent(this,GoodsListActivity.class);
+        intent.putExtra("bean",bean);
+        startActivity(intent);
+    }
 
     @OnClick(R.id.tv_actionbar_back)
     public void back() {

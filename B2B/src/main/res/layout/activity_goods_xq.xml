@@ -10,6 +10,7 @@
 
     <RelativeLayout
         android:id="@+id/xq_toolbar"
+        android:elevation="0.5dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
@@ -56,6 +57,7 @@
 
     <RadioGroup
         android:id="@+id/rg_xq"
+        android:elevation="3dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"

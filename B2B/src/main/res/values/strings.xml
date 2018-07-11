@@ -5,7 +5,6 @@
     <string name="login_pass"><font size="12">请输入密码</font></string>
     <string name="yzm_pass"><font size="12">请输入验证码</font></string>
     <string name="new_paww"><font size="12">请输入新密码</font></string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <string name="open_shop1"><font size="12">请与门店招牌上的一样</font></string>

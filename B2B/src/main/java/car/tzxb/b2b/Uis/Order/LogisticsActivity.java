@@ -10,6 +10,7 @@ import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -88,6 +89,7 @@ public class LogisticsActivity extends MyBaseAcitivity {
 
     private void initLagistics(LogisticsData response) {
          List<LogisticsData.DataBean.LogisticsBean> logisticsBeanList=response.getData().getLogistics();
+        Collections.reverse(logisticsBeanList);
          List<Trace> mTraceList=new ArrayList<>();
         for (int i = 0; i <logisticsBeanList.size() ; i++) {
             if(i==0){
@@ -98,6 +100,7 @@ public class LogisticsActivity extends MyBaseAcitivity {
             LogisticsData.DataBean.LogisticsBean bean=logisticsBeanList.get(i);
             mTraceList.add(new Trace(type, bean.getTime(), bean.getTitle()));
         }
+
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
         TraceAdapter adapter=new TraceAdapter(MyApp.getContext(),mTraceList);
         recyclerview.setAdapter(adapter);

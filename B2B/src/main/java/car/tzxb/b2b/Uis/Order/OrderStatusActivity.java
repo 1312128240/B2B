@@ -78,7 +78,6 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     public void initParms(Bundle parms) {
         index = getIntent().getIntExtra("index", -1);
         type = getIntent().getStringExtra("type");
-
     }
 
     @Override
@@ -202,28 +201,28 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 TextView tv2 = holder.getView(R.id.tv_view2);
                 TextView tv3 = holder.getView(R.id.tv_view3);
                 TextView  tv_describe=holder.getView(R.id.tv_order_status_describe);
-                if ("待付款".equals(bean.getStatus())) {    //待付款
+                if ("等待付款".equals(bean.getStatus())) {    //待付款
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("付款");
                     tv2.setText("取消订单");
                     tv_describe.setText("等待付款");
-                } else if ("待发货".equals(bean.getStatus())) { //待发货
+                } else if ("等待发货".equals(bean.getStatus())) { //待发货
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("提醒发货");
                     tv2.setText("查看物流");
                     tv_describe.setText("等待发货");
-                } else if ("待收货".equals(bean.getStatus())) { //待收货
+                } else if ("商家已发货".equals(bean.getStatus())) { //待收货
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("确认收货");
                     tv2.setText("物流详情");
                     tv_describe.setText("商家已发货");
-                } else if ("待评价".equals(bean.getStatus())) { //待评价
+                } else if ("交易成功".equals(bean.getStatus())) { //待评价
                     tv1.setVisibility(View.VISIBLE);
                     tv2.setVisibility(View.VISIBLE);
                     tv3.setVisibility(View.VISIBLE);
@@ -243,14 +242,16 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent();
-                        if ("待付款".equals(bean.getStatus())) {
+                        if ("等待付款".equals(bean.getStatus())) {
                             //去付款
                             intent.setClass(OrderStatusActivity.this, WXPayEntryActivity.class);
+                            intent.putExtra("total",bean.getAmount_pay_able());
+                            intent.putExtra("order_seqnos",bean.getOrder_seqno());
                             startActivity(intent);
-                        } else if ("待发货".equals(bean.getStatus())) {
+                        } else if ("等待发货".equals(bean.getStatus())) {
                             //提醒发货
                             Reminder(bean.getAid());
-                        } else if ("待收货".equals(bean.getStatus())) {
+                        } else if ("商家已发货".equals(bean.getStatus())) {
                             //确认收货
                             final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
                             Bundle bundle=new Bundle();
@@ -272,7 +273,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                                 }
                             });
 
-                        } else if ("待评价".equals(bean.getStatus())) {
+                        } else if ("交易成功".equals(bean.getStatus())) {
                             //晒单评价
 
                         }
@@ -283,7 +284,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     @Override
                     public void onClick(View v) {
 
-                        if ("待付款".equals(bean.getStatus())) {
+                        if ("等待付款".equals(bean.getStatus())) {
                             //取消订单
                             final CancelOrderPop cop = new CancelOrderPop(MyApp.getContext());
                             cop.show(parent);
@@ -294,13 +295,13 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                                     cop.dismiss();
                                 }
                             });
-                        } else if ("待发货".equals(bean.getStatus())) {
+                        } else if ("等待发货".equals(bean.getStatus())) {
                             //查看物流
                             Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
                             intent.putExtra("orderId",bean.getAid());
                             startActivity(intent);
 
-                        } else if ("待收货".equals(bean.getStatus()) || "待评价".equals(bean.getStatus())) {
+                        } else if ("商家已发货".equals(bean.getStatus()) ||"交易成功".equals(bean.getStatus())) {
                             //物流详情
                             Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
                             intent.putExtra("orderId",bean.getAid());
@@ -311,7 +312,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                 tv3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if("待评价".equals(bean.getStatus())){
+                        if("交易成功".equals(bean.getStatus())){
                             final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
                             Bundle bundle=new Bundle();
                             bundle.putString("title","确认删除订单");
