@@ -450,7 +450,7 @@ public class OrderXqBean implements Serializable {
                 this.child_data = child_data;
             }
 
-            public static class ChildDataBean {
+            public static class ChildDataBean implements Serializable{
 
                 private Object shop_name;
                 private String address;

@@ -505,6 +505,7 @@ public class OrderXqActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_order_number)
     public void mesg(){
         Intent intent=new Intent(this,GoodsListActivity.class);
+        intent.putExtra("from","OrderXq");
         intent.putExtra("bean",bean);
         startActivity(intent);
     }

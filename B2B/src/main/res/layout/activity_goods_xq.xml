@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/goods_xq_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:id="@+id/goods_xq_parent"
     android:descendantFocusability="blocksDescendants"
+    android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity">
 
     <RelativeLayout
         android:id="@+id/xq_toolbar"
-        android:elevation="0.5dp"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
-        android:paddingTop="30dp"
+        android:elevation="0.5dp"
         android:paddingLeft="10dp"
-        android:paddingRight="15dp">
+        android:paddingRight="15dp"
+        android:paddingTop="30dp">
 
         <ImageView
             android:id="@+id/iv_xq_back"
@@ -57,10 +57,10 @@
 
     <RadioGroup
         android:id="@+id/rg_xq"
-        android:elevation="3dp"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@color/white"
+        android:elevation="3dp"
         android:orientation="horizontal">
 
         <RadioButton

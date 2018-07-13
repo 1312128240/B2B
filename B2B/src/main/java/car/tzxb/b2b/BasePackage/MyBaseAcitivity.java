@@ -236,11 +236,11 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
-        if (presenter != null) {
+     /*   if (presenter != null) {
             presenter.onDestroy();
             presenter = null;
             System.gc();
-        }
+        }*/
         OkHttpUtils.getInstance().cancelTag(TAG);
         ActivityManager.getInstance().deleteActivity(this);
     }

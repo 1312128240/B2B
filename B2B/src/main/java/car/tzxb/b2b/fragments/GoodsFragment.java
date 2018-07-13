@@ -3,6 +3,7 @@ package car.tzxb.b2b.fragments;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -18,17 +19,19 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
+import com.example.mylibrary.HttpClient.OkHttpUtils;
+import com.example.mylibrary.HttpClient.callback.GenericsCallback;
+import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
+import com.youth.banner.loader.ImageLoader;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -38,6 +41,7 @@ import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.Adapter.DetailsAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
+import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.GoodsXqBean;
 import car.tzxb.b2b.Interface.GoodsXqInterface;
 import car.tzxb.b2b.Interface.ScollListener;
@@ -45,9 +49,12 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
+import car.tzxb.b2b.Util.BannerImageLoader;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.ExplainPop;
+import car.tzxb.b2b.config.Constant;
+import okhttp3.Call;
 
 public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, ScollListener {
     @BindView(R.id.xq_banner)
@@ -93,6 +100,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     TextView tv_more_pj;
     private String flag;
     private int y;
+    private String shopId;
 
 
     @Override
@@ -129,20 +137,37 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(goodsActivity).toBundle());
             return;
         }
-
         //是否收藏
         if (!"0".equals(flag)) {
-            tv_collect.setBackground(getResources().getDrawable(R.drawable.bg1));
-            Drawable drawable = getResources().getDrawable(R.drawable.list_icon_collection);
+            tv_collect.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.bg1));
+            Drawable drawable =MyApp.getContext(). getResources().getDrawable(R.drawable.list_icon_collection);
             tv_collect.setText("收藏");
             tv_collect.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
             flag = "0";
         } else {
-            tv_collect.setBackground(getResources().getDrawable(R.drawable.bg3));
+            tv_collect.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.bg3));
             tv_collect.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tv_collect.setText("已收藏");
             flag = "1";
         }
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl+"item/index.php?c=Home&m=CollectShopUser")
+                .tag(this)
+                .addParams("user_id",userId)
+                .addParams("shop_id",shopId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                       MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                    }
+                });
 
     }
 
@@ -178,7 +203,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             imgList.addAll(product.get(i).getContents_mobi());
         }
         Log.i("接收到数据了吗", imgList.size() + "");
-        DetailsAdapter detailsAdapter = new DetailsAdapter(getContext(), imgList);
+        DetailsAdapter detailsAdapter = new DetailsAdapter(MyApp.getContext(), imgList);
 
         lv_details.setAdapter(detailsAdapter);
 
@@ -187,12 +212,12 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     public void changStatus(String s) {
         //是否收藏
         if ("0".equals(s)) {
-            tv_collect.setBackground(getResources().getDrawable(R.drawable.bg1));
-            Drawable drawable = getResources().getDrawable(R.drawable.list_icon_collection);
+            tv_collect.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.bg1));
+            Drawable drawable = MyApp.getContext().getResources().getDrawable(R.drawable.list_icon_collection);
             tv_collect.setText("收藏");
             tv_collect.setCompoundDrawablesWithIntrinsicBounds(drawable, null, null, null);
         } else {
-            tv_collect.setBackground(getResources().getDrawable(R.drawable.bg3));
+            tv_collect.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.bg3));
             tv_collect.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
             tv_collect.setText("已收藏");
         }
@@ -204,7 +229,9 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
      * @param shop
      */
     private void initShop(GoodsXqBean.DataBean.ShopBean shop, List<GoodsXqBean.DataBean.HotBean> hotBeanList) {
-        Glide.with(this).load(shop.getShop_img()).asBitmap().into(xriv);
+        Glide.with(MyApp.getContext()).load(shop.getShop_img()).asBitmap().into(xriv);
+        //门店id
+        shopId = shop.getID();
         tv_shop_name.setText(shop.getShop_name());
         tv_shop_city.setText(shop.getProvince() + shop.getCity() + shop.getArea());
         //门店是否收藏
@@ -286,21 +313,25 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     private void initInfor(GoodsXqBean.DataBean.GoodsBean goods) {
         //-------------轮播图---------------------
         List<String> images = goods.getBanner();
-        banner.setBannerStyle(Banner.NUM_INDICATOR);
-        banner.setIndicatorGravity(Banner.RIGHT);
+        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
+        banner.setIndicatorGravity(BannerConfig.RIGHT);
         //设置是否自动轮播（不设置则默认自动）
         banner.isAutoPlay(true);
         //设置轮播图片间隔时间（不设置默认为2000）
         banner.setDelayTime(3000);
         //设置图片资源:可选图片网址/资源文件，默认用Glide加载,也可自定义图片的加载框架
         //所有设置参数方法都放在此方法之前执行
+        banner.setImageLoader(new BannerImageLoader());
         banner.setImages(images);
+        banner.start();
         //-----------价钱销量信息-------------------
         tv_sales.setText("月销量: " + goods.getSales());
         tv_type.setText(goods.getDealer());
         tv_goods_name.setText("\u3000\u3000" + goods.getTitle());
-        tv_current_price.setText(Html.fromHtml("¥ " + "<big>" + goods.getPrice() + "</big>"));
-        tv_cost_price.setText(Html.fromHtml("原价:¥" + goods.getM_price()));
+        //现价区间
+        tv_current_price.setText(Html.fromHtml("¥ " + "<big>" + goods.getMax_seal_price()+"—" +goods.getMin_seal_price()+"</big>"));
+        //原价区间
+        tv_cost_price.setText(Html.fromHtml("原价:¥" + goods.getMax_market_price()+"-"+goods.getMin_market_price()));
         tv_cost_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
         tv_city.setText(goods.getProvince() + goods.getCity() + goods.getArea());
         //商品收藏

@@ -27,6 +27,7 @@ import com.tencent.mm.opensdk.modelbiz.WXLaunchMiniProgram;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +55,7 @@ import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
 import car.tzxb.b2b.Uis.Vip.VipHomePagerActivity;
+import car.tzxb.b2b.Util.BannerImageLoader;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
@@ -129,7 +131,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         //实现windowChange监听
         scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
         scrollView.setOnTouchListener(this);
-
     }
 
     @Override
@@ -148,11 +149,15 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void showData(Object o) {
         HomeBean bean = (HomeBean) o;
         initHeader(bean);
+        //底部品牌商品
+        getBrandData();
         initBottom(bean);
+
     }
 
 
     private void initBottom(HomeBean bean) {
+
         //自营
         List<HomeBean.DataBean.ProductTypeBean> selfBean = bean.getData().getProductType();
         Glide.with(getContext()).load(selfBean.get(0).getImg_url()).dontAnimate().into(iv_self1);
@@ -225,8 +230,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 return false;
             }
         });
-        //底部品牌商品
-        getBrandData();
+
         recy_goods.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
         brandAndGoodsAdapter = new CommonAdapter<BaseDataListBean.DataBean>(getContext(), R.layout.recommend_layout, brandList) {
@@ -313,15 +317,17 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
             String url = bannerBean.get(i).getImg_url();
             img.add(url);
         }
-        banner.setBannerStyle(Banner.NUM_INDICATOR);
-        banner.setIndicatorGravity(Banner.RIGHT);
+        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
+        banner.setIndicatorGravity(BannerConfig.RIGHT);
         //设置是否自动轮播（不设置则默认自动）
         banner.isAutoPlay(true);
         //设置轮播图片间隔时间（不设置默认为2000）
         banner.setDelayTime(3000);
         //设置图片资源:可选图片网址/资源文件，默认用Glide加载,也可自定义图片的加载框架
         //所有设置参数方法都放在此方法之前执行
+        banner.setImageLoader(new BannerImageLoader());
         banner.setImages(img);
+        banner.start();
         //5个按钮
         List<HomeBean.DataBean.BtnImgBean> buttonBeanList = bean.getData().getBtnImg();
         recy_track.setLayoutManager(new GridLayoutManager(getContext(), 5));

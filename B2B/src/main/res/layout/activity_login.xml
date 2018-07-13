@@ -124,4 +124,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_agreement"
+        android:textSize="12sp"
+        tools:text="登录即代表您已同意"
+        android:paddingBottom="10dp"
+        android:gravity="center_horizontal|bottom"
+        android:textColor="@color/colorBlack"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

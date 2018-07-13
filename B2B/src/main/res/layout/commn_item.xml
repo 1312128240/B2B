@@ -1,98 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tolas="http://schemas.android.com/tools"
+    android:id="@+id/commn_item_parent"
     android:layout_width="match_parent"
     android:layout_height="100dp"
-    android:id="@+id/commn_item_parent"
-    xmlns:tolas="http://schemas.android.com/tools"
-    android:background="@color/white"
-    android:padding="8dp">
-    <CheckBox
-        android:id="@+id/cb_refund"
-        android:visibility="gone"
-        android:scaleX="0.9"
-        android:scaleY="0.9"
-        android:background="@drawable/check_box_select"
-        android:button="@null"
-        android:layout_marginRight="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true" />
+    android:layout_marginTop="1dp"
+    android:background="@color/white">
 
-    <ImageView
-        android:id="@+id/iv_category"
-        android:layout_width="100dp"
-        android:layout_toRightOf="@+id/cb_refund"
-        android:layout_height="match_parent"
-        android:layout_marginRight="10dp"
-        android:src="@drawable/bucket_no_picture" />
-    <TextView
-        android:id="@+id/tv_goods_type"
-        android:layout_marginTop="2dp"
-        tolas:text="自营"
-        android:gravity="center"
-        android:paddingLeft="3dp"
-        android:paddingRight="3dp"
-        android:textSize="11sp"
-        android:background="@drawable/bg7"
-        android:layout_toRightOf="@+id/iv_category"
-        android:textColor="@color/red"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <TextView
-        android:id="@+id/tv_catagroy_name"
+    <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/iv_category"
-        android:lines="2"
-        android:textColor="@color/colorBlack" />
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/tv_seales2"
-        tolas:text="销量"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/gray"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/iv_category" />
-
-    <TextView
-        android:id="@+id/tv_category_pice"
-        android:text="￥564"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/iv_category"
-        android:textColor="@color/red"
-        />
+        <RelativeLayout
+            android:padding="8dp"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
 
-    <TextView
-        android:id="@+id/tv_maker_price"
-        tolas:text="原价"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_toRightOf="@+id/tv_seales2"
-        android:layout_marginLeft="100dp"
-        android:textColor="@color/gray"
-        android:textSize="12sp" />
+            <CheckBox
+                android:id="@+id/cb_refund"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/check_box_select"
+                android:button="@null"
+                android:visibility="gone" />
 
-    <ImageView
-        android:id="@+id/iv_gwc_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/iv_category"
-        android:layout_alignParentRight="true"
-        android:src="@mipmap/list_icon_adc"
-        android:visibility="gone"
-         />
+            <ImageView
+                android:id="@+id/iv_category"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="10dp"
+                android:layout_toRightOf="@+id/cb_refund"
+                android:src="@drawable/bucket_no_picture" />
 
-    <TextView
-        android:id="@+id/tv_goods_count"
-        tolas:text="x1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/iv_category"
-        android:layout_alignParentRight="true"
-        android:textColor="@color/black" />
+            <TextView
+                android:id="@+id/tv_goods_type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:layout_toRightOf="@+id/iv_category"
+                android:background="@drawable/bg7"
+                android:gravity="center"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:textColor="@color/red"
+                android:textSize="11sp"
+                tolas:text="自营" />
+
+            <TextView
+                android:id="@+id/tv_catagroy_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/iv_category"
+                android:lines="2"
+                android:textColor="@color/colorBlack" />
+
+            <TextView
+                android:id="@+id/tv_seales2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/iv_category"
+                android:textColor="@color/gray"
+                tolas:text="销量" />
+
+            <TextView
+                android:id="@+id/tv_category_pice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/iv_category"
+                android:textColor="@color/red"
+                tolas:text="￥564" />
+
+
+            <TextView
+                android:id="@+id/tv_maker_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginLeft="100dp"
+                android:layout_toRightOf="@+id/tv_seales2"
+                android:textColor="@color/gray"
+                android:textSize="12sp"
+                tolas:text="原价" />
+
+            <ImageView
+                android:id="@+id/iv_gwc_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_category"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/list_icon_adc"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/tv_goods_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/iv_category"
+                android:layout_alignParentRight="true"
+                android:textColor="@color/black"
+                tolas:text="x1" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_del_browhistory"
+            android:textColor="@color/colorWhite"
+            android:visibility="gone"
+            android:text="删除"
+            android:layout_width="45dp"
+            android:gravity="center"
+            android:background="@color/red1"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </RelativeLayout>

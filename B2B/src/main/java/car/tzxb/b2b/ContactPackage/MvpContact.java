@@ -24,15 +24,7 @@ public class MvpContact {
     }
 
 
-    /**
-     * P层
-     */
-    public interface Presenter extends BasePresenter{
-        /**
-         * View层调用此接口
-         * @param url
-         * @param params
-         */
+  public interface Presenter extends BasePresenter{
 
         void  PresenterGetData(String url, Map<String,String> params);
     }

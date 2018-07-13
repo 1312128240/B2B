@@ -32,10 +32,12 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.LoginActivity;
+import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
 import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
+import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopMapActivity;
 import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
 import car.tzxb.b2b.Util.SPUtil;
 
@@ -159,12 +161,21 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     }
 
     /**
-     * 登录注册
+     * 登录
      */
-    @OnClick({R.id.tv_login,R.id.tv_regist})
+    @OnClick(R.id.tv_login)
     public void login(){
         Intent intent=new Intent(getActivity(),LoginActivity.class);
         startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+    }
+    /**
+     * 注册
+     */
+    @OnClick(R.id.tv_regist)
+    public void regist(){
+        Intent intent=new Intent(getActivity(), OpenShopEntranceActivity.class);
+        intent.putExtra("from","login");
+        startActivity(intent);
     }
 
 
@@ -213,12 +224,14 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         switch (i) {
             case R.id.rb_collect_goods:
                 intent.setClass(getActivity(), CollectActivity.class);
+                intent.putExtra("index",0);
                 break;
             case R.id.rb_collect_shop:
                 intent.setClass(getActivity(), CollectActivity.class);
+                intent.putExtra("index",1);
                 break;
             case R.id.rb_browse_record:
-                intent.setClass(getActivity(), CollectActivity.class);
+                intent.setClass(getActivity(), BrowhistoryActivity.class);
                 break;
             case R.id.rb_all:
                 intent.setClass(getActivity(), OrderStatusActivity.class);

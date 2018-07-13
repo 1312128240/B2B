@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
@@ -70,6 +71,8 @@ public class LoginActivity extends MyBaseAcitivity {
     CountDownTextView tv_get_yzm;
     @BindView(R.id.tv_actionbar_back)
     TextView tv_back;
+    @BindView(R.id.tv_agreement)
+    TextView tv_agreement;
     private int index;
     private boolean flag1;
 
@@ -90,6 +93,8 @@ public class LoginActivity extends MyBaseAcitivity {
     public void doBusiness(Context mContext) {
         tv_title.setText("同致相伴");
         tv_back.setVisibility(View.INVISIBLE);
+        String str1 = "登录即代表您已同意<font color='#F6A623'>《同致相伴平台服务协议》</font>";
+        tv_agreement.setText(Html.fromHtml(str1));
         initUi();
     }
 
@@ -107,16 +112,17 @@ public class LoginActivity extends MyBaseAcitivity {
                 index = tab.getPosition();
                 etLoginPass.setText("");
                 if (index == 0) {
+                    etLoginPhone.setHint(R.string.login_phone);
                     etLoginPass.setHint(R.string.login_pass);
                     tv_get_yzm.setVisibility(View.INVISIBLE);
                     iv_pass_visiable.setImageResource(R.mipmap.login_icon_cansee);
                 } else {
-
+                    etLoginPhone.setHint(R.string.login_phone2);
+                    etLoginPass.setHint(R.string.yzm_pass);
                     etLoginPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     iv_pass_visiable.setVisibility(View.INVISIBLE);
-
                     tv_get_yzm.setVisibility(View.VISIBLE);
-                    etLoginPass.setHint(R.string.yzm_pass);
+
                 }
 
             }
@@ -303,7 +309,7 @@ public class LoginActivity extends MyBaseAcitivity {
                             hideSoftInput();
                             startAnmi(response);
                         } else {
-                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
                         }
                     }
                 });
@@ -348,7 +354,7 @@ public class LoginActivity extends MyBaseAcitivity {
                             hideSoftInput();
                             startAnmi(response);
                         } else {
-                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.BOTTOM, 0, 50).show();
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
                         }
                     }
                 });
@@ -434,13 +440,12 @@ public class LoginActivity extends MyBaseAcitivity {
         if (isFastClick()) {
             startActivity(FindPassWordActivity.class);
         }
-
     }
 
     @OnClick(R.id.tv_open_shop)
     public void open() {
         if (isFastClick()) {
-            Intent intent = new Intent(this, OpenShopEntranceActivity.class);
+            Intent intent = new Intent(this, OpenShopActivity.class);
             intent.putExtra("from", "login");
             startActivity(intent);
         }

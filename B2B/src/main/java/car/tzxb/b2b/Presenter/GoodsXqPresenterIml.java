@@ -28,8 +28,8 @@ public class GoodsXqPresenterIml implements MvpContact.Presenter {
 
     @Override
     public void onDestroy() {
-        view = null;
-        System.gc();
+     /*   view = null;
+        System.gc();*/
     }
 
     @Override

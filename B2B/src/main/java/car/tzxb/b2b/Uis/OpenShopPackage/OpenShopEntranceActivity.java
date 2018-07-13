@@ -81,6 +81,8 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
             mobile = getIntent().getStringExtra("mobile");
             et_phone.setHint(getString(R.string.input_pass));
             et_yzm.setHint(getString(R.string.agin_input_pass));
+            et_phone.setInputType(0x81);
+            et_yzm.setInputType(0x81);
             tv_get_yzm.setVisibility(View.INVISIBLE);
             initTextWatch2();
         }
@@ -160,6 +162,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
     }
 
     private void initTextWatch2() {
+
         et_phone.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -261,7 +264,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
         }
 
         if (pass.length() < 6) {
-            Snackbar.make(tv_title, "密码不能小位6位数", Snackbar.LENGTH_SHORT).show();
+            Snackbar.make(tv_title, "密码不能小于6位数", Snackbar.LENGTH_SHORT).show();
             return;
         }
         if (TextUtils.isEmpty(agin_pass)) {
@@ -361,21 +364,6 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
                         }else {
                             showDialgoFragment(response.getMsg());
                         }
-                       // int status =Integer.parseInt(et_phone.getText().toString());
-                      /*  int status=Integer.valueOf(et_phone.getText().toString());
-                        switch (status) {
-                            case 0:   //账号已经审核通过
-                                showPassDialogFragment();
-                                break;
-                            case 1:  //手机号没有申请过走正常申请流程
-                                apply(phone,yzm);
-                                break;
-                            case 2:  //账号注册过,但可以编缉资料
-                                showEditInfor(phone);
-                                break;
-                            case 3:    //审核未通过
-                                break;
-                        }*/
                     }
                 });
 
@@ -403,48 +391,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
         });
     }
 
- /*   private void showEditInfor(final String phone) {
-        final AlterDialogFragment dialogFragment=new AlterDialogFragment();
-        dialogFragment.setCancelable(false);
-        Bundle bundle = new Bundle();
-        bundle.putString("title", "此账号已注册,是否继续编缉资料");
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(getSupportFragmentManager(),"pass");
-        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
-            @Override
-            public void cancle() {
-                dialogFragment.dismiss();
-            }
 
-            @Override
-            public void sure() {
-                Intent intent=new Intent(OpenShopEntranceActivity.this,OpenShopEntrance2Activity.class);
-                intent.putExtra("from","edit");
-                intent.putExtra("mobile",phone);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void showPassDialogFragment() {
-        AlterDialogFragment dialogFragment=new AlterDialogFragment();
-        dialogFragment.setCancelable(false);
-        Bundle bundle = new Bundle();
-        bundle.putString("title", "此账号已通过审核,可直接登录");
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(getSupportFragmentManager(),"pass");
-        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
-            @Override
-            public void cancle() {
-                onBackPressed();
-            }
-
-            @Override
-            public void sure() {
-               onBackPressed();
-            }
-        });
-    }*/
 
     public void apply(final String phone, String yzm){
 

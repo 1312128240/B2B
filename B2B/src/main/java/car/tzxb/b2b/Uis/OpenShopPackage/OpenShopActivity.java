@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
@@ -108,7 +109,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     private String password=null;
     private int  type;
     private String recommend;
-    private String tjr;
+    private String tjrId;
     private String city;
     private final int REQUEST_CODE_LOCATION = 101;
     private final int REQUEST_CODE_CAMERA = 102;
@@ -256,7 +257,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         tjrPop.setClickListener(new TjrPop.ClickListener() {
             @Override
             public void click(BaseStringBean bean) {
-                 tjr=bean.getID();
+                 tjrId=bean.getID();
                  recommend=bean.getShop_name();
                  tv_tjr.setText(recommend);
             }
@@ -392,9 +393,6 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
     }
 
-
-
-
     private void selectPhoto() {
         ImageConfig imageConfig = new ImageConfig.Builder(
                 new GlideLoader())
@@ -412,7 +410,6 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 .build();
         ImageSelector.open(this, imageConfig);
     }
-
 
 
     @Override
@@ -443,7 +440,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         }else if(requestCode==88){
             if(resultCode == RESULT_OK && data != null) {
                  address = data.getStringExtra("ResultAddress");
-
+                 et_shop_address.setText(address);
             }
 
         }
@@ -457,15 +454,20 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
             String shop_lxr_name = et_shop_lxr_name.getText().toString();
             String shop_lxr_address = et_shop_address.getText().toString();
             String shop_lxr_tell = et_tell.getText().toString();
-
+            String tjr=tv_tjr.getText().toString();
             if (TextUtils.isEmpty(shop_name)) {
                 MyToast.makeTextAnim(this, "请输入店铺名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
             if (TextUtils.isEmpty(shop_lxr_name)) {
-                MyToast.makeTextAnim(this, "请输入联系人名字", 0, Gravity.CENTER, 0, 0).show();
+                MyToast.makeTextAnim(this, "请填写联系人名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
+          if(TextUtils.isEmpty(tjr)){
+                MyToast.makeTextAnim(this, "请填写推荐人信息", 0, Gravity.CENTER, 0, 0).show();
+                return;
+            }
+
             if (type==0) {
                 MyToast.makeTextAnim(this, "请选择门店主营类型", 0, Gravity.CENTER, 0, 0).show();
                 return;
@@ -514,7 +516,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                     .addParams("shop_type", String.valueOf(type))
                     .addParams("tell", shop_lxr_tell)
                     .addParams("selcity", address)
-                    .addParams("tjr", tjr+"")
+                    .addParams("tjr", tjrId+"")
                     .addParams("recommend",recommend+"")
                     .addParams("shop_name", shop_name)
                     .addParams("shop_address", shop_lxr_address)
@@ -525,6 +527,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                         @Override
                         public void onError(Call call, Exception e, int id) {
                             tLog("注册的是" + e.toString());
+                            Toast.makeText(MyApp.getContext(),e.toString(),Toast.LENGTH_LONG).show();
                         }
 
                         @Override

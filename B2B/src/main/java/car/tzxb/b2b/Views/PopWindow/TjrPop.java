@@ -133,14 +133,14 @@ public class TjrPop extends PopupWindow {
     }
 
     private void getData(String pro) {
-       Log.i("业务员",Constant.baseUrl+"item/index.php?m=shop"+"&address="+pro+"&user_type=sj");
+
         final List<BaseStringBean> strBeanList=new ArrayList<>();
+        Log.i("查询业务员店名",Constant.baseUrl+"item/index.php?c=Home&m=YWYList&user_type=sj"+"&address="+pro);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"item/index.php?m=shop")
+                .url(Constant.baseUrl+"item/index.php?c=Home&m=YWYList&user_type=sj")
                 .addParams("address",pro)
-                .addParams("user_type","sj")
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -185,10 +185,12 @@ public class TjrPop extends PopupWindow {
 
     private void getYwy(String id) {
       final List<BaseStringBean> stringBeanList=new ArrayList<>();
+        Log.i("查询业务员",Constant.baseUrl+"item/index.php?c=Home&m=BindUser"+"&user_id="+id);
+
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"item/index.php?m=BindUser")
+                .url(Constant.baseUrl+"item/index.php?c=Home&m=BindUser")
                 .addParams("user_id",id)
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {

@@ -331,6 +331,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     @OnClick(R.id.tv_order_number)
     public void list(){
         Intent intent=new Intent(this,GoodsListActivity.class);
+        intent.putExtra("from","Order");
         intent.putExtra("bean",dataBean);
         startActivityForResult(intent,100);
     }

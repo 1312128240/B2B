@@ -24,26 +24,27 @@ public class GoodsClassifyPresenterIml implements MvpContact.Presenter {
     }
 
 
-    @Override
+   @Override
     public void onDestroy() {
-        view=null;
-        System.gc();
+    /*    view=null;
+        System.gc();*/
     }
 
     @Override
     public void PresenterGetData(String url, Map<String, String> params) {
-        view.showLoading();
-       modelIml.ModelGetData(url, params, new BaseCallbackListener<BaseDataListBean>() {
-           @Override
-           public void onSucceed(BaseDataListBean result) {
-               view.showData(result);
-               view.closeLoading();
-           }
+            view.showLoading();
+            modelIml.ModelGetData(url, params, new BaseCallbackListener<BaseDataListBean>() {
+                @Override
+                public void onSucceed(BaseDataListBean result) {
+                    view.showData(result);
+                    view.closeLoading();
+                }
 
-           @Override
-           public void onError(Throwable errorMsg) {
-              view.closeLoading();
-           }
-       });
+                @Override
+                public void onError(Throwable errorMsg) {
+                    view.closeLoading();
+                }
+            });
+
     }
 }

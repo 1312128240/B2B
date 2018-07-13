@@ -8,13 +8,16 @@ import android.view.View;
 import android.widget.TextView;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
 import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MapView;
+import com.baidu.mapapi.map.Marker;
 import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
 import com.baidu.mapapi.search.geocode.GeoCodeOption;
@@ -70,6 +73,7 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         mSearch.setOnGetGeoCodeResultListener(this);
         mSearch.geocode(new GeoCodeOption().city(city).address(address));
         initMap();
+
     }
 
     @Override
@@ -88,7 +92,6 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         mapView.showZoomControls(false);
          //点击监听
         baiduMap.setOnMapClickListener(this);
-
     }
 
     @OnClick(R.id.tv_actionbar_back)
@@ -130,7 +133,7 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     }
     @OnClick(R.id.btn_sumbit_open_shop_latlog)
     public void submit(){
-        Intent intent=new Intent(this,OpenShopActivity.class);
+        Intent intent=new Intent();
         intent.putExtra("ResultAddress",resultAddress);
         setResult(RESULT_OK, intent);
         finish();
@@ -162,7 +165,7 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     public void onMapClick(LatLng ll) {
            //在此处理点击事件
         baiduMap.clear();
-        Log.i("点击的经纬度",ll.latitude+"______"+ll.longitude);
+      Log.i("点击图标的经纬度",ll.latitude+"______"+ll.longitude);
         //获取地理编码结果,开始定位
         MarkerOptions option = new MarkerOptions();
         option.position(ll);
@@ -170,9 +173,9 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         baiduMap.addOverlay(option);
         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(ll);
         baiduMap.animateMapStatus(msu);
-
         //发起逆地理编码
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
+
     }
 
     @Override
@@ -180,4 +183,6 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         //在此处理底图标注点击事件
         return false;
     }
+
+
 }

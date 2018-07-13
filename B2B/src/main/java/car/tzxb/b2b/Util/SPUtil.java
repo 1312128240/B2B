@@ -66,6 +66,4 @@ public class SPUtil {
     public String getMobile(String key,String defValue){
         return sp.getString(key,defValue);
     }
-
-
 }

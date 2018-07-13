@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-   <include layout="@layout/top_swich"/>
+    <include layout="@layout/top_swich" />
 
     <TextView
-        android:gravity="center"
+        android:id="@+id/tv_empty_collect"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="200dp"
         android:drawablePadding="10dp"
         android:drawableTop="@drawable/shop_icon_blank"
-        android:textColor="@color/colorBlack2"
-        android:layout_centerInParent="true"
+        android:gravity="center_horizontal"
         android:text="木有商品呀~"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/colorBlack2"
+         />
 
-</RelativeLayout>
+    <LinearLayout
+        android:id="@+id/ll_collect"
+        android:visibility="gone"
+        android:orientation="vertical"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_collect"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:background="@color/colorWhite"
+            android:layout_height="40dp"
+            android:elevation="2dp">
+
+            <CheckBox
+                android:id="@+id/cb_all_collect"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:button="@null"
+                android:drawableLeft="@drawable/check_box_select"
+                android:drawablePadding="8dp"
+                android:scaleX="0.9"
+                android:scaleY="0.9"
+                android:text="全选" />
+
+            <TextView
+                android:id="@+id/tv_cancle_collect"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@color/red"
+                android:gravity="center"
+                android:text="取消收藏"
+                android:textColor="@color/colorWhite" />
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

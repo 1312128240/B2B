@@ -56,6 +56,7 @@ public class BaseDataListBean {
         private String tag;
         private String img;
         private String Username;
+        private boolean isCheck;
         private String stock_distributor_all;
         private String id;
         private String name;
@@ -83,6 +84,75 @@ public class BaseDataListBean {
         private String p_title;
         private String goods_id;
         private String product_id;
+        private String title;
+        private String isset;
+        private String msg;
+        private String is_del;
+        private String add_time;
+        private String max_seal_price;
+        private String min_seal_price;
+        public boolean isCheck() {
+            return isCheck;
+        }
+
+        public void setCheck(boolean check) {
+            isCheck = check;
+        }
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getIsset() {
+            return isset;
+        }
+
+        public void setIsset(String isset) {
+            this.isset = isset;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public String getIs_del() {
+            return is_del;
+        }
+
+        public void setIs_del(String is_del) {
+            this.is_del = is_del;
+        }
+
+        public String getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(String add_time) {
+            this.add_time = add_time;
+        }
+
+        public String getMax_seal_price() {
+            return max_seal_price;
+        }
+
+        public void setMax_seal_price(String max_seal_price) {
+            this.max_seal_price = max_seal_price;
+        }
+
+        public String getMin_seal_price() {
+            return min_seal_price;
+        }
+
+        public void setMin_seal_price(String min_seal_price) {
+            this.min_seal_price = min_seal_price;
+        }
 
         public String getStock_distributor_all() {
             return stock_distributor_all;

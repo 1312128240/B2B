@@ -67,14 +67,13 @@ public class EvaluateFragment extends MyBaseFragment2 implements RadioGroup.OnCh
     }
 
     private void Refresh() {
-      //http://172.20.10.142/mobile_api/item/index.php?c=Goods&m=GetGoodsCommentInfo&id=514&user_id=1&succ=2
         String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         Log.i("评论的是",Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsCommentInfo"+"&id="+mainId+"&user_id="+userId+"&succ="+index);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsCommentInfo")
                 .tag(this)
-                .addParams("id","514")
+                .addParams("id",mainId)
                 .addParams("user_id",userId)
                 .addParams("succ", String.valueOf(index))
                 .build()

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity">
+
+    <include
+        android:id="@+id/browhistory_actionbar"
+        layout="@layout/base_actionbar" />
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_browhistory"
+        android:layout_below="@+id/browhistory_actionbar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+
+    <TextView
+        android:id="@+id/tv_empty_browhistory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:drawablePadding="10dp"
+        android:drawableTop="@drawable/shop_icon_blank3"
+        android:text="天~居然连一个商品都没看?"
+        android:visibility="gone" />
+</RelativeLayout>
