@@ -11,6 +11,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.transition.Fade;
+import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -82,6 +84,8 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
     @Override
     public int bindLayout() {
+        getWindow().setEnterTransition(new Fade().setDuration(300));
+        getWindow().setExitTransition(new Fade().setDuration(300));
         return R.layout.activity_order_status;
     }
 

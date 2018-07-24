@@ -5,13 +5,15 @@
     android:useLevel="false">
 
     <!-- 实心 -->
-    <solid android:color="#FFF0ED"  />
-    <stroke android:color="#FDB0A3" android:width="3dp"/>
+    <solid android:color="@color/colorWhite"  />
+   <stroke android:color="@color/red" android:width="0.5dp"/>
     <!-- 圆角 -->
     <corners android:radius="360dp"  />
+<!--
 
-    <!-- 大小 -->
+    &lt;!&ndash; 大小 &ndash;&gt;
     <size android:width="15dp"
         android:height="15dp" />
+-->
 
 </shape>

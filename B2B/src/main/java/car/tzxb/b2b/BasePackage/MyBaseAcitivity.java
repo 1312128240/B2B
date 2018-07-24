@@ -132,8 +132,7 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
      * @param bundle
      * @param requestCode
      */
-    public void startActivityForResult(Class<?> cls, Bundle bundle,
-                                       int requestCode) {
+    public void startActivityForResult(Class<?> cls, Bundle bundle, int requestCode) {
         Intent intent = new Intent();
         intent.setClass(this, cls);
         if (bundle != null) {

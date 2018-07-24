@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity">
+ 
+    <include layout="@layout/base_actionbar"/>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        tools:text="短信验证码将会发送至: 1311654564" />
+
+    <LinearLayout
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+        <TextView
+            android:text="验证码"
+            android:textColor="@color/colorBlack2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:background="@null"
+            android:hint="@string/yzm_pass"
+            android:maxLength="4"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent" />
+        <car.myview.CountDown.CountDownTextView
+            android:id="@+id/tv_get_yzm"
+            android:textSize="12sp"
+            android:background="@drawable/count_time_bg"
+            android:text="获取验证码"
+            android:gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <Button
+        android:text="下一步"
+        android:textColor="@color/colorWhite"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

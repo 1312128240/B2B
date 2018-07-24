@@ -77,7 +77,13 @@
         <activity android:name=".Uis.Vip.VipHomePagerActivity" />
         <activity android:name=".Uis.Vip.VipCenterActivity" />
         <activity android:name=".Uis.MeCenter.MyGoldActivity" />
-        <activity android:name=".Uis.MeCenter.BrowhistoryActivity"></activity>
+        <activity android:name=".Uis.MeCenter.BrowhistoryActivity" />
+        <activity android:name=".Uis.MeCenter.WithMeActivity" />
+        <activity android:name=".Uis.MeCenter.FeedbackActivity" />
+        <activity android:name=".Uis.MeCenter.PersonalDataActivity" />
+        <activity android:name=".Uis.MeCenter.NickNameActivity" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity"></activity>
     </application>
 
 </manifest>

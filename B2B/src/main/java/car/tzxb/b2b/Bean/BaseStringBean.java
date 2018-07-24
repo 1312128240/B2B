@@ -18,7 +18,6 @@ public class BaseStringBean {
     private String shop_name;
     private String ID;
 
-
     public String getOrder() {
         return order;
     }

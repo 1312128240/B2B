@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:layout_width="match_parent"
     android:padding="8dp"
@@ -8,7 +9,7 @@
         android:id="@+id/tv_actionbar_back"
         android:drawableLeft="@mipmap/navigationbar_icon_return"
         android:drawablePadding="3dp"
-        android:text="返回"
+        tools:text="返回"
         android:textSize="19sp"
         android:layout_alignParentBottom="true"
         android:textColor="@color/colorBlack"

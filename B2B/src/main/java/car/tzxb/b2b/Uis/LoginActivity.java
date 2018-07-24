@@ -93,8 +93,7 @@ public class LoginActivity extends MyBaseAcitivity {
     public void doBusiness(Context mContext) {
         tv_title.setText("同致相伴");
         tv_back.setVisibility(View.INVISIBLE);
-        String str1 = "登录即代表您已同意<font color='#F6A623'>《同致相伴平台服务协议》</font>";
-        tv_agreement.setText(Html.fromHtml(str1));
+        tv_agreement.setText(Html.fromHtml("登录即代表您已同意<font color='#F6A623'>《同致相伴平台服务协议》</font>"));
         initUi();
     }
 
@@ -254,18 +253,18 @@ public class LoginActivity extends MyBaseAcitivity {
             String pass = etLoginPass.getText().toString();
             if (TextUtils.isEmpty(phone)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPhone);
-                Snackbar.make(tv_title, "请输入手机号", Snackbar.LENGTH_SHORT).show();
+                MyToast.makeTextAnim(MyApp.getContext(),"请输入手机号",0,Gravity.CENTER,0,0).show();
                 return;
             }
             if (index == 0 && TextUtils.isEmpty(pass)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPass);
-                Snackbar.make(tv_title, "请输入密码", Snackbar.LENGTH_SHORT).show();
+                MyToast.makeTextAnim(MyApp.getContext(),"请输入密码",0,Gravity.CENTER,0,0).show();
                 return;
             }
 
             if (index == 1 && TextUtils.isEmpty(pass)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPass);
-                Snackbar.make(tv_title, "请输入验证码", Snackbar.LENGTH_SHORT).show();
+                MyToast.makeTextAnim(MyApp.getContext(),"请输入验证码",0,Gravity.CENTER,0,0).show();
                 return;
             }
             if (index == 0) {
@@ -389,7 +388,7 @@ public class LoginActivity extends MyBaseAcitivity {
         String mobile = etLoginPhone.getText().toString();
         if (TextUtils.isEmpty(mobile)) {
             AnimationUtil.Sharke(MyApp.getContext(), etLoginPhone);
-            Snackbar.make(tv_title, "请输入手机号", Snackbar.LENGTH_SHORT).show();
+            MyToast.makeTextAnim(MyApp.getContext(),"请输入手机号",0,Gravity.CENTER,0,0).show();
             return;
         }
 
@@ -421,14 +420,14 @@ public class LoginActivity extends MyBaseAcitivity {
                     public void onResponse(BaseStringBean response, int id) {
                         String code = response.getCode();
                         if ("OK".equals(code)) {
-                            Snackbar.make(tv_get_yzm, "验证码已发送至您的手机,请查收!", Snackbar.LENGTH_SHORT).show();
+                            MyToast.makeTextAnim(MyApp.getContext(),"验证码已发送至您的手机,请查收!",0,Gravity.CENTER,0,0).show();
                             tv_get_yzm.start();
                         } else if ("isv.OUT_OF_SERVICE".equals(code)) {
-                            Snackbar.make(tv_get_yzm, "此号码已停机", Snackbar.LENGTH_SHORT).show();
+                            MyToast.makeTextAnim(MyApp.getContext(),"此号码已停机",0,Gravity.CENTER,0,0).show();
                         } else if ("isv.MOBILE_NUMBER_ILLEGAL".equals(code)) {
-                            Snackbar.make(tv_get_yzm, "手机号码不正确", Snackbar.LENGTH_SHORT).show();
+                            MyToast.makeTextAnim(MyApp.getContext(),"手机号码不正确",0,Gravity.CENTER,0,0).show();
                         } else if ("isv.BUSINESS_LIMIT_CONTROL".equals(code)) {
-                            Snackbar.make(tv_get_yzm, "此手机号因发送频繁,被限制获取", Snackbar.LENGTH_SHORT).show();
+                            MyToast.makeTextAnim(MyApp.getContext(),"此手机号因发送频繁,被限制获取",0,Gravity.CENTER,0,0).show();
                         }
                     }
                 });

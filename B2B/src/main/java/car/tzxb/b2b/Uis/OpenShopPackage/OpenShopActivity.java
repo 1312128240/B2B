@@ -3,12 +3,10 @@ package car.tzxb.b2b.Uis.OpenShopPackage;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.content.PermissionChecker;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -18,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
@@ -38,13 +35,11 @@ import com.jaiky.imagespickers.ImageConfig;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.lljjcoder.citypickerview.widget.CityPicker;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -178,7 +173,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                     //区县（如果设定了两级联动，那么该项返回空）
                     String district = citySelected[2];
                     //邮编
-                    String code = citySelected[3];
+                  //  String code = citySelected[3];
                     address = province.trim() + "," + city.trim() + "," + district.trim();
                     //为TextView赋值
                     tv_province.setText(province.trim() + "-" + city.trim() + "-" + district.trim());
@@ -221,7 +216,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
          PermissionUtil.getCameraPermissions(this, REQUEST_CODE_CAMERA);
 
      }else {
-           String[] str = {"相册"};
+        String[] str = {"相册"};
         List<String> lists = Arrays.asList(str);
         ChosePopWindow cpw = new ChosePopWindow(MyApp.getContext(), lists);
         cpw.showPow(parent);

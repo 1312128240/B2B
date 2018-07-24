@@ -9,17 +9,19 @@
     <include layout="@layout/base_actionbar" />
 
     <LinearLayout
+        android:id="@+id/ll_my_infor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="1.5dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:padding="10dp">
 
         <car.myview.CircleImageView.CircleImageView
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:background="@drawable/bucket_no_picture" />
+            android:id="@+id/civ_headimg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            tools:background="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_user_mobile"
@@ -27,11 +29,12 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:drawableRight="@mipmap/store_icon_right"
-            android:text="1598954173"
+            tools:text="1598954173"
             android:textColor="@color/colorBlack2" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/tv_vip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -40,6 +43,7 @@
         android:padding="10dp"
         android:text="会员中心"
         android:textColor="@color/colorBlack2" />
+
     <LinearLayout
         android:id="@+id/ll_setting_address"
         android:layout_width="match_parent"
@@ -53,20 +57,22 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="实名认证"
+            android:text="收货地址管理"
             android:textColor="@color/colorBlack2" />
 
         <TextView
-            android:textSize="13sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="end"
-            android:text="新增/修改地址" />
+            android:text="新增/修改地址"
+            android:textSize="13sp" />
 
     </LinearLayout>
+
     <TextView
+        android:id="@+id/tv_account_security"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -76,32 +82,8 @@
         android:text="账户安全"
         android:textColor="@color/colorBlack2" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:padding="10dp">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="实名认证"
-            android:textColor="@color/colorBlack2" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:drawablePadding="5dp"
-            android:drawableRight="@mipmap/store_icon_right"
-            android:gravity="end"
-            android:text="未认证" />
-
-    </LinearLayout>
-
     <TextView
+        android:id="@+id/tv_feedback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -112,6 +94,7 @@
         android:textColor="@color/colorBlack2" />
 
     <LinearLayout
+        android:id="@+id/ll_version"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
@@ -132,7 +115,7 @@
             android:drawablePadding="5dp"
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="end"
-            android:text="v1.0.0" />
+            android:text="@string/version" />
 
     </LinearLayout>
 
@@ -152,6 +135,7 @@
             android:textColor="@color/colorBlack2" />
 
         <TextView
+            android:id="@+id/tv_cache"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="5dp"
@@ -161,15 +145,15 @@
 
     </LinearLayout>
 
- <Button
-     android:id="@+id/btn_exit_app"
-     android:background="@drawable/bg1"
-     android:visibility="invisible"
-     android:text="退出登录"
-     android:textColor="@color/colorWhite"
-     android:layout_marginTop="30dp"
-     android:layout_marginLeft="10dp"
-     android:layout_marginRight="10dp"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/btn_exit_app"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/bg1"
+        android:text="退出登录"
+        android:textColor="@color/colorWhite" />
+
 </LinearLayout>

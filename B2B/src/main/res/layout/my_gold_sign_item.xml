@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="40dp"
+    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <TextView
+        android:id="@+id/tv_sign_date"
+        android:layout_width="80dp"
+        android:ellipsize="end"
+        android:textColor="@color/colorBlack2"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="2018-0-10" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:textColor="@color/colorBlack2"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="签到成功"  />
+
+    <TextView
+        android:id="@+id/tv_sign_gold_num"
+        android:layout_width="0dp"
+        android:gravity="end"
+        android:textColor="@color/red"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        tools:text="+2"  />
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">同致相伴B2B</string>
-
+    <string name="version">v1.0.0</string>
     <string name="login_phone"><font size="12">请输入手机号</font></string>
     <string name="login_phone2"><font size="12">手机号/健行快养服务商账号</font></string>
     <string name="login_pass"><font size="12">请输入密码</font></string>
@@ -20,6 +20,7 @@
     <string name="classify"><font size="12">搜索商品</font></string>
 
     <string name="mesg"><font size="12">选填:给商家留言(50字以内)</font></string>
+    <string name="feedback"><font size="12"> 请告诉我们您的意见和建议,我们将不断改进</font></string>
 
     <!--  tv_seales.setText(Html.fromHtml("销量:  "+"<font color='#ff0000'><big>" + dataChildBean.getSales_count()+ "</big>"));-->
 </resources>

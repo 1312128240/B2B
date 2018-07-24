@@ -3,6 +3,7 @@ package car.tzxb.b2b.fragments;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseDataListBean;
+import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.HomeBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.Interface.WindowFocusChang;
@@ -363,7 +365,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 }
                 switch (position) {
                     case 0:
-                        sign(false);
+                        sign();
                         break;
                     case 1:
                         intent.setClass(getActivity(), VipHomePagerActivity.class);
@@ -404,21 +406,43 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     /**
      * 签到
      */
-    private void sign(boolean b) {
-        if (b) {
-
-        } else {
-            final SignDialogFragment sdf = new SignDialogFragment();
-            sdf.show(getFragmentManager(), "aaa");
-            sdf.setListener(new SignDialogFragment.Clicklistener() {
-                @Override
-                public void check() {
-                    Intent intent = new Intent(getActivity(), MyGoldActivity.class);
-                    startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
-                    sdf.dismiss();
-                }
-            });
+    private void sign() {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        if (userId == null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+            return;
         }
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "item/index.php?c=Home&m=UserSignIn")
+                .tag(this)
+                .addParams("user_id", userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        if (response.getStatus() == 0) {      //已签到
+
+                            startActivity(new Intent(getActivity(), MyGoldActivity.class));
+                        } else {                             //未签到
+                            final SignDialogFragment sdf = new SignDialogFragment();
+                            sdf.show(getFragmentManager(), "aaa");
+                            sdf.setListener(new SignDialogFragment.Clicklistener() {
+                                @Override
+                                public void check() {
+                                    startActivity(new Intent(getActivity(), MyGoldActivity.class));
+                                    sdf.dismiss();
+                                }
+                            });
+                        }
+                    }
+                });
     }
 
     /**

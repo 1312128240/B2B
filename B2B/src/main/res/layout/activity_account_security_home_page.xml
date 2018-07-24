@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity">
+
+    <include layout="@layout/base_actionbar" />
+
+    <TextView
+        android:id="@+id/tv_change_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/colorWhite"
+        android:drawableRight="@mipmap/store_icon_right"
+        android:padding="10dp"
+        android:text="修改登录密码"
+        android:textColor="@color/colorBlack2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="修改密码或者找加密码都在这里"
+        android:textSize="12sp" />
+
+    <TextView
+        android:id="@+id/tv_change_zf"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorWhite"
+        android:drawableRight="@mipmap/store_icon_right"
+        android:padding="10dp"
+        android:text="支付密码"
+        android:textColor="@color/colorBlack2" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="当使用余额进行支付时需要支付密码"
+        android:textSize="12sp" />
+
+    <LinearLayout
+        android:id="@+id/ll_chang_bind_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorWhite"
+        android:padding="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="换绑手机"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:id="@+id/tv_bind_mobile"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:gravity="end|center_vertical"
+            android:textColor="@color/colorLightGray2"
+            android:textSize="12sp"
+            tools:text="当前绑定手机号136****2255" />
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:text="若当前手机号即将停用,请及时换绑手机"
+        android:textSize="12sp" />
+</LinearLayout>
