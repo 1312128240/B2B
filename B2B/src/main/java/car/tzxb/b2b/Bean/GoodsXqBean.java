@@ -621,6 +621,24 @@ public class GoodsXqBean {
             private String minimum_order_quantity;
             private List<String> contents_mobi;
             private List<String> imgs;
+            private String color_name;
+            private String network_name;
+
+            public String getColor_name() {
+                return color_name;
+            }
+
+            public void setColor_name(String color_name) {
+                this.color_name = color_name;
+            }
+
+            public String getNetwork_name() {
+                return network_name;
+            }
+
+            public void setNetwork_name(String network_name) {
+                this.network_name = network_name;
+            }
 
             public String getGoods_id() {
                 return goods_id;

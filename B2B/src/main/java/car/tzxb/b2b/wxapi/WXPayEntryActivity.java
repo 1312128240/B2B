@@ -2,13 +2,19 @@ package car.tzxb.b2b.wxapi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.transition.Explode;
@@ -18,6 +24,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.alipay.sdk.app.PayTask;
@@ -32,11 +39,20 @@ import com.tencent.mm.opensdk.modelpay.PayReq;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+import com.unionpay.UPPayAssistEx;
+import com.unionpay.uppay.PayActivity;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
+import car.tzxb.b2b.Adapter.CashAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
@@ -44,6 +60,7 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -55,74 +72,76 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     TextView tv_money;
     @BindView(R.id.btn_start_pay)
     Button btn_pay;
-    @BindView(R.id.cb_wx)
-    CheckBox cb_wx;
-    @BindView(R.id.cb_zfb)
-    CheckBox cb_zfb;
+    @BindView(R.id.lv_zf)
+    ListView lv;
     private String total;
     private IWXAPI api;
     private String order_seqnos;
+
+    private int position;
+    private String orderid;
+    private final String mMode = "01";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
     private final int SDK_PAY_FLAG = 1;
 
-     @Override
-      public void initParms(Bundle parms) {
-          total = getIntent().getStringExtra("total");
-          order_seqnos = getIntent().getStringExtra("order_seqnos");
-      }
+    @Override
+    public void initParms(Bundle parms) {
+        total = getIntent().getStringExtra("total");
+        order_seqnos = getIntent().getStringExtra("order_seqnos");
+        orderid = getIntent().getStringExtra("orderid");
+    }
 
-      @Override
-      public int bindLayout() {
-          return R.layout.activity_wxpay_entry;
-      }
+    @Override
+    public int bindLayout() {
+        return R.layout.activity_wxpay_entry;
+    }
 
-      @Override
-      public void doBusiness(Context mContext) {
-          //注册微信支付
-         api = WXAPIFactory.createWXAPI(mContext,null);
-         api.registerApp(Constant.AppID);
-         api.handleIntent(getIntent(), this);
-          initUi();
+    @Override
+    public void doBusiness(Context mContext) {
+        //注册微信支付
+        api = WXAPIFactory.createWXAPI(mContext, null);
+        api.registerApp(Constant.AppID);
+        api.handleIntent(getIntent(), this);
+        tv_title.setText("收银台");
+        tv_money.setText(Html.fromHtml("¥" + "<big>" + total + "</big>"));
+        btn_pay.setText("使用支付宝支付 ¥" + total);
+        initLv();
+    }
 
-      }
+    private void initLv() {
+        String[] str = {"支付宝", "微信", "银联支付", "线下支付"};
+        List<String> strList = Arrays.asList(str);
+        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(), strList);
+        lv.setAdapter(cashAdapter);
+        cashAdapter.setClickPosition(new CashAdapter.ClickPosition() {
+            @Override
+            public void onClick(int index) {
+                position = index;
+                switch (index) {
+                    case 0:
+                        btn_pay.setText("使用支付宝支付 ¥" + total);
+                        break;
+                    case 1:
+                        btn_pay.setText("使用微信支付 ¥" + total);
+                        break;
+                    case 2:
+                        btn_pay.setText("使用银联支付 ¥" + total);
+                        break;
+                    case 3:
+                        btn_pay.setText("收货时您需要付款 ¥" + total);
+                        break;
+                }
+            }
+        });
+    }
 
     @Override
     protected BasePresenter bindPresenter() {
         return null;
     }
 
-    private void initUi() {
-        tv_title.setText("收银台");
-        tv_money.setText(Html.fromHtml("¥"+"<big>"+total+"</big>"));
-        btn_pay.setText("使用支付宝支付 ¥"+total);
-        cb_zfb.setChecked(true);
-        cb_zfb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    btn_pay.setText("使用支付宝支付 ¥"+total);
-                    cb_wx.setChecked(false);
-                    cb_zfb.setEnabled(false);
-                }else {
-                    cb_zfb.setEnabled(true);
-                }
-            }
-        });
-        cb_wx.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked){
-                    btn_pay.setText("使用微信支付 ¥"+total);
-                    cb_zfb.setChecked(false);
-                    cb_wx.setEnabled(false);
-                }else {
-                    cb_wx.setEnabled(true);
-                }
-            }
-        });
-    }
 
     @OnClick(R.id.tv_actionbar_back)
-    public void back(){
+    public void back() {
         onBackPressed();
     }
 
@@ -141,7 +160,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     @Override
     public void onResp(BaseResp resp) {
 
-      Log.i("微信支付结果回调", "onResp, errCode = " + resp.errCode);
+        Log.i("微信支付结果回调", "onResp, errCode = " + resp.errCode);
         String result = "";
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {
@@ -163,29 +182,68 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     }
 
     @OnClick(R.id.btn_start_pay)
-    public void pay(){
-        if(isFastClick()){
-            if(cb_wx.isChecked()){
-                WxPay();
-            }else {
-                ZfbPay();
+    public void pay() {
+        if (isFastClick()) {
+            switch (position) {
+                case 0:
+                    ZfbPay();
+                    break;
+                case 1:
+                    WxPay();
+                    break;
+                case 2:
+                    UPPayAssistEx.startPayByJAR(this, PayActivity.class, null, null, "658647829715400340500", mMode);
+                    break;
+                case 3:
+                    offlinePayment();
+                    break;
             }
         }
-
-
     }
 
-    private void ZfbPay() {
-        String userId= SPUtil.getInstance(this).getUserId("UserId",null);
-        Log.i("微信支付",Constant.baseUrl+"orders/orders_mobile.php?m=pay"+"&order_seqnos="+order_seqnos+"&pay_type=zfb"+"&pay_device=Android"+"&user_id="+userId);
+    /**
+     * 线下支付
+     */
+    private void offlinePayment() {
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        Log.i("线下支付", Constant.baseUrl + "orders/orders_mobile.php?m=pay" + "&order_seqnos=" + order_seqnos + "&pay_type=offlinepayment" + "&pay_device=Android" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"orders/orders_mobile.php?m=pay")
-                .addParams("order_seqnos",order_seqnos)
-                .addParams("pay_type","zfb")
-                .addParams("pay_device","Android")
-                .addParams("user_id",userId)
+                .url(Constant.baseUrl + "orders/orders_mobile.php?m=pay")
+                .addParams("order_seqnos", order_seqnos)
+                .addParams("pay_type", "offlinepayment")
+                .addParams("pay_device", "Android")
+                .addParams("user_id", userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.i("线下支付错误", e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        if (response.getStatus() == 1) {
+                            Intent intent = new Intent(WXPayEntryActivity.this, OfflinePaymentActivity.class);
+                            intent.putExtra("orderid", orderid);
+                            startActivity(intent);
+                        }
+                    }
+                });
+    }
+
+    private void ZfbPay() {
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        Log.i("微信支付", Constant.baseUrl + "orders/orders_mobile.php?m=pay" + "&order_seqnos=" + order_seqnos + "&pay_type=zfb" + "&pay_device=Android" + "&user_id=" + userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "orders/orders_mobile.php?m=pay")
+                .addParams("order_seqnos", order_seqnos)
+                .addParams("pay_type", "zfb")
+                .addParams("pay_device", "Android")
+                .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -195,7 +253,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                        final   String orderPaht=response.getOrder();
+                        final String orderPaht = response.getOrder();
                         //调起支付宝支付
                         new Thread(new Runnable() {
                             @Override
@@ -213,34 +271,34 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     }
 
     private void WxPay() {
-        String userId= SPUtil.getInstance(this).getUserId("UserId",null);
-        Log.i("微信支付",Constant.baseUrl+"orders/orders_mobile.php?m=pay"+"&order_seqnos="+order_seqnos+"&pay_type=wx"+"&pay_device=Android"+"&user_id="+userId);
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        Log.i("微信支付", Constant.baseUrl + "orders/orders_mobile.php?m=pay" + "&order_seqnos=" + order_seqnos + "&pay_type=wx" + "&pay_device=Android" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"orders/orders_mobile.php?m=pay")
-                .addParams("order_seqnos",order_seqnos)
-                .addParams("pay_type","wx")
-                .addParams("pay_device","Android")
-                .addParams("user_id",userId)
+                .url(Constant.baseUrl + "orders/orders_mobile.php?m=pay")
+                .addParams("order_seqnos", order_seqnos)
+                .addParams("pay_type", "wx")
+                .addParams("pay_device", "Android")
+                .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<BaseDataBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                       Log.i("微信支付走错误",e.toString());
+                        Log.i("微信支付走错误", e.toString());
                     }
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
-                        BaseDataBean.DataBean dataBean=response.getData();
+                        BaseDataBean.DataBean dataBean = response.getData();
                         PayReq request = new PayReq();
                         request.appId = dataBean.getAppid();
                         request.partnerId = dataBean.getPartnerid();
-                        request.prepayId=dataBean.getPrepayid();
+                        request.prepayId = dataBean.getPrepayid();
                         request.packageValue = "Sign=WXPay";
-                        request.nonceStr= dataBean.getNoncestr();
-                        request.timeStamp=dataBean.getTimestamp();
-                        request.sign= dataBean.getPaySign();
+                        request.nonceStr = dataBean.getNoncestr();
+                        request.timeStamp = dataBean.getTimestamp();
+                        request.sign = dataBean.getPaySign();
                         api.sendReq(request);
                     }
                 });
@@ -253,7 +311,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private Handler mHandler = new Handler() {
         @SuppressWarnings("unused")
         public void handleMessage(Message msg) {
-            Log.i("支付宝回调地信息",msg+"");
+            Log.i("支付宝回调地信息", msg + "");
             switch (msg.what) {
                 case SDK_PAY_FLAG: {
                     @SuppressWarnings("unchecked")
@@ -264,7 +322,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     if (TextUtils.equals(resultStatus, "9000")) {
 
                     } else {
-                        MyToast.makeTextAnim(MyApp.getContext(),"支付取消",0, Gravity.CENTER,0,0).show();
+                        MyToast.makeTextAnim(MyApp.getContext(), "支付取消", 0, Gravity.CENTER, 0, 0).show();
 
                     }
 
@@ -275,4 +333,37 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
             }
         }
     };
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+        String msg = "";
+        String str = data.getExtras().getString("pay_result");
+        if (str.equalsIgnoreCase("success")) {
+            // 支付成功后，extra中如果存在result_data，取出校验
+            // result_data结构见c）result_data参数说明
+            if (data.hasExtra("result_data")) {
+                msg = "支付成功！";
+            } else if (str.equalsIgnoreCase("fail")) {
+                msg = "支付失败！";
+            } else if (str.equalsIgnoreCase("cancel")) {
+                msg = "用户取消了支付";
+            }
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("支付结果通知");
+            builder.setMessage(msg);
+            builder.setInverseBackgroundForced(true);
+            // builder.setCustomTitle();
+            builder.setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
+        }
+    }
 }

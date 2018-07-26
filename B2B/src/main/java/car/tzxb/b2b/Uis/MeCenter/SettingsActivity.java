@@ -3,6 +3,7 @@ package car.tzxb.b2b.Uis.MeCenter;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.transition.Explode;
@@ -95,8 +96,22 @@ public class SettingsActivity extends MyBaseAcitivity {
      */
     @OnClick(R.id.tv_cache)
     public void cache(){
-
-        Log.i("清除成功了吗",DataCleanManager.deleteDir(getExternalCacheDir())+"");
+        DataCleanManager.clearAllCache(MyApp.getContext());
+        final LoadingDialog dialog=new LoadingDialog();
+        dialog.setCancelable(false);
+        dialog.show(getSupportFragmentManager(),"aaa");
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                dialog.dismiss();
+                try {
+                    String  dataSize = DataCleanManager.getTotalCacheSize(MyApp.getContext());
+                    tv_cache.setText(dataSize);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        },1000);
     }
     /*
       退出

@@ -2,18 +2,25 @@ package car.tzxb.b2b.fragments;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.IdRes;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -90,6 +97,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     TextView tv_img;
     @BindView(R.id.tv_more_pj)
     TextView tv_more_pj;
+    @BindView(R.id.rg_gg)
+    RadioGroup rg_gg;
     private String flag;
     private int y;
     private String shopId;
@@ -102,11 +111,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
 
     @Override
     public void initData() {
-
         goodsActivity.setDataSource(this);
         goodsActivity.scoll(this);
-
-
     }
 
 
@@ -114,12 +120,27 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     protected BasePresenter bindPresenter() {
         return null;
     }
+    // 2.1 定义用来与外部activity交互，获取到宿主activity
+    private FragmentInteraction listterner;
+
+    // 1 定义了所有activity必须实现的接口方法
+    public interface FragmentInteraction {
+        void process(int checkId);
+    }
+
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         goodsActivity = (GoodsXqActivity) activity;
+
+        if(activity instanceof FragmentInteraction) {
+            listterner = (FragmentInteraction)activity; // 2.2 获取到宿主activity并赋值
+        } else{
+            throw new IllegalArgumentException("activity must implements FragmentInteraction");
+        }
     }
+
 
     @OnClick(R.id.tv_xq_goods_shop_collect)
     public void collect() {
@@ -184,19 +205,51 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     }
 
     /**
-     * 底部图片
-     *
+     * 底部图片和商品规格
      * @param product
      */
     private void initdetails(List<GoodsXqBean.DataBean.ProductBean> product) {
 
         List<String> imgList = new ArrayList<>();
+        List<String> ggList=new ArrayList<>();
         for (int i = 0; i < product.size(); i++) {
-            imgList.addAll(product.get(i).getContents_mobi());
+            GoodsXqBean.DataBean.ProductBean productBean=product.get(i);
+            //取出图片
+            imgList.addAll(productBean.getContents_mobi());
+            //取出规格颜色
+            ggList.add(productBean.getColor_name()+productBean.getNetwork_name());
         }
-        Log.i("接收到数据了吗", imgList.size() + "");
-        DetailsAdapter detailsAdapter = new DetailsAdapter(MyApp.getContext(), imgList);
+        //显示规格
+        RadioButton rb=null;
+        int w=DeviceUtils.dip2px(MyApp.getContext(),80);
+        int h=DeviceUtils.dip2px(MyApp.getContext(),25);
+        RadioGroup.LayoutParams layoutParams=new RadioGroup.LayoutParams(w,h);
+        layoutParams.setMargins(20,0,0,0);
+        for (int i = 0; i <ggList.size() ; i++) {
+            rb=new RadioButton(getContext());
+            rb.setLayoutParams(layoutParams);
+            rb.setGravity(Gravity.CENTER);
+            rb.setButtonDrawable(null);
+            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+            if(!"".equals(ggList.get(i))){
+                rb.setText(ggList.get(i));
+            }else {
+                rb.setText("默认");
+            }
+            rb.setId(i+1);
+            rb.setBackground(getContext().getResources().getDrawable(R.drawable.gg_select));
+            rb.setTextColor(getContext().getResources().getColorStateList(R.color.tv_color2));
+            rg_gg.addView(rb);
+        }
+        rg_gg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                listterner.process(checkedId);
+            }
+        });
 
+        //适配下面图片
+        DetailsAdapter detailsAdapter = new DetailsAdapter(MyApp.getContext(), imgList);
         lv_details.setAdapter(detailsAdapter);
 
     }
@@ -260,9 +313,15 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
      */
 
     private void initEvaluate(final GoodsXqBean.DataBean.CommentBean comment) {
+        //好评率
         tv_ev_num.setText("客户评价   (" + comment.getWhole() + ")");
-        int hpl= comment.getGood()/comment.getGood()*100;
-        tv_hpl.setText(Html.fromHtml("好评率 " + "<font color='#ff0000'>" + hpl+"%" + "</font>"));
+        if(comment.getWhole()==0){
+            tv_hpl.setText(Html.fromHtml("好评率   <font color='#ff0000'>" +"0%" + "</font>"));
+        }else {
+            int hpl= comment.getGood()/comment.getWhole()*100;
+            tv_hpl.setText(Html.fromHtml("好评率 " + "<font color='#ff0000'>" + hpl+"%" + "</font>"));
+        }
+       //底部评论
         recy_ev.setLayoutManager(new LinearLayoutManager(getContext()));
         final List<GoodsXqBean.DataBean.CommentBean.EvaluteBean> commentBeanList = comment.getEvalute();
         if (comment.getWhole() > 1) {
@@ -298,7 +357,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     }
 
     /**
-     * 商品规格信息
+     * 商品参数信息
      *
      * @param goods
      */
@@ -321,9 +380,9 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         tv_type.setText(goods.getDealer());
         tv_goods_name.setText("\u3000\u3000" + goods.getTitle());
         //现价区间
-        tv_current_price.setText(Html.fromHtml("¥ " + "<big>" + goods.getMax_seal_price()+"—" +goods.getMin_seal_price()+"</big>"));
+        tv_current_price.setText(Html.fromHtml("¥ " + "<big>" +goods.getPrice()+"</big>"));
         //原价区间
-        tv_cost_price.setText(Html.fromHtml("原价:¥" + goods.getMax_market_price()+"-"+goods.getMin_market_price()));
+        tv_cost_price.setText(Html.fromHtml("原价:¥" + goods.getMin_market_price()+"-"+goods.getMax_market_price()));
         tv_cost_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
         tv_city.setText(goods.getProvince() + goods.getCity() + goods.getArea());
         //商品收藏
@@ -348,4 +407,5 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         scrollView.fling(0);
         scrollView.smoothScrollTo(0, 0);
     }
+
 }

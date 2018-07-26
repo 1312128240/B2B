@@ -83,7 +83,15 @@
         <activity android:name=".Uis.MeCenter.PersonalDataActivity" />
         <activity android:name=".Uis.MeCenter.NickNameActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity" />
-        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity"></activity>
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity" />
+        <activity android:name=".Uis.Order.OfflinePaymentActivity"></activity>
+
+        <!--银联支付-->
+        <activity
+            android:name="com.unionpay.uppay.PayActivity"
+            android:configChanges="orientation|keyboardHidden|keyboard"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>

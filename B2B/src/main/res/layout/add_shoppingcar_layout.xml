@@ -39,7 +39,7 @@
                     android:textColor="@color/colorBlack2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="规格" />
+                    android:text="规格属性" />
                 <RadioGroup
                     android:layout_marginTop="5dp"
                     android:orientation="horizontal"
@@ -117,7 +117,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/iv_add_shoppingcar"
-                android:text="¥888"
+                android:text="¥ 0"
                 android:textColor="@color/red1" />
 
             <TextView

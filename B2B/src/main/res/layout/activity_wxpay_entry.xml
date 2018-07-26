@@ -37,132 +37,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorLightGray3"
-        android:padding="10dp"
+        android:padding="8dp"
         android:text="请选择支付方式" />
 
-    <LinearLayout
+    <ListView
+        android:id="@+id/lv_zf"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="15dp">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/colorWhite">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/pyt_icon_zfb"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="支付宝"
-            android:textColor="@color/colorBlack2" />
+    </ListView>
 
-        <CheckBox
-            android:id="@+id/cb_zfb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/check_box_select"
-            android:button="@null"
-             />
-    </LinearLayout>
-
-    <LinearLayout
+    <Button
+        android:id="@+id/btn_start_pay"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="15dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/pyt_icon_wx"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="微信"
-            android:textColor="@color/colorBlack2" />
-
-        <CheckBox
-            android:id="@+id/cb_wx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/check_box_select"
-            android:button="@null"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="15dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/pyt_icon_jh"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="建行支付"
-            android:textColor="@color/colorBlack2" />
-
-        <CheckBox
-            android:id="@+id/cb_jh"
-            android:clickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/check_box_select"
-            android:button="@null"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
-        android:paddingLeft="10dp"
-        android:paddingRight="15dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:drawableLeft="@mipmap/pyt_icon_yl"
-            android:drawablePadding="10dp"
-            android:gravity="center_vertical"
-            android:text="银联支付"
-            android:textColor="@color/colorBlack2" />
-
-        <CheckBox
-            android:id="@+id/cb_yl"
-            android:clickable="false"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/check_box_select"
-            android:button="@null"
-            />
-    </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <Button
-            android:id="@+id/btn_start_pay"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="bottom"
-            android:background="@color/red"
-            android:text="使用支付宝支付"
-            android:textColor="@color/colorWhite" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:background="@color/red"
+        android:text="使用支付宝支付"
+        android:textColor="@color/colorWhite" />
 
 </LinearLayout>

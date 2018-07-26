@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.IdRes;
 import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -44,9 +45,14 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     private String type;
     private String pro_id;
     private String shopId;
-    public AddShoppingCarPop(Context context,List<BaseDataListBean.DataBean> list) {
+    private int index;
+    private BaseDataListBean.DataBean bean;
+
+
+    public AddShoppingCarPop(Context context,List<BaseDataListBean.DataBean> list,int i) {
         this.mContext=context;
         this.lists=list;
+        this.index=i;
         initPop(context);
     }
 
@@ -80,12 +86,18 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     }
 
     private void initView(View view) {
+        //数量加减
+        ImageView iv_subtract=view.findViewById(R.id.iv_subtract);
+        ImageView iv_plus=view.findViewById(R.id.iv_plus);
+        Button btn_add=view.findViewById(R.id.btn_add_shoppingcar);
+        tv_show_num = view.findViewById(R.id.tv_show_number);
+        tv_show_num.setText(num+"");
         //规格
         RadioGroup rg_gg=view.findViewById(R.id.rg_add_shoppingcar_gg);
         final TextView tv_price=view.findViewById(R.id.tv_add_shoppingcar_price);
         final ImageView xv=view.findViewById(R.id.iv_add_shoppingcar);
         final TextView tv_stock=view.findViewById(R.id.tv_stock);
-        int width=DeviceUtils.dip2px(mContext,40);
+        int width=DeviceUtils.dip2px(mContext,85);
         int height=DeviceUtils.dip2px(mContext,25);
         int right=DeviceUtils.dip2px(mContext,10);
         RadioGroup.LayoutParams params=new RadioGroup.LayoutParams(width,height);
@@ -96,46 +108,47 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
             rb.setGravity(Gravity.CENTER);
             rb.setTextColor(Color.BLACK);
             rb.setButtonDrawable(null);
+            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
             rb.setId(i);
-            rb.setText(bean.getName());
+            String s=bean.getColor_name()+bean.getNetwork_name();
+            if(!"".equals(s)){
+                rb.setText(s);
+            }else {
+                rb.setText("默认");
+            }
             rb.setLayoutParams(params);
-            rb.setTextColor(mContext.getResources().getColorStateList(R.color.textview));
-            rb.setBackground(mContext.getResources().getDrawable(R.drawable.rb_swich));
+            rb.setTextColor(mContext.getResources().getColorStateList(R.color.tv_color2));
+            rb.setBackground(mContext.getResources().getDrawable(R.drawable.gg_select));
             rg_gg.addView(rb);
         }
 
-        //默认第一个商品
-        RadioButton rb1=rg_gg.findViewById(0);
-        rb1.setChecked(true);
-        final BaseDataListBean.DataBean oneBean=lists.get(0);
-        tv_stock.setText("库存: "+oneBean.getStock_distributor_all());
-        Glide.with(mContext).load(oneBean.getImg_url()).asBitmap().into(xv);
-        tv_price.setText(Html.fromHtml("¥"+"<big>"+oneBean.getSeal_price()+"</big>"));
-        //商品的类型
-        type=oneBean.getIs_point_product();
-        pro_id=oneBean.getProduct_id();
-        shopId=oneBean.getShop_id();
         rg_gg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                BaseDataListBean.DataBean bean=lists.get(checkedId);
+                bean = lists.get(checkedId);
                 //图片
                 Glide.with(mContext).load(bean.getImg_url()).asBitmap().into(xv);
                 //价格
-                tv_price.setText(Html.fromHtml("¥"+"<big>"+bean.getSeal_price()+"</big>"));
+                tv_price.setText(Html.fromHtml("¥"+"<big>"+ bean.getSeal_price()+"</big>"));
                 //库存
-                tv_stock.setText("库存: "+bean.getStock_distributor_all());
+                tv_stock.setText("库存: "+ bean.getStock_distributor_all());
                 //切换选择的商品id
-                pro_id=bean.getProduct_id();
-
+                pro_id= bean.getProduct_id();
+                type= bean.getIs_point_product();
+                shopId= bean.getShop_id();
+                //最低数量
+                num = bean.getMinimum_order_quantity();
+                tv_show_num.setText(num+"");
             }
         });
-         //加减
-        ImageView iv_subtract=view.findViewById(R.id.iv_subtract);
-        ImageView iv_plus=view.findViewById(R.id.iv_plus);
-        tv_show_num = view.findViewById(R.id.tv_show_number);
-        tv_show_num.setText(num+"");
-        Button btn_add=view.findViewById(R.id.btn_add_shoppingcar);
+        if(index!=0){
+            RadioButton xtab=  rg_gg.findViewById(index-1);
+            xtab.setChecked(true);
+        }else {
+            BaseDataListBean.DataBean oneBean=lists.get(0);
+            Glide.with(mContext).load(oneBean.getImg_url()).asBitmap().into(xv);
+        }
+
         iv_plus.setOnClickListener(this);
         iv_subtract.setOnClickListener(this);
         btn_add.setOnClickListener(this);
@@ -157,7 +170,8 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     public void onClick(View v) {
          switch (v.getId()){
              case R.id.iv_subtract:
-                 if(num==1){
+
+                 if(num==1||num==bean.getMinimum_order_quantity()){
                      return;
                  }
                  num--;
@@ -168,9 +182,13 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                  tv_show_num.setText(num+"");
                  break;
              case R.id.btn_add_shoppingcar:
+                  if(pro_id==null){
+                      MyToast.makeTextAnim(MyApp.getContext(),"请选择商品规格",0,Gravity.CENTER,0,0).show();
+                      return;
+                  }
                   listener.Click(num,pro_id,shopId,type);
-                 dismiss();
-                 break;
+                  dismiss();
+                  break;
          }
     }
 

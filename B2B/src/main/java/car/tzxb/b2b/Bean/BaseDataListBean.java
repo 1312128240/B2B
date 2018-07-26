@@ -17,6 +17,7 @@ public class BaseDataListBean {
         return msg;
     }
 
+
     public void setMsg(String msg) {
         this.msg = msg;
     }
@@ -37,9 +38,9 @@ public class BaseDataListBean {
         this.data = data;
     }
 
+
     public static class DataBean {
         private String ID;
-        private String shop_name;
         private String shop_img;
         private String shop_type;
         private String mobile;
@@ -57,24 +58,24 @@ public class BaseDataListBean {
         private String img;
         private String Username;
         private boolean isCheck;
-        private String stock_distributor_all;
-        private String id;
+        private String price;
+        private int minimum_order_quantity;
+        private String color_name;
+        private String network_name;
+        private String title;
+        private String isset;
+        private String msg;
+        private String is_del;
+        private String add_time;
+        private String shop_name;
+        private String max_seal_price;
+        private String min_seal_price;
         private String name;
-        private String dealer;
-        private String img_url;
-        private String goods_name;
-        private String is_point_product;
-        private String is_balance_product;
         private String shop_id;
-        private String category_id;
-        private String cate_title;
         private String product_title;
         private String market_price;
-        private String seal_price;
-        private String cost_point;
         private String discount_price;
         private String point;
-        private String sales;
         private String color_id;
         private String network_id;
         private String miaoshu;
@@ -84,13 +85,52 @@ public class BaseDataListBean {
         private String p_title;
         private String goods_id;
         private String product_id;
-        private String title;
-        private String isset;
-        private String msg;
-        private String is_del;
-        private String add_time;
-        private String max_seal_price;
-        private String min_seal_price;
+        private String id;
+        private String img_url;
+        private String goods_name;
+        private String is_point_product;
+        private String is_balance_product;
+        private String user_id;
+        private String category_id;
+        private String cate_title;
+        private String dealer;
+        private String seal_price;
+        private String stock_distributor_all;
+        private String sales;
+        private String cost_point;
+
+        public int getMinimum_order_quantity() {
+            return minimum_order_quantity;
+        }
+
+        public void setMinimum_order_quantity(int minimum_order_quantity) {
+            this.minimum_order_quantity = minimum_order_quantity;
+        }
+
+        public String getColor_name() {
+            return color_name;
+        }
+
+        public void setColor_name(String color_name) {
+            this.color_name = color_name;
+        }
+
+        public String getNetwork_name() {
+            return network_name;
+        }
+
+        public void setNetwork_name(String network_name) {
+            this.network_name = network_name;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public void setPrice(String price) {
+            this.price = price;
+        }
+
         public boolean isCheck() {
             return isCheck;
         }

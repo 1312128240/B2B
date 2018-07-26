@@ -49,7 +49,7 @@ import car.tzxb.b2b.fragments.EvaluateFragment;
 import car.tzxb.b2b.fragments.GoodsFragment;
 import okhttp3.Call;
 
-public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener, MvpViewInterface {
+public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener, MvpViewInterface,GoodsFragment.FragmentInteraction {
 
 
     @BindView(R.id.rg_tab)
@@ -66,7 +66,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     private MvpContact.Presenter presenter = new GoodsXqPresenterIml(this);
     private String mainId;
     private GoodsXqBean goodsXqBean;
-
+    private int index;
     GoodsXqInterface goodsXqInterface;
 
     public void setDataSource(GoodsXqInterface ds) {
@@ -94,6 +94,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         inittab();
         vp.isCanScoll(true);
         rg.setOnCheckedChangeListener(this);
+
         getData();
     }
 
@@ -101,7 +102,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         String url = Constant.baseUrl + "item/index.php?c=Goods&m=GetGoodsInfo";
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Map<String, String> map = new HashMap<>();
-        map.put("id", "534");
+        map.put("id", mainId);
         map.put("user_id", userId);
         presenter.PresenterGetData(url, map);
     }
@@ -285,7 +286,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                     public void onResponse(BaseDataListBean response, int id) {
                         if (response.getStatus() == 1) {
                             List<BaseDataListBean.DataBean> list = response.getData();
-                            AddShoppingCarPop window = new AddShoppingCarPop(GoodsXqActivity.this, list);
+                            AddShoppingCarPop window = new AddShoppingCarPop(GoodsXqActivity.this, list,index);
                             window.show(parent);
                             window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
                                 @Override
@@ -294,7 +295,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                                 }
                             });
                         }
-
                     }
                 });
     }
@@ -344,7 +344,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         goodsXqBean = (GoodsXqBean) o;
         //传递到第一个fragment
         goodsXqInterface.getData(goodsXqBean);
-
     }
 
     @Override
@@ -361,9 +360,17 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     public void showErro() {
 
     }
+    @OnClick(R.id.iv_xq_back)
+    public void back(){
+        onBackPressed();
+    }
 
     public void setCurrent(int i) {
         vp.setCurrentItem(i);
     }
 
+    @Override
+    public void process(int i) {
+         this.index=i;
+    }
 }

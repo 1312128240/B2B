@@ -30,7 +30,7 @@ public class SignDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog_style);
+     //   setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog_style);
     }
 
 

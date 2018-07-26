@@ -27,9 +27,9 @@ public class DataCleanManager {
         deleteDir(context.getCacheDir());
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
             deleteDir(context.getExternalCacheDir());
-            //下面两句清理webview网页缓存.但是每次执行都报false,我用的是魅蓝5.1的系统，后来发现且/data/data/应用package目录下找不到database文///件夹 不知道是不是个别手机的问题，
+           /* //下面两句清理webview网页缓存.但是每次执行都报false,我用的是魅蓝5.1的系统，后来发现且/data/data/应用package目录下找不到database文///件夹 不知道是不是个别手机的问题，
             context.deleteDatabase("webview.db");
-            context.deleteDatabase("webviewCache.db");
+            context.deleteDatabase("webviewCache.db");*/
         }
     }
 
@@ -80,25 +80,21 @@ public class DataCleanManager {
         double megaByte = kiloByte / 1024;
         if (megaByte < 1) {
             BigDecimal result1 = new BigDecimal(Double.toString(kiloByte));
-            return result1.setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .toPlainString() + "KB";
+            return result1.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "KB";
         }
 
         double gigaByte = megaByte / 1024;
         if (gigaByte < 1) {
             BigDecimal result2 = new BigDecimal(Double.toString(megaByte));
-            return result2.setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .toPlainString() + "MB";
+            return result2.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "MB";
         }
 
         double teraBytes = gigaByte / 1024;
         if (teraBytes < 1) {
             BigDecimal result3 = new BigDecimal(Double.toString(gigaByte));
-            return result3.setScale(2, BigDecimal.ROUND_HALF_UP)
-                    .toPlainString() + "GB";
+            return result3.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "GB";
         }
         BigDecimal result4 = new BigDecimal(teraBytes);
-        return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString()
-                + "TB";
+        return result4.setScale(2, BigDecimal.ROUND_HALF_UP).toPlainString() + "TB";
     }
 }

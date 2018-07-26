@@ -31,6 +31,7 @@ import car.tzxb.b2b.BasePackage.MyBaseFragment2;
 import car.tzxb.b2b.Bean.EvBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
@@ -48,11 +49,12 @@ public class EvaluateFragment extends MyBaseFragment2 implements RadioGroup.OnCh
     TextView tv_hpl;
     @BindView(R.id.rb_all_ev)
     RadioButton rb_all;
-    private String mainId;
-    private int index;
 
+    private int index;
     private CommonAdapter<EvBean.DataBean.EvaluteBean> adapter;
     private List<EvBean.DataBean.EvaluteBean> beanList=new ArrayList<>();
+    private String goodsId;
+
     @Override
     protected int setContentView() {
         return R.layout.fragment_evaluate;
@@ -66,14 +68,21 @@ public class EvaluateFragment extends MyBaseFragment2 implements RadioGroup.OnCh
          initUi();
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        GoodsXqActivity goodsActivity = (GoodsXqActivity) activity;
+        goodsId = goodsActivity.getIntent().getStringExtra("mainId");
+    }
+
     private void Refresh() {
         String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        Log.i("评论的是",Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsCommentInfo"+"&id="+mainId+"&user_id="+userId+"&succ="+index);
+        Log.i("评论的是",Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsCommentInfo"+"&id="+goodsId+"&user_id="+userId+"&succ="+index);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl+"item/index.php?c=Goods&m=GetGoodsCommentInfo")
                 .tag(this)
-                .addParams("id",mainId)
+                .addParams("id",goodsId)
                 .addParams("user_id",userId)
                 .addParams("succ", String.valueOf(index))
                 .build()

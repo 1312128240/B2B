@@ -138,23 +138,13 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent" />
         </LinearLayout>
-
     </RelativeLayout>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recy_home_brand"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
-        android:background="@color/colorWhite">
-
-    </android.support.v7.widget.RecyclerView>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_home_goods"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="125dp"
         android:nestedScrollingEnabled="false">
 
     </android.support.v7.widget.RecyclerView>

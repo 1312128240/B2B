@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -80,6 +81,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     ImageView iv_fgx;
     @BindView(R.id.tv_default_address)
     TextView tv_default_address;
+    @BindView(R.id.ll_zf_type)
+    LinearLayout ll_zf_type;
     private String shopId;
     private String carId;
     private String num;
@@ -110,6 +113,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         rb2.setText("门店自取");
         iv_fgx.setVisibility(View.VISIBLE);
         tv_default_address.setVisibility(View.VISIBLE);
+        ll_zf_type.setVisibility(View.GONE);
         getData();
     }
 
@@ -122,6 +126,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
     private void getDefutAddress() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("我的默认地址",Constant.baseUrl+"orders/address.php?m=address"+"&user_id="+userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -143,7 +148,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                         if("1".equals(response.getStatus())){
                              tv_consignee_name.setText(bean.getUser_name());
                              tv_consignee_mobile.setText(bean.getMobile());
-                             tv_consignee_address.setText(bean.getAddress());
+                             tv_consignee_address.setText(bean.getProvince()+bean.getCity()+bean.getArea()+bean.getAddress());
                         }else {
                              tv_consignee_name.setHint("收货人:");
                              tv_consignee_mobile.setHint("手机:");
@@ -188,7 +193,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     private void initData() {
         tv_goods_total_price.setText("¥"+dataBean.getAmount_pay());
         tv_goods_offset.setText("¥"+dataBean.getOffset());
-        tv_num.setText("共"+dataBean.getGoods_kind_number()+"件"+"\n"+"(可留言)");
+        tv_num.setText(Html.fromHtml("<font color='#000000'>共"+dataBean.getGoods_kind_number()+"件</font>"+"<br>"+"(可留言)"));
+      //  tv_num.setText("共"+dataBean.getGoods_kind_number()+"件"+"\n"+"(可留言)");
         //实际付款为商品总价+服务费-折扣费
        double finaprice= dataBean.getAmount_pay()+dataBean.getOffset();
        tv_finally_price.setText(Html.fromHtml("实付款 "+"<big>"+"¥"+finaprice+"</big>"));
@@ -295,8 +301,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
     private void showDialogFragment(final BaseDataBean response) {
-
-        AlterDialogFragment dialogFragment=new AlterDialogFragment();
+        final AlterDialogFragment dialogFragment=new AlterDialogFragment();
         Bundle bundle=new Bundle();
         bundle.putString("title",response.getMsg());
         bundle.putString("ok","立即付款");
@@ -317,7 +322,9 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 Intent intent=new Intent(OrderActivity.this, WXPayEntryActivity.class);
                 intent.putExtra("total",String.valueOf(total));
                 intent.putExtra("order_seqnos",response.getData().getCount_seqnos());
+                intent.putExtra("orderid",response.getData().getOrder_id());
                 startActivity(intent);
+                dialogFragment.dismiss();
             }
         });
     }

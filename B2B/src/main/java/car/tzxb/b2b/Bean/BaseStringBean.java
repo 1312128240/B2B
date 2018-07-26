@@ -17,6 +17,48 @@ public class BaseStringBean {
     private boolean data;
     private String shop_name;
     private String ID;
+    private String id;
+    private String title;
+    private String img_url;
+    private boolean checked;
+    public boolean isChecked() {
+        return checked;
+    }
+
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
+
+
+
+    public BaseStringBean() {
+
+    }
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getImg_url() {
+        return img_url;
+    }
+
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
+    }
 
     public String getOrder() {
         return order;

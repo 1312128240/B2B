@@ -13,10 +13,10 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:padding="8dp"
-            android:layout_weight="1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:padding="8dp">
 
 
             <CheckBox
@@ -83,8 +83,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginLeft="100dp"
-                android:layout_toRightOf="@+id/tv_seales2"
+                android:layout_marginLeft="20dp"
+                android:layout_toRightOf="@+id/tv_category_pice"
                 android:textColor="@color/gray"
                 android:textSize="12sp"
                 tolas:text="原价" />

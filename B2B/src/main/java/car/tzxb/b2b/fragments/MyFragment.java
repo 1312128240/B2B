@@ -7,7 +7,9 @@ import android.graphics.Typeface;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -25,16 +27,21 @@ import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
 import car.myview.CircleImageView.CircleImageView;
+import car.myview.SpringView.SpringView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
+import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.MyCenterBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.ClassifyPackage.GoodsClassifyActivity;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
@@ -82,6 +89,8 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     @BindView(R.id.bv5)
     BadgeView bv5;
     private MyCenterBean.DataBean.UserInfoBean userBean;
+    private List<BaseDataListBean.DataBean> beanList=new ArrayList<>();
+    private CommonAdapter<BaseDataListBean.DataBean> adapter;
 
     @Override
     public int getLayoutResId() {
@@ -112,10 +121,23 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     @Override
     public void onResume() {
         super.onResume();
-        Log.i("走onResume","aaa");
         Judge();
+        Guess();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        Log.i("当可见时","aaa");
+        if(!hidden){
+            Judge();
+            Guess();
+        }
+    }
+
+    /**
+     * 获取个人信息
+     */
     private void Judge() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
        Log.i("我的个人中心",Constant.baseUrl+"item/index.php?c=Home&m=MyCenter&user_id="+userId);
@@ -134,6 +156,36 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                     @Override
                     public void onResponse(MyCenterBean response, int id) {
                         hasLogin(response);
+                    }
+                });
+    }
+
+    /**
+     * 猜你在找
+     */
+    public void Guess(){
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("猜你在找",Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id="+userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0")
+                .addParams("user_id",userId)
+                .addParams("sales","desc")
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+
+
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataListBean response, int id) {
+                        beanList = response.getData();
+                        adapter.add(beanList,true);
                     }
                 });
     }
@@ -204,14 +256,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         bv5.setText(response.getData().getOrderNumber().get(4)+"");
     }
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        Log.i("走可见时","aaa");
-        if(!hidden){
-            Judge();
-        }
-    }
+
 
     /**
      * 登录
@@ -234,25 +279,42 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
 
 
     private void initRecommend() {
-        String[] str = {"哈哈哈哈", "呵呵呵", "嗯嗯嗯", "哦哦哦", "好好好"};
-        List<BaseStringBean> lists = new ArrayList<>();
-        for (int i = 0; i < str.length; i++) {
-            BaseStringBean bean = new BaseStringBean(str[i], null);
-            lists.add(bean);
-        }
-
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         recyclerView.addItemDecoration(new SpaceItemDecoration(10, 2));
         recyclerView.setNestedScrollingEnabled(false);
-        CommonAdapter<BaseStringBean> adapter = new CommonAdapter<BaseStringBean>(MyApp.getContext(), R.layout.recommend_layout, lists) {
+        adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout, beanList) {
             @Override
-            protected void convert(ViewHolder holder, BaseStringBean bean, int position) {
+            protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
+                //图片
                 ImageView iv = holder.getView(R.id.iv_recommend);
-                Glide.with(MyApp.getContext()).load(R.mipmap.ic_launcher).override(256, 256).into(iv);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
                 holder.setText(R.id.tv_recommend_title, bean.getShop_name());
+                //名字
+                holder.setText(R.id.tv_recommend_title,bean.getGoods_name());
+                //价格
+                TextView tv_price=holder.getView(R.id.tv_recommend_price);
+                tv_price.setText(Html.fromHtml("¥ <big>" + bean.getPrice() + "</big>"));
+     ;           //销量
+                TextView tv_sales=holder.getView(R.id.tv_recomment_sales);
+                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+                tv_sales.setText("销量 "+bean.getSales());
             }
         };
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                BaseDataListBean.DataBean bean = beanList.get(position);
+                Intent intent = new Intent(getActivity(), GoodsXqActivity.class);
+                intent.putExtra("mainId", bean.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
 
     }
 
