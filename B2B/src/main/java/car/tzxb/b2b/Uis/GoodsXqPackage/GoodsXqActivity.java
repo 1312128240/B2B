@@ -64,7 +64,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     View parent;
     boolean sc;
     private MvpContact.Presenter presenter = new GoodsXqPresenterIml(this);
-    private String mainId;
+    private String mainId="514";
     private GoodsXqBean goodsXqBean;
     private int index;
     GoodsXqInterface goodsXqInterface;
@@ -81,7 +81,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
 
     @Override
     public void initParms(Bundle parms) {
-        mainId = getIntent().getStringExtra("mainId");
+       // mainId = getIntent().getStringExtra("mainId");
     }
 
     @Override
@@ -94,7 +94,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         inittab();
         vp.isCanScoll(true);
         rg.setOnCheckedChangeListener(this);
-
         getData();
     }
 
@@ -203,7 +202,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             sc=false;
         }*/
         if (isFastClick()) {
-
             String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
             if (userId == null) {
                 Intent intent = new Intent(this, LoginActivity.class);
@@ -262,41 +260,23 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             case R.id.rb_add_shoppingcar:
 
                 if (isFastClick()) {
-                    AddShoppingCar();
+
+                    showShoppingCarWindow();
                 }
                 break;
         }
     }
 
-    private void AddShoppingCar() {
-        Log.i("查询的子商品", Constant.baseUrl + "item/index.php?c=Goods&m=GetProductsInfo" + "&id=" + mainId);
-        OkHttpUtils
-                .get()
-                .tag(this)
-                .url(Constant.baseUrl + "item/index.php?c=Goods&m=GetProductsInfo")
-                .addParams("id", mainId)
-                .build()
-                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(BaseDataListBean response, int id) {
-                        if (response.getStatus() == 1) {
-                            List<BaseDataListBean.DataBean> list = response.getData();
-                            AddShoppingCarPop window = new AddShoppingCarPop(GoodsXqActivity.this, list,index);
-                            window.show(parent);
-                            window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
-                                @Override
-                                public void Click(int number, String pro_id, String shop_id, String type) {
-                                    putIn(number, pro_id, shop_id, type);
-                                }
-                            });
-                        }
-                    }
-                });
+    private void showShoppingCarWindow() {
+        List<GoodsXqBean.DataBean.ProductBean> productBeanList=goodsXqBean.getData().getProduct();
+        AddShoppingCarPop window = new AddShoppingCarPop(MyApp.getContext(), productBeanList,index);
+        window.show(parent);
+        window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
+            @Override
+            public void Click(int number, String pro_id, String shop_id, String type) {
+                putIn(number, pro_id, shop_id, type);
+            }
+        });
     }
 
     public void putIn(int number, String pro_id, String shop_id, String type) {

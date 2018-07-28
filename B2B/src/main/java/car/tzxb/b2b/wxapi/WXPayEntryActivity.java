@@ -77,10 +77,9 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private String total;
     private IWXAPI api;
     private String order_seqnos;
-
     private int position;
     private String orderid;
-    private final String mMode = "01";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
+    private final String mMode = "00";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
     private final int SDK_PAY_FLAG = 1;
 
     @Override
@@ -192,13 +191,42 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     WxPay();
                     break;
                 case 2:
-                    UPPayAssistEx.startPayByJAR(this, PayActivity.class, null, null, "658647829715400340500", mMode);
+                    getTn();
+
                     break;
                 case 3:
                     offlinePayment();
                     break;
             }
         }
+    }
+
+    private void getTn() {
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        //http://www.yntzxb.cn/mobile_api/orders/orders_mobile.php?m=pay&order_seqnos=Z2018062914212149494955&pay_type=UnionPay&pay_device=iOS&user_id=446
+          OkHttpUtils
+                  .get()
+                  .url(Constant.baseUrl+"orders/orders_mobile.php?m=pay")
+                  .addParams("order_seqnos",order_seqnos)
+                  .addParams("pay_type","UnionPay")
+                  .addParams("pay_device","Android")
+                  .addParams("user_id",userId)
+                  .build()
+                  .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                      @Override
+                      public void onError(Call call, Exception e, int id) {
+                             Log.i("银联支付错误",e.toString());
+                      }
+
+                      @Override
+                      public void onResponse(BaseStringBean response, int id) {
+                           Log.i("返回tn号",response.getTn());
+                           if(response.getStatus()==1){
+                               String tn=response.getTn();
+                               UPPayAssistEx.startPayByJAR(WXPayEntryActivity.this, PayActivity.class, null, null,tn, mMode);
+                           }
+                      }
+                  });
     }
 
     /**
@@ -320,7 +348,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
-
+                        MyToast.makeTextAnim(MyApp.getContext(), "支付成功", 0, Gravity.CENTER, 0, 0).show();
                     } else {
                         MyToast.makeTextAnim(MyApp.getContext(), "支付取消", 0, Gravity.CENTER, 0, 0).show();
 

@@ -50,23 +50,23 @@
 
     <TextView
         android:id="@+id/tv_xq_goods_cost_price"
-        android:textColor="@color/colorLightGray2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_xq_goods_name"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="3dp"
         android:layout_toRightOf="@+id/tv_xq_goods_current_price"
+        android:textColor="@color/colorLightGray2"
         android:textSize="12sp"
         tolas:text="原价:¥146" />
 
     <TextView
         android:id="@+id/tv_goods_xq_sales"
-        android:textColor="@color/colorLightGray2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_xq_goods_current_price"
         android:layout_marginLeft="10dp"
+        android:textColor="@color/colorLightGray2"
         android:textSize="12sp"
         tolas:text="月销量: 32165" />
 
@@ -98,21 +98,22 @@
         android:text="规格属性"
         android:textColor="@color/colorBlack2" />
 
-    <RadioGroup
+    <car.myview.RadioGroupEx
         android:id="@+id/rg_gg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_gg"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:orientation="horizontal">
 
-    </RadioGroup>
+    </car.myview.RadioGroupEx>
 
     <TextView
         android:id="@+id/lines2"
         android:layout_width="match_parent"
         android:layout_height="8dp"
         android:layout_below="@+id/rg_gg"
-        android:layout_marginTop="5dp"
         android:background="@color/colorLightGray3" />
 
     <LinearLayout
@@ -120,11 +121,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/lines2"
-        android:layout_marginBottom="8dp"
         android:padding="10dp">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:text="说明"
             android:textColor="@color/colorBlack"
@@ -133,7 +133,6 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="15dp"
             android:drawableLeft="@drawable/list_icon_explain"
             android:drawablePadding="3dp"
             android:text="平台自营"
@@ -164,5 +163,55 @@
             android:textSize="13sp" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:id="@+id/ll_discounts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_goods_xq_explain"
+        android:animateLayoutChanges="true"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:text="优惠"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_discounts"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/store_icon_right" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ll_discounts"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:text="积分"
+            android:textColor="@color/colorBlack"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="购买可返120积分"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
 
 </RelativeLayout>

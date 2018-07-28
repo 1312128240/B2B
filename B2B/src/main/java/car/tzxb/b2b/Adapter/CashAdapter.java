@@ -30,10 +30,17 @@ public class CashAdapter extends MyLvBaseAdapter<String> {
         convertView = getInflater().from(getContext()).inflate(R.layout.my_gold_sign_item, parent, false);
         TextView tv = convertView.findViewById(R.id.tv_sign_date);
         CheckBox cb = convertView.findViewById(R.id.cb_zf);
+        TextView tv_num=convertView.findViewById(R.id.tv_sign_gold_num);
+        TextView tv_zf_type=convertView.findViewById(R.id.tv_offline_payment);
         cb.setVisibility(View.VISIBLE);
-        convertView.findViewById(R.id.tv_sign_succeed).setVisibility(View.INVISIBLE);
-        convertView.findViewById(R.id.tv_sign_gold_num).setVisibility(View.GONE);
-
+        tv_num.setVisibility(View.INVISIBLE);
+        if(position==0){
+            tv_zf_type.setVisibility(View.VISIBLE);
+            tv_zf_type.setText("在线支付方式");
+        }else if(position==3){
+            tv_zf_type.setVisibility(View.VISIBLE);
+            tv_zf_type.setText("其它支付方式");
+        }
         tv.setText(getItem(position));
         tv.setCompoundDrawablesWithIntrinsicBounds(img[position],null,null,null);
         //点击

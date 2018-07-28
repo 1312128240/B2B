@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -157,24 +158,13 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
                 //价钱
                 TextView tv_price = holder.getView(R.id.tv_category_pice);
                 tv_price.setText(Html.fromHtml("¥" + "<big>" + bean.getPrice() + "</big>"));
-                //销量
-                holder.setText(R.id.tv_maker_price, "月销量: " + bean.getSales());
                 //商品类型
                 holder.setText(R.id.tv_goods_type, bean.getDealer());
-                //加入购物车
-                ImageView iv_gwc = holder.getView(R.id.iv_gwc_icon);
-                iv_gwc.setVisibility(View.VISIBLE);
-                iv_gwc.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (isFastClick()) {
-                            getChildGoods(bean.getId());
-                        }
-
-                    }
-
-
-                });
+                //销量
+                TextView tv_sales=holder.getView(R.id.tv_goods_count);
+                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+                tv_sales.setTextColor(Color.parseColor("#8D8D8A"));
+                tv_sales.setText("月销量:  "+bean.getSales());
             }
         };
         recyclerview.setAdapter(adapter);
@@ -194,37 +184,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
         });
     }
 
-    private void getChildGoods(String mainId) {
-        Log.i("查询的子商品", Constant.baseUrl + "item/index.php?c=Goods&m=GetProductsInfo" + "&id=" + mainId);
-        OkHttpUtils
-                .get()
-                .tag(this)
-                .url(Constant.baseUrl + "item/index.php?c=Goods&m=GetProductsInfo")
-                .addParams("id", mainId)
-                .build()
-                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
 
-                    }
-
-                    @Override
-                    public void onResponse(BaseDataListBean response, int id) {
-                        if (response.getStatus() == 1) {
-                            List<BaseDataListBean.DataBean> list = response.getData();
-                            AddShoppingCarPop window = new AddShoppingCarPop(GoodsClassifyActivity.this, list,0);
-                            window.show(drawerLayout);
-                            window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
-                                @Override
-                                public void Click(int number, String pro_id, String shop_id, String type) {
-                                    putShoppingCar(number, pro_id, shop_id, type);
-                                }
-                            });
-                        }
-
-                    }
-                });
-    }
 
 
     @Override
@@ -241,45 +201,6 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
     @Override
     public void showErro() {
 
-    }
-
-    public void putShoppingCar(int number, String pro_id, String shop_id, String type) {
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        if (userId == null) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
-            return;
-        }
-
-        Log.i("添加购物车路径", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=add_shoppingcar" + "&number=" + number +
-                "&pro_id=" + pro_id + "&shop_id=" + shop_id + "&type=" + type + "&motion_id=1" + "&user_id=" + userId);
-
-        // http://172.20.10.142/mobile_api/orders/shopping_cars_moblie.php?m=add_shoppingcar&number=1&pro_id=4187&shop_id=12&type=0&motion_id=1&user_id=446
-        OkHttpUtils
-                .get()
-                .tag(this)
-                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=add_shoppingcar")
-                .addParams("number", String.valueOf(number))
-                .addParams("pro_id", pro_id)
-                .addParams("shop_id", shop_id)
-                .addParams("type", type)
-                .addParams("motion_id", "1")
-                .addParams("user_id", userId)
-                .build()
-                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                        MyToast.makeTextAnim(MyApp.getContext(), e.toString(), 0, Gravity.CENTER, 0, 0).show();
-                    }
-
-                    @Override
-                    public void onResponse(BaseStringBean response, int id) {
-
-                        MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
-
-                    }
-                });
     }
 
     /**

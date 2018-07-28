@@ -618,11 +618,20 @@ public class GoodsXqBean {
             private String p_title;
             private String dealer;
             private String stock_distributor_all;
-            private String minimum_order_quantity;
+            private int minimum_order_quantity;
             private List<String> contents_mobi;
             private List<String> imgs;
             private String color_name;
             private String network_name;
+            private List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotion;
+
+            public List<GoodsXqBean.DataBean.ProductBean.PromotionBean> getPromotion() {
+                return promotion;
+            }
+
+            public void setPromotion(List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotion) {
+                this.promotion = promotion;
+            }
 
             public String getColor_name() {
                 return color_name;
@@ -864,11 +873,11 @@ public class GoodsXqBean {
                 this.stock_distributor_all = stock_distributor_all;
             }
 
-            public String getMinimum_order_quantity() {
+            public int getMinimum_order_quantity() {
                 return minimum_order_quantity;
             }
 
-            public void setMinimum_order_quantity(String minimum_order_quantity) {
+            public void setMinimum_order_quantity(int minimum_order_quantity) {
                 this.minimum_order_quantity = minimum_order_quantity;
             }
 
@@ -886,6 +895,176 @@ public class GoodsXqBean {
 
             public void setImgs(List<String> imgs) {
                 this.imgs = imgs;
+            }
+
+            public static class PromotionBean {
+
+                private String id;
+                private String start_time;
+                private String end_time;
+                private Object full_amount;
+                private Object reduce_amount;
+                private String type;
+                private String zp_type;
+                private String title;
+                private List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> gift;
+
+                public String getId() {
+                    return id;
+                }
+
+                public void setId(String id) {
+                    this.id = id;
+                }
+
+                public String getStart_time() {
+                    return start_time;
+                }
+
+                public void setStart_time(String start_time) {
+                    this.start_time = start_time;
+                }
+
+                public String getEnd_time() {
+                    return end_time;
+                }
+
+                public void setEnd_time(String end_time) {
+                    this.end_time = end_time;
+                }
+
+                public Object getFull_amount() {
+                    return full_amount;
+                }
+
+                public void setFull_amount(Object full_amount) {
+                    this.full_amount = full_amount;
+                }
+
+                public Object getReduce_amount() {
+                    return reduce_amount;
+                }
+
+                public void setReduce_amount(Object reduce_amount) {
+                    this.reduce_amount = reduce_amount;
+                }
+
+                public String getType() {
+                    return type;
+                }
+
+                public void setType(String type) {
+                    this.type = type;
+                }
+
+                public String getZp_type() {
+                    return zp_type;
+                }
+
+                public void setZp_type(String zp_type) {
+                    this.zp_type = zp_type;
+                }
+
+                public String getTitle() {
+                    return title;
+                }
+
+                public void setTitle(String title) {
+                    this.title = title;
+                }
+
+                public List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> getGift() {
+                    return gift;
+                }
+
+                public void setGift(List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> gift) {
+                    this.gift = gift;
+                }
+
+                public static class GiftBean {
+
+                    private String id;
+                    private String full_product_id;
+                    private String zp_pro_id;
+                    private String zp_number;
+                    private String zp_pro_img;
+                    private String is_del;
+                    private String add_time;
+                    private String zp_title;
+                    private String promotion_id;
+
+                    public String getId() {
+                        return id;
+                    }
+
+                    public void setId(String id) {
+                        this.id = id;
+                    }
+
+                    public String getFull_product_id() {
+                        return full_product_id;
+                    }
+
+                    public void setFull_product_id(String full_product_id) {
+                        this.full_product_id = full_product_id;
+                    }
+
+                    public String getZp_pro_id() {
+                        return zp_pro_id;
+                    }
+
+                    public void setZp_pro_id(String zp_pro_id) {
+                        this.zp_pro_id = zp_pro_id;
+                    }
+
+                    public String getZp_number() {
+                        return zp_number;
+                    }
+
+                    public void setZp_number(String zp_number) {
+                        this.zp_number = zp_number;
+                    }
+
+                    public String getZp_pro_img() {
+                        return zp_pro_img;
+                    }
+
+                    public void setZp_pro_img(String zp_pro_img) {
+                        this.zp_pro_img = zp_pro_img;
+                    }
+
+                    public String getIs_del() {
+                        return is_del;
+                    }
+
+                    public void setIs_del(String is_del) {
+                        this.is_del = is_del;
+                    }
+
+                    public String getAdd_time() {
+                        return add_time;
+                    }
+
+                    public void setAdd_time(String add_time) {
+                        this.add_time = add_time;
+                    }
+
+                    public String getZp_title() {
+                        return zp_title;
+                    }
+
+                    public void setZp_title(String zp_title) {
+                        this.zp_title = zp_title;
+                    }
+
+                    public String getPromotion_id() {
+                        return promotion_id;
+                    }
+
+                    public void setPromotion_id(String promotion_id) {
+                        this.promotion_id = promotion_id;
+                    }
+                }
             }
         }
 

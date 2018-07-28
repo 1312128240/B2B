@@ -11,7 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="1.5dp"
         android:background="@color/colorWhite"
         android:gravity="center_vertical"
         android:paddingLeft="10dp"
@@ -33,12 +33,6 @@
             android:textColor="@color/red" />
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/colorLightGray3"
-        android:padding="8dp"
-        android:text="请选择支付方式" />
 
     <ListView
         android:id="@+id/lv_zf"

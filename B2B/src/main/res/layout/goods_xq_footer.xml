@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginTop="8dp"
     android:orientation="vertical">
 
     <LinearLayout
@@ -23,7 +24,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/store_icon_right"
             android:gravity="end"
             android:text="好评率"
             android:textColor="@color/text_black" />
@@ -40,10 +40,9 @@
         android:id="@+id/ll_all_pj"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recy_ev"
         android:background="@color/colorWhite"
         android:gravity="center"
-        android:padding="15dp">
+        android:padding="10dp">
 
 
         <TextView
@@ -60,7 +59,6 @@
         android:id="@+id/rl_shop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_all_pj"
         android:layout_marginTop="10dp"
         android:background="@color/colorWhite"
         android:paddingRight="10dp">
@@ -97,7 +95,7 @@
             android:layout_width="60dp"
             android:layout_height="25dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignTop="@+id/tv_goods_xq_shop_city"
             android:background="@drawable/bg1"
             android:drawableLeft="@drawable/list_icon_collection"
             android:gravity="center"
@@ -105,45 +103,47 @@
             android:paddingRight="5dp"
             android:text="收藏"
             android:textColor="@color/colorWhite" />
+
+        <LinearLayout
+            android:id="@+id/ll_come_shop"
+            android:elevation="2dp"
+            android:layout_below="@+id/tv_xq_goods_shop_collect"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/store_icon_right"
+                android:gravity="center"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="全部商品" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableRight="@mipmap/store_icon_right"
+                android:gravity="center"
+                android:paddingLeft="50dp"
+                android:paddingRight="50dp"
+                android:text="进入店铺" />
+        </LinearLayout>
+
     </RelativeLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_come_shop"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/rl_shop"
-        android:layout_marginTop="1dp"
-        android:background="@color/colorWhite">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableRight="@mipmap/store_icon_right"
-            android:gravity="center"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:text="全部商品" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawableRight="@mipmap/store_icon_right"
-            android:gravity="center"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
-            android:text="进入店铺" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_shop_hot"
+        android:drawableLeft="@drawable/shop_icon_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_come_shop"
-        android:layout_marginTop="1dp"
+        android:layout_marginTop="8dp"
         android:background="@color/colorWhite"
-        android:padding="10dp"
+        android:padding="8dp"
         android:text="店铺热销"
         android:textColor="@color/colorBlack" />
 
@@ -151,7 +151,6 @@
         android:id="@+id/recy_hot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_shop_hot"
         android:background="@color/colorWhite">
 
     </android.support.v7.widget.RecyclerView>
@@ -163,7 +162,6 @@
         android:drawablePadding="6dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/recy_hot"
         android:background="@color/colorWhite"
         android:drawableLeft="@drawable/shop_icon_title"
         android:text="商品详情"
@@ -172,8 +170,8 @@
     <car.myview.MyListView
         android:id="@+id/lv_details"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tv_xq_img">
+        android:layout_height="wrap_content">
 
     </car.myview.MyListView>
+
 </LinearLayout>

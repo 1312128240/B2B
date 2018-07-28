@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -56,17 +56,23 @@
             android:layout_toRightOf="@+id/tv_consignee_name"
             android:textColor="@color/colorBlack2"
             tools:text="159895417321" />
+    <LinearLayout
+        android:id="@+id/ll_order_address"
+        android:animateLayoutChanges="true"
+        android:layout_below="@+id/tv_consignee_name"
+        android:layout_alignLeft="@id/tv_consignee_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
          <TextView
              android:id="@+id/tv_default_address"
              android:text="默认"
-             android:visibility="gone"
-             android:layout_alignLeft="@id/tv_consignee_name"
-             android:layout_below="@+id/tv_consignee_name"
              android:textColor="@color/red"
              android:textSize="12sp"
              android:paddingLeft="3dp"
-             android:gravity="center"
              android:paddingRight="3dp"
+             android:visibility="gone"
+             android:layout_marginRight="10dp"
+             android:gravity="center"
              android:background="@drawable/bg7"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content" />
@@ -75,13 +81,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:layout_toRightOf="@+id/tv_default_address"
-            android:layout_marginLeft="10dp"
-            android:layout_below="@+id/tv_consignee_name"
             android:ellipsize="end"
             android:lines="1"
             android:textColor="@color/gray"
             tools:text="广东省深圳市观澜湖" />
+    </LinearLayout>
 
         <ImageView
             android:id="@+id/iv_chose_address"
@@ -97,8 +101,8 @@
             android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tv_consignee_address"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/ll_order_address"
+            android:layout_marginTop="5dp"
             android:src="@drawable/dd_nav_fgx" />
     </RelativeLayout>
 
@@ -265,4 +269,4 @@
     </LinearLayout>
 
 
-</LinearLayout>
+</merge>

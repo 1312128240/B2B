@@ -33,14 +33,14 @@
 
         <EditText
             android:id="@+id/et_login_phone"
+            android:singleLine="true"
             android:layout_width="210dp"
             android:layout_height="40dp"
             android:background="@null"
             android:drawableLeft="@mipmap/login_icon_phone"
             android:drawablePadding="8dp"
             android:ellipsize="end"
-            android:hint="@string/login_phone"
-            android:inputType="number"
+            android:hint="@string/login_phone2"
             android:lines="1"
             android:textCursorDrawable="@drawable/cursor_color" />
         <car.myview.CountDown.CountDownTextView

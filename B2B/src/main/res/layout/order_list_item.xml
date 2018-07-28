@@ -89,6 +89,7 @@
             android:id="@+id/tv_view3"
             android:visibility="gone"
             android:gravity="center"
+            android:textColor="@color/colorBlack"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
@@ -100,6 +101,7 @@
         <TextView
             android:id="@+id/tv_view2"
             android:visibility="gone"
+            android:textColor="@color/colorBlack"
             android:layout_marginRight="10dp"
             android:gravity="center"
             android:layout_width="70dp"

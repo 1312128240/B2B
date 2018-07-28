@@ -47,7 +47,26 @@ public class OrderBean implements Serializable{
         private int amount_cost_point;
         private int amount_point;
         private String goods_kind_number;
+        private String amount_price;
         private List<GoodsBean> goods;
+        private String Discount;
+
+        public String getAmount_price() {
+            return amount_price;
+        }
+
+        public void setAmount_price(String amount_price) {
+            this.amount_price = amount_price;
+        }
+        public String getDiscount() {
+            return Discount;
+        }
+
+        public void setDiscount(String discount) {
+            Discount = discount;
+        }
+
+
         public String getGoods_kind_number() {
             return goods_kind_number;
         }

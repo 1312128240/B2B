@@ -2,6 +2,7 @@ package car.tzxb.b2b.Views.PopWindow;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -23,21 +24,20 @@ import car.tzxb.b2b.Util.DeviceUtils;
  */
 
 public class ExplainPop extends PopupWindow {
-     private static volatile ExplainPop mInstance;
-     private Context mContext;
+
+    private static volatile ExplainPop mInstance;
+    private Context mContext;
+
     public ExplainPop(Context context) {
         super(context);
-        this.mContext=context;
+        this.mContext = context;
         initView();
     }
 
     public static ExplainPop getmInstance(Context context) {
-        if (mInstance == null)
-        {
-            synchronized (ExplainPop.class)
-            {
-                if (mInstance == null)
-                {
+        if (mInstance == null) {
+            synchronized (ExplainPop.class) {
+                if (mInstance == null) {
                     mInstance = new ExplainPop(context);
                 }
             }
@@ -46,7 +46,7 @@ public class ExplainPop extends PopupWindow {
     }
 
     private void initView() {
-        View view= LayoutInflater.from(mContext).inflate(R.layout.goods_xq_explain,null);
+        View view = LayoutInflater.from(mContext).inflate(R.layout.goods_xq_explain, null);
         setContentView(view);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -56,12 +56,12 @@ public class ExplainPop extends PopupWindow {
         setBackgroundDrawable(dw);
         setAnimationStyle(R.style.mypopwindow_anim_style);
         setOutsideTouchable(true);
-        final View top=view.findViewById(R.id.ll_goods_xq_explain_top);
-        TextView btn=view.findViewById(R.id.btn_colse_goodsxq_explain);
+        final View top = view.findViewById(R.id.ll_goods_xq_explain_top);
+        TextView btn = view.findViewById(R.id.btn_colse_goodsxq_explain);
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                int height =top.getTop();
+                int height = top.getTop();
                 int y = (int) event.getY();
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (y < height) {
@@ -78,12 +78,14 @@ public class ExplainPop extends PopupWindow {
             }
         });
     }
-      public void show(View parent){
-          if (DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())) {
-              int navigationHeight = DeviceUtils.getNavigationBarHeight(mContext);
-              showAtLocation(parent, Gravity.BOTTOM, 0, navigationHeight);
-          } else {
-              showAtLocation(parent, Gravity.BOTTOM, 0, 0);
-          }
-      }
+
+    public void show(View parent) {
+        Log.i("有底部导航栏", DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext()) + "");
+        if (DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())) {
+            int navigationHeight = DeviceUtils.getNavigationBarHeight(mContext);
+            showAtLocation(parent, Gravity.BOTTOM, 0, navigationHeight);
+        } else {
+            showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        }
+    }
 }

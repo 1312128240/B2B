@@ -21,6 +21,16 @@ public class BaseStringBean {
     private String title;
     private String img_url;
     private boolean checked;
+    private String tn;
+    public String getTn() {
+        return tn;
+    }
+
+    public void setTn(String tn) {
+        this.tn = tn;
+    }
+
+
     public boolean isChecked() {
         return checked;
     }

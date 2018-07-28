@@ -72,6 +72,8 @@ public class MyGoldActivity extends MyBaseAcitivity {
                 holder.setText(R.id.tv_sign_date,logBean.getAdd_time());
                 //金币数量
                 holder.setText(R.id.tv_sign_gold_num,"+"+logBean.getNumber());
+                //签到成功
+                holder.setText(R.id.tv_sign_succeed,"签到成功");
             }
         };
         recyclerView.setAdapter(adapter);

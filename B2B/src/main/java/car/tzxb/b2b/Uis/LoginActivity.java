@@ -9,8 +9,11 @@ import android.os.Handler;
 import android.support.design.widget.Snackbar;
 import android.text.Editable;
 import android.text.Html;
+import android.text.InputFilter;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.DigitsKeyListener;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.transition.Slide;
@@ -31,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -110,18 +114,18 @@ public class LoginActivity extends MyBaseAcitivity {
             public void onTabSelected(XTabLayout.Tab tab) {
                 index = tab.getPosition();
                 etLoginPass.setText("");
+                etLoginPhone.setText("");
                 if (index == 0) {
-                    etLoginPhone.setHint(R.string.login_phone);
+                    etLoginPhone.setHint(R.string.login_phone2);
                     etLoginPass.setHint(R.string.login_pass);
                     tv_get_yzm.setVisibility(View.INVISIBLE);
                     iv_pass_visiable.setImageResource(R.mipmap.login_icon_cansee);
                 } else {
-                    etLoginPhone.setHint(R.string.login_phone2);
+                    etLoginPhone.setHint(R.string.login_phone);
                     etLoginPass.setHint(R.string.yzm_pass);
                     etLoginPass.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     iv_pass_visiable.setVisibility(View.INVISIBLE);
                     tv_get_yzm.setVisibility(View.VISIBLE);
-
                 }
 
             }
@@ -150,14 +154,34 @@ public class LoginActivity extends MyBaseAcitivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                //不能超进11位
-                if (s.length() > 11) {
-                    String str = etLoginPhone.getText().toString();
-                    String body = str.substring(0, str.length() - 1);
-                    etLoginPhone.setText(body);
-                    etLoginPhone.setSelection(body.length());
-                } else if (s.length() == 11) {
-                    hideSoftInput();
+
+                if(index==0){
+                    String editable = etLoginPhone.getText().toString();
+                    String str =StringUtil.stringFilter(editable.toString());
+                    if(!editable.equals(str)){
+                        etLoginPhone.setText(str);
+                        //设置新的光标所在位置
+                        etLoginPhone.setSelection(str.length());
+                    }
+
+                    etLoginPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(20)});
+                    if(s.length()==20){
+                        hideSoftInput();
+                    }
+
+                }else {
+                    //不能超进11位
+                    etLoginPhone.setFilters(new InputFilter[]{new InputFilter.LengthFilter(11)});
+                    String editable = etLoginPhone.getText().toString();
+                    String str =StringUtil.numberFilter(editable.toString());
+                    if(!editable.equals(str)){
+                        etLoginPhone.setText(str);
+                        //设置新的光标所在位置
+                        etLoginPhone.setSelection(str.length());
+                    }
+                    if(s.length()==11){
+                        hideSoftInput();
+                    }
                 }
             }
         });
@@ -444,12 +468,11 @@ public class LoginActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_open_shop)
     public void open() {
         if (isFastClick()) {
-            Intent intent = new Intent(this, OpenShopActivity.class);
+            Intent intent = new Intent(this, OpenShopEntranceActivity.class);
             intent.putExtra("from", "login");
             startActivity(intent);
         }
 
     }
-
 
 }

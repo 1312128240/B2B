@@ -3,6 +3,9 @@ package car.tzxb.b2b.Util;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 /**
  * Created by Administrator on 2018/5/24 0024.
@@ -59,5 +62,23 @@ public class StringUtil {
             }
         }
         return sb1;
+    }
+
+    // 通过正则表达式来判断。下面的例子只允许显示字母、数字和汉字。
+
+    public static String stringFilter(String str)throws PatternSyntaxException {
+        // 只允许字母、数字和汉字
+        String   regEx  =  "[^a-zA-Z0-9\u4E00-\u9FA5]";
+        Pattern p   =   Pattern.compile(regEx);
+        Matcher m   =   p.matcher(str);
+        return   m.replaceAll("").trim();
+    }
+    //通过正则表达式来判断。下面只能是数字
+    public static String numberFilter(String str)throws PatternSyntaxException {
+        // 只允许字母、数字和汉字
+        String   regEx  =  "[^0-9]";
+        Pattern   p   =   Pattern.compile(regEx);
+        Matcher   m   =   p.matcher(str);
+        return   m.replaceAll("").trim();
     }
 }

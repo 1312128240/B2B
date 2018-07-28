@@ -83,13 +83,16 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     TextView tv_default_address;
     @BindView(R.id.ll_zf_type)
     LinearLayout ll_zf_type;
+    @BindView(R.id.ll_order_address)
+    LinearLayout addressLayout;
+    @BindView(R.id.tv_goods_discounts)
+    TextView tv_goods_discounts;
     private String shopId;
     private String carId;
     private String num;
     private String proId;
     private OrderBean.DataBean dataBean;
     private String mesg;
-
     @Override
     public void initParms(Bundle parms) {
 
@@ -118,12 +121,20 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
     @Override
+    protected BasePresenter bindPresenter() {
+        return null;
+    }
+
+
+    @Override
     protected void onResume() {
         super.onResume();
         getDefutAddress();
     }
 
-
+    /**
+     * 默认地址
+     */
     private void getDefutAddress() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("我的默认地址",Constant.baseUrl+"orders/address.php?m=address"+"&user_id="+userId);
@@ -148,7 +159,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                         if("1".equals(response.getStatus())){
                              tv_consignee_name.setText(bean.getUser_name());
                              tv_consignee_mobile.setText(bean.getMobile());
-                             tv_consignee_address.setText(bean.getProvince()+bean.getCity()+bean.getArea()+bean.getAddress());
+                             String address=bean.getProvince()+bean.getCity()+bean.getArea()+bean.getAddress();
+                             tv_consignee_address.setText(address);
                         }else {
                              tv_consignee_name.setHint("收货人:");
                              tv_consignee_mobile.setHint("手机:");
@@ -160,10 +172,14 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
 
+    /**
+     * 购物车过来
+     */
     private void getData() {
         String userid= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        Log.i("查看订单",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=pay_list"+"&car_id="+carId+"&pro_id="+proId+"&num="+num+"&shop_id="+shopId
-                +"&user_id="+userid+"&motion_id="+"&type=");
+        Log.i("查看订单",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=pay_list"+"&car_id="+carId+"&pro_id="+
+                proId+"&num="+num+"&shop_id="+shopId +"&user_id="+userid+"&motion_id="+"&type=");
+
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=pay_list")
@@ -191,13 +207,12 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
     private void initData() {
-        tv_goods_total_price.setText("¥"+dataBean.getAmount_pay());
+        tv_goods_total_price.setText("¥"+dataBean.getAmount_price());
         tv_goods_offset.setText("¥"+dataBean.getOffset());
+        tv_finally_price.setText(Html.fromHtml("实付款  "+"<font color='#FA3314'><big>"+"¥"+dataBean.getAmount_pay()+"</big></font>"));
         tv_num.setText(Html.fromHtml("<font color='#000000'>共"+dataBean.getGoods_kind_number()+"件</font>"+"<br>"+"(可留言)"));
-      //  tv_num.setText("共"+dataBean.getGoods_kind_number()+"件"+"\n"+"(可留言)");
-        //实际付款为商品总价+服务费-折扣费
-       double finaprice= dataBean.getAmount_pay()+dataBean.getOffset();
-       tv_finally_price.setText(Html.fromHtml("实付款 "+"<big>"+"¥"+finaprice+"</big>"));
+        tv_goods_discounts.setText("-¥"+dataBean.getDiscount());
+        //商品列表
         recy_goods.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         //取出所有商品
         List<OrderBean.DataBean.GoodsBean> goodsBean=dataBean.getGoods();
@@ -209,8 +224,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 lists.add(childBean);
             }
         }
-
-
 
       CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean> adapter= new CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean>(MyApp.getContext(),R.layout.iv_item,lists) {
             @Override
@@ -230,17 +243,16 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
     @Override
-    protected BasePresenter bindPresenter() {
-        return null;
-    }
-
-
-    @Override
     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-            RadioButton rb=group.findViewById(checkedId);
-            String s=rb.getText().toString();
-            if(!TextUtils.isEmpty(s)){
-                tv_distribution.setText(s);
+            switch (checkedId){
+                case R.id.rb_visit:
+                    tv_distribution.setText("送货上门");
+                    addressLayout.setVisibility(View.VISIBLE);
+                    break;
+                case R.id.rb_self:
+                    tv_distribution.setText("门店自取");
+                    addressLayout.setVisibility(View.GONE);
+                    break;
             }
 
     }
@@ -252,7 +264,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         String dealer_name=tv_consignee_name.getText().toString();
         String dealer_mobile=tv_consignee_mobile.getText().toString();
         String dealer_address=tv_consignee_address.getText().toString();
-        if(dealer_name.isEmpty()||dealer_address.isEmpty()||dealer_mobile.isEmpty()){
+        if(dealer_name.isEmpty()||dealer_mobile.isEmpty()){
             MyToast.makeTextAnim(MyApp.getContext(),"请填写收货人信息",0, Gravity.CENTER,0,0).show();
             return;
         }
@@ -260,9 +272,9 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         String mobile=SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
         String orderType=tv_distribution.getText().toString();
 
-        Log.i("提交订单",Constant.baseUrl + "orders/orders_mobile.php?m=order_add"+"&user_id="+userId+"&username="+mobile+"&dealer_address="+dealer_address+
-                mobile+"&dealer_name="+dealer_name+"&dealer_mobile=" +dealer_mobile +"&message="+"&order_type="+orderType+
-                "&expect_time="+"&pay_device=Android"+"&coupon_id=0"+"&is_car=0"+"&carid_proid="+carId);
+        Log.i("提交订单",Constant.baseUrl + "orders/orders_mobile.php?m=order_add"+"&user_id="+userId+"&username="+mobile+
+                "&dealer_address="+dealer_address+ "&dealer_name="+dealer_name+"&dealer_mobile=" +dealer_mobile +"&message="+mesg
+                +"&order_type="+orderType+ "&expect_time="+"&pay_device=Android"+"&coupon_id=0"+"&is_car=0"+"&carid_proid="+carId);
 
        if(isFastClick()) {
            OkHttpUtils
@@ -290,7 +302,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
                        @Override
                        public void onResponse(BaseDataBean response, int id) {
-                           //  Log.i("能生成订单吗",response.getMsg()+"");
                            if (response.getStatus() == 1) {
                                showDialogFragment(response);
                            }
