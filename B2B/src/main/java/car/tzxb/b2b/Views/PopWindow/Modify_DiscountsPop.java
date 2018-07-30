@@ -1,22 +1,28 @@
 package car.tzxb.b2b.Views.PopWindow;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
-
+import android.widget.TextView;
 import java.util.List;
-
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
-import car.tzxb.b2b.Bean.GoodsXqBean;
+import car.tzxb.b2b.Adapter.ShoppinCarDiscountsAdapter;
+import car.tzxb.b2b.Bean.DiscountsBean;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
 
@@ -26,18 +32,19 @@ import car.tzxb.b2b.Util.DeviceUtils;
 
 public class Modify_DiscountsPop extends PopupWindow {
     private Context mContext;
-  // private List<GoodsXqBean.DataBean.ProductBean.PromotionBean> list;
-
-    public Modify_DiscountsPop(Context context) {
+  //  private RecyclerView recyclerView;
+    private List<DiscountsBean.DataBean> lists;
+    private int temPosition=0;
+    public Modify_DiscountsPop(Context context, List<DiscountsBean.DataBean> beanList) {
         super(context);
         this.mContext = context;
-       // this.list = lists;
+        this.lists=beanList;
         initPop();
     }
 
     private void initPop() {
         final View popView = LayoutInflater.from(mContext).inflate(R.layout.modify_disconts_pop, null);
-        RecyclerView recyclerView = popView.findViewById(R.id.recy_modify_disconts);
+        ListView listView= popView.findViewById(R.id.recy_modify_disconts);
         final View top = popView.findViewById(R.id.ll_modify_disconts_top);
         setContentView(popView);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -61,8 +68,11 @@ public class Modify_DiscountsPop extends PopupWindow {
                 return true;
             }
         });
+        ShoppinCarDiscountsAdapter adapter=new ShoppinCarDiscountsAdapter(mContext,lists);
+        listView.setAdapter(adapter);
 
     }
+
 
 
     public void showPow(View parent) {

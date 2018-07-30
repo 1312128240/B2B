@@ -20,11 +20,11 @@
             android:text="修改优惠类型"
             android:textColor="@color/colorBlack2" />
 
-        <android.support.v7.widget.RecyclerView
+        <ListView
             android:id="@+id/recy_modify_disconts"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
-        </android.support.v7.widget.RecyclerView>
+        </ListView>
     </LinearLayout>
 </RelativeLayout>

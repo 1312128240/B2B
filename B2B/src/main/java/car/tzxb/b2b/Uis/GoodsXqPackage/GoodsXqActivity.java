@@ -273,13 +273,13 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         window.show(parent);
         window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
             @Override
-            public void Click(int number, String pro_id, String shop_id, String type) {
-                putIn(number, pro_id, shop_id, type);
+            public void Click(int number, String pro_id, String shop_id, String type,String discountsId) {
+                putIn(number, pro_id, shop_id, type,discountsId);
             }
         });
     }
 
-    public void putIn(int number, String pro_id, String shop_id, String type) {
+    public void putIn(int number, String pro_id, String shop_id, String type,String discountsId) {
 
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         if (userId == null) {
@@ -288,7 +288,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             return;
         }
         Log.i("添加购物车路径", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=add_shoppingcar" + "&number=" + number +
-                "&pro_id=" + pro_id + "&shop_id=" + shop_id + "&type=" + type + "&motion_id=1" + "&user_id=" + userId);
+                "&pro_id=" + pro_id + "&shop_id=" + shop_id + "&type=" + type + "&motion_id="+discountsId + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -297,7 +297,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                 .addParams("pro_id", pro_id)
                 .addParams("shop_id", shop_id)
                 .addParams("type", type)
-                .addParams("motion_id", "1")
+                .addParams("motion_id", discountsId)
                 .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {

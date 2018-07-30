@@ -16,6 +16,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -38,6 +39,7 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseStringBean;
+import car.tzxb.b2b.Bean.DiscountsBean;
 import car.tzxb.b2b.Bean.ShopCarBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.MainActivity;
@@ -76,7 +78,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     View parent;
     @BindView(R.id.tv_shopingcar_discounts_total)
     TextView tv_discounts_total;
-
     private List<ShopCarBean.DataBean> beanList = new ArrayList<>();
     private CommonAdapter<ShopCarBean.DataBean> adapter;
     private boolean Status = false;
@@ -85,7 +86,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     private double discountsTotals;
     private int total_num;
     private MainActivity mainActivity;
-
+    private String userId;
 
     @Override
     public int getLayoutResId() {
@@ -110,21 +111,21 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-            Log.i("到可见时更新数据", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId);
             cb_all.setChecked(false);
             getData();
         }
     }
 
     private void getData() {
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        //显示，更新数据
-        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list";
+        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        String url=  Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list";
         Map<String, String> params = new HashMap<>();
         params.put("user_id", userId);
-        Log.i("创建购物fragment", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId);
+        params.put("shop_id","-1");
+        params.put("type","0");
         presenter.PresenterGetData(url, params);
+        Log.i("我的购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId+"&shop_id=-1"+"&type=0");
+
     }
 
 
@@ -165,22 +166,25 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         LinearLayout ll_discounts = holder.getView(R.id.ll_shopingcar_discounts);
                         RecyclerView recy = holder.getView(R.id.recy_discounts);
                         holder.setText(R.id.tv_shoppingcar_discounts_hint,dataChildBean.getMotion_type());
+                        RelativeLayout rl_discoutns_layout=holder.getView(R.id.rl_shoppingcar_discounts_layout);
                         TextView tv_modify_disconts = holder.getView(R.id.tv_modify_disconts);
                         holder.setText(R.id.tv_shoppingcar_discounts_hint_content, dataChildBean.getChild_title());
-                        List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList = dataChildBean.getGift();
-                        if (giftBeanList.size() != 0) {
-                            ll_discounts.setVisibility(View.VISIBLE);
-                            //  tv_modify_disconts.setVisibility(View.VISIBLE);
+                        if("0".equals(dataChildBean.getMotion_id())){
+                            rl_discoutns_layout.setVisibility(View.GONE);
+                        }else {
+                            List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList=dataChildBean.getGift();
+                            if(giftBeanList.size()!=0){
+                                ll_discounts.setVisibility(View.VISIBLE);
+                            }else {
+                                ll_discounts.setVisibility(View.GONE);
+                            }
                             initDiscouns(giftBeanList, recy);
-                        } else {
-                            ll_discounts.setVisibility(View.GONE);
-                            // tv_modify_disconts.setVisibility(View.INVISIBLE);
                         }
+
                         tv_modify_disconts.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Modify_DiscountsPop mdp = new Modify_DiscountsPop(MyApp.getContext());
-                                mdp.showPow(parent);
+                                ModifyDiscounts(dataBean.getShop_id(),dataChildBean.getAid());
                             }
                         });
                         //切换布局
@@ -213,7 +217,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                             @Override
                             public void onClick(View view) {
                                 int number = dataChildBean.getNumber();
-                                if (number == 1) {
+                                if (number == dataChildBean.getMinimum_order_quantity()) {
                                     return;
                                 }
                                 number--;
@@ -226,8 +230,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         tv_delete.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-
-                                String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
                                 if (mainActivity.isFastClick()) {
                                     Log.i("删除购物车", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=car_del" + "&car_id=" + dataChildBean.getAid() + "&user_id=" + userId);
                                     OkHttpUtils
@@ -328,8 +330,39 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     }
 
     /**
+     * 修改查询促销信息
+     */
+    private void ModifyDiscounts(String shopId,String aid) {
+        String url=Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_type_list"+"&shop_id="+shopId+"&car_id="+aid+"&user_id="+userId;
+        Log.i("购物车查询促销",url);
+         OkHttpUtils
+                 .get()
+                 .tag(this)
+                 .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_type_list")
+                 .addParams("shop_id",shopId)
+                 .addParams("car_id",aid)
+                 .addParams("user_id",userId)
+                 .build()
+                 .execute(new GenericsCallback<DiscountsBean>(new JsonGenericsSerializator()) {
+                     @Override
+                     public void onError(Call call, Exception e, int id) {
+
+                     }
+
+                     @Override
+                     public void onResponse(DiscountsBean response, int id) {
+                       if("1".equals(response.getStatus())){
+                           List<DiscountsBean.DataBean> beanList=response.getData();
+                           Modify_DiscountsPop mdp=new Modify_DiscountsPop(MyApp.getContext(),beanList);
+                           mdp.showPow(parent);
+                       }
+                     }
+                 });
+    }
+
+
+    /**
      * 优惠信息
-     *
      * @param giftBeanList
      */
     private void initDiscouns(List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList, RecyclerView recy) {
@@ -337,15 +370,18 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean> adapter = new CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean>(MyApp.getContext(), R.layout.my_gold_sign_item, giftBeanList) {
             @Override
             protected void convert(ViewHolder holder, ShopCarBean.DataBean.DataChildBean.GiftBean giftBean, int position) {
+                LinearLayout ll_gold=holder.getView(R.id.ll_gold_sign);
+                ll_gold.setPadding(0,0,0,0);
                 TextView tv=holder.getView(R.id.tv_sign_date);
                 tv.setText(giftBean.getZp_title());
+                tv.setTextColor(Color.LTGRAY);
                 tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
                 tv.setMaxLines(1);
                 tv.setEllipsize(TextUtils.TruncateAt.END);
                 //数量
                 TextView tv_num=holder.getView(R.id.tv_sign_gold_num);
                 tv_num.setTextColor(Color.parseColor("#000000"));
-                tv_num.setText("x"+giftBean.getZp_number());
+                tv_num.setText("x"+giftBean.getZp_numbers());
             }
         };
         recy.setAdapter(adapter);

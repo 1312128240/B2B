@@ -12,7 +12,7 @@
         android:layout_height="420dp"
         android:layout_alignParentBottom="true">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
@@ -26,81 +26,87 @@
                 android:layout_marginTop="70dp"
                 android:background="@color/colorLightGray1" />
 
-            <TextView
-                android:id="@+id/tv_shoppingcar_gg"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_line"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="10dp"
-                android:text="规格属性"
-                android:textColor="@color/colorBlack2" />
-
-            <car.myview.RadioGroupEx
-                android:id="@+id/rg_add_shoppingcar_gg"
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_shoppingcar_gg"
-                android:layout_margin="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="10dp"
-                android:orientation="horizontal">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-            </car.myview.RadioGroupEx>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/tv_line2"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/rg_add_shoppingcar_gg"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorLightGray1" />
+                    <TextView
+                        android:id="@+id/tv_shoppingcar_gg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="规格属性"
+                        android:textColor="@color/colorBlack2" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/tv_line2"
-                android:layout_marginLeft="10dp"
-                android:text="数量"
-                android:textColor="@color/colorBlack2" />
+                    <car.myview.RadioGroupEx
+                        android:id="@+id/rg_add_shoppingcar_gg"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_shoppingcar_gg"
+                        android:layout_margin="10dp"
+                        android:orientation="horizontal">
 
-            <include
-                android:id="@+id/more_or_less"
-                layout="@layout/more_or_less_layout"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_below="@+id/tv_line2"
-                android:layout_marginRight="10dp" />
+                    </car.myview.RadioGroupEx>
 
-            <TextView
-                android:id="@+id/tv_line3"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@+id/more_or_less"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:background="@color/colorLightGray1" />
+                    <TextView
+                        android:id="@+id/tv_line2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/rg_add_shoppingcar_gg"
+                        android:layout_marginBottom="10dp"
+                        android:background="@color/colorLightGray1" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_discounts_content"
-                android:layout_above="@+id/btn_add_shoppingcar"
-                android:layout_below="@+id/tv_line3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_line2"
+                        android:layout_marginLeft="10dp"
+                        android:text="数量"
+                        android:textColor="@color/colorBlack2" />
 
-            </android.support.v7.widget.RecyclerView>
+                    <include
+                        android:id="@+id/more_or_less"
+                        layout="@layout/more_or_less_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/tv_line2"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:id="@+id/tv_line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@+id/more_or_less"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/colorLightGray1" />
+
+                    <car.myview.MyListView
+                        android:id="@+id/lv_shopingcar_select_discounts"
+                        android:layout_below="@+id/tv_line3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                    </car.myview.MyListView>
+                </RelativeLayout>
+            </android.support.v4.widget.NestedScrollView>
 
             <Button
                 android:id="@+id/btn_add_shoppingcar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
                 android:background="@color/red"
                 android:text="加入购物车"
                 android:textColor="@color/colorWhite" />
-        </RelativeLayout>
+        </LinearLayout>
 
         <RelativeLayout
             android:layout_width="match_parent"

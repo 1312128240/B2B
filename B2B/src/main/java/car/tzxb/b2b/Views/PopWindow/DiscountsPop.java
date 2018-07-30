@@ -91,6 +91,7 @@ public class DiscountsPop extends PopupWindow {
                //优惠条件
                 holder.setText(R.id.tv_discounts_title,bean.getTitle());
                 TextView tv_type=holder.getView(R.id.tv1);
+                tv_type.setVisibility(View.VISIBLE);
                 String type=bean.getType();
                 tv_type.setBackground(gd);
                 if("mzeng".equals(type)){
@@ -102,7 +103,7 @@ public class DiscountsPop extends PopupWindow {
                 }
                 //优惠内容
                 List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftList=bean.getGift();
-                RecyclerView recy=holder.getView(R.id.recy_inner_disconts);
+            /*    RecyclerView recy=holder.getView(R.id.recy_inner_disconts);
                 recy.setNestedScrollingEnabled(false);
                 recy.setLayoutManager(new LinearLayoutManager(mContext));
                 CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftAdapter= new CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean>(mContext,R.layout.my_gold_sign_item,giftList) {
@@ -117,7 +118,7 @@ public class DiscountsPop extends PopupWindow {
                         holder.setText(R.id.tv_sign_date,giftBean.getZp_title());
                     }
                 };
-                recy.setAdapter(giftAdapter);
+                recy.setAdapter(giftAdapter);*/
 
             }
         };

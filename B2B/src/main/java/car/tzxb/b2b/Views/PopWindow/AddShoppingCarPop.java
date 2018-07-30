@@ -2,6 +2,7 @@ package car.tzxb.b2b.Views.PopWindow;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,8 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -27,14 +29,14 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
-import car.myview.CircleImageView.XCRoundRectImageView;
 import car.myview.CustomToast.MyToast;
 import car.myview.RadioGroupEx;
-import car.tzxb.b2b.Bean.BaseDataListBean;
+import car.tzxb.b2b.Adapter.DiscountsAdapter;
 import car.tzxb.b2b.Bean.GoodsXqBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -54,8 +56,11 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     private String pro_id;
     private String shopId;
     private int index;
+    private String discountsId;
     private GoodsXqBean.DataBean.ProductBean productBean;
     private View view;
+    private List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotionBeanList=new ArrayList<>();
+    private DiscountsAdapter adapter;
 
 
     public AddShoppingCarPop(Context context, List<GoodsXqBean.DataBean.ProductBean> productBeanList, int i) {
@@ -67,6 +72,10 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
 
     private void initPop(Context context) {
         view = LayoutInflater.from(context).inflate(R.layout.add_shoppingcar_layout,null);
+        final View top= view.findViewById(R.id.add_shoppingcar_top);
+        ImageView iv_subtract=view.findViewById(R.id.iv_subtract);
+        ImageView iv_plus=view.findViewById(R.id.iv_plus);
+        Button btn_add=view.findViewById(R.id.btn_add_shoppingcar);
         setContentView(view);
         setHeight(RelativeLayout.LayoutParams.MATCH_PARENT);
         setWidth(RelativeLayout.LayoutParams.MATCH_PARENT);
@@ -76,7 +85,7 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
         setBackgroundDrawable(dw);
         setAnimationStyle(R.style.mypopwindow_anim_style);
         setOutsideTouchable(true);
-        final View top= view.findViewById(R.id.add_shoppingcar_top);
+
         view.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -90,68 +99,27 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                 return true;
             }
         });
-
-        initMoreorLess();
-        initRg();
-        initDiscounts();
-    }
-
-    /*
-     * 优惠信息
-     */
-    private void initDiscounts() {
-
-        final RecyclerView recy_discounts=view.findViewById(R.id.recy_discounts_content);
-        final List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotionBeanList=lists.get(index).getPromotion();
-        recy_discounts.setLayoutManager(new LinearLayoutManager(mContext));
-        CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean> prmotionAdapter=
-                new CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean>(mContext,R.layout.discounts_item,promotionBeanList) {
-            @Override
-            protected void convert(ViewHolder holder, GoodsXqBean.DataBean.ProductBean.PromotionBean promotionBean, int position) {
-                       //优惠标题
-                holder.getView(R.id.tv1).setVisibility(View.GONE);
-                holder.setText(R.id.tv_discounts_title,promotionBean.getTitle());
-                //内部优惠信息
-                RecyclerView recyInner=holder.getView(R.id.recy_inner_disconts);
-                recyInner.setLayoutManager(new LinearLayoutManager(mContext));
-                List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftBeanList=promotionBean.getGift();
-                CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftAdapter=
-                        new CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean>(mContext,R.layout.my_gold_sign_item,giftBeanList) {
-                    @Override
-                    protected void convert(ViewHolder holder, GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean giftBean, int position) {
-                         //复选框
-                        CheckBox cb=holder.getView(R.id.cb_selet_discounts_type);
-                        cb.setVisibility(View.VISIBLE);
-                        //内容
-                        TextView tv_content=holder.getView(R.id.tv_sign_date);
-                        tv_content.setTextColor(Color.parseColor("#303030"));
-                        tv_content.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-                        tv_content.setMaxLines(1);
-                        tv_content.setEllipsize(TextUtils.TruncateAt.END);
-                        tv_content.setText(giftBean.getZp_title());
-                    }
-                };
-                recyInner.setAdapter(giftAdapter);
-            }
-        };
-        recy_discounts.setAdapter(prmotionAdapter);
-
-    }
-
-    /**
-     * 数量加减
-     */
-    private void initMoreorLess() {
-        //数量加减
-        ImageView iv_subtract=view.findViewById(R.id.iv_subtract);
-        ImageView iv_plus=view.findViewById(R.id.iv_plus);
-        Button btn_add=view.findViewById(R.id.btn_add_shoppingcar);
-        tv_show_num = view.findViewById(R.id.tv_show_number);
-        tv_show_num.setText(num+"");
         iv_plus.setOnClickListener(this);
         iv_subtract.setOnClickListener(this);
         btn_add.setOnClickListener(this);
+
+        initDiscounts();
+        initRg();
     }
+
+  private void initDiscounts() {
+        ListView lv=view.findViewById(R.id.lv_shopingcar_select_discounts);
+       adapter = new DiscountsAdapter(mContext,promotionBeanList);
+        lv.setAdapter(adapter);
+        adapter.setClick(new DiscountsAdapter.DiscountsId() {
+            @Override
+            public void clickDiscountsId(String id) {
+                discountsId=id;
+                Log.i("传过来id",discountsId+"");
+            }
+        });
+    }
+
 
     /**
      *  商品规格信息， 可转行的RadioGroup,
@@ -161,6 +129,7 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
         final TextView tv_price=view.findViewById(R.id.tv_add_shoppingcar_price);
         final ImageView xv=view.findViewById(R.id.iv_add_shoppingcar);
         final TextView tv_stock=view.findViewById(R.id.tv_stock);
+        tv_show_num = view.findViewById(R.id.tv_show_number);
         int width=DeviceUtils.dip2px(mContext,80);
         int height=DeviceUtils.dip2px(mContext,25);
         RadioGroup.LayoutParams params=new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,height);
@@ -205,6 +174,9 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                 //最低数量
                 num = productBean.getMinimum_order_quantity();
                 tv_show_num.setText(num+"");
+                //商品优惠
+                promotionBeanList=lists.get(checkedId).getPromotion();
+                adapter.addAll(promotionBeanList,true);
             }
         });
 
@@ -247,7 +219,7 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                       MyToast.makeTextAnim(MyApp.getContext(),"请选择商品规格",0,Gravity.CENTER,0,0).show();
                       return;
                   }
-                  listener.Click(num,pro_id,shopId,type);
+                  listener.Click(num,pro_id,shopId,type,discountsId);
                   dismiss();
                   break;
          }
@@ -260,6 +232,6 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
 
     public interface AddShoppingCarListener{
 
-        void Click(int number,String pro_id,String shop_id,String type);
+        void Click(int number,String pro_id,String shop_id,String type,String discoutnsId);
     }
 }

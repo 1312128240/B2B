@@ -196,6 +196,26 @@ public class ShopCarBean {
             private boolean isChecked;
             private String child_title;
             private double discount_amount;
+            private int  minimum_order_quantity;
+            private String motion_id;
+
+            public String getMotion_id() {
+                return motion_id;
+            }
+
+            public void setMotion_id(String motion_id) {
+                this.motion_id = motion_id;
+            }
+
+
+            public int getMinimum_order_quantity() {
+                return minimum_order_quantity;
+            }
+
+            public void setMinimum_order_quantity(int minimum_order_quantity) {
+                this.minimum_order_quantity = minimum_order_quantity;
+            }
+
 
             public String getMotion_type() {
                 return motion_type;

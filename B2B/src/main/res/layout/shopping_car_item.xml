@@ -69,87 +69,93 @@
             android:layout_alignParentEnd="true"
             android:visibility="gone" />
 
-        <LinearLayout
-            android:id="@+id/ll_shopingcar_discounts"
+        <RelativeLayout
+            android:id="@+id/rl_shoppingcar_discounts_layout"
+            android:layout_below="@+id/iv_shoppingcar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/iv_shoppingcar">
+            android:layout_height="wrap_content">
 
+
+            <LinearLayout
+                android:id="@+id/ll_shopingcar_discounts"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_shoppingcar_discounts"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="赠品"
+                    android:textColor="@color/colorBlack2" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recy_discounts"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1">
+
+                </android.support.v7.widget.RecyclerView>
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_shoppingcar_discounts"
-                android:layout_width="55dp"
+                android:id="@+id/tv1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/ll_shopingcar_discounts"
+                android:layout_marginBottom="5dp"
+                android:background="@color/colorLightGray3" />
+
+            <TextView
+                android:id="@+id/tv_shoppingcar_discounts_hint"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="赠品"
-                android:textColor="@color/colorBlack"
-                android:textStyle="bold" />
+                android:layout_below="@+id/tv1"
+                android:background="@drawable/bg1"
+                android:paddingBottom="1dp"
+                android:paddingLeft="3dp"
+                android:paddingRight="3dp"
+                android:paddingTop="1dp"
+                android:text="提示"
+                android:textColor="@color/colorWhite"
+                android:textSize="10sp" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_discounts"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/tv_shoppingcar_discounts_hint_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:layout_below="@+id/tv1"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_toLeftOf="@+id/tv_modify_disconts"
+                android:layout_toRightOf="@+id/tv_shoppingcar_discounts_hint"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textColor="@color/colorBlack2"
+                android:textSize="12sp"
+                tools:text="您的身份发生变化" />
 
-            </android.support.v7.widget.RecyclerView>
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@+id/ll_shopingcar_discounts"
-            android:layout_marginBottom="5dp"
-            android:background="@color/colorLightGray3" />
-
-        <TextView
-            android:id="@+id/tv_shoppingcar_discounts_hint"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv1"
-            android:background="@drawable/bg1"
-            android:paddingBottom="1dp"
-            android:paddingLeft="3dp"
-            android:paddingRight="3dp"
-            android:paddingTop="1dp"
-            android:text="提示"
-            android:textColor="@color/colorWhite"
-            android:textSize="11sp" />
-
-        <TextView
-            android:id="@+id/tv_shoppingcar_discounts_hint_content"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tv1"
-            android:layout_marginLeft="10dp"
-            android:layout_toLeftOf="@+id/tv_modify_disconts"
-            android:layout_toRightOf="@+id/tv_shoppingcar_discounts_hint"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:textColor="@color/colorBlack2"
-            android:textSize="12sp"
-            tools:text="您的身份发生变化" />
-
-        <TextView
-            android:id="@+id/tv_modify_disconts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/tv1"
-            android:layout_marginLeft="5dp"
-            android:text="修改"
-            android:textColor="@color/colorBlack2"
-            android:textSize="12sp" />
+            <TextView
+                android:id="@+id/tv_modify_disconts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/tv1"
+                android:text="修改"
+                android:textColor="@color/colorBlack2"
+                android:textSize="12sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/tv_shoppingcar_delete"
-        android:layout_width="60dp"
-        android:layout_height="match_parent"
-        android:background="@color/red"
-        android:ems="1"
-        android:gravity="center"
-        android:text="删除"
-        android:textColor="@color/colorWhite"
-        android:textSize="16sp" />
+ <TextView
+          android:id="@+id/tv_shoppingcar_delete"
+          android:layout_width="60dp"
+          android:layout_height="match_parent"
+          android:background="@color/red"
+          android:ems="1"
+          android:gravity="center"
+          android:text="删除"
+          android:textColor="@color/colorWhite"
+          android:textSize="16sp" />
 
 </car.myview.SwipeMenuLayout>

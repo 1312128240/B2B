@@ -27,7 +27,7 @@ public class CashAdapter extends MyLvBaseAdapter<String> {
 
     @Override
     public View getItemView(final int position, View convertView, final ViewGroup parent) {
-        convertView = getInflater().from(getContext()).inflate(R.layout.my_gold_sign_item, parent, false);
+        convertView =getInflater().inflate(R.layout.my_gold_sign_item, parent, false);
         TextView tv = convertView.findViewById(R.id.tv_sign_date);
         CheckBox cb = convertView.findViewById(R.id.cb_zf);
         TextView tv_num=convertView.findViewById(R.id.tv_sign_gold_num);

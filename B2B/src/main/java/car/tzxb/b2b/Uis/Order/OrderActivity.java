@@ -211,7 +211,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         tv_goods_offset.setText("¥"+dataBean.getOffset());
         tv_finally_price.setText(Html.fromHtml("实付款  "+"<font color='#FA3314'><big>"+"¥"+dataBean.getAmount_pay()+"</big></font>"));
         tv_num.setText(Html.fromHtml("<font color='#000000'>共"+dataBean.getGoods_kind_number()+"件</font>"+"<br>"+"(可留言)"));
-        tv_goods_discounts.setText("-¥"+dataBean.getDiscount());
+        tv_goods_discounts.setText("-¥"+dataBean.getDiscount_amount());
         //商品列表
         recy_goods.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         //取出所有商品

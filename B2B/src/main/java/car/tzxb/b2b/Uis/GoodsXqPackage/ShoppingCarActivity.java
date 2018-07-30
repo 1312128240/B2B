@@ -2,18 +2,22 @@ package car.tzxb.b2b.Uis.GoodsXqPackage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
@@ -32,6 +36,7 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
+import car.tzxb.b2b.Bean.DiscountsBean;
 import car.tzxb.b2b.Bean.ShopCarBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.MyApp;
@@ -39,8 +44,11 @@ import car.tzxb.b2b.Presenter.ShoppingCarPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Views.PopWindow.Modify_DiscountsPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
+
+import static car.tzxb.b2b.R.id.ll_discounts;
 
 public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInterface,CheckBox.OnCheckedChangeListener {
     @BindView(R.id.tv_actionbar_title)
@@ -60,12 +68,18 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
     TextView tv_total_num;
     @BindView(R.id.tv_shoppingcar_total_price)
     TextView tv_total_price;
+    @BindView(R.id.shopingcar_parent)
+    View parent;
+    @BindView(R.id.tv_shopingcar_discounts_total)
+    TextView tv_discounts_total;
+    private double discountsTotals;
     private CommonAdapter<ShopCarBean.DataBean> adapter;
     private List<ShopCarBean.DataBean> beanList = new ArrayList<>();
     private boolean Status = false;
     private boolean isShow = true;
     private double total;
     private int total_num;
+
     @Override
     public void initParms(Bundle parms) {
 
@@ -82,10 +96,10 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
              tv_right.setText("编缉");
 
         //获取数据
-        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         String url = Constant.baseUrl+"orders/shopping_cars_moblie.php?m=shopping_list";
         Map<String, String> params = new HashMap<>();
-        params.put("user_id",userId);
+        params.put("user_id", userId);
 
         presenter.PresenterGetData(url, params);
     }
@@ -133,7 +147,31 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                         //商品数量
                         TextView tv_number = holder.getView(R.id.tv_shoppingcar_num);
                         tv_number.setText("X" + dataChildBean.getNumber());
+                        //优惠信息
+                        LinearLayout ll_discounts = holder.getView(R.id.ll_shopingcar_discounts);
+                        RecyclerView recy = holder.getView(R.id.recy_discounts);
+                        RelativeLayout rl_discoutns_layout=holder.getView(R.id.rl_shoppingcar_discounts_layout);
+                        holder.setText(R.id.tv_shoppingcar_discounts_hint,dataChildBean.getMotion_type());
+                        TextView tv_modify_disconts = holder.getView(R.id.tv_modify_disconts);
+                        holder.setText(R.id.tv_shoppingcar_discounts_hint_content, dataChildBean.getChild_title());
+                        if("0".equals(dataChildBean.getMotion_id())){
+                            rl_discoutns_layout.setVisibility(View.GONE);
+                        }else {
+                            List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList=dataChildBean.getGift();
+                            if(giftBeanList.size()!=0){
+                                ll_discounts.setVisibility(View.VISIBLE);
+                            }else {
+                                ll_discounts.setVisibility(View.GONE);
+                            }
+                            initDiscouns(giftBeanList, recy);
+                        }
 
+                        tv_modify_disconts.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ModifyDiscounts(dataBean.getShop_id(),dataChildBean.getAid());
+                            }
+                        });
                         //切换布局
                         View view = holder.getView(R.id.more_or_less);
                         if (isShow) {
@@ -164,7 +202,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                             @Override
                             public void onClick(View view) {
                                 int number = dataChildBean.getNumber();
-                                if (number == 1) {
+                                if (number == dataChildBean.getMinimum_order_quantity()) {
                                     return;
                                 }
                                 number--;
@@ -232,7 +270,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                         List<ShopCarBean.DataBean> tempList = new ArrayList<>();
-
+                        double discounts=0.00;
                         double tempPrice = 0.00;
                         //改变状态
                         for (int i = 0; i < InnerList.size(); i++) {
@@ -243,11 +281,11 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                         if (b) {
                             total_num += InnerList.size();
                             total += tempPrice;
-
+                            discountsTotals+=discounts;
                         } else {
                             total_num -= InnerList.size();
                             total -= tempPrice;
-
+                            discountsTotals-=discounts;
                         }
                         dataBean.setCheck(b);
 
@@ -265,7 +303,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                             cb_all.setChecked(false);
                         }
 
-
+                        tv_discounts_total.setText("优惠: - ¥"+discountsTotals);
                         tv_total_num.setText("结算(" + total_num + ")");
                         tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
                     }
@@ -274,6 +312,63 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
         };
 
         recyclerView.setAdapter(adapter);
+    }
+    /**
+     * 优惠信息
+     * @param giftBeanList
+     */
+    private void initDiscouns(List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList, RecyclerView recy) {
+        recy.setLayoutManager(new LinearLayoutManager(this));
+        CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean> adapter = new CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean>(MyApp.getContext(), R.layout.my_gold_sign_item, giftBeanList) {
+            @Override
+            protected void convert(ViewHolder holder, ShopCarBean.DataBean.DataChildBean.GiftBean giftBean, int position) {
+                LinearLayout ll_gold=holder.getView(R.id.ll_gold_sign);
+                ll_gold.setPadding(0,0,0,0);
+                TextView tv=holder.getView(R.id.tv_sign_date);
+                tv.setText(giftBean.getZp_title());
+                tv.setTextColor(Color.LTGRAY);
+                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+                tv.setMaxLines(1);
+                tv.setEllipsize(TextUtils.TruncateAt.END);
+                //数量
+                TextView tv_num=holder.getView(R.id.tv_sign_gold_num);
+                tv_num.setTextColor(Color.parseColor("#000000"));
+                tv_num.setText("x"+giftBean.getZp_numbers());
+            }
+        };
+        recy.setAdapter(adapter);
+    }
+
+    /**
+     * 修改查询促销信息
+     */
+    private void ModifyDiscounts(String shopId,String aid) {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String url=Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_type_list"+"&shop_id="+shopId+"&car_id="+aid+"&user_id="+userId;
+        Log.i("购物车查询促销",url);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_type_list")
+                .addParams("shop_id",shopId)
+                .addParams("car_id",aid)
+                .addParams("user_id",userId)
+                .build()
+                .execute(new GenericsCallback<DiscountsBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(DiscountsBean response, int id) {
+                        if("1".equals(response.getStatus())){
+                            List<DiscountsBean.DataBean> beanList=response.getData();
+                            Modify_DiscountsPop mdp=new Modify_DiscountsPop(MyApp.getContext(),beanList);
+                            mdp.showPow(parent);
+                        }
+                    }
+                });
     }
 
     @OnClick(R.id.tv_actionbar_right)
@@ -323,9 +418,10 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
     }
 
     @Override
-    public void onCheckedChanged(CompoundButton buttonView, boolean b) {
+    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
         //改变选中状态
         double tempPrice = 0.00;
+        double discountsPrice=0.00;
         List<ShopCarBean.DataBean.DataChildBean> tempList = new ArrayList<>();
         for (int i = 0; i < beanList.size(); i++) {
             ShopCarBean.DataBean dataBean = beanList.get(i);
@@ -337,20 +433,25 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                 tempPrice += childBean.getTotal();
                 //总数量
                 tempList.add(childBean);
+                //总优惠
+                discountsPrice+=childBean.getDiscount_amount();
             }
 
             dataBean.setCheck(b);
             adapter.notifyDataSetChanged();
         }
 
-        if (b) {
 
+        if (b) {
             tv_total_num.setText("结算(" + tempList.size() + ")");
-            tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + tempPrice + "</big>"));
+            double finaPrice=tempPrice-discountsPrice;
+            tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + finaPrice + "</big>"));
+            tv_discounts_total.setText("优惠: - ¥"+discountsPrice);
 
         } else {
             tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + 0.00 + "</big>"));
             tv_total_num.setText("结算(0)");
+            tv_discounts_total.setText("优惠: - ¥0.0");
         }
     }
     @OnClick(R.id.tv_shoppingcar_total_number)

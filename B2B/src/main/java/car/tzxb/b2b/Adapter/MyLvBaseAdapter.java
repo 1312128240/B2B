@@ -48,7 +48,6 @@ public abstract class MyLvBaseAdapter<T> extends BaseAdapter {
 		}
 		ts.addAll(list);
 		notifyDataSetChanged();
-		
 	}
 	
 	public List<T> getDatasource(){

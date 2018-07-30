@@ -93,6 +93,11 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     public int bindLayout() {
         return R.layout.activity_wxpay_entry;
     }
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
+    }
+
 
     @Override
     public void doBusiness(Context mContext) {
@@ -131,11 +136,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                 }
             }
         });
-    }
-
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
     }
 
 
