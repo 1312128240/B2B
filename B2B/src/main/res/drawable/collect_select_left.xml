@@ -33,7 +33,7 @@
                                android:topLeftRadius="25dp"/>
                     <solid android:color="#FFFFFF"/>
                 </shape>
-            </item>-
+            </item>
 
         </selector>
 

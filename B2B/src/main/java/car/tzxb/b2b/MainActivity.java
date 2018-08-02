@@ -8,21 +8,30 @@ import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.example.mylibrary.HttpClient.OkHttpUtils;
+import com.example.mylibrary.HttpClient.callback.GenericsCallback;
+import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 
 import java.lang.ref.WeakReference;
 import butterknife.BindView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
+import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Interface.WindowFocusChang;
 import car.tzxb.b2b.Util.ActivityManager;
+import car.tzxb.b2b.Util.DeviceUtils;
+import car.tzxb.b2b.Util.UpdateApp;
+import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.fragments.ClassifyFragment;
 import car.tzxb.b2b.fragments.HomeFragment;
 import car.tzxb.b2b.fragments.MyFragment;
 import car.tzxb.b2b.fragments.ShoppingCarFragment;
+import okhttp3.Call;
 
 public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener{
     @BindView(R.id.navigation_bar)
@@ -67,10 +76,33 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     @Override
     public void doBusiness(Context mContext) {
               initNavigationBar();
-
               initFragment();
+              checkVersion();
+    }
+    public void checkVersion(){
+        Log.i("b2b检测版本", Constant.baseUrl + "item/index.php?c=Home&m=Edition&From=Android");
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "item/index.php?c=Home&m=Edition&From=Android")
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
 
+                    }
 
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        String checkVersion = DeviceUtils.getVersionName(MyApp.getContext());
+                        String version=response.getVersionName();
+                        if(!version.equals(checkVersion)){
+                            UpdateApp updateApp=new UpdateApp(MainActivity.this);
+                            updateApp.showAlertDialog(response);
+                        }
+
+                    }
+                });
     }
 
     private void initFragment() {

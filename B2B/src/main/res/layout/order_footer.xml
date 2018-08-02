@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -18,32 +18,6 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="优惠券"
-            android:textColor="@color/colorBlack2" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:drawablePadding="10dp"
-            android:drawableRight="@mipmap/store_icon_right"
-            android:gravity="center"
-            android:text="无可用"
-            android:textColor="@color/colorBlack2" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="80px"
-        android:layout_marginTop="2px"
-        android:background="@color/colorWhite"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="积分"
             android:textColor="@color/colorBlack2" />
 
         <TextView
@@ -111,7 +85,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80px"
-        android:layout_marginBottom="50dp"
+
         android:background="@color/colorWhite"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
@@ -134,4 +108,28 @@
             android:textColor="@color/colorBlack2" />
     </LinearLayout>
 
-</merge>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80px"
+        android:layout_marginBottom="50dp"
+        android:background="@color/colorWhite"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="订单优惠"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawablePadding="10dp"
+            android:gravity="center"
+            android:text="-¥0.00"
+            android:textColor="@color/colorBlack2" />
+    </LinearLayout>
+</LinearLayout>

@@ -116,4 +116,15 @@
             <enum name="expand" value="1"/>
         </attr>
     </declare-styleable>
+
+    <!--视差滚动图片-->
+    <declare-styleable name="ParallaxImageView">
+        <attr name="img_ratio" format="float"></attr>
+        <attr name="paralax_ratio" format="float"></attr>
+        <attr name="orientation" format="integer">
+            <enum name="bottom_top" value="1"></enum>
+            <enum name="top_bottom" value="-1"></enum>
+        </attr>
+    </declare-styleable>
+
 </resources>

@@ -2,8 +2,15 @@ package car.tzxb.b2b.fragments;
 
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +21,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.AnimationSet;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -29,17 +39,17 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
+import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
-import car.myview.MyScrollView;
+import car.myview.MyNestScollview;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
@@ -53,9 +63,13 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.HomePresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.HomePager.ArticleActivity;
+import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
+import car.tzxb.b2b.Uis.SelfGoods.OemActivity;
+import car.tzxb.b2b.Uis.SelfGoods.SelfGoodsActivity;
 import car.tzxb.b2b.Uis.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Util.BannerImageLoader;
 import car.tzxb.b2b.Util.DeviceUtils;
@@ -65,8 +79,8 @@ import car.tzxb.b2b.Views.DialogFragments.SignDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class HomeFragment extends MyBaseFragment implements MvpViewInterface, MyScrollView.OnScrollListener,
-        WindowFocusChang, ViewTreeObserver.OnGlobalFocusChangeListener, View.OnTouchListener {
+public class HomeFragment extends MyBaseFragment implements MvpViewInterface, MyNestScollview.OnScrollviewListener, WindowFocusChang,
+        ViewTreeObserver.OnGlobalFocusChangeListener {
     @BindView(R.id.iv_search_bar_left)
     ImageView iv_left;
     @BindView(R.id.home_banner)
@@ -90,7 +104,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     @BindView(R.id.brand_tablayout)
     TabLayout brand_tablayout;
     @BindView(R.id.home_scollview)
-    MyScrollView scrollView;
+    MyNestScollview scrollView;
     @BindView(R.id.rl_home_find_shop)
     RelativeLayout rl_find_shop;
     @BindView(R.id.iv_find_shop1)
@@ -115,6 +129,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     private LoadingDialog dialog;
     private List<HomeBean.DataBean.CategoryBean> categoryBeanList;
     private List<BaseDataListBean.DataBean> tabList;
+    private int top;
 
 
     @Override
@@ -127,6 +142,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         initUi();
         iniEvent();
     }
+
+
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -150,20 +167,33 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         getBrandData();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden){
+          pager=0;
+          presenterGetData();
+        }
+    }
+
+    /**
+     * 获取数据
+     */
+    public void presenterGetData(){
+        //获取数据
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String url = Constant.baseUrl + "item/index.php?c=Home&m=Index&user_id="+userId;
+        presenter.PresenterGetData(url, null);
+        Log.i("首页接口",url+"");
+    }
+
+
     private void initUi() {
         iv_left.setImageResource(R.drawable.navbar_icon_scan);
         iv_right.setImageResource(R.drawable.navbar_icon_news);
         iv_right.setPadding(0, 0, 0, 5);
-        //获取数据
-        String url = Constant.baseUrl + "item/index.php?c=Home&m=Index&user_id=1";
-        presenter.PresenterGetData(url, null);
-        //来获得宽度或者高度。这是获得一个view的宽度和高度的方法之一。
-        // 这是一个注册监听视图树的观察者(observer)，在视图树的全局事件改变时得到通知。
-        // ViewTreeObserver不能直接实例化，而是通过getViewTreeObserver()获得。
-        scrollView.setOnScrollListener(this);
-        //实现windowChange监听
-        scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
-        scrollView.setOnTouchListener(this);
+        presenterGetData();
+        recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
     }
 
     /**
@@ -173,7 +203,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         classify_tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                Log.i("执行分类点击事件","aaa");
                 HomeBean.DataBean.CategoryBean categoryBean=categoryBeanList.get(tab.getPosition());
                 //刷新品牌
                 categoryId=categoryBean.getId();
@@ -207,26 +236,57 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
 
             }
         });
-
-
         brand_tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 brands =tabList.get(tab.getPosition()).getId();
-                Log.i("执行品牌点击事件","aaa");
                 pager = 0;
                 showLoadingDialog();
                 getBrandData();
+                TextView tv=tab.getCustomView().findViewById(R.id.iv_layout_title);
+                tv.setTextColor(Color.RED);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-
+                TextView tv=tab.getCustomView().findViewById(R.id.iv_layout_title);
+                tv.setTextColor(Color.BLACK);
             }
 
             @Override
             public void onTabReselected(TabLayout.Tab tab) {
 
+            }
+        });
+        //来获得宽度或者高度。这是获得一个view的宽度和高度的方法之一。
+        // 这是一个注册监听视图树的观察者(observer)，在视图树的全局事件改变时得到通知。
+        // ViewTreeObserver不能直接实例化，而是通过getViewTreeObserver()获得。
+        scrollView.setOnScrolInterface(this);
+        //实现windowChange监听
+        scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
+        //滚动监听
+        scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+                if (scrollY > oldScrollY) {
+                    Log.i(TAG, "下滑");
+                    if(scrollY>=bottom){
+                      classify_tabLayout.setVisibility(View.GONE);
+                    }
+                }
+                if (scrollY < oldScrollY) {
+                    Log.i(TAG, "上滑");
+                    if(scrollY>=bottom){
+                        classify_tabLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                View view = v.getChildAt(0);
+                if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
+                    Log.i(TAG, "到底部");
+                    showLoadingDialog();
+                    LoadMore();
+                }
             }
         });
     }
@@ -256,14 +316,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         }
         //底部商品
         recy_goods.setLayoutManager(new GridLayoutManager(getContext(),2));
-        recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
         brandAndGoodsAdapter = new CommonAdapter<BaseDataListBean.DataBean>(getContext(), R.layout.recommend_layout, goodsList) {
             @Override
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean dataBean, int position) {
                 //图片
                 int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
                 ImageView iv_brand = holder.getView(R.id.iv_recommend);
-                Glide.with(getContext()).load(dataBean.getImg_url()).override(i, i).into(iv_brand);
+                Glide.with(MyApp.getContext()).load(dataBean.getImg_url()).override(i, i).into(iv_brand);
                 //名字
                 TextView tv_name = holder.getView(R.id.tv_recommend_title);
                 tv_name.setMaxLines(3);
@@ -295,6 +354,22 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
             }
         });
 
+    }
+
+    @OnClick(R.id.iv_self_produc1)
+    public void self1(){
+         Intent intent=new Intent(getActivity(),SelfGoodsActivity.class);
+         intent.putExtra("list", (Serializable) categoryBeanList);
+         startActivity(intent);
+    }
+
+    @OnClick(R.id.iv_self_produc2)
+    public void self2(){
+         startActivity(new Intent(getActivity(), OemActivity.class));
+    }
+    @OnClick(R.id.tv_headline)
+    public void notice(){
+        startActivity(new Intent(getActivity(),ArticleActivity.class));
     }
 
     /**
@@ -429,6 +504,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                         minProgess();
                         break;
                     case 3:
+                        intent.setClass(getActivity(), MyWalletActivity.class);
+                        startActivity(intent);
                         break;
                     case 4:
                         intent.setClass(getActivity(), OrderStatusActivity.class);
@@ -452,9 +529,9 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         Glide.with(getContext()).load(saleBean.get(2).getImg_url()).dontAnimate().into(iv_activity2);
         //头条内容
         HomeBean.DataBean.HotImageBean hotImageBean = bean.getData().getHotImage();
-        String title = bean.getData().getHotActicle();
+       // String title = bean.getData().getHotActicle();
         Glide.with(getContext()).load(hotImageBean.getImg_url()).override(100, 350).into(iv_notifi);
-        tv_headerline.setText(title);
+        tv_headerline.setText("同致相伴告客户书");
     }
 
     /**
@@ -527,59 +604,11 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void showErro() {
 
     }
-
-
-    @Override
-    public void onScroll(int scrollY) {
-        int top = Math.max(scrollY, bottom);
-
-        ll_suspension_bar.layout(0, top, ll_suspension_bar.getWidth(), top + ll_suspension_bar.getHeight());
-
-    }
-
-
-    @Override
-    public void focus(boolean b) {
-        if (b) {
-            bottom = rl_find_shop.getBottom();
-        }
-    }
-
-    @Override
-    public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-        onScroll(scrollView.getScrollY());
-    }
-
     public void showLoadingDialog() {
         dialog = new LoadingDialog();
         dialog.setCancelable(false);
         dialog.show(getFragmentManager(), "aaa");
     }
-
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        // TODO Auto-generated method stub
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_MOVE: {
-                break;
-            }
-            case MotionEvent.ACTION_DOWN: {
-                break;
-            }
-            case MotionEvent.ACTION_UP: {
-                //当文本的measureheight 等于scroll滚动的长度+scroll的height
-                View view = ((ScrollView) v).getChildAt(0);
-                if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
-                    // getBrandData();
-                    showLoadingDialog();
-                    LoadMore();
-                }
-                break;
-            }
-        }
-        return false;
-    }
-
     /**
      * 加载更多
      */
@@ -614,7 +643,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                         if (dialog != null) {
                             dialog.dismiss();
                         }
-                        if (tempList.size() > 0) {
+                        if (tempList.size()!= 0) {
                             pager++;
                         } else {
                             MyToast.makeTextAnim(MyApp.getContext(), "我也是有底线的", 0, Gravity.CENTER, 0, 0).show();
@@ -623,4 +652,22 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 });
     }
 
+    @Override
+    public void onScroll(int scrollY) {
+        top = Math.max(scrollY, bottom);
+        ll_suspension_bar.layout(0, top, ll_suspension_bar.getWidth(), top + ll_suspension_bar.getHeight());
+    }
+
+
+    @Override
+    public void focus(boolean b) {
+        if (b) {
+            bottom = rl_find_shop.getBottom();
+        }
+    }
+
+    @Override
+    public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+        onScroll(scrollView.getScrollY());
+    }
 }

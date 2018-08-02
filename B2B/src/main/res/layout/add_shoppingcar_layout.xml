@@ -39,21 +39,17 @@
                         android:id="@+id/tv_shoppingcar_gg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginTop="10dp"
+                        android:layout_margin="10dp"
                         android:text="规格属性"
                         android:textColor="@color/colorBlack2" />
 
-                    <car.myview.RadioGroupEx
+                    <car.myview.FlexRadioGroupPackage.FlexRadioGroup
                         android:id="@+id/rg_add_shoppingcar_gg"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_shoppingcar_gg"
-                        android:layout_margin="10dp"
-                        android:orientation="horizontal">
+                        android:layout_below="@+id/tv_shoppingcar_gg">
 
-                    </car.myview.RadioGroupEx>
+                    </car.myview.FlexRadioGroupPackage.FlexRadioGroup>
 
                     <TextView
                         android:id="@+id/tv_line2"

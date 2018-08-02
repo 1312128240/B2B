@@ -12,7 +12,7 @@
     <include layout="@layout/search_bar" />
 
 
-    <car.myview.MyScrollView
+    <car.myview.MyNestScollview
         android:id="@+id/home_scollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -34,34 +34,31 @@
                 <android.support.design.widget.TabLayout
                     android:id="@+id/classify_tablayout"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
                     android:background="@color/colorWhite"
+                    android:layout_height="40dp"
+                    app:tabIndicatorHeight="0.5dp"
                     app:tabIndicatorColor="@color/red"
-                    app:tabMode="scrollable"
-                    app:tabSelectedTextColor="@color/red">
-
+                    app:tabSelectedTextColor="@color/red"
+                    app:tabTextColor="#403030"
+                    app:tabMode="scrollable">
                 </android.support.design.widget.TabLayout>
 
                 <android.support.design.widget.TabLayout
                     android:id="@+id/brand_tablayout"
                     app:tabIndicatorColor="@color/red"
-                    app:tabMode="scrollable"
                     android:background="@color/colorWhite"
+                    app:tabMode="scrollable"
+                    app:tabIndicatorHeight="0dp"
                     android:layout_width="match_parent"
-                    android:layout_height="80dp">
+                    android:layout_height="75dp">
 
                 </android.support.design.widget.TabLayout>
-              <!--  <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recy_home_brand"
-                    android:layout_width="match_parent"
-                    android:layout_height="70dp"
-                    android:background="@color/colorWhite">
 
-                </android.support.v7.widget.RecyclerView>-->
 
             </LinearLayout>
 
+
         </LinearLayout>
-    </car.myview.MyScrollView>
+    </car.myview.MyNestScollview>
 
 </LinearLayout>

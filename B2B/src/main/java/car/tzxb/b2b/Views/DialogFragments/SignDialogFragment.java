@@ -1,13 +1,10 @@
 package car.tzxb.b2b.Views.DialogFragments;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,7 +27,7 @@ public class SignDialogFragment extends DialogFragment implements View.OnClickLi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //   setStyle(DialogFragment.STYLE_NORMAL, R.style.dialog_style);
+       // setStyle(DialogFragment.STYLE_NO_TITLE,R.style.AppTheme);
     }
 
 

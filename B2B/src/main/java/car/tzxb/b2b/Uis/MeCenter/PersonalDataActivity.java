@@ -24,6 +24,7 @@ import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
@@ -276,8 +277,10 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
      */
     private void upOss(final File file) {
         final String endpoint = "https://oss-cn-shanghai.aliyuncs.com ";
+
         OkHttpUtils.get()
-                .url("https://www.yntzxb.cn/mobile_api/sts-server/sts.php")
+              //  .url("https://www.yntzxb.cn/mobile_api/sts-server/sts.php")
+                .url(Constant.baseUrl+"sts-server/sts.php")
                 .tag(this)
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
@@ -289,8 +292,9 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
                     }
 
                     @Override
-                    public void onResponse(BaseStringBean response, int id) {
-                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(response.getAccessKeyId(), response.getAccessKeySecret(), response.getSecurityToken());
+                    public void onResponse(BaseStringBean bean, int id) {
+
+                        OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(bean.getAccessKeyId(), bean.getAccessKeySecret(), bean.getSecurityToken());
                         //该配置类如果不设置，会有默认配置，具体可看该类
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
@@ -330,13 +334,6 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
     }
 
     private void save() {
-     /*   String url = Constant.baseUrl + "item/index.php?c=Home&m=UpdateUsersInfo" +
-                "&user_id=1&nackname=emmmm&head_img=head_img/201819/141321553.jpg&sex=女" +
-                "&province=广东&city=深圳&area=观澜&address=观澜湖国际大厦13楼BC" +
-                "&coordinate_Longitude=101.2742796241143&coordinate_Latitude=25.202099267118424";
-        final LoadingDialog dialog = new LoadingDialog();
-        dialog.setCancelable(false);
-        dialog.show(getSupportFragmentManager(), "aaa");*/
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         String sex = tv_sex.getText().toString();
         String xxAddress = et_xx_address.getText().toString();

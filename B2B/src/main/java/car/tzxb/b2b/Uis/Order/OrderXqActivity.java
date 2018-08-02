@@ -2,7 +2,7 @@ package car.tzxb.b2b.Uis.Order;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,31 +15,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
-import car.myview.Loading.ShapeLoadingDialog;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
-import car.tzxb.b2b.Bean.OrderBean;
 import car.tzxb.b2b.Bean.OrderXqBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
-import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.Views.PopWindow.CancelOrderPop;
 import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.wxapi.WXPayEntryActivity;
@@ -136,6 +130,11 @@ public class OrderXqActivity extends MyBaseAcitivity {
         getData();
     }
 
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
+    }
+
     private void initRecy() {
         recy_img.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         List<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> list=bean.getChild_data();
@@ -157,10 +156,6 @@ public class OrderXqActivity extends MyBaseAcitivity {
     }
 
 
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
-    }
     private void getData() {
         String userid= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         Log.i("订单详情",Constant.baseUrl+"orders/order_list_mobile.php?m=order_details"+"&user_id="+userid+"&order_id="+orderid);
@@ -278,6 +273,9 @@ public class OrderXqActivity extends MyBaseAcitivity {
     public void view1(){
          if("等待付款".equals(bean.getStatus())){
              Intent intent=new Intent(this, WXPayEntryActivity.class);
+             intent.putExtra("orderid",orderid);
+             intent.putExtra("total",bean.getAmount_pay_able());
+             intent.putExtra("order_seqnos",bean.getOrder_seqno());
              startActivity(intent);
          }else if("等待发货".equals(bean.getStatus())) {
              Reminder();
@@ -507,6 +505,17 @@ public class OrderXqActivity extends MyBaseAcitivity {
         Intent intent=new Intent(this,GoodsListActivity.class);
         intent.putExtra("from","OrderXq");
         intent.putExtra("bean",bean);
+        startActivity(intent);
+    }
+
+    /**
+     * 联系商家
+     */
+    @OnClick(R.id.tv_call_shop)
+    public void call(){
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + bean.getShop_mobile());
+        intent.setData(data);
         startActivity(intent);
     }
 

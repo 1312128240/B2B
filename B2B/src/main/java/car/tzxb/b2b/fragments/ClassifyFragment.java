@@ -1,8 +1,12 @@
 package car.tzxb.b2b.fragments;
 import android.content.Intent;
+import android.graphics.Color;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -22,6 +26,7 @@ import java.util.Map;
 
 import butterknife.BindView;
 import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.FloatingItemDecoration;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CircleImageView.CircleImageView;
@@ -29,6 +34,7 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseDataBean;
+import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.ClassifyPresenterIml;
@@ -57,7 +63,6 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
     private CommonAdapter<BaseDataBean.DataBean.CategoryBean> godsAdapter;
     private CommonAdapter<BaseDataBean.DataBean.BrandBean> brandAdapter;
 
-
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_classify;
@@ -70,9 +75,12 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
         presenter.PresenterGetData(url,null);
         Log.i("分类",url);
         initUi();
+
     }
 
-    private void initUi() {
+
+
+   private void initUi() {
         iv_search_left.setImageResource(R.drawable.navbar_icon_scan);
         recy_gods.setLayoutManager(new GridLayoutManager(getContext(),3));
         recy_gods.setNestedScrollingEnabled(false);
@@ -158,6 +166,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
         brandBeanlist = bean.getData().getBrand();
         godsAdapter.add(goodsBeanlist,true);
         brandAdapter.add(brandBeanlist,true);
+
     }
 
 
@@ -168,11 +177,12 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
     @Override
     public void closeLoading() {
-       // http://172.20.10.142/mobile_api//mobile_api/item/index.php?c=Goods&m=ProductList&cate=207&brand=6&pagesize=10&page=0&search=%E5%90%8C%E8%87%B4%E5%93%81%E7%89%8C&price=asc&sales=desc&network_ids=4,5
+
     }
 
     @Override
     public void showErro() {
 
     }
+
 }

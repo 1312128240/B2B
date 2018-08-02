@@ -18,6 +18,7 @@ import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+import com.umeng.analytics.MobclickAgent;
 
 import java.io.File;
 
@@ -135,6 +136,7 @@ public class SettingsActivity extends MyBaseAcitivity {
             @Override
             public void sure() {
                 SPUtil.getInstance(MyApp.getContext()).dele("UserId");
+                MobclickAgent.onProfileSignOff();           //友盟统计退出
                 onBackPressed();
                 alterDialogFragment.dismiss();
             }

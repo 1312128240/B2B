@@ -1,12 +1,13 @@
 package car.tzxb.b2b.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Administrator on 2018/6/20 0020.
  */
 
-public class HomeBean {
+public class HomeBean implements Serializable {
 
 
     private String msg;
@@ -37,7 +38,7 @@ public class HomeBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean  implements Serializable{
 
 
         private String BtnBg;
@@ -140,7 +141,7 @@ public class HomeBean {
             this.brand = brand;
         }
 
-        public static class HotImageBean {
+        public static class HotImageBean implements Serializable {
 
             private String id;
             private String img_url;
@@ -234,19 +235,7 @@ public class HomeBean {
             }
         }
 
-        public static class FindShopBGBean {
-            /**
-             * id : 135
-             * img_url : https://img.aiucar.cn/advertisement_img/20180625/2018625141419824464.png
-             * http_url : #
-             * content :
-             * xcx_url : #
-             * ios_url : #
-             * android_url : #
-             * start_time : 2018-06-25
-             * end_time : 2019-01-25
-             * cc : 214
-             */
+        public static class FindShopBGBean implements Serializable{
 
             private String id;
             private String img_url;
@@ -340,102 +329,7 @@ public class HomeBean {
             }
         }
 
-        public static class IndexBannerBean {
-
-
-            private String id;
-            private String img_url;
-            private String http_url;
-            private String content;
-            private String xcx_url;
-            private String ios_url;
-            private String android_url;
-            private String start_time;
-            private String end_time;
-            private String cc;
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getImg_url() {
-                return img_url;
-            }
-
-            public void setImg_url(String img_url) {
-                this.img_url = img_url;
-            }
-
-            public String getHttp_url() {
-                return http_url;
-            }
-
-            public void setHttp_url(String http_url) {
-                this.http_url = http_url;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-
-            public String getXcx_url() {
-                return xcx_url;
-            }
-
-            public void setXcx_url(String xcx_url) {
-                this.xcx_url = xcx_url;
-            }
-
-            public String getIos_url() {
-                return ios_url;
-            }
-
-            public void setIos_url(String ios_url) {
-                this.ios_url = ios_url;
-            }
-
-            public String getAndroid_url() {
-                return android_url;
-            }
-
-            public void setAndroid_url(String android_url) {
-                this.android_url = android_url;
-            }
-
-            public String getStart_time() {
-                return start_time;
-            }
-
-            public void setStart_time(String start_time) {
-                this.start_time = start_time;
-            }
-
-            public String getEnd_time() {
-                return end_time;
-            }
-
-            public void setEnd_time(String end_time) {
-                this.end_time = end_time;
-            }
-
-            public String getCc() {
-                return cc;
-            }
-
-            public void setCc(String cc) {
-                this.cc = cc;
-            }
-        }
-
-        public static class BtnImgBean {
+        public static class IndexBannerBean implements Serializable {
 
 
             private String id;
@@ -530,101 +424,7 @@ public class HomeBean {
             }
         }
 
-        public static class OnSaleBean {
-
-            private String id;
-            private String img_url;
-            private String http_url;
-            private String content;
-            private String xcx_url;
-            private String ios_url;
-            private String android_url;
-            private String start_time;
-            private String end_time;
-            private String cc;
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getImg_url() {
-                return img_url;
-            }
-
-            public void setImg_url(String img_url) {
-                this.img_url = img_url;
-            }
-
-            public String getHttp_url() {
-                return http_url;
-            }
-
-            public void setHttp_url(String http_url) {
-                this.http_url = http_url;
-            }
-
-            public String getContent() {
-                return content;
-            }
-
-            public void setContent(String content) {
-                this.content = content;
-            }
-
-            public String getXcx_url() {
-                return xcx_url;
-            }
-
-            public void setXcx_url(String xcx_url) {
-                this.xcx_url = xcx_url;
-            }
-
-            public String getIos_url() {
-                return ios_url;
-            }
-
-            public void setIos_url(String ios_url) {
-                this.ios_url = ios_url;
-            }
-
-            public String getAndroid_url() {
-                return android_url;
-            }
-
-            public void setAndroid_url(String android_url) {
-                this.android_url = android_url;
-            }
-
-            public String getStart_time() {
-                return start_time;
-            }
-
-            public void setStart_time(String start_time) {
-                this.start_time = start_time;
-            }
-
-            public String getEnd_time() {
-                return end_time;
-            }
-
-            public void setEnd_time(String end_time) {
-                this.end_time = end_time;
-            }
-
-            public String getCc() {
-                return cc;
-            }
-
-            public void setCc(String cc) {
-                this.cc = cc;
-            }
-        }
-
-        public static class ProductTypeBean {
+        public static class BtnImgBean implements Serializable{
 
 
             private String id;
@@ -719,7 +519,7 @@ public class HomeBean {
             }
         }
 
-        public static class FindShopBean {
+        public static class OnSaleBean implements Serializable {
 
             private String id;
             private String img_url;
@@ -813,7 +613,196 @@ public class HomeBean {
             }
         }
 
-        public static class CategoryBean {
+        public static class ProductTypeBean implements Serializable {
+
+
+            private String id;
+            private String img_url;
+            private String http_url;
+            private String content;
+            private String xcx_url;
+            private String ios_url;
+            private String android_url;
+            private String start_time;
+            private String end_time;
+            private String cc;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getImg_url() {
+                return img_url;
+            }
+
+            public void setImg_url(String img_url) {
+                this.img_url = img_url;
+            }
+
+            public String getHttp_url() {
+                return http_url;
+            }
+
+            public void setHttp_url(String http_url) {
+                this.http_url = http_url;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getXcx_url() {
+                return xcx_url;
+            }
+
+            public void setXcx_url(String xcx_url) {
+                this.xcx_url = xcx_url;
+            }
+
+            public String getIos_url() {
+                return ios_url;
+            }
+
+            public void setIos_url(String ios_url) {
+                this.ios_url = ios_url;
+            }
+
+            public String getAndroid_url() {
+                return android_url;
+            }
+
+            public void setAndroid_url(String android_url) {
+                this.android_url = android_url;
+            }
+
+            public String getStart_time() {
+                return start_time;
+            }
+
+            public void setStart_time(String start_time) {
+                this.start_time = start_time;
+            }
+
+            public String getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(String end_time) {
+                this.end_time = end_time;
+            }
+
+            public String getCc() {
+                return cc;
+            }
+
+            public void setCc(String cc) {
+                this.cc = cc;
+            }
+        }
+
+        public static class FindShopBean  implements Serializable{
+
+            private String id;
+            private String img_url;
+            private String http_url;
+            private String content;
+            private String xcx_url;
+            private String ios_url;
+            private String android_url;
+            private String start_time;
+            private String end_time;
+            private String cc;
+
+            public String getId() {
+                return id;
+            }
+
+            public void setId(String id) {
+                this.id = id;
+            }
+
+            public String getImg_url() {
+                return img_url;
+            }
+
+            public void setImg_url(String img_url) {
+                this.img_url = img_url;
+            }
+
+            public String getHttp_url() {
+                return http_url;
+            }
+
+            public void setHttp_url(String http_url) {
+                this.http_url = http_url;
+            }
+
+            public String getContent() {
+                return content;
+            }
+
+            public void setContent(String content) {
+                this.content = content;
+            }
+
+            public String getXcx_url() {
+                return xcx_url;
+            }
+
+            public void setXcx_url(String xcx_url) {
+                this.xcx_url = xcx_url;
+            }
+
+            public String getIos_url() {
+                return ios_url;
+            }
+
+            public void setIos_url(String ios_url) {
+                this.ios_url = ios_url;
+            }
+
+            public String getAndroid_url() {
+                return android_url;
+            }
+
+            public void setAndroid_url(String android_url) {
+                this.android_url = android_url;
+            }
+
+            public String getStart_time() {
+                return start_time;
+            }
+
+            public void setStart_time(String start_time) {
+                this.start_time = start_time;
+            }
+
+            public String getEnd_time() {
+                return end_time;
+            }
+
+            public void setEnd_time(String end_time) {
+                this.end_time = end_time;
+            }
+
+            public String getCc() {
+                return cc;
+            }
+
+            public void setCc(String cc) {
+                this.cc = cc;
+            }
+        }
+
+        public static class CategoryBean implements Serializable{
 
             private String id;
             private String title;
@@ -863,7 +852,7 @@ public class HomeBean {
             }
         }
 
-        public static class BrandBean {
+        public static class BrandBean implements Serializable{
 
             private String id;
             private String title;

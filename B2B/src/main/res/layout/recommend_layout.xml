@@ -33,6 +33,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView
+        android:id="@+id/iv_gwc_icon"
         android:src="@drawable/commodity_icon_atc"
         android:layout_alignParentRight="true"
         android:layout_alignBottom="@+id/tv_recomment_sales"

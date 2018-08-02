@@ -602,7 +602,7 @@ public class GoodsXqBean {
             private String shop_name;
             private String product_title;
             private String market_price;
-            private String seal_price;
+            private double seal_price;
             private String cost_point;
             private String discount_price;
             private String point;
@@ -619,11 +619,21 @@ public class GoodsXqBean {
             private String dealer;
             private String stock_distributor_all;
             private int minimum_order_quantity;
+            private String stock_headquarters;
             private List<String> contents_mobi;
             private List<String> imgs;
             private String color_name;
             private String network_name;
             private List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotion;
+
+            public String getStock_headquarters() {
+                return stock_headquarters;
+            }
+
+            public void setStock_headquarters(String stock_headquarters) {
+                this.stock_headquarters = stock_headquarters;
+            }
+
 
             public List<GoodsXqBean.DataBean.ProductBean.PromotionBean> getPromotion() {
                 return promotion;
@@ -745,11 +755,11 @@ public class GoodsXqBean {
                 this.market_price = market_price;
             }
 
-            public String getSeal_price() {
+            public double getSeal_price() {
                 return seal_price;
             }
 
-            public void setSeal_price(String seal_price) {
+            public void setSeal_price(double seal_price) {
                 this.seal_price = seal_price;
             }
 
@@ -902,12 +912,20 @@ public class GoodsXqBean {
                 private String id;
                 private String start_time;
                 private String end_time;
-                private Object full_amount;
+                private double full_amount;
                 private Object reduce_amount;
                 private String type;
                 private String zp_type;
                 private String title;
+                private boolean isCheck;
                 private List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> gift;
+                public boolean isCheck() {
+                    return isCheck;
+                }
+
+                public void setCheck(boolean check) {
+                    isCheck = check;
+                }
 
                 public String getId() {
                     return id;
@@ -933,11 +951,11 @@ public class GoodsXqBean {
                     this.end_time = end_time;
                 }
 
-                public Object getFull_amount() {
+                public double getFull_amount() {
                     return full_amount;
                 }
 
-                public void setFull_amount(Object full_amount) {
+                public void setFull_amount(double full_amount) {
                     this.full_amount = full_amount;
                 }
 

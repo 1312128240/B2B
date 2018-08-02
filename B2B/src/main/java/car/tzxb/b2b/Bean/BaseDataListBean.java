@@ -70,6 +70,7 @@ public class BaseDataListBean {
         private String shop_name;
         private String max_seal_price;
         private String min_seal_price;
+        private String content;
         private String name;
         private String shop_id;
         private String product_title;
@@ -98,6 +99,15 @@ public class BaseDataListBean {
         private String stock_distributor_all;
         private String sales;
         private String cost_point;
+
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
 
         public int getMinimum_order_quantity() {
             return minimum_order_quantity;

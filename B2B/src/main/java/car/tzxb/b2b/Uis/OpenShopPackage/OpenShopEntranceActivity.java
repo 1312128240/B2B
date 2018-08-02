@@ -412,7 +412,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                        if (response.isData() == true) {
+                        if (response.isFlag() == true) {
                             Intent intent = new Intent(OpenShopEntranceActivity.this, OpenShopEntranceActivity.class);
                             intent.putExtra("mobile", phone);
                             startActivity(intent);

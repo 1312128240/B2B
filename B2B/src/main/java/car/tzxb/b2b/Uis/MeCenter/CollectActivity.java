@@ -93,6 +93,10 @@ public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnChe
 
 
     @Override
+    protected BasePresenter bindPresenter() {
+        return null;
+    }
+    @Override
     protected void onResume() {
         super.onResume();
         switch (index) {
@@ -310,9 +314,9 @@ public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     }
 
 
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
+    @OnClick(R.id.iv_back)
+    public void back(){
+        onBackPressed();
     }
 
     @Override
@@ -348,7 +352,6 @@ public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             loadingDialog.dismiss();
         }
     }
-
 
     @OnClick(R.id.tv_edit)
     public void edit() {

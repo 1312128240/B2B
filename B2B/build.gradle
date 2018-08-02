@@ -11,6 +11,10 @@ android {
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true     //突破方法数65535限制
+
+        ndk {
+            abiFilters "armeabi"
+        }
     }
     buildTypes {
         release {
@@ -36,10 +40,11 @@ dependencies {
     compile project(':MyRecyclerviewAdapter')
     compile project(':okhttp')
     compile files('libs/BaiduLBS_Android.jar')
-    //指定版本
     compile project(':CustomView')
     compile files('src/main/jniLibs/alipaySdk-20170922.jar')
     //最新版本
+    compile files('libs/UPPayAssistEx.jar')
+    compile files('libs/UPPayPluginExPro.jar')
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -54,7 +59,7 @@ dependencies {
     compile 'com.aliyun.dpa:oss-android-sdk:2.4.5'
     compile 'com.youth.banner:banner:1.4.8'
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
+    compile 'com.umeng.sdk:common:latest.integration'
+    compile 'com.umeng.sdk:analytics:latest.integration'
     testCompile 'junit:junit:4.12'
-    compile files('libs/UPPayAssistEx.jar')
-    compile files('libs/UPPayPluginExPro.jar')
 }

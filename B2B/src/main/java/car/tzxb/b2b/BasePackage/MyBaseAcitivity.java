@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
+import com.umeng.analytics.MobclickAgent;
 
 import butterknife.ButterKnife;
 import car.tzxb.b2b.Util.ActivityManager;
@@ -41,8 +42,12 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     // 两次点击按钮之间的点击间隔不能少于1000毫秒
     private  final int MIN_CLICK_DELAY_TIME = 1000;
     private  long lastClickTime;
+    private boolean mStateEnable;
+
     private BasePresenter presenter = null;
     protected final String TAG = this.getClass().getSimpleName();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -228,13 +233,57 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
      */
     protected abstract BasePresenter bindPresenter();
 
+    @Override
+    protected void onResume() {
+        mStateEnable = true;
+        super.onResume();
+        MobclickAgent.onPageStart(getClass().getName());     //统计页面跳转的
+        // 必须调用 MobclickAgent.onResume() 和MobclickAgent.onPause()方法，
+        // 才能够保证获取正确的新增用户、活跃用户、启动次数、使用时长等基本数据。
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPageEnd(getClass().getName());      //统计页面跳转的
+
+        // 必须调用 MobclickAgent.onResume() 和MobclickAgent.onPause()方法，
+        // 才能够保证获取正确的新增用户、活跃用户、启动次数、使用时长等基本数据。
+        MobclickAgent.onPause(this);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mStateEnable = true;
+    }
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        mStateEnable = false;
+        super.onSaveInstanceState(outState);
+    }
+    @Override
+    protected void onStop() {
+        // super.onStop();中将mStateSaved置为true
+        mStateEnable = false;
+        super.onStop();
+    }
+    /**
+     *
+     * activity状态是否处于可修改周期内，避免状态丢失的错误
+     * @return
+     */
+    public boolean isStateEnable() {
+        return mStateEnable;
+    }
+
     /**
      * 如果重写了此方法，一定要调用super.onDestroy();
      */
     @Override
     public void onDestroy() {
         super.onDestroy();
-
      /*   if (presenter != null) {
             presenter.onDestroy();
             presenter = null;

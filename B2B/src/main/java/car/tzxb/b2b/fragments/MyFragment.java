@@ -128,7 +128,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.i("当可见时","aaa");
         if(!hidden){
             Judge();
             Guess();
@@ -150,6 +149,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 .execute(new GenericsCallback<MyCenterBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
+                         Log.i("走错误","aa");
                          notLogin();
                     }
 
@@ -206,6 +206,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         PropertyViews.get(1).setText("0"+"\n金币");
         PropertyViews.get(2).setText("0"+"\n积分");
         PropertyViews.get(3).setText("0"+"\n余额");
+        //订单数
+        bv1.setText("0");
+        bv2.setText("0");
+        bv3.setText("0");
+        bv4.setText("0");
+        bv5.setText("0");
     }
 
 

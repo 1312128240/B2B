@@ -2,7 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tolas="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <com.youth.banner.Banner
@@ -58,6 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:background="@color/colorWhite">
 
         <ImageView
@@ -78,6 +79,14 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             tolas:text="b2b正式上线" />
+        <TextView
+            android:textColor="#BDBDBD"
+            android:drawablePadding="5dp"
+            android:drawableRight="@mipmap/store_icon_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="查看更多" />
     </LinearLayout>
 
     <LinearLayout
@@ -143,8 +152,8 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_home_goods"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="125dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="120dp"
         android:nestedScrollingEnabled="false">
 
     </android.support.v7.widget.RecyclerView>

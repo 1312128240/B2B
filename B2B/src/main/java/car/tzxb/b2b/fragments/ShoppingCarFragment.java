@@ -12,6 +12,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
@@ -169,18 +170,15 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         RelativeLayout rl_discoutns_layout=holder.getView(R.id.rl_shoppingcar_discounts_layout);
                         TextView tv_modify_disconts = holder.getView(R.id.tv_modify_disconts);
                         holder.setText(R.id.tv_shoppingcar_discounts_hint_content, dataChildBean.getChild_title());
+                        List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList=dataChildBean.getGift();
                         if("0".equals(dataChildBean.getMotion_id())){
                             rl_discoutns_layout.setVisibility(View.GONE);
+                        }else if(giftBeanList==null||giftBeanList.size()==0) {
+                            ll_discounts.setVisibility(View.GONE);
                         }else {
-                            List<ShopCarBean.DataBean.DataChildBean.GiftBean> giftBeanList=dataChildBean.getGift();
-                            if(giftBeanList.size()!=0){
-                                ll_discounts.setVisibility(View.VISIBLE);
-                            }else {
-                                ll_discounts.setVisibility(View.GONE);
-                            }
+                            ll_discounts.setVisibility(View.VISIBLE);
                             initDiscouns(giftBeanList, recy);
                         }
-
                         tv_modify_disconts.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -255,6 +253,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                                                         }
                                                         if (beanList.size() == 0) {
                                                             cb_all.setChecked(false);
+                                                            tv_right.setVisibility(View.INVISIBLE);
                                                             content.setVisibility(View.GONE);
                                                             empty.setVisibility(View.VISIBLE);
                                                         }
@@ -332,7 +331,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     /**
      * 修改查询促销信息
      */
-    private void ModifyDiscounts(String shopId,String aid) {
+    private void ModifyDiscounts(String shopId, final String aid) {
         String url=Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_type_list"+"&shop_id="+shopId+"&car_id="+aid+"&user_id="+userId;
         Log.i("购物车查询促销",url);
          OkHttpUtils
@@ -353,8 +352,36 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                      public void onResponse(DiscountsBean response, int id) {
                        if("1".equals(response.getStatus())){
                            List<DiscountsBean.DataBean> beanList=response.getData();
-                           Modify_DiscountsPop mdp=new Modify_DiscountsPop(MyApp.getContext(),beanList);
+                           final Modify_DiscountsPop mdp=new Modify_DiscountsPop(MyApp.getContext(),beanList);
                            mdp.showPow(parent);
+                           mdp.setModity(new Modify_DiscountsPop.ModityDiscount() {
+                               @Override
+                               public void modity(String cxid,String zpid) {
+                                 Log.i("修改促销",Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_promotion"+ "&user_id="+userId+"&motion_id="+cxid+"&motion_zpid"+zpid+"&car_id="+aid);
+                                  OkHttpUtils
+                                           .get()
+                                           .url(Constant.baseUrl+"orders/shopping_cars_moblie.php?m=update_promotion")
+                                           .addParams("user_id",userId)
+                                           .addParams("car_id",aid)
+                                           .addParams("motion_id",cxid)
+                                           .addParams("motion_zpid",zpid)
+                                           .build()
+                                           .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                                               @Override
+                                               public void onError(Call call, Exception e, int id) {
+
+                                               }
+
+                                               @Override
+                                               public void onResponse(BaseStringBean response, int id) {
+                                                      if("1".equals(response.getStatus()+"")){
+                                                          mdp.dismiss();
+                                                          getData();
+                                                      }
+                                               }
+                                           });
+                               }
+                           });
                        }
                      }
                  });
@@ -370,18 +397,12 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean> adapter = new CommonAdapter<ShopCarBean.DataBean.DataChildBean.GiftBean>(MyApp.getContext(), R.layout.my_gold_sign_item, giftBeanList) {
             @Override
             protected void convert(ViewHolder holder, ShopCarBean.DataBean.DataChildBean.GiftBean giftBean, int position) {
-                LinearLayout ll_gold=holder.getView(R.id.ll_gold_sign);
-                ll_gold.setPadding(0,0,0,0);
-                TextView tv=holder.getView(R.id.tv_sign_date);
-                tv.setText(giftBean.getZp_title());
-                tv.setTextColor(Color.LTGRAY);
-                tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-                tv.setMaxLines(1);
-                tv.setEllipsize(TextUtils.TruncateAt.END);
+                holder.getView(R.id.ll_gold_sign).setVisibility(View.GONE);
+                holder.getView(R.id.ll_dicounts).setVisibility(View.VISIBLE);
+                //名字
+                holder.setText(R.id.tv_discounts_content,giftBean.getZp_title());
                 //数量
-                TextView tv_num=holder.getView(R.id.tv_sign_gold_num);
-                tv_num.setTextColor(Color.parseColor("#000000"));
-                tv_num.setText("x"+giftBean.getZp_numbers());
+                holder.setText(R.id.tv_discounts_num,"x"+giftBean.getZp_numbers());
             }
         };
         recy.setAdapter(adapter);
@@ -393,10 +414,11 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         if (Status) {
             tv_right.setText("完成");
             isShow = false;
-            adapter.notifyDataSetChanged();
         } else {
             tv_right.setText("编辑");
             isShow = true;
+        }
+        if(adapter!=null){
             adapter.notifyDataSetChanged();
         }
     }
@@ -411,9 +433,8 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
             initRecy();
 
         } else {
-
             empty.setVisibility(View.VISIBLE);
-
+            tv_right.setVisibility(View.INVISIBLE);
         }
 
     }
@@ -436,8 +457,9 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
 
     @Override
     public void showErro() {
-
+        Log.i("走这里","aaa");
         empty.setVisibility(View.VISIBLE);
+        content.setVisibility(View.GONE);
     }
 
     @Override
@@ -528,4 +550,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         intent.putExtra("proId", sb4.toString());
         startActivity(intent);
     }
+
+
 }

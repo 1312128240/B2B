@@ -5,13 +5,13 @@ package car.tzxb.b2b.config;
  */
 
 public class Constant {
- // public static String baseUrl="http://172.20.10.142/mobile_api/";
 
+  // public static String baseUrl="http://39.108.98.157/mobile_api/";
 
   public static String baseUrl="https://wxb2b.aiucar.com/mobile_api/";
 
-    /**
-     * 微信支付appID
-     */
+    //微信支付appID
     public static String AppID="wx284ddc006d10854d";
+
+
 }

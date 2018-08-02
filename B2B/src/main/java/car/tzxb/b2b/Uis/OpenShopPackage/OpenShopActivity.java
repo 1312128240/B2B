@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -23,6 +24,7 @@ import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
+import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
@@ -35,11 +37,18 @@ import com.jaiky.imagespickers.ImageConfig;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.lljjcoder.citypickerview.widget.CityPicker;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -192,8 +201,8 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     //店铺类型
     @OnClick(R.id.tv_open_shop_type)
     public void type() {
+        hideSoftInput();
         String[] str = {"一般合作店", "城市中心店", "社区中心店", "线下加盟店"};
-
         List<String> lists = Arrays.asList(str);
         ChosePopWindow cpw = new ChosePopWindow(MyApp.getContext(), lists);
         cpw.showPow(parent);
@@ -288,13 +297,19 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
     }
 
-    private void uploadImage(final String path, final int tag2) {
 
+    private void uploadImage(final String path, final int tag2) {
         final String endpoint = "https://oss-cn-shanghai.aliyuncs.com ";
+        //生成日期加随机数,再拼接上图片的文件名
+        StringBuilder sb_result = new StringBuilder();
+        String mobile = SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile", null);
+        String time = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        int random = (int) ((Math.random() * 9 + 1) * 100000);
+        String ntr = path.substring(path.lastIndexOf("."), path.length());
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url("https://www.yntzxb.cn/mobile_api/sts-server/sts.php")
+                .url(Constant.baseUrl+"sts-server/sts.php")
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -304,9 +319,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
                     @Override
                     public void onResponse(BaseStringBean bean, int id) {
-
-                        OSSCredentialProvider credentialProvider = new
-                                OSSStsTokenCredentialProvider(bean.getAccessKeyId(), bean.getAccessKeySecret(), bean.getSecurityToken());
+                      OSSCredentialProvider credentialProvider = new OSSStsTokenCredentialProvider(bean.getAccessKeyId(), bean.getAccessKeySecret(), bean.getSecurityToken());
                         //该配置类如果不设置，会有默认配置，具体可看该类
                         ClientConfiguration conf = new ClientConfiguration();
                         conf.setConnectionTimeout(15 * 1000); // 连接超时，默认15秒
@@ -324,14 +337,12 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                         switch (tag2) {
                             case 123:
                                 sb1.append("b2b_shop/shop_review/identification/").append(mobile).append(ntr);
-                                sb_result = sb1;
+                              sb_result = sb1;
                             case 124:
-
                                 sb2.append("b2b_shop/shop_review/identification/").append(mobile).append(ntr);
-                                sb_result = sb2;
+                               sb_result = sb2;
                                 break;
                             case 125:
-
                                 sb3.append("b2b_shop/shop_review/chartered/").append(time).append(random).append(ntr);
                                 sb_result = sb3;
                                 break;
@@ -412,7 +423,6 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
 
         if (requestCode == 1001) {
             if(resultCode == RESULT_OK && data != null) {
-
                 switch (tag) {
                     case 123:
                         path1 = data.getStringArrayListExtra(ImageSelectorActivity.EXTRA_RESULT).get(0);

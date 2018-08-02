@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,92 +7,31 @@
     tools:context="car.tzxb.b2b.fragments.EvaluateFragment">
 
     <LinearLayout
-        android:layout_marginTop="1dp"
-        android:padding="10dp"
-        android:background="@color/colorWhite"
-        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_marginTop="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal"
+        android:paddingBottom="5dp">
 
-
-        <RadioGroup
-            android:id="@+id/rg1"
-
+        <car.myview.FlexRadioGroupPackage.FlexRadioGroup
+            android:id="@+id/frg_label"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="horizontal"
-           >
-            <RadioButton
-                android:id="@+id/rb_all_ev"
-                android:button="@null"
-                android:text="全部"
-                android:padding="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ev_rb_swich"
-                android:gravity="center"
-                android:textColor="@color/textview"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rb_yt_ev"
-                android:button="@null"
-                android:text="有图"
-                android:padding="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ev_rb_swich"
-                android:gravity="center"
-                android:textColor="@color/textview"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rb_hp_ev"
-                android:button="@null"
-                android:text="好评"
-                android:padding="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ev_rb_swich"
-                android:gravity="center"
-                android:textColor="@color/textview"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rb_zp_ev"
-                android:button="@null"
-                android:text="中评"
-                android:padding="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ev_rb_swich"
-                android:gravity="center"
-                android:textColor="@color/textview"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-            <RadioButton
-                android:id="@+id/rb_cp_ev"
-                android:button="@null"
-                android:text="差评"
-                android:padding="5dp"
-                android:layout_marginRight="5dp"
-                android:background="@drawable/ev_rb_swich"
-                android:gravity="center"
-                android:textColor="@color/textview"
-                android:layout_weight="1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </RadioGroup>
+            app:flexWrap="wrap">
+
+        </car.myview.FlexRadioGroupPackage.FlexRadioGroup>
 
         <TextView
             android:id="@+id/tv_hpl"
-            android:gravity="center"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/red"
-            android:textSize="15sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
+            android:textSize="12sp"
+            android:textColor="@color/colorLightGray2"
             tools:text="%99" />
 
     </LinearLayout>

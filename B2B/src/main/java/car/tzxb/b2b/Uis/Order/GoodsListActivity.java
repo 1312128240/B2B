@@ -91,7 +91,9 @@ public class GoodsListActivity extends MyBaseAcitivity {
                 holder.getView(R.id.tv_order_status_total).setVisibility(View.GONE);
                 holder.getView(R.id.ll_order_status_infor).setVisibility(View.GONE);
                 //留言
-                holder.setText(R.id.et_mesg,"留言: "+goodsBean.getMessage());
+                EditText et_mesg=holder.getView(R.id.et_mesg);
+                et_mesg.setClickable(false);
+                holder.setText(R.id.et_mesg,goodsBean.getMessage());
                 //内嵌布局
                 RecyclerView recy=holder.getView(R.id.recy_order_inner);
                 recy.setLayoutManager(new LinearLayoutManager(MyApp.getContext()));

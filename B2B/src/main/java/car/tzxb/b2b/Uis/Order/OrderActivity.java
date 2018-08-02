@@ -93,6 +93,8 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     private String proId;
     private OrderBean.DataBean dataBean;
     private String mesg;
+
+
     @Override
     public void initParms(Bundle parms) {
 
@@ -312,32 +314,41 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     }
 
     private void showDialogFragment(final BaseDataBean response) {
-        final AlterDialogFragment dialogFragment=new AlterDialogFragment();
+      final   AlterDialogFragment   dialogFragment = new AlterDialogFragment();
         Bundle bundle=new Bundle();
         bundle.putString("title",response.getMsg());
         bundle.putString("ok","立即付款");
         bundle.putString("no","再想想");
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(getSupportFragmentManager(),"order");
-        final double total=response.getData().getTotal_fee();
+        if(isStateEnable()) {
+            dialogFragment.show(getSupportFragmentManager(),"order");
+        }
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
                  Intent intent=new Intent(OrderActivity.this,OrderXqActivity.class);
                  intent.putExtra("orderid",response.getData().getOrder_id());
                  startActivity(intent);
+                if(isStateEnable()){
+                    dialogFragment.dismiss();
+                }
+
             }
 
             @Override
             public void sure() {
                 Intent intent=new Intent(OrderActivity.this, WXPayEntryActivity.class);
+                double total=response.getData().getTotal_fee();
                 intent.putExtra("total",String.valueOf(total));
                 intent.putExtra("order_seqnos",response.getData().getCount_seqnos());
                 intent.putExtra("orderid",response.getData().getOrder_id());
                 startActivity(intent);
-                dialogFragment.dismiss();
+                if(isStateEnable()){
+                    dialogFragment.dismiss();
+                }
             }
         });
+
     }
 
    @OnClick(R.id.rl_choice_address)
@@ -375,4 +386,5 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     public void back(){
        onBackPressed();
    }
+
 }

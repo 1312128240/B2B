@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="car.tzxb.b2b">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -36,6 +37,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 友盟 -->
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5b6159dc8f4a9d5ec60001cd" />
+
+        <!--
+            <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="${UMENG_CHANNEL_VALUE}" />
+        -->
         <!-- 百度地图服务 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -84,14 +95,17 @@
         <activity android:name=".Uis.MeCenter.NickNameActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity" />
-        <activity android:name=".Uis.Order.OfflinePaymentActivity"></activity>
-
-        <!--银联支付-->
+        <activity android:name=".Uis.Order.OfflinePaymentActivity" />
+        <activity android:name=".Uis.SelfGoods.SelfGoodsActivity" />
+        <!-- 银联支付 -->
         <activity
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
+        <activity android:name=".Uis.SelfGoods.OemActivity" />
+        <activity android:name=".Uis.HomePager.ArticleActivity" />
+        <activity android:name=".Uis.HomePager.Wallet.MyWalletActivity" />
+        <activity android:name=".Uis.HomePager.Wallet.RechargeActivity"></activity>
     </application>
 
 </manifest>

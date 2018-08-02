@@ -28,6 +28,7 @@ import com.androidkun.xtablayout.XTabLayout;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -388,6 +389,7 @@ public class LoginActivity extends MyBaseAcitivity {
         String mobile = bean.getData().getMobile();
         SPUtil.getInstance(MyApp.getContext()).putUserId("UserId", userId);
         SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile", mobile);
+        MobclickAgent.onProfileSignIn(userId); //当用户使用自有账号登录时，可以这样统计：
         MorphingButton.Params params = MorphingButton.Params.create()
                 .duration(500)
                 .cornerRadius(56)
@@ -399,7 +401,6 @@ public class LoginActivity extends MyBaseAcitivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-
                 onBackPressed();
             }
         }, 1000);

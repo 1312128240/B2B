@@ -6,22 +6,83 @@ package car.tzxb.b2b.Bean;
 
 public class BaseStringBean {
 
-    private String Code;
-    private String AccessKeyId;
+
     private String AccessKeySecret;
-    private String Expiration;
     private String SecurityToken;
+    private String Expiration;
     private String msg;
     private String order;
     private int status;
-    private boolean data;
+    private boolean flag;
+    private String data;
     private String shop_name;
     private String ID;
     private String id;
     private String title;
     private String img_url;
     private boolean checked;
+    private String category_name;
     private String tn;
+    private String Code;
+    private String AccessKeyId;
+    private String versionName;
+
+    public boolean isFlag() {
+        return flag;
+    }
+
+    public void setFlag(boolean flag) {
+        this.flag = flag;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getVersionName() {
+        return versionName;
+    }
+
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getAccessKeyId() {
+        return AccessKeyId;
+    }
+
+    public void setAccessKeyId(String accessKeyId) {
+        AccessKeyId = accessKeyId;
+    }
+
+    public String getAccessKeySecret() {
+        return AccessKeySecret;
+    }
+
+    public void setAccessKeySecret(String accessKeySecret) {
+        AccessKeySecret = accessKeySecret;
+    }
+
+    public String getSecurityToken() {
+        return SecurityToken;
+    }
+
+    public void setSecurityToken(String securityToken) {
+        SecurityToken = securityToken;
+    }
+
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
     public String getTn() {
         return tn;
     }
@@ -100,7 +161,7 @@ public class BaseStringBean {
         this.ID = ID;
     }
 
-    public String getAccessKeyId() {
+  /*  public String getAccessKeyId() {
         return AccessKeyId;
     }
 
@@ -115,7 +176,14 @@ public class BaseStringBean {
     public void setAccessKeySecret(String accessKeySecret) {
         AccessKeySecret = accessKeySecret;
     }
+    public String getSecurityToken() {
+        return SecurityToken;
+    }
 
+    public void setSecurityToken(String securityToken) {
+        SecurityToken = securityToken;
+    }
+*/
     public String getExpiration() {
         return Expiration;
     }
@@ -124,13 +192,7 @@ public class BaseStringBean {
         Expiration = expiration;
     }
 
-    public String getSecurityToken() {
-        return SecurityToken;
-    }
 
-    public void setSecurityToken(String securityToken) {
-        SecurityToken = securityToken;
-    }
 
 
 
@@ -159,11 +221,11 @@ public class BaseStringBean {
         this.status = status;
     }
 
-    public boolean isData() {
+ /*   public boolean isData() {
         return data;
     }
 
     public void setData(boolean data) {
         this.data = data;
-    }
+    }*/
 }

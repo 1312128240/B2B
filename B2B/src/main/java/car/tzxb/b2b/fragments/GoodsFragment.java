@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+import com.google.android.flexbox.FlexboxLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import java.util.ArrayList;
@@ -37,7 +39,7 @@ import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CircleImageView.XCRoundRectImageView;
 import car.myview.CustomToast.MyToast;
-import car.myview.RadioGroupEx;
+import car.myview.FlexRadioGroupPackage.FlexRadioGroup;
 import car.tzxb.b2b.Adapter.DetailsAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
@@ -100,7 +102,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     @BindView(R.id.ll_all_pj)
     LinearLayout ll_all_pj;
     @BindView(R.id.rg_gg)
-    RadioGroupEx rg_gg;
+    FlexRadioGroup rg_gg;
     @BindView(R.id.rl_shop)
     RelativeLayout rl_shoplayout;
     @BindView(R.id.ll_discounts)
@@ -123,7 +125,6 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         goodsActivity.setDataSource(this);
         goodsActivity.scoll(this);
     }
-
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -241,8 +242,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         RadioButton rb=null;
         int minWidth=DeviceUtils.dip2px(MyApp.getContext(),80);
         int height=DeviceUtils.dip2px(MyApp.getContext(),25);
-        RadioGroup.LayoutParams layoutParams=new RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
-        layoutParams.setMargins(0,0,20,20);
+         FlexboxLayout.LayoutParams layoutParams=new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
+         layoutParams.setMargins(0,0,20,20);
         for (int i = 0; i <ggList.size() ; i++) {
             rb=new RadioButton(getContext());
             rb.setLayoutParams(layoutParams);
@@ -250,7 +251,6 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             rb.setMinWidth(minWidth);
             rb.setMinHeight(height);
             rb.setButtonDrawable(null);
-            rb.setPadding(30,0,30,0);
             rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
             String gg=ggList.get(i);
             if(!"".equals(gg)){
@@ -263,23 +263,25 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             rb.setTextColor(getContext().getResources().getColorStateList(R.color.tv_color2));
             rg_gg.addView(rb);
         }
-
-        rg_gg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+            public void onCheckedChanged(@IdRes int checkedId) {
                 listterner.process(checkedId);
+                GoodsXqBean.DataBean.ProductBean productBean=product.get(checkedId);
                 //切换轮播图
-                List<String> imgList=product.get(checkedId).getImgs();
-                viewpager(imgList);
+                viewpager(productBean.getImgs());
+                //价钱
+                tv_current_price.setText(Html.fromHtml("¥ " + "<big>"+productBean.getSeal_price()+"</big>"));
+                tv_cost_price.setText(Html.fromHtml("原价:¥" + productBean.getMarket_price()));
+                tv_cost_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
                 //优惠信息
-               List<GoodsXqBean.DataBean.ProductBean.PromotionBean>  promotionBeanList = product.get(checkedId).getPromotion();
-               if(promotionBeanList.size()!=0){
+                List<GoodsXqBean.DataBean.ProductBean.PromotionBean>  promotionBeanList = productBean.getPromotion();
+                if(promotionBeanList.size()!=0){
                     ll_discounts.setVisibility(View.VISIBLE);
                     initDiscounts(promotionBeanList);
                 }else {
                     ll_discounts.setVisibility(View.GONE);
                 }
-
             }
         });
         RadioButton firstButton= (RadioButton) rg_gg.getChildAt(0);
@@ -305,6 +307,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             String content=title+sb;
             titlelist.add(content);
         }
+
         CommonAdapter<String> promotionBeanCommonAdapter= new CommonAdapter<String>(MyApp.getContext(),R.layout.tv_item,titlelist) {
                     @Override
                     protected void convert(ViewHolder holder, String sb, int position) {
@@ -464,17 +467,10 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
      * @param goods
      */
     private void initInfor(GoodsXqBean.DataBean.GoodsBean goods) {
-        //轮播
-     //   viewpager(goods.getBanner());
-        //-----------价钱销量信息-------------------
+        //价钱销量信息
         tv_sales.setText("月销量: " + goods.getSales());
         tv_type.setText(goods.getDealer());
         tv_goods_name.setText("\u3000\u3000" + goods.getTitle());
-        //现价区间
-        tv_current_price.setText(Html.fromHtml("¥ " + "<big>" +goods.getPrice()+"</big>"));
-        //原价区间
-        tv_cost_price.setText(Html.fromHtml("原价:¥" + goods.getMin_market_price()+"-"+goods.getMax_market_price()));
-        tv_cost_price.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
         tv_city.setText(goods.getProvince() + goods.getCity() + goods.getArea());
         //商品收藏
         goodsActivity.collect(goods.getCollect());

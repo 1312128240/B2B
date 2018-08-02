@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">同致相伴B2B</string>
+    <string name="app_name">同致相伴</string>
     <string name="version">v1.0.0</string>
     <string name="login_phone"><font size="12">请输入手机号</font></string>
     <string name="login_phone2"><font size="12">手机号/健行快养服务商账号</font></string>

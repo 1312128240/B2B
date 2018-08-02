@@ -49,7 +49,7 @@ public class CountDownTextView extends AppCompatTextView {
         super(context, attrs, defStyleAttr);
     }
 
-    private Handler mHandler = new Handler() {
+    private  Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);

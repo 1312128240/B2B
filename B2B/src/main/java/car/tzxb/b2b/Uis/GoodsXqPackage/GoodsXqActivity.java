@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -51,9 +52,8 @@ import okhttp3.Call;
 
 public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener, MvpViewInterface,GoodsFragment.FragmentInteraction {
 
-
-    @BindView(R.id.rg_tab)
-    RadioGroup rg_tab;
+    @BindView(R.id.xq_tab)
+    TabLayout tabLayout;
     @BindView(R.id.iv_xq_sc)
     ImageView iv_sc;
     @BindView(R.id.xq_vp)
@@ -64,7 +64,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     View parent;
     boolean sc;
     private MvpContact.Presenter presenter = new GoodsXqPresenterIml(this);
-    private String mainId="514";
+    private String mainId;
     private GoodsXqBean goodsXqBean;
     private int index;
     GoodsXqInterface goodsXqInterface;
@@ -81,7 +81,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
 
     @Override
     public void initParms(Bundle parms) {
-       // mainId = getIntent().getStringExtra("mainId");
+        mainId = getIntent().getStringExtra("mainId");
     }
 
     @Override
@@ -92,10 +92,15 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     @Override
     public void doBusiness(Context mContext) {
         inittab();
-        vp.isCanScoll(true);
-        rg.setOnCheckedChangeListener(this);
         getData();
+        rg.setOnCheckedChangeListener(this);
+
     }
+    @Override
+    protected BasePresenter bindPresenter() {
+        return presenter;
+    }
+
 
     private void getData() {
         String url = Constant.baseUrl + "item/index.php?c=Goods&m=GetGoodsInfo";
@@ -107,25 +112,15 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     }
 
     public void inittab() {
-        final String[] str = {"商品", "详情", "评价"};
-        for (int i = 0; i < str.length; i++) {
-            RadioButton rb = new RadioButton(this);
-            RadioGroup.LayoutParams params = new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
-            rb.setLayoutParams(params);
-            rb.setGravity(Gravity.CENTER_HORIZONTAL);
-            rb.setText(str[i]);
-            rb.setId(i);
-            rb.setBackground(getDrawable(R.drawable.rb_line));
-            rb.setTextColor(getResources().getColorStateList(R.color.tv_color2));
-            rb.setButtonDrawable(null);
-            rg_tab.addView(rb);
+        String[] str = {"商品", "详情", "评价"};
+        for (int i = 0; i <str.length ; i++) {
+            tabLayout.addTab(tabLayout.newTab().setText(str[i]));
         }
-        RadioButton rb1 = rg_tab.findViewById(0);
-        rb1.setChecked(true);
-        rg_tab.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                switch (checkedId) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                int index=tab.getPosition();
+                switch (index){
                     case 0:
                         vp.setCurrentItem(0);
                         scollListener.scollTop();
@@ -138,47 +133,31 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                         vp.setCurrentItem(1);
                         break;
                 }
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
-        //添加fragment
         List<Fragment> fragments = new ArrayList<>();
         GoodsFragment goods = new GoodsFragment();
         EvaluateFragment ev = new EvaluateFragment();
         fragments.add(goods);
         fragments.add(ev);
+        vp.isCanScoll(true);
         XqPagerAdapter pagerAdapter = new XqPagerAdapter(getSupportFragmentManager(), fragments);
         vp.setAdapter(pagerAdapter);
         vp.setCurrentItem(0);
-        vp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-
-                if (position == 0) {
-                    RadioButton rb0 = rg_tab.findViewById(0);
-                    rb0.setChecked(true);
-                } else {
-                    RadioButton rb2 = rg_tab.findViewById(2);
-                    rb2.setChecked(true);
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
+        vp.setOffscreenPageLimit(2);
     }
 
-
-    @Override
-    protected BasePresenter bindPresenter() {
-        return presenter;
-    }
 
     public void collect(String b) {
 
@@ -208,6 +187,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                 startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
                 return;
             }
+
             OkHttpUtils
                     .get()
                     .tag(this)
@@ -224,7 +204,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                         @Override
                         public void onResponse(BaseStringBean response, int id) {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
-                            boolean b=response.isData();
+                            boolean b=response.isFlag();
                             if(b==true){
                                 iv_sc.setImageResource(R.drawable.navbar_icon_yc);
                             }else {
@@ -273,13 +253,14 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         window.show(parent);
         window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
             @Override
-            public void Click(int number, String pro_id, String shop_id, String type,String discountsId) {
-                putIn(number, pro_id, shop_id, type,discountsId);
+            public void Click(int number, String pro_id, String shop_id,String discountsId) {
+                putIn(number, pro_id, shop_id,discountsId);
+
             }
         });
     }
 
-    public void putIn(int number, String pro_id, String shop_id, String type,String discountsId) {
+    public void putIn(int number, String pro_id, String shop_id,String discountsId) {
 
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         if (userId == null) {
@@ -288,7 +269,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             return;
         }
         Log.i("添加购物车路径", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=add_shoppingcar" + "&number=" + number +
-                "&pro_id=" + pro_id + "&shop_id=" + shop_id + "&type=" + type + "&motion_id="+discountsId + "&user_id=" + userId);
+                "&pro_id=" + pro_id + "&shop_id=" + shop_id + "&type=0" + "&motion_id="+discountsId + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -296,7 +277,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                 .addParams("number", String.valueOf(number))
                 .addParams("pro_id", pro_id)
                 .addParams("shop_id", shop_id)
-                .addParams("type", type)
+                .addParams("type","0")
                 .addParams("motion_id", discountsId)
                 .addParams("user_id", userId)
                 .build()
