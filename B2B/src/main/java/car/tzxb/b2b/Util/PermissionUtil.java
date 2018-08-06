@@ -79,19 +79,14 @@ public class PermissionUtil {
     public static boolean getSendSMSPermissions(@NonNull Activity activity, int requestCode) {
         return requestPerssions(activity, requestCode, Manifest.permission.SEND_SMS);
     }
+
     /**
      * 获取拨打电话权限
-     *
      * @return 是否已经获取权限，没有自动申请
      */
     public static boolean getCallPhonePermissions(@NonNull Activity activity, int requestCode) {
         return requestPerssions(activity, requestCode, Manifest.permission.CALL_PHONE);
     }
-
-
-
-
-
 
 
     public static List<String> getDeniedPermissions(@NonNull Activity activity, @NonNull String... permissions) {

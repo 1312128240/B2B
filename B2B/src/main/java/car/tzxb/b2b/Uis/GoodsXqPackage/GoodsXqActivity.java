@@ -68,6 +68,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     private GoodsXqBean goodsXqBean;
     private int index;
     GoodsXqInterface goodsXqInterface;
+    private String from;
 
     public void setDataSource(GoodsXqInterface ds) {
         this.goodsXqInterface = ds;
@@ -82,6 +83,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     @Override
     public void initParms(Bundle parms) {
         mainId = getIntent().getStringExtra("mainId");
+        from = getIntent().getStringExtra("from");
     }
 
     @Override
@@ -171,15 +173,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     @OnClick(R.id.iv_xq_sc)
     public void scGoods() {
 
-      /*  if(!sc){
-            MyToast.makeTextAnim(MyApp.getContext(),"收藏成功",0,Gravity.CENTER,0,0).show();
-            iv_sc.setImageResource(R.drawable.navbar_icon_yc);
-            sc=true;
-        }else {
-            MyToast.makeTextAnim(MyApp.getContext(),"取消收藏",0,Gravity.CENTER,0,0).show();
-            iv_sc.setImageResource(R.drawable.navbar_icon_nc);
-            sc=false;
-        }*/
         if (isFastClick()) {
             String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
             if (userId == null) {
@@ -225,25 +218,25 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(this).toBundle());
             return;
         }
-        switch (i) {
-            case R.id.rb_xq_shop:
-                MyToast.makeTextAnim(MyApp.getContext(), "卖家", 0, Gravity.CENTER, 0, 0).show();
-                break;
-            case R.id.rb_xq_sc:
-                MyToast.makeTextAnim(MyApp.getContext(), "店铺", 0, Gravity.CENTER, 0, 0).show();
-                break;
-            case R.id.rb_to_gwc:
-
-                startActivity(new Intent(this, ShoppingCarActivity.class));
-
-                break;
-            case R.id.rb_add_shoppingcar:
-
-                if (isFastClick()) {
-
+        if(isFastClick()){
+            switch (i) {
+                case R.id.rb_xq_shop:
+                    MyToast.makeTextAnim(MyApp.getContext(), "卖家", 0, Gravity.CENTER, 0, 0).show();
+                    break;
+                case R.id.rb_xq_sc:
+                    MyToast.makeTextAnim(MyApp.getContext(), "店铺", 0, Gravity.CENTER, 0, 0).show();
+                    break;
+                case R.id.rb_to_gwc:
+                    startActivity(new Intent(this, ShoppingCarActivity.class));
+                    if("fragment".equals(from)){
+                        finish();
+                    }
+                    break;
+                case R.id.rb_add_shoppingcar:
                     showShoppingCarWindow();
-                }
-                break;
+                    break;
+        }
+
         }
     }
 
@@ -255,7 +248,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             @Override
             public void Click(int number, String pro_id, String shop_id,String discountsId) {
                 putIn(number, pro_id, shop_id,discountsId);
-
             }
         });
     }

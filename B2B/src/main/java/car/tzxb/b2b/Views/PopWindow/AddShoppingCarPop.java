@@ -119,7 +119,6 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
             GoodsXqBean.DataBean.ProductBean bean=lists.get(i);
             RadioButton rb=new RadioButton(mContext);
             rb.setGravity(Gravity.CENTER);
-            rb.setTextColor(Color.BLACK);
             rb.setMinHeight(height);
             rb.setMinWidth(width);
             rb.setLayoutParams(layoutParams);

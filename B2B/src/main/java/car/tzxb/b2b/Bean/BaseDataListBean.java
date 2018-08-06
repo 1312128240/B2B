@@ -71,6 +71,7 @@ public class BaseDataListBean {
         private String max_seal_price;
         private String min_seal_price;
         private String content;
+        private String type;
         private String name;
         private String shop_id;
         private String product_title;
@@ -99,6 +100,14 @@ public class BaseDataListBean {
         private String stock_distributor_all;
         private String sales;
         private String cost_point;
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
 
 
         public String getContent() {

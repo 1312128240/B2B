@@ -2,9 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tolas="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/colorWhite"
-    android:orientation="vertical">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite">
 
     <com.youth.banner.Banner
         android:id="@+id/xq_banner"
@@ -164,6 +163,7 @@
 
     <LinearLayout
         android:id="@+id/ll_discounts"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ll_goods_xq_explain"
@@ -191,25 +191,4 @@
             android:layout_gravity="center_vertical"
             android:src="@mipmap/store_icon_right" />
     </LinearLayout>
-
-   <!-- <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/ll_discounts"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="55dp"
-            android:layout_height="wrap_content"
-            android:text="积分"
-            android:textColor="@color/colorBlack"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="购买可返120积分"
-            android:textColor="@color/colorBlack2" />
-    </LinearLayout>-->
-
 </RelativeLayout>

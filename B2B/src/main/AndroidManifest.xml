@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="car.tzxb.b2b">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -71,7 +70,7 @@
         <activity android:name=".Uis.OpenShopPackage.OpenShopEntranceActivity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopEntrance2Activity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopMapActivity" />
-        <activity android:name=".Uis.Setting.FindPassWordActivity" />
+        <activity android:name=".Uis.MeCenter.FindPassWordActivity" />
         <activity android:name=".Uis.GoodsXqPackage.GoodsXqActivity" />
         <activity android:name=".Uis.ClassifyPackage.GoodsClassifyActivity" />
         <activity android:name=".Uis.MeCenter.MyAddressActivity" />
@@ -85,8 +84,8 @@
         <activity android:name=".Uis.Order.OrderStatusActivity" />
         <activity android:name=".Uis.MeCenter.SettingsActivity" />
         <activity android:name=".Uis.Order.LogisticsActivity" />
-        <activity android:name=".Uis.Vip.VipHomePagerActivity" />
-        <activity android:name=".Uis.Vip.VipCenterActivity" />
+        <activity android:name=".Uis.HomePager.Vip.VipHomePagerActivity" />
+        <activity android:name=".Uis.HomePager.Vip.VipCenterActivity" />
         <activity android:name=".Uis.MeCenter.MyGoldActivity" />
         <activity android:name=".Uis.MeCenter.BrowhistoryActivity" />
         <activity android:name=".Uis.MeCenter.WithMeActivity" />
@@ -96,16 +95,18 @@
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.AccountSecurityYzmActivity" />
         <activity android:name=".Uis.Order.OfflinePaymentActivity" />
-        <activity android:name=".Uis.SelfGoods.SelfGoodsActivity" />
+        <activity android:name=".Uis.HomePager.SelfGoods.SelfGoodsActivity" />
         <!-- 银联支付 -->
         <activity
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:screenOrientation="portrait" />
-        <activity android:name=".Uis.SelfGoods.OemActivity" />
+        <activity android:name=".Uis.HomePager.SelfGoods.OemActivity" />
         <activity android:name=".Uis.HomePager.ArticleActivity" />
         <activity android:name=".Uis.HomePager.Wallet.MyWalletActivity" />
-        <activity android:name=".Uis.HomePager.Wallet.RechargeActivity"></activity>
+        <activity android:name=".Uis.HomePager.Wallet.RechargeActivity" />
+        <activity android:name=".Uis.SeachPackage.SeachActivity" />
+        <activity android:name=".Uis.HomePager.ActivityPackage.ActivityEntrance"></activity>
     </application>
 
 </manifest>

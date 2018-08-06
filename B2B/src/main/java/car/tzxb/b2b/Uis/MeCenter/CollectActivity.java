@@ -1,6 +1,7 @@
 package car.tzxb.b2b.Uis.MeCenter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.DividerItemDecoration;
@@ -31,6 +32,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
@@ -39,6 +41,7 @@ import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
@@ -178,6 +181,21 @@ public class CollectActivity extends MyBaseAcitivity implements RadioGroup.OnChe
             }
         };
         recy.setAdapter(goodsAdapte);
+        goodsAdapte.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                BaseDataListBean.DataBean bean=beanList1.get(position);
+                Intent intent=new Intent(CollectActivity.this, GoodsXqActivity.class);
+                intent.putExtra("mainId",bean.getGoods_id());
+                startActivity(intent);
+
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     private void initRecy2(final List<BaseDataListBean.DataBean> beanList) {

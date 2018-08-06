@@ -1,14 +1,16 @@
 package car.tzxb.b2b;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
@@ -16,16 +18,19 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.lang.ref.WeakReference;
+import java.util.List;
 import butterknife.BindView;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Interface.WindowFocusChang;
 import car.tzxb.b2b.Util.ActivityManager;
 import car.tzxb.b2b.Util.DeviceUtils;
+import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.UpdateApp;
+import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.fragments.ClassifyFragment;
 import car.tzxb.b2b.fragments.HomeFragment;
@@ -33,10 +38,9 @@ import car.tzxb.b2b.fragments.MyFragment;
 import car.tzxb.b2b.fragments.ShoppingCarFragment;
 import okhttp3.Call;
 
-public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener{
+public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener,PermissionUtil.OnRequestPermissionsResultCallbacks{
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
-
     private static boolean isExit = false;
     public Handler mHandler = new MyHandler(this);
     private Fragment mFragment;
@@ -45,6 +49,31 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     private MyFragment myFrgament;
     private HomeFragment homeFragment;
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtil.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms, boolean isAllGranted) {
+
+        if(requestCode==101){
+            Log.i("权限","同意:" + perms.size() + "个权限,isAllGranted=" + isAllGranted);
+        }
+
+
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms, boolean isAllDenied) {
+        if (requestCode == 101) {
+            if(isAllDenied){
+                Log.i("权限", "拒绝:" + perms.size() + "个权限,isAllDenied=" + isAllDenied);
+                MyToast.makeTextAnim(MyApp.getContext(),"需要开启读写权限才能更新",1, Gravity.CENTER,0,0).show();
+            }
+        }
+    }
 
     private static class MyHandler extends Handler {
         private final WeakReference<Activity> mActivity;
@@ -76,9 +105,12 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     @Override
     public void doBusiness(Context mContext) {
               initNavigationBar();
+
               initFragment();
               checkVersion();
     }
+
+
     public void checkVersion(){
         Log.i("b2b检测版本", Constant.baseUrl + "item/index.php?c=Home&m=Edition&From=Android");
         OkHttpUtils
@@ -97,8 +129,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                         String checkVersion = DeviceUtils.getVersionName(MyApp.getContext());
                         String version=response.getVersionName();
                         if(!version.equals(checkVersion)){
-                            UpdateApp updateApp=new UpdateApp(MainActivity.this);
-                            updateApp.showAlertDialog(response);
+                           showAlertDialog(response);
                         }
 
                     }
@@ -136,7 +167,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
 
     }
 
-    private void switchFragment(Fragment fragment) {
+    public void switchFragment(Fragment fragment) {
 
         //判断当前显示的Fragment是不是切换的Fragment
         if(mFragment != fragment) {
@@ -162,10 +193,8 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                     break;
                 case 1:
                     switchFragment(classifyFragment);
-
                     break;
                 case 2:
-
                     switchFragment(shopingFrgament);
                     break;
                 case 3:
@@ -208,6 +237,13 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         }
     }
 
+    /**切换
+     * @param position
+     */
+    public void select(int position){
+        navigationBar.selectTab(position);
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
@@ -217,4 +253,34 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     public void setFocusChanged(WindowFocusChang focusChanged){
         this.listener=focusChanged;
     }
+
+    public void showAlertDialog(final BaseStringBean response) {
+        final AlterDialogFragment dialogFragment = new AlterDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", response.getMsg());
+        bundle.putString("ok", "确定");
+        bundle.putString("no", "取消");
+        dialogFragment.setArguments(bundle);
+        dialogFragment.show(getSupportFragmentManager(),"aa");
+        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+            @Override
+            public void cancle() {
+                dialogFragment.dismiss();
+            }
+
+            @Override
+            public void sure() {
+                boolean b = PermissionUtil.hasPermissons(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                if (b == false) {
+
+                    PermissionUtil.getExternalStoragePermissions(MainActivity.this, 101);
+
+                } else {
+                    UpdateApp updateApp=new UpdateApp(MainActivity.this);
+                    updateApp.downloadFile(response);
+                }
+            }
+        });
+    }
+
 }

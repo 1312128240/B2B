@@ -12,7 +12,7 @@ import com.umeng.commonsdk.UMConfigure;
 public class MyApp extends Application {
 
     private static Context context;
-    public static boolean isDebug=true;
+
     @Override
     public void onCreate() {
         super.onCreate();

@@ -4,7 +4,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Gravity;
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -12,6 +15,8 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
+
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
@@ -22,33 +27,12 @@ import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
  * Created by Administrator on 2018/8/2 0002.
  */
 
-public class UpdateApp {
+public class UpdateApp{
 
     private AppCompatActivity activity;
 
     public UpdateApp(AppCompatActivity activity) {
         this.activity = activity;
-    }
-
-    public void showAlertDialog(final BaseStringBean response) {
-        final AlterDialogFragment dialogFragment = new AlterDialogFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("title", response.getMsg());
-        bundle.putString("ok", "确定");
-        bundle.putString("no", "取消");
-        dialogFragment.setArguments(bundle);
-        dialogFragment.show(activity.getSupportFragmentManager(),"aa");
-        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
-            @Override
-            public void cancle() {
-                dialogFragment.dismiss();
-            }
-
-            @Override
-            public void sure() {
-                downloadFile(response);
-            }
-        });
     }
 
     public void downloadFile(final BaseStringBean response) {
@@ -69,7 +53,6 @@ public class UpdateApp {
                     installApk(file);
                     pd.dismiss(); //结束掉进度条对话框
                 } catch (Exception e) {
-                    MyToast.makeTextAnim(MyApp.getContext(),"下载新版本失败",0, Gravity.CENTER,0,0).show();
                     e.printStackTrace();
                 }
             }
@@ -114,4 +97,5 @@ public class UpdateApp {
         intent.setDataAndType(Uri.fromFile(file), "application/vnd.android.package-archive");
         MyApp.getContext().startActivity(intent);
     }
+
 }

@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -33,12 +35,15 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.MultiItemTypeAdapter;
+import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
 import car.myview.SpringView.SpringView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
+import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.DiscountsBean;
 import car.tzxb.b2b.Bean.ShopCarBean;
@@ -47,6 +52,7 @@ import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.ShoppingCarPresenterIml;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.Modify_DiscountsPop;
@@ -79,6 +85,8 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
     View parent;
     @BindView(R.id.tv_shopingcar_discounts_total)
     TextView tv_discounts_total;
+    @BindView(R.id.recy_empty_shopping)
+    RecyclerView recy_empty;
     private List<ShopCarBean.DataBean> beanList = new ArrayList<>();
     private CommonAdapter<ShopCarBean.DataBean> adapter;
     private boolean Status = false;
@@ -99,7 +107,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         tv_back.setVisibility(View.INVISIBLE);
         tv_title.setText("购物车");
         tv_right.setText("编缉");
-
+        recy_empty.addItemDecoration(new SpaceItemDecoration(10, 2));
         getData();
     }
 
@@ -137,7 +145,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
         cb_all.setOnCheckedChangeListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         adapter = new CommonAdapter<ShopCarBean.DataBean>(getContext(), R.layout.shopping_car_layout, beanList) {
             @Override
             protected void convert(final ViewHolder vh, final ShopCarBean.DataBean dataBean, final int i) {
@@ -408,6 +415,11 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         recy.setAdapter(adapter);
     }
 
+    @OnClick(R.id.tv_empty_Shopping)
+    public void shopping(){
+       mainActivity.select(0);
+    }
+
     @OnClick(R.id.tv_actionbar_right)
     public void edit() {
         Status = !Status;
@@ -435,6 +447,8 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         } else {
             empty.setVisibility(View.VISIBLE);
             tv_right.setVisibility(View.INVISIBLE);
+            //猜你在找
+            getGuess();
         }
 
     }
@@ -457,9 +471,77 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
 
     @Override
     public void showErro() {
-        Log.i("走这里","aaa");
         empty.setVisibility(View.VISIBLE);
         content.setVisibility(View.GONE);
+        //猜你在找
+        getGuess();
+    }
+
+    private void getGuess() {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("猜你在找",Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id="+userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0")
+                .addParams("user_id",userId)
+                .addParams("sales","desc")
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+
+
+
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataListBean response, int id) {
+                        List<BaseDataListBean.DataBean> guessList=response.getData();
+                        Log.i("购物车猜你在找",guessList.size()+"");
+                        initGuessRecy(guessList);
+                    }
+                });
+    }
+
+    private void initGuessRecy(final List<BaseDataListBean.DataBean> guessList) {
+        recy_empty.setLayoutManager(new GridLayoutManager(getContext(),2));
+
+     CommonAdapter<BaseDataListBean.DataBean>  guessAdapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout,guessList) {
+            @Override
+            protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
+                //图片
+                ImageView iv = holder.getView(R.id.iv_recommend);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
+                holder.setText(R.id.tv_recommend_title, bean.getShop_name());
+                //名字
+                holder.setText(R.id.tv_recommend_title,bean.getGoods_name());
+                //价格
+                TextView tv_price=holder.getView(R.id.tv_recommend_price);
+                tv_price.setText(Html.fromHtml("¥ <big>" + bean.getPrice() + "</big>"));
+                ;           //销量
+                TextView tv_sales=holder.getView(R.id.tv_recomment_sales);
+                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+                tv_sales.setText("销量 "+bean.getSales());
+            }
+        };
+        recy_empty.setAdapter(guessAdapter);
+        guessAdapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                BaseDataListBean.DataBean bean = guessList.get(position);
+                Intent intent = new Intent(getActivity(), GoodsXqActivity.class);
+                intent.putExtra("mainId", bean.getId());
+                intent.putExtra("from","fragment");
+                startActivity(intent);
+            }
+
+            @Override
+            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -517,7 +599,6 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
             }
 
             GoOrder(isCheckList);
-
         }
     }
 

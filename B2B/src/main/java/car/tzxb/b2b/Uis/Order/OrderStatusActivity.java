@@ -79,7 +79,8 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     @Override
     public void initParms(Bundle parms) {
         index = getIntent().getIntExtra("index", -1);
-        type = getIntent().getStringExtra("type");
+      //  type = getIntent().getStringExtra("type");
+
     }
 
     @Override

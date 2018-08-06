@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -92,11 +93,9 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     @BindView(R.id.recy_ev)
     RecyclerView recy_ev;
     @BindView(R.id.goods_xq_parent)
-    RelativeLayout parent;
+    NestedScrollView scrollView;
     @BindView(R.id.lv_details)
     ListView lv_details;
-    @BindView(R.id.xq_nestedview)
-    NestedScrollView scrollView;
     @BindView(R.id.tv_xq_img)
     TextView tv_img;
     @BindView(R.id.ll_all_pj)
@@ -324,7 +323,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 DiscountsPop dp=new DiscountsPop(MyApp.getContext(),promotionBeanList);
-                dp.showPow(parent);
+                dp.showPow(scrollView);
             }
 
             @Override
@@ -482,13 +481,13 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     @OnClick(R.id.ll_goods_xq_explain)
     public void explain() {
         ExplainPop ep = ExplainPop.getmInstance(MyApp.getContext());
-        ep.show(parent);
+        ep.show(scrollView);
     }
 
     @Override
     public void scollLv() {
         scrollView.fling(0);
-        scrollView.smoothScrollTo(0, y);
+        scrollView.smoothScrollTo(0, y-150);
     }
 
     @Override

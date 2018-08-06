@@ -238,7 +238,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
     public void next1() {
         final String phone = et_phone.getText().toString();
-        String yzm = et_yzm.getText().toString();
+              String yzm = et_yzm.getText().toString();
         if (TextUtils.isEmpty(phone)) {
             Snackbar.make(tv_title, "请输入手机号", Snackbar.LENGTH_SHORT).show();
             AnimationUtil.Sharke(MyApp.getContext(), et_phone);
@@ -299,10 +299,8 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
         String sign = StringUtil.stringToMD5(stringA);
         StringBuilder Upsign = StringUtil.UpperLowerCase(sign);
 
-        /**
-         * 获取验证码
-         */
-        Log.i("好烦啊", Constant.baseUrl + "messages/send.php?" + "&m=" + m + "&mobile=" + mobile + "&sign=" + sign + "&timestamp=" + time);
+
+        Log.i("验证码", Constant.baseUrl + "messages/send.php?" + "&m=" + m + "&mobile=" + mobile + "&sign=" + sign + "&timestamp=" + time);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -342,7 +340,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
      * @return
      */
     private void isRegister(final String phone, final String yzm) {
-
+        Log.i("是否已经注册过",Constant.baseUrl + "login/login.php?m=is_register"+"&mobile="+phone);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -357,7 +355,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
-                       // apply(phone,yzm);
+
                         if(response.getStatus()==1){
                             //手机号没有申请过走正常申请流程
                             apply(phone,yzm);
@@ -396,6 +394,7 @@ public class OpenShopEntranceActivity extends MyBaseAcitivity {
     public void apply(final String phone, String yzm){
 
           tLog("登录比对" + Constant.baseUrl + "messages/verify.php?m=SendVerify" + "&mobile=" + phone + "&type=register" + "&code=" + yzm);
+
         OkHttpUtils
                 .get()
                 .tag(this)

@@ -2,6 +2,7 @@ package car.tzxb.b2b.Uis.MeCenter;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
@@ -23,6 +26,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
+import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
@@ -32,6 +36,7 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.BrowhistoryBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -48,7 +53,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
     TextView tv_right;
     private boolean flag;
     private boolean isShow=true;
-    private List<BrowhistoryBean.DataBean> dataBeanList;
+    private List<BrowhistoryBean.DataBean> dataBeanList=new ArrayList<>();
     private CommonAdapter<BrowhistoryBean.DataBean> adapter;
 
     @Override
@@ -70,7 +75,6 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
     private void initRecy() {
         recy.setLayoutManager(new LinearLayoutManager(this));
-        dataBeanList=new ArrayList<>();
         adapter = new CommonAdapter<BrowhistoryBean.DataBean>(MyApp.getContext(), R.layout.order_list_item,dataBeanList) {
             @Override
             protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean dataBean, int position) {
@@ -89,10 +93,12 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                 //内部recyclerview
                 RecyclerView InnerRecy=holder.getView(R.id.recy_order_inner);
                 InnerRecy.setLayoutManager(new LinearLayoutManager(BrowhistoryActivity.this));
-                List<BrowhistoryBean.DataBean.ChildDataBean> InnList=dataBean.getChild_data();
+                final List<BrowhistoryBean.DataBean.ChildDataBean> InnList=dataBean.getChild_data();
                 CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean> InnAdaper=new CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean>(MyApp.getContext(),R.layout.commn_item,InnList) {
                     @Override
                     protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean.ChildDataBean childDataBean, int position) {
+                        //图片
+                        Glide.with(MyApp.getContext()).load(childDataBean.getImg_url()).into((ImageView) holder.getView(R.id.iv_category));
                         //名字
                         holder.setText(R.id.tv_catagroy_name,childDataBean.getTitle());
                         //价格
@@ -119,6 +125,20 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                     }
                 };
                 InnerRecy.setAdapter(InnAdaper);
+                InnAdaper.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        BrowhistoryBean.DataBean.ChildDataBean bean=InnList.get(position);
+                        Intent intent=new Intent(BrowhistoryActivity.this, GoodsXqActivity.class);
+                        intent.putExtra("mainId",bean.getId());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
+                        return false;
+                    }
+                });
             }
         };
         recy.setAdapter(adapter);

@@ -31,8 +31,9 @@ import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.MyCenterBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.AccountSecurityHomePageActivity;
-import car.tzxb.b2b.Uis.Vip.VipHomePagerActivity;
+
 import car.tzxb.b2b.Util.DataCleanManager;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;

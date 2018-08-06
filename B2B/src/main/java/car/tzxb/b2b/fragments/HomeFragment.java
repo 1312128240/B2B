@@ -1,35 +1,27 @@
 package car.tzxb.b2b.fragments;
 
+import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.ActivityOptions;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -39,9 +31,11 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -63,14 +57,16 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.HomePresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance;
 import car.tzxb.b2b.Uis.HomePager.ArticleActivity;
+import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
+import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
+import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
-import car.tzxb.b2b.Uis.SelfGoods.OemActivity;
-import car.tzxb.b2b.Uis.SelfGoods.SelfGoodsActivity;
-import car.tzxb.b2b.Uis.Vip.VipHomePagerActivity;
+import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
 import car.tzxb.b2b.Util.BannerImageLoader;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
@@ -121,6 +117,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     ImageView iv_right;
     @BindView(R.id.ll_suspension_bar)
     LinearLayout ll_suspension_bar;
+    @BindView(R.id.et_classify)
+    EditText et_classify;
+    @BindView(R.id.tv_classify)
+    TextView tv_classify;
     private String categoryId, brands;
     private int bottom, pager;
     private List<BaseDataListBean.DataBean> goodsList = new ArrayList<>();
@@ -129,7 +129,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     private LoadingDialog dialog;
     private List<HomeBean.DataBean.CategoryBean> categoryBeanList;
     private List<BaseDataListBean.DataBean> tabList;
-    private int top;
 
 
     @Override
@@ -142,7 +141,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         initUi();
         iniEvent();
     }
-
 
 
     @Override
@@ -170,21 +168,21 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
-          pager=0;
-          presenterGetData();
+        if (!hidden) {
+            pager = 0;
+            presenterGetData();
         }
     }
 
     /**
      * 获取数据
      */
-    public void presenterGetData(){
+    public void presenterGetData() {
         //获取数据
-        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        String url = Constant.baseUrl + "item/index.php?c=Home&m=Index&user_id="+userId;
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        String url = Constant.baseUrl + "item/index.php?c=Home&m=Index&user_id=" + userId;
         presenter.PresenterGetData(url, null);
-        Log.i("首页接口",url+"");
+        Log.i("首页接口", url + "");
     }
 
 
@@ -192,8 +190,15 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         iv_left.setImageResource(R.drawable.navbar_icon_scan);
         iv_right.setImageResource(R.drawable.navbar_icon_news);
         iv_right.setPadding(0, 0, 0, 5);
+        et_classify.setVisibility(View.GONE);
+        tv_classify.setVisibility(View.VISIBLE);
         presenterGetData();
         recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
+    }
+
+    @OnClick(R.id.tv_classify)
+    public void seach() {
+        startActivity(new Intent(getActivity(), SeachActivity.class));
     }
 
     /**
@@ -203,13 +208,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         classify_tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                HomeBean.DataBean.CategoryBean categoryBean=categoryBeanList.get(tab.getPosition());
+                HomeBean.DataBean.CategoryBean categoryBean = categoryBeanList.get(tab.getPosition());
                 //刷新品牌
-                categoryId=categoryBean.getId();
+                categoryId = categoryBean.getId();
                 OkHttpUtils
                         .get()
-                        .url(Constant.baseUrl+"item/index.php?c=Goods&m=BrandList")
-                        .addParams("id",categoryId)
+                        .url(Constant.baseUrl + "item/index.php?c=Goods&m=BrandList")
+                        .addParams("id", categoryId)
                         .tag(this)
                         .build()
                         .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
@@ -239,17 +244,17 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         brand_tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                brands =tabList.get(tab.getPosition()).getId();
+                brands = tabList.get(tab.getPosition()).getId();
                 pager = 0;
                 showLoadingDialog();
                 getBrandData();
-                TextView tv=tab.getCustomView().findViewById(R.id.iv_layout_title);
+                TextView tv = tab.getCustomView().findViewById(R.id.iv_layout_title);
                 tv.setTextColor(Color.RED);
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                TextView tv=tab.getCustomView().findViewById(R.id.iv_layout_title);
+                TextView tv = tab.getCustomView().findViewById(R.id.iv_layout_title);
                 tv.setTextColor(Color.BLACK);
             }
 
@@ -270,13 +275,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
             public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
                 if (scrollY > oldScrollY) {
                     Log.i(TAG, "下滑");
-                    if(scrollY>=bottom){
-                      classify_tabLayout.setVisibility(View.GONE);
+                    if (scrollY >= bottom) {
+                        classify_tabLayout.setVisibility(View.GONE);
                     }
                 }
                 if (scrollY < oldScrollY) {
                     Log.i(TAG, "上滑");
-                    if(scrollY>=bottom){
+                    if (scrollY >= bottom) {
                         classify_tabLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -284,14 +289,15 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 View view = v.getChildAt(0);
                 if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
                     Log.i(TAG, "到底部");
+                    if(dialog!=null) {
+                        dialog.dismiss();
+                    }
                     showLoadingDialog();
                     LoadMore();
                 }
             }
         });
     }
-
-
 
 
     private void initBottom(HomeBean bean) {
@@ -309,13 +315,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         Glide.with(getContext()).load(bgBean.getImg_url()).dontAnimate().into(iv_find_shop_bg);
         //商品tablayout
         categoryBeanList = bean.getData().getCategory();
-        categoryId= categoryBeanList.get(0).getId();
+        categoryId = categoryBeanList.get(0).getId();
         for (int i = 0; i < categoryBeanList.size(); i++) {
             String title = categoryBeanList.get(i).getCategory_name();
             classify_tabLayout.addTab(classify_tabLayout.newTab().setText(title));
         }
         //底部商品
-        recy_goods.setLayoutManager(new GridLayoutManager(getContext(),2));
+        recy_goods.setLayoutManager(new GridLayoutManager(getContext(), 2));
         brandAndGoodsAdapter = new CommonAdapter<BaseDataListBean.DataBean>(getContext(), R.layout.recommend_layout, goodsList) {
             @Override
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean dataBean, int position) {
@@ -330,12 +336,12 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 tv_name.setText(dataBean.getGoods_name());
                 //价格
                 TextView tv_price = holder.getView(R.id.tv_recommend_price);
-                tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+                tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tv_price.setText(Html.fromHtml("¥ <big>" + dataBean.getPrice() + "</big>"));
                 //销量
-                TextView tv_sales=holder.getView(R.id.tv_recomment_sales);
-                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-                tv_sales.setText("销量 "+dataBean.getSales());
+                TextView tv_sales = holder.getView(R.id.tv_recomment_sales);
+                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                tv_sales.setText("销量 " + dataBean.getSales());
             }
         };
         recy_goods.setAdapter(brandAndGoodsAdapter);
@@ -357,41 +363,47 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     }
 
     @OnClick(R.id.iv_self_produc1)
-    public void self1(){
-         Intent intent=new Intent(getActivity(),SelfGoodsActivity.class);
-         intent.putExtra("list", (Serializable) categoryBeanList);
-         startActivity(intent);
+    public void self1() {
+        Intent intent = new Intent(getActivity(), SelfGoodsActivity.class);
+        intent.putExtra("list", (Serializable) categoryBeanList);
+        startActivity(intent);
     }
 
     @OnClick(R.id.iv_self_produc2)
-    public void self2(){
-         startActivity(new Intent(getActivity(), OemActivity.class));
+    public void self2() {
+        startActivity(new Intent(getActivity(), OemActivity.class));
     }
+
     @OnClick(R.id.tv_headline)
-    public void notice(){
-        startActivity(new Intent(getActivity(),ArticleActivity.class));
+    public void notice() {
+        startActivity(new Intent(getActivity(), ArticleActivity.class));
+    }
+    @OnClick(R.id.rl_home_pager_activity)
+    public void activity(){
+        startActivity(new Intent(getActivity(), ActivityEntrance.class));
     }
 
     /**
      * 自定义tablayout
+     *
      * @param beanList
      */
     private void setCustomTab(final List<BaseDataListBean.DataBean> beanList) {
-        if(brand_tablayout.getTabCount()!=0){
+        if (brand_tablayout.getTabCount() != 0) {
             brand_tablayout.removeAllTabs();
         }
-        TabLayout.Tab tab=null;
-        View view=null;
+        TabLayout.Tab tab = null;
+        View view = null;
+        int wh = DeviceUtils.dip2px(MyApp.getContext(), 45);
         for (int i = 0; i < beanList.size(); i++) {
             tab = brand_tablayout.newTab();
-            view= LayoutInflater.from(getContext()).inflate(R.layout.iv_layout,null);
-            BaseDataListBean.DataBean xBean=beanList.get(i);
-            TextView tv= view.findViewById(R.id.iv_layout_title);
-            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-            ImageView iv=view.findViewById(R.id.iv_item);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.iv_layout, null);
+            BaseDataListBean.DataBean xBean = beanList.get(i);
+            TextView tv = view.findViewById(R.id.iv_layout_title);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            ImageView iv = view.findViewById(R.id.iv_item);
             tv.setText(xBean.getTitle());
-            int wh = DeviceUtils.dip2px(MyApp.getContext(), 45);
-            Glide.with(MyApp.getContext()).load(xBean.getImg_url()).asBitmap().override(wh,wh).into(iv);
+            Glide.with(MyApp.getContext()).load(xBean.getImg_url()).asBitmap().override(wh, wh).into(iv);
             tab.setCustomView(view);
             brand_tablayout.addTab(tab);
         }
@@ -403,7 +415,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void getBrandData() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("首页底部商品", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsList" + "&cate=" + categoryId + "&brand=" +
-                brands + "&page=" + pager + "&pagesize=10" + "&user_id=" + userId+"&sales=desc");
+                brands + "&page=" + pager + "&pagesize=10" + "&user_id=" + userId + "&sales=desc");
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -413,7 +425,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 .addParams("page", String.valueOf(pager))
                 .addParams("pagesize", "10")
                 .addParams("brand", brands)
-                .addParams("sales","desc")
+                .addParams("sales", "desc")
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -529,7 +541,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         Glide.with(getContext()).load(saleBean.get(2).getImg_url()).dontAnimate().into(iv_activity2);
         //头条内容
         HomeBean.DataBean.HotImageBean hotImageBean = bean.getData().getHotImage();
-       // String title = bean.getData().getHotActicle();
+        // String title = bean.getData().getHotActicle();
         Glide.with(getContext()).load(hotImageBean.getImg_url()).override(100, 350).into(iv_notifi);
         tv_headerline.setText("同致相伴告客户书");
     }
@@ -559,7 +571,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         if (response.getStatus() == 0) {      //已签到
-
                             startActivity(new Intent(getActivity(), MyGoldActivity.class));
                         } else {                             //未签到
                             final SignDialogFragment sdf = new SignDialogFragment();
@@ -604,17 +615,19 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void showErro() {
 
     }
+
     public void showLoadingDialog() {
         dialog = new LoadingDialog();
         dialog.setCancelable(false);
         dialog.show(getFragmentManager(), "aaa");
     }
+
     /**
      * 加载更多
      */
     private void LoadMore() {
         Log.i("首页品牌商品加载更多", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsList" + "&cate=" + categoryId +
-                "&brand=" + brands + "&page=" + pager + "&pagesize=10"+"&sales=desc");
+                "&brand=" + brands + "&page=" + pager + "&pagesize=10" + "&sales=desc");
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         OkHttpUtils
                 .get()
@@ -624,7 +637,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 .addParams("cate", categoryId)
                 .addParams("page", String.valueOf(pager))
                 .addParams("pagesize", "10")
-                .addParams("sales","desc")
+                .addParams("sales", "desc")
                 .addParams("brand", brands)
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
@@ -637,16 +650,16 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
 
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
-                        List<BaseDataListBean.DataBean> tempList = response.getData();
-                        goodsList.addAll(tempList);
-                        brandAndGoodsAdapter.add(goodsList, true);
                         if (dialog != null) {
                             dialog.dismiss();
                         }
-                        if (tempList.size()!= 0) {
+                        List<BaseDataListBean.DataBean> tempList = response.getData();
+                        goodsList.addAll(tempList);
+                        brandAndGoodsAdapter.add(goodsList, true);
+                        if (tempList.size() != 0) {
                             pager++;
                         } else {
-                            MyToast.makeTextAnim(MyApp.getContext(), "我也是有底线的", 0, Gravity.CENTER, 0, 0).show();
+                            MyToast.makeTextAnim(MyApp.getContext(), "已全部加载完毕", 0, Gravity.CENTER, 0, 0).show();
                         }
                     }
                 });
@@ -654,7 +667,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
 
     @Override
     public void onScroll(int scrollY) {
-        top = Math.max(scrollY, bottom);
+        int top = Math.max(scrollY, bottom);
         ll_suspension_bar.layout(0, top, ll_suspension_bar.getWidth(), top + ll_suspension_bar.getHeight());
     }
 

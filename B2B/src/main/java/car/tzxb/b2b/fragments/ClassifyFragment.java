@@ -1,32 +1,22 @@
 package car.tzxb.b2b.fragments;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import butterknife.BindView;
+import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
-import car.myrecyclerviewadapter.FloatingItemDecoration;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CircleImageView.CircleImageView;
@@ -40,15 +30,14 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.ClassifyPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.ClassifyPackage.GoodsClassifyActivity;
+import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
-import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.config.Constant;
+
 
 public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface {
 
-    @BindView(R.id.et_classify)
-    EditText et_class;
     @BindView(R.id.recy_brand_classify)
     RecyclerView recy_brand;
     @BindView(R.id.recy_gods_classify)
@@ -57,6 +46,10 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
     ImageView iv_search_left;
     @BindView(R.id.iv_search_bar_right)
     ImageView iv_search_right;
+    @BindView(R.id.tv_classify)
+    TextView tv_classify;
+    @BindView(R.id.et_classify)
+    EditText et_classify;
     private MvpContact.Presenter presenter = new ClassifyPresenterIml(this);
     private List<BaseDataBean.DataBean.CategoryBean> goodsBeanlist=new ArrayList<>();
     private List<BaseDataBean.DataBean.BrandBean> brandBeanlist=new ArrayList<>();
@@ -73,16 +66,22 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
         String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         String url= Constant.baseUrl+"item/index.php?c=Goods&m=Category"+"&user_id="+userId;
         presenter.PresenterGetData(url,null);
+
         Log.i("分类",url);
         initUi();
-
     }
 
+    @Override
+    protected BasePresenter bindPresenter() {
+        return presenter;
+    }
 
 
    private void initUi() {
         iv_search_left.setImageResource(R.drawable.navbar_icon_scan);
         recy_gods.setLayoutManager(new GridLayoutManager(getContext(),3));
+        tv_classify.setVisibility(View.VISIBLE);
+        et_classify.setVisibility(View.GONE);
         recy_gods.setNestedScrollingEnabled(false);
         final int i= DeviceUtils.dip2px(MyApp.getContext(),45);
 
@@ -108,6 +107,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                 BaseDataBean.DataBean.CategoryBean bean=goodsBeanlist.get(position);
                 Intent intent=new Intent(getActivity(), GoodsClassifyActivity.class);
                 intent.putExtra("cate",bean.getId());
+                intent.putExtra("from","cate");
                 startActivity(intent);
             }
 
@@ -140,6 +140,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                 BaseDataBean.DataBean.BrandBean bean=brandBeanlist.get(position);
                 Intent intent=new Intent(getActivity(), GoodsClassifyActivity.class);
                 intent.putExtra("brand",bean.getId());
+                intent.putExtra("from","brand");
                 startActivity(intent);
             }
 
@@ -151,11 +152,10 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
     }
 
-    @Override
-    protected BasePresenter bindPresenter() {
-        return presenter;
+    @OnClick(R.id.tv_classify)
+    public void seach(){
+        startActivity(new Intent(getActivity(), SeachActivity.class));
     }
-
 
     @Override
     public void showData(Object o) {

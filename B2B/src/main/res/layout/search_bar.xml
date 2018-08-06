@@ -35,6 +35,23 @@
         android:singleLine="true"
         android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="13sp" />
+    <TextView
+        android:id="@+id/tv_classify"
+        android:visibility="gone"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="5dp"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingLeft="10dp"
+        android:layout_weight="1"
+        android:background="@drawable/bg4"
+        android:drawableLeft="@mipmap/rhxi_tab_lefdj"
+        android:drawablePadding="10dp"
+        android:hint="@string/classify"
+        android:textSize="13sp" />
 
     <FrameLayout
         android:layout_gravity="bottom"

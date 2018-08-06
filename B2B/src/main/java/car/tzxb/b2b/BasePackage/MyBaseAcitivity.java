@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,17 +13,13 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 import android.widget.Toast;
-
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.umeng.analytics.MobclickAgent;
-
 import butterknife.ButterKnife;
 import car.tzxb.b2b.Util.ActivityManager;
 
-import static car.tzxb.b2b.MyApp.isDebug;
-
+import static car.tzxb.b2b.config.Constant.isDebug;
 
 /**
  * Created by Administrator on 2017/11/3 0003.

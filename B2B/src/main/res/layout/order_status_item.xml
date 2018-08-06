@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:id="@+id/order_item_parent"
+    xmlns:tools="http://schemas.android.com/tools">
+    <ImageView
+        android:id="@+id/iv_order"
+        android:layout_marginTop="8dp"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/my_icon_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_order_title"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        tools:text="待付款"
+        android:layout_below="@+id/iv_order"
+        android:textColor="@color/colorBlack2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <car.myview.BageView.BadgeView
+        android:id="@+id/order_number_bv"
+        android:layout_width="wrap_content"
+
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/iv_order"
+        android:textSize="10sp" />
+
+</RelativeLayout>

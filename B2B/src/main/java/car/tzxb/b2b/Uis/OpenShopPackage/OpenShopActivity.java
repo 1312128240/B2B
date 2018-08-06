@@ -267,6 +267,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
             }
         });
     }
+
      //标记地图位置
     @OnClick(R.id.tv_open_shop_marker)
     public void marker(){
