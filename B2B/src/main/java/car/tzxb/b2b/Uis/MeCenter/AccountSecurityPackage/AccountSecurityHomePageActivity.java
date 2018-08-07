@@ -48,24 +48,24 @@ public class AccountSecurityHomePageActivity extends MyBaseAcitivity {
     }
     @OnClick(R.id.tv_change_password)
     public void chang_password(){
-        startActivity(AccountSecurityYzmActivity.class,createBundle("1"));
+        Intent intent=new Intent(this,AccountSecurityYzmActivity.class);
+        intent.putExtra("index",1);
+        intent.putExtra("title","验证手机");
+        startActivity(intent);
     }
     @OnClick(R.id.tv_change_zf)
     public void chang_zf(){
-        Bundle bundle=new Bundle();
-        bundle.putString("from","2");
-        startActivity(AccountSecurityYzmActivity.class,createBundle("2"));
+        Intent intent=new Intent(this,AccountSecurityYzmActivity.class);
+        intent.putExtra("index",2);
+        intent.putExtra("title","身份验证");
+        startActivity(intent);
     }
     @OnClick(R.id.ll_chang_bind_phone)
     public void chang_bind(){
-        Bundle bundle=new Bundle();
-        bundle.putString("from","3");
-        startActivity(AccountSecurityYzmActivity.class,createBundle("3"));
-    }
-    public Bundle createBundle(String from){
-        Bundle bundle=new Bundle();
-        bundle.putString("from",from);
-        return bundle;
+        Intent intent=new Intent(this,AccountSecurityYzmActivity.class);
+        intent.putExtra("index",3);
+        intent.putExtra("title","换绑手机");
+        startActivity(intent);
     }
 
 }

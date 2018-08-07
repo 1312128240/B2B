@@ -6,14 +6,20 @@
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance">
 
-    <include layout="@layout/base_actionbar" />
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="1dp"
+        layout="@layout/base_actionbar" />
 
     <car.myview.MyNestScollview
         android:id="@+id/scrollView"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
+            android:background="#2268FC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -27,21 +33,21 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recy_activity"
-                android:background="#2268FC"
-                android:padding="10dp"
-                android:layout_marginTop="45dp"
-                android:nestedScrollingEnabled="false"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+
+                android:nestedScrollingEnabled="false"
+                android:padding="10dp">
 
             </android.support.v7.widget.RecyclerView>
 
             <RadioGroup
                 android:id="@+id/rg_activity"
-                android:background="@color/colorWhite"
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="45dp">
+                android:layout_height="45dp"
+                android:background="@color/colorWhite"
+                android:orientation="horizontal">
 
             </RadioGroup>
 

@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_item_parent"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:id="@+id/order_item_parent"
-    xmlns:tools="http://schemas.android.com/tools">
-    <ImageView
-        android:id="@+id/iv_order"
-        android:layout_marginTop="8dp"
-        android:layout_centerHorizontal="true"
-        android:src="@mipmap/my_icon_payment"
+    android:orientation="vertical">
+
+    <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_order"
+            android:layout_marginTop="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/my_icon_payment" />
+
+        <car.myview.BageView.BadgeView
+            android:id="@+id/order_number_bv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textSize="10sp" />
+
+    </FrameLayout>
+
     <TextView
         android:id="@+id/tv_order_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="3dp"
-        tools:text="待付款"
-        android:layout_below="@+id/iv_order"
-        android:textColor="@color/colorBlack2"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <car.myview.BageView.BadgeView
-        android:id="@+id/order_number_bv"
-        android:layout_width="wrap_content"
-
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@+id/iv_order"
-        android:textSize="10sp" />
+        android:textColor="@color/colorBlack2"
+        tools:text="待付款" />
 
-</RelativeLayout>
+
+</LinearLayout>

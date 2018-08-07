@@ -12,10 +12,12 @@ import butterknife.OnClick;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity;
+import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 
 public class MyWalletActivity extends MyBaseAcitivity {
 
-
+    private boolean b;
     @Override
     public void initParms(Bundle parms) {
 
@@ -38,7 +40,34 @@ public class MyWalletActivity extends MyBaseAcitivity {
     }
     @OnClick(R.id.tv_recharge)
     public void recharge(){
-        startActivity(RechargeActivity.class);
+        if(b){
+            showDialogFragment();
+        }else {
+            startActivity(RechargeActivity.class);
+        }
+
+    }
+
+    private void showDialogFragment() {
+        final AlterDialogFragment adf=new AlterDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "充值前请选设置支付密码");
+        bundle.putString("ok", "去设置");
+        bundle.putString("no", "以后再说");
+        adf.setArguments(bundle);
+        adf.show(getSupportFragmentManager(),"aa");
+        adf.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+            @Override
+            public void cancle() {
+                 adf.dismiss();
+            }
+
+            @Override
+            public void sure() {
+                startActivity(ResetPayPasswordActivity.class);
+                adf.dismiss();
+            }
+        });
     }
 
     @OnClick(R.id.iv_back)

@@ -59,8 +59,8 @@ public class EvaluateFragment extends MyBaseFragment {
 
     @Override
     public void initData() {
-
-        initUi();
+        initRg();
+        initRecy();
     }
 
     @Override
@@ -95,7 +95,7 @@ public class EvaluateFragment extends MyBaseFragment {
         });
     }
 
-    private void initUi() {
+    private void initRecy() {
         recy.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new CommonAdapter<EvBean.DataBean.EvaluteBean>(MyApp.getContext(), R.layout.custmenr_item, beanList) {
             @Override
@@ -148,7 +148,6 @@ public class EvaluateFragment extends MyBaseFragment {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
             Refresh();
-            initRg();
         }
 
     }

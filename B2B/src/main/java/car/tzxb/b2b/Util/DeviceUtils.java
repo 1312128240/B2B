@@ -1,17 +1,30 @@
 package car.tzxb.b2b.Util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.os.Build;
+import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.WindowManager;
+import android.widget.EditText;
 
 import java.lang.reflect.Method;
+
+import car.tzxb.b2b.MyApp;
 
 /**
  * Created by Administrator on 2018/5/23 0023.
  */
 
 public class DeviceUtils {
+    /**
+     * 获取状态栏高度
+     * @param mContext
+     * @return
+     */
     public static int getNavigationBarHeight(Context mContext) {
         Resources resources = mContext.getResources();
         int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
@@ -82,4 +95,24 @@ public class DeviceUtils {
         }
         return packInfo.versionName;
     }
+    /**
+     * 设置不调用系统键盘
+     */
+    public static void hideSystemSoftKeyBoard(AppCompatActivity activity ,EditText et){
+        if (Build.VERSION.SDK_INT <= 10) {
+            et.setInputType(InputType.TYPE_NULL);
+        } else {
+         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            try {
+                Class<EditText> cls = EditText.class;
+                Method setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
+                setShowSoftInputOnFocus.setAccessible(true);
+                setShowSoftInputOnFocus.invoke(et, false);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

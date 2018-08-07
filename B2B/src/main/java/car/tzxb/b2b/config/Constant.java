@@ -14,4 +14,5 @@ public class Constant {
     public static String AppID = "wx284ddc006d10854d";
     //是否是调试
     public static boolean isDebug = true;
+
 }

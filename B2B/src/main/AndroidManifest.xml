@@ -106,7 +106,11 @@
         <activity android:name=".Uis.HomePager.Wallet.MyWalletActivity" />
         <activity android:name=".Uis.HomePager.Wallet.RechargeActivity" />
         <activity android:name=".Uis.SeachPackage.SeachActivity" />
-        <activity android:name=".Uis.HomePager.ActivityPackage.ActivityEntrance"></activity>
+        <activity android:name=".Uis.HomePager.ActivityPackage.ActivityEntrance" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPasswordActivity" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPhoneActivity" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity" />
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPassword2Activity"></activity>
     </application>
 
 </manifest>

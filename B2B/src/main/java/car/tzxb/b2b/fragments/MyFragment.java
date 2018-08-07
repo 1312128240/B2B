@@ -35,6 +35,7 @@ import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
 import car.myview.CircleImageView.CircleImageView;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseDataListBean;
@@ -42,10 +43,12 @@ import car.tzxb.b2b.Bean.MyCenterBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
+import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
 import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
 import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
@@ -54,7 +57,7 @@ import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
 
-public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedChangeListener,View.OnClickListener{
+public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedChangeListener{
 
     @BindView(R.id.rg_my_service)
     RadioGroup rg_service;
@@ -78,9 +81,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     List<RadioButton> CollectViews;
     @BindView(R.id.recy_order_status)
     RecyclerView recy_status;
+    @BindView(R.id.rg_coffers)
+    RadioGroup rg_coffers;
     private MyCenterBean.DataBean.UserInfoBean userBean;
     private List<BaseDataListBean.DataBean> beanList=new ArrayList<>();
     private CommonAdapter<BaseDataListBean.DataBean> adapter;
+    private String userId;
 
     @Override
     public int getLayoutResId() {
@@ -89,11 +95,9 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
 
     @Override
     public void initData() {
-
         rg_service.setOnCheckedChangeListener(this);
         rg_collect.setOnCheckedChangeListener(this);
-        iv_setup.setOnClickListener(this);
-        tv_all_order.setOnClickListener(this);
+        rg_coffers.setOnCheckedChangeListener(this);
         initRecommend();
     }
 
@@ -106,6 +110,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     @Override
     public void onResume() {
         super.onResume();
+        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Judge();
         Guess();
     }
@@ -114,6 +119,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if(!hidden){
+            userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
             Judge();
             Guess();
         }
@@ -123,7 +129,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
      * 获取个人信息
      */
     private void Judge() {
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
        Log.i("我的个人中心",Constant.baseUrl+"item/index.php?c=Home&m=MyCenter&user_id="+userId);
         OkHttpUtils
                 .get()
@@ -149,7 +154,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
      * 猜你在找
      */
     public void Guess(){
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("猜你在找",Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id="+userId);
         OkHttpUtils
                 .get()
@@ -235,14 +239,18 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             @Override
             protected void convert(ViewHolder holder, Integer integer, int position) {
                 LinearLayout.LayoutParams parasm=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                RelativeLayout parent=holder.getView(R.id.order_item_parent);
+                LinearLayout parent=holder.getView(R.id.order_item_parent);
                 parent.setLayoutParams(parasm);
                 parent.setGravity(Gravity.CENTER);
-                parent.setPadding(0,0,0,16);
                 //图片
                 Glide.with(getContext()).load(img[position]).override(50,50).into((ImageView) holder.getView(R.id.iv_order));
                 //标题
-                holder.setText(R.id.tv_order_title,str[position]);
+                TextView tv=holder.getView(R.id.tv_order_title);
+                if(position==2){
+                    tv.setPadding(0,8,0,0);
+                }
+                tv.setText(str[position]);
+
                 //数量
                 BadgeView bv=holder.getView(R.id.order_number_bv);
                 bv.setBackground(getResources().getDrawable(R.drawable.circle_bg2));
@@ -343,8 +351,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
         RadioButton rb = radioGroup.findViewById(i);
         rb.setChecked(false);
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-
         if (userId == null) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
@@ -355,47 +361,62 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             case R.id.rb_collect_goods:
                 intent.setClass(getActivity(), CollectActivity.class);
                 intent.putExtra("index",0);
+                startActivity(intent);
                 break;
             case R.id.rb_collect_shop:
                 intent.setClass(getActivity(), CollectActivity.class);
                 intent.putExtra("index",1);
+                startActivity(intent);
                 break;
             case R.id.rb_browse_record:
                 intent.setClass(getActivity(), BrowhistoryActivity.class);
+                startActivity(intent);
                 break;
             case R.id.rb_address:
                 intent.setClass(getActivity(),MyAddressActivity.class);
+                startActivity(intent);
                 break;
-           default:
-               intent.setClass(getActivity(),MyAddressActivity.class);
-               break;
+            case R.id.rb_gold_number:
+                intent.setClass(getActivity(), MyGoldActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.rb_balance_number:
+                intent.setClass(getActivity(), MyWalletActivity.class);
+                startActivity(intent);
+              break;
+            default:
+                MyToast.makeTextAnim(MyApp.getContext(),"还未开放",0,Gravity.CENTER,0,0).show();
+                break;
         }
+
+    }
+
+
+      //查看全部订单
+    @OnClick(R.id.tv_all_order)
+    public void all_order(){
+        if (userId == null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+            return;
+        }
+        Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
+        intent.putExtra("index", 0);
+        intent.putExtra("type", "all");
         startActivity(intent);
     }
 
-
-
-    @Override
-    public void onClick(View v) {
-        if(isFastClick()){
-            String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-            Intent intent = new Intent();
-            if (userId == null) {
-                intent.setClass(getActivity(), LoginActivity.class);
-            }else {
-                switch (v.getId()){
-                    case R.id.tv_all_order:
-                        intent.setClass(getActivity(), OrderStatusActivity.class);
-                        intent.putExtra("index", 0);
-                        intent.putExtra("type", "all");
-                        break;
-                    case R.id.iv_my_setup:
-                        intent.setClass(getActivity(), SettingsActivity.class);
-                        break;
-                }
-            }
+    //设置
+    @OnClick(R.id.iv_my_setup)
+    public void setup(){
+        if (userId == null) {
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+            return;
         }
+        Intent intent=new Intent(getActivity(),SettingsActivity.class);
+        startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
+
 
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#E0E0E0" />
+
+    <RelativeLayout
+        android:id="@+id/rl_back"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:background="#FAFAFA">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawablePadding="6dp"
+            android:drawableRight="@mipmap/keyboard_back"
+            android:paddingBottom="3dp"
+            android:text="正在使用同致相伴密码键盘"
+            android:textSize="13sp" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#E0E0E0" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#BDBDBD"
+        android:overScrollMode="never">
+
+    </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>

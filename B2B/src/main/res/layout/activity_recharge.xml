@@ -5,53 +5,69 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.HomePager.Wallet.RechargeActivity">
-    <include layout="@layout/base_actionbar"/>
-  <RelativeLayout
-      android:layout_margin="10dp"
-      android:padding="15dp"
-      android:background="@color/colorWhite"
-      android:layout_width="match_parent"
-      android:layout_height="130dp">
 
-     <TextView
-         android:id="@+id/tv_input_numer"
-         android:text="请输入充值金额"
-         android:layout_marginBottom="40dp"
-         android:textColor="@color/colorBlack2"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content" />
-      <TextView
-          android:id="@+id/tv_rmb"
-          android:text="¥"
-          android:layout_below="@+id/tv_input_numer"
-          android:textColor="@color/colorBlack2"
-          android:textSize="25sp"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content" />
-         <EditText
-             android:id="@+id/et_input_number"
-             android:maxLength="12"
-             android:inputType="number"
-             android:layout_below="@+id/tv_input_numer"
-             android:textCursorDrawable="@drawable/cursor_color"
-             android:layout_toRightOf="@+id/tv_rmb"
-             android:layout_marginLeft="10dp"
-             android:singleLine="true"
-             android:textSize="35sp"
-             android:textColor="@color/colorBlack"
-             android:background="@null"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content" />
-  </RelativeLayout>
+    <include layout="@layout/base_actionbar" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_margin="10dp"
+        android:background="@color/colorWhite"
+        android:padding="15dp">
+
+        <TextView
+            android:id="@+id/tv_input_numer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:text="请输入充值金额"
+            android:textColor="@color/colorBlack2" />
+
+        <TextView
+            android:id="@+id/tv_rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_input_numer"
+            android:text="¥"
+            android:textColor="@color/colorBlack2"
+            android:textSize="25sp" />
+
+        <EditText
+            android:id="@+id/et_input_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_input_numer"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/tv_rmb"
+            android:background="@null"
+            android:inputType="number"
+            android:maxLength="12"
+            android:singleLine="true"
+            android:textColor="@color/colorBlack"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="35sp" />
+
+    </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_recharge"
+        android:id="@+id/btn_recharge_next"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg1"
         android:text="下一步"
-        android:textColor="@color/colorWhite"
+        android:textColor="@color/colorWhite" />
+
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <car.myview.Custkeyboard.KeyboardView
+        android:id="@+id/keyboard_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone" />
 </LinearLayout>

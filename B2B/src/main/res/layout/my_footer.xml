@@ -28,158 +28,18 @@
             android:text="查看全部"
             android:textColor="@color/colorBlack" />
     </LinearLayout>
-   <android.support.v7.widget.RecyclerView
-       android:nestedScrollingEnabled="false"
-       android:layout_marginTop="1dp"
-       android:background="@color/colorWhite"
-       android:id="@+id/recy_order_status"
-       android:orientation="horizontal"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content">
 
-   </android.support.v7.widget.RecyclerView>
-  <!--  <LinearLayout
-        android:id="@+id/ll_order_status"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_order_status"
+        android:paddingBottom="10dp"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
         android:background="@color/colorWhite"
-        android:clickable="true"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="2dp">
+        android:nestedScrollingEnabled="false"
+        android:orientation="horizontal">
 
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <RadioButton
-                android:id="@+id/rb_all"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:button="@null"
-                android:drawableTop="@mipmap/my_icon_payment"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text="全部"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
-
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/rb_all"
-                android:textSize="10sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <RadioButton
-                android:id="@+id/rb_dfh"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:button="@null"
-                android:drawableTop="@mipmap/my_icon_pd"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text="待付款"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
-
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@id/rb_dfh"
-                android:textSize="10sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <RadioButton
-                android:id="@+id/rb_dsh"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:button="@null"
-                android:drawableTop="@mipmap/my_icon_gtbr"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text="待发货"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
-
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/rb_dsh"
-                android:textSize="10sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <RadioButton
-                android:id="@+id/rb_dpj"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:button="@null"
-                android:drawableTop="@mipmap/my_icon_tbe"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text="待收货"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
-
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/rb_dpj"
-                android:textSize="10sp" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <RadioButton
-                android:id="@+id/rb_tk"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_centerInParent="true"
-                android:button="@null"
-                android:drawableTop="@mipmap/my_icon_service"
-                android:gravity="center"
-                android:padding="7dp"
-                android:text="待评价"
-                android:textColor="@color/colorBlack"
-                android:textSize="12sp" />
-
-            <car.myview.BageView.BadgeView
-                android:id="@+id/bv5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignRight="@+id/rb_tk"
-                android:textSize="10sp" />
-        </RelativeLayout>
-    </LinearLayout>-->
-
+    </android.support.v7.widget.RecyclerView>
 
     <LinearLayout
         android:layout_width="match_parent"

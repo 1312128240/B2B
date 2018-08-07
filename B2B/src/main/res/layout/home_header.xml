@@ -16,7 +16,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_track"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="95dp"
         android:background="@color/colorWhite"
         android:nestedScrollingEnabled="false">
 

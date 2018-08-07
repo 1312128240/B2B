@@ -96,28 +96,28 @@
             <enum name="invisible" value="1"/>
         </attr>
     </declare-styleable>
-  <!--折叠textview-->
+ <!-- &lt;!&ndash;折叠textview&ndash;&gt;
     <declare-styleable name="ExpandableTextView">
         <attr name="etv_MaxLinesOnShrink" format="reference|integer" />
-        <attr name="etv_EllipsisHint" format="reference|string" /><!--default is ..-->
-        <attr name="etv_ToExpandHint" format="reference|string" /><!--"to expand" hint string, default is "Expand"-->
-        <attr name="etv_ToShrinkHint" format="reference|string" /><!--"to shrink" hint string, default is "Shrink"-->
-        <attr name="etv_GapToExpandHint" format="reference|string" /><!--gap between "toExpandHint" and "trimmed text"-->
-        <attr name="etv_GapToShrinkHint" format="reference|string" /><!--gap between "toShrinkHint" and "trimmed text"-->
-        <attr name="etv_EnableToggle" format="reference|boolean" /><!--if toggle the state when click ExpandTextView-->
-        <attr name="etv_ToExpandHintShow" format="reference|boolean" /><!--if show "toExpandHint"-->
-        <attr name="etv_ToShrinkHintShow" format="reference|boolean" /><!--if show "toShrinkHint"-->
-        <attr name="etv_ToExpandHintColor" format="reference|color" /><!--text color of "toExpandHint"-->
-        <attr name="etv_ToShrinkHintColor" format="reference|color" /><!--text color of "toShrinkHint"-->
-        <attr name="etv_ToExpandHintColorBgPressed" format="reference|color" /><!--background color if "toExpandHint" pressed-->
-        <attr name="etv_ToShrinkHintColorBgPressed" format="reference|color" /><!--background color if "toShrinkHint" pressed-->
-        <attr name="etv_InitState" format="enum"><!--init state, default is shrink-->
+        <attr name="etv_EllipsisHint" format="reference|string" />&lt;!&ndash;default is ..&ndash;&gt;
+        <attr name="etv_ToExpandHint" format="reference|string" />&lt;!&ndash;"to expand" hint string, default is "Expand"&ndash;&gt;
+        <attr name="etv_ToShrinkHint" format="reference|string" />&lt;!&ndash;"to shrink" hint string, default is "Shrink"&ndash;&gt;
+        <attr name="etv_GapToExpandHint" format="reference|string" />&lt;!&ndash;gap between "toExpandHint" and "trimmed text"&ndash;&gt;
+        <attr name="etv_GapToShrinkHint" format="reference|string" />&lt;!&ndash;gap between "toShrinkHint" and "trimmed text"&ndash;&gt;
+        <attr name="etv_EnableToggle" format="reference|boolean" />&lt;!&ndash;if toggle the state when click ExpandTextView&ndash;&gt;
+        <attr name="etv_ToExpandHintShow" format="reference|boolean" />&lt;!&ndash;if show "toExpandHint"&ndash;&gt;
+        <attr name="etv_ToShrinkHintShow" format="reference|boolean" />&lt;!&ndash;if show "toShrinkHint"&ndash;&gt;
+        <attr name="etv_ToExpandHintColor" format="reference|color" />&lt;!&ndash;text color of "toExpandHint"&ndash;&gt;
+        <attr name="etv_ToShrinkHintColor" format="reference|color" />&lt;!&ndash;text color of "toShrinkHint"&ndash;&gt;
+        <attr name="etv_ToExpandHintColorBgPressed" format="reference|color" />&lt;!&ndash;background color if "toExpandHint" pressed&ndash;&gt;
+        <attr name="etv_ToShrinkHintColorBgPressed" format="reference|color" />&lt;!&ndash;background color if "toShrinkHint" pressed&ndash;&gt;
+        <attr name="etv_InitState" format="enum">&lt;!&ndash;init state, default is shrink&ndash;&gt;
             <enum name="shrink" value="0"/>
             <enum name="expand" value="1"/>
         </attr>
     </declare-styleable>
 
-    <!--视差滚动图片-->
+    &lt;!&ndash;视差滚动图片&ndash;&gt;
     <declare-styleable name="ParallaxImageView">
         <attr name="img_ratio" format="float"></attr>
         <attr name="paralax_ratio" format="float"></attr>
@@ -125,6 +125,15 @@
             <enum name="bottom_top" value="1"></enum>
             <enum name="top_bottom" value="-1"></enum>
         </attr>
+    </declare-styleable>-->
+    <!--自定义密码输入框-->
+    <declare-styleable name="Passwordinputview">
+        <attr name="passwordLength" format="integer"/>
+        <attr name="borderWidth" format="dimension"/>
+        <attr name="borderRadius" format="dimension"/>
+        <attr name="borderColor" format="color"/>
+        <attr name="passwordWidth" format="dimension"/>
+        <attr name="passwordColor" format="color"/>
     </declare-styleable>
 
 </resources>

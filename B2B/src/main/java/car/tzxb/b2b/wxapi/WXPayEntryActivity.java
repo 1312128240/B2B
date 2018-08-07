@@ -81,10 +81,12 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private String orderid;
     private final String mMode = "00";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
     private final int SDK_PAY_FLAG = 1;
+    private String from;
 
     @Override
     public void initParms(Bundle parms) {
         total = getIntent().getStringExtra("total");
+        from = getIntent().getStringExtra("from");
         order_seqnos = getIntent().getStringExtra("order_seqnos");
         orderid = getIntent().getStringExtra("orderid");
     }
@@ -183,6 +185,11 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     @OnClick(R.id.btn_start_pay)
     public void pay() {
         if (isFastClick()) {
+            if("Recharge".equals(from)){
+                MyToast.makeTextAnim(MyApp.getContext(),"暂未开放",0,Gravity.CENTER,0,0).show();
+                return;
+            }
+
             switch (position) {
                 case 0:
                     ZfbPay();
@@ -192,7 +199,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     break;
                 case 2:
                     getTn();
-
                     break;
                 case 3:
                     offlinePayment();
@@ -263,7 +269,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     private void ZfbPay() {
         String userId = SPUtil.getInstance(this).getUserId("UserId", null);
-        Log.i("微信支付", Constant.baseUrl + "orders/orders_mobile.php?m=pay" + "&order_seqnos=" + order_seqnos + "&pay_type=zfb" + "&pay_device=Android" + "&user_id=" + userId);
+        Log.i("支付宝支付", Constant.baseUrl + "orders/orders_mobile.php?m=pay" + "&order_seqnos=" + order_seqnos + "&pay_type=zfb" + "&pay_device=Android" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
