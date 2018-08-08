@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
@@ -24,7 +23,6 @@ import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
@@ -37,18 +35,10 @@ import com.jaiky.imagespickers.ImageConfig;
 import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.lljjcoder.citypickerview.widget.CityPicker;
-
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -59,6 +49,7 @@ import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.AnimationUtil;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.GlideLoader;
 import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.SPUtil;
@@ -248,24 +239,18 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     //选择推荐人
     @OnClick(R.id.tv_tjr_infor)
     public void tjr() {
-        String city[]={"云南省","北京","天津","上海","重庆","河北省","山西省","内蒙古","辽宁省","吉林省","云南省","黑龙江省","江苏省","浙江省","安徽省","福建省"
-                ,"江西省","山东省","河南省","湖北省","湖南省","广东省","广西省","海南省","西藏","陕西省","甘肃省","宁夏省","新疆省","香港","澳门","台湾"};
-        List<BaseStringBean> lists=new ArrayList<>();
-        for (int i = 0; i <city.length ; i++) {
-            String c=city[i];
-            BaseStringBean bean =new BaseStringBean(c,null);
-            lists.add(bean);
+        if(isFastClick()){
+            TjrPop tjrPop = new TjrPop(this,parent);
+            DeviceUtils.showPopWindow(parent,tjrPop);
+            tjrPop.setClickListener(new TjrPop.ClickListener() {
+                @Override
+                public void click(String name, String Id) {
+                    tv_tjr.setText(name);
+                    tjrId=Id;
+                    recommend=name;
+                }
+            });
         }
-        TjrPop tjrPop = new TjrPop(MyApp.getContext(),lists);
-        tjrPop.showPow(parent);
-        tjrPop.setClickListener(new TjrPop.ClickListener() {
-            @Override
-            public void click(BaseStringBean bean) {
-                 tjrId=bean.getID();
-                 recommend=bean.getShop_name();
-                 tv_tjr.setText(recommend);
-            }
-        });
     }
 
      //标记地图位置
@@ -460,7 +445,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
             String shop_lxr_name = et_shop_lxr_name.getText().toString();
             String shop_lxr_address = et_shop_address.getText().toString();
             String shop_lxr_tell = et_tell.getText().toString();
-            String tjr=tv_tjr.getText().toString();
+           // String tjr=tv_tjr.getText().toString();
             if (TextUtils.isEmpty(shop_name)) {
                 MyToast.makeTextAnim(this, "请输入店铺名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
@@ -469,7 +454,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 MyToast.makeTextAnim(this, "请填写联系人名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
-          if(TextUtils.isEmpty(tjr)){
+          if(tjrId==null){
                 MyToast.makeTextAnim(this, "请填写推荐人信息", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
@@ -507,7 +492,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
             StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);
 
             Log.i("注册返回", Constant.baseUrl + "user_type/register.php?m=register" + "&mobile=" + mobile + "&username=" + shop_lxr_name + "&password=" + password
-                    + "&group=4" + "&type=4" + "&selcity=" + address + "&tjr="+tjr + "&recommend="+recommend+ "&shop_name=" + shop_name + "&shop_address=" + shop_lxr_address
+                    + "&group=4" + "&type=4" + "&selcity=" + address + "&tjr="+tjrId + "&recommend="+recommend+ "&shop_name=" + shop_name + "&shop_address=" + shop_lxr_address
                     + "&shop_img=" + sb1 + "," + sb2 + "&user_zhizhao=" + sb3);
 
             //开始注册

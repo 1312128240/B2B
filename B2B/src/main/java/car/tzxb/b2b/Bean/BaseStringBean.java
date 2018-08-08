@@ -26,6 +26,16 @@ public class BaseStringBean {
     private String Code;
     private String AccessKeyId;
     private String versionName;
+    private int StrLen;
+
+    public int getStrLen() {
+        return StrLen;
+    }
+
+    public void setStrLen(int strLen) {
+        StrLen = strLen;
+    }
+
 
     public boolean isFlag() {
         return flag;

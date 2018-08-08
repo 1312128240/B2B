@@ -21,6 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/et_new_phone"
             android:inputType="number"
             android:maxLength="11"
             android:textCursorDrawable="@drawable/cursor_color"
@@ -45,7 +46,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
         <EditText
-            android:id="@+id/et_new_phone"
+            android:id="@+id/et_new_phone_yzm"
             android:textCursorDrawable="@drawable/cursor_color"
             android:hint="@string/yzm_pass"
             android:background="@null"
@@ -59,7 +60,8 @@
         <car.myview.CountDown.CountDownTextView
             android:id="@+id/tv_get_yzm"
             android:textSize="12sp"
-            android:background="@drawable/count_time_bg"
+            android:textColor="@color/colorWhite"
+            android:background="@drawable/bg1"
             android:text="获取验证码"
             android:gravity="center"
             android:layout_width="80dp"
@@ -67,7 +69,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btn_new_phone"
+        android:id="@+id/btn_new_phone_ok"
         android:text="完成"
         android:textColor="@color/colorWhite"
         android:layout_marginTop="20dp"

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:id="@+id/rl_md_popo_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+        <TextView
+            android:id="@+id/tv_md_popuw_cancle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:background="@color/colorWhite"
+            android:padding="10dp"
+            android:text="取消"
+            android:textColor="#377AE4"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tv_md_popuw_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:background="@color/colorWhite"
+            android:padding="10dp"
+            android:text="确定"
+            android:textColor="#377AE4"
+            android:textSize="16sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/tv_md_popuw_sure"
+            android:background="@color/colorLightGray1" />
+
+        <com.lljjcoder.citypickerview.widget.wheel.WheelView
+            android:id="@+id/whv_md"
+            android:layout_marginTop="1dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_md_popuw_cancle" />
+    </RelativeLayout>
+</RelativeLayout>

@@ -49,6 +49,7 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.MeCenter.FindPassWordActivity;
+import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopActivity;
 import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
@@ -271,24 +272,24 @@ public class LoginActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.mor_button)
     public void login() {
+        hideSoftInput();
         if (isFastClick()) {
-
             String phone = etLoginPhone.getText().toString();
             String pass = etLoginPass.getText().toString();
             if (TextUtils.isEmpty(phone)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPhone);
-                MyToast.makeTextAnim(MyApp.getContext(),"请输入手机号",0,Gravity.CENTER,0,0).show();
+                Snackbar.make(tv_title,"请输入手机号",Snackbar.LENGTH_SHORT).show();
                 return;
             }
             if (index == 0 && TextUtils.isEmpty(pass)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPass);
-                MyToast.makeTextAnim(MyApp.getContext(),"请输入密码",0,Gravity.CENTER,0,0).show();
+                Snackbar.make(tv_title,"请输入密码",Snackbar.LENGTH_SHORT).show();
                 return;
             }
 
             if (index == 1 && TextUtils.isEmpty(pass)) {
                 AnimationUtil.Sharke(MyApp.getContext(), etLoginPass);
-                MyToast.makeTextAnim(MyApp.getContext(),"请输入验证码",0,Gravity.CENTER,0,0).show();
+                Snackbar.make(tv_title,"请输入验证码",Snackbar.LENGTH_SHORT).show();
                 return;
             }
             if (index == 0) {
@@ -323,23 +324,20 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
-
                     }
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
-                            hideSoftInput();
                             startAnmi(response);
                         } else {
-                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
+                            Snackbar.make(tv_title,response.getMsg(),Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
     private void passLogin(String phone, String pass) {
-
         String login_type = "password";
         //密码加密------------------------------------------------------------------------
         String strA = "pwd=" + pass;
@@ -374,10 +372,9 @@ public class LoginActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
-                            hideSoftInput();
                             startAnmi(response);
                         } else {
-                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
+                            Snackbar.make(tv_title,response.getMsg(),Snackbar.LENGTH_SHORT).show();
                         }
                     }
                 });
@@ -410,9 +407,9 @@ public class LoginActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_get_yzm)
     public void getYzm() {
         String mobile = etLoginPhone.getText().toString();
-        if (TextUtils.isEmpty(mobile)) {
+        if (TextUtils.isEmpty(mobile)||mobile.length()<11) {
             AnimationUtil.Sharke(MyApp.getContext(), etLoginPhone);
-            MyToast.makeTextAnim(MyApp.getContext(),"请输入手机号",0,Gravity.CENTER,0,0).show();
+            MyToast.makeTextAnim(MyApp.getContext(),"请输入正确的手机号",0,Gravity.CENTER,0,0).show();
             return;
         }
 
@@ -421,10 +418,7 @@ public class LoginActivity extends MyBaseAcitivity {
         String stringA = "m=" + m + "&mobile=" + mobile + "&timestamp=" + time + "&key=6ljH6wpC4vDPy%Ruqlr4JJmG0kLo%^yN";
         String sign = StringUtil.stringToMD5(stringA);
         StringBuilder Upsign = StringUtil.UpperLowerCase(sign);
-        /**
-         * 获取验证码
-         */
-        Log.i("好烦啊", Constant.baseUrl + "messages/send.php?" + "&m=" + m + "&mobile=" + mobile + "&sign=" + sign + "&timestamp=" + time);
+        Log.i("获取登录验证码", Constant.baseUrl + "messages/send.php?" + "&m=" + m + "&mobile=" + mobile + "&sign=" + sign + "&timestamp=" + time);
         OkHttpUtils
                 .get()
                 .tag(this)

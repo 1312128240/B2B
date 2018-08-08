@@ -72,7 +72,7 @@ public class BaseDataListBean {
         private String min_seal_price;
         private String content;
         private String type;
-        private String name;
+        private String Name;
         private String shop_id;
         private String product_title;
         private String market_price;
@@ -100,6 +100,7 @@ public class BaseDataListBean {
         private String stock_distributor_all;
         private String sales;
         private String cost_point;
+
 
         public String getType() {
             return type;
@@ -223,7 +224,7 @@ public class BaseDataListBean {
 
 
         public String getName() {
-            return name;
+            return Name;
         }
         public String getDealer() {
             return dealer;

@@ -30,6 +30,7 @@ public class ResetPayPasswordActivity extends MyBaseAcitivity implements Keyboar
     @BindView(R.id.keyboard_view)
     KeyboardView keyboardView;
     private List<String> datas;
+    public static AppCompatActivity sInstance = null;
     @Override
     public void initParms(Bundle parms) {
 
@@ -42,6 +43,7 @@ public class ResetPayPasswordActivity extends MyBaseAcitivity implements Keyboar
 
     @Override
     public void doBusiness(Context mContext) {
+        sInstance=this;
         tv_title.setText("支付密码");
         initCustKey();
     }
@@ -102,7 +104,6 @@ public class ResetPayPasswordActivity extends MyBaseAcitivity implements Keyboar
    @Override
    public void setOnPasswordFinished() {
        if (etInput.getOriginText().length() == etInput.getMaxPasswordLength()) {
-           Toast.makeText(this, "密码是" + etInput.getOriginText(), Toast.LENGTH_LONG).show();
            Intent intent=new Intent(this,ResetPayPassword2Activity.class);
            intent.putExtra("pass",etInput.getOriginText());
            startActivity(intent);
@@ -123,5 +124,9 @@ public class ResetPayPasswordActivity extends MyBaseAcitivity implements Keyboar
         onBackPressed();
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sInstance=null;
+    }
 }

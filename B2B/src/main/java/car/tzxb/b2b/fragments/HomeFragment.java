@@ -378,9 +378,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void notice() {
         startActivity(new Intent(getActivity(), ArticleActivity.class));
     }
-    @OnClick(R.id.rl_home_pager_activity)
+   @OnClick(R.id.rl_home_pager_activity)
     public void activity(){
-        startActivity(new Intent(getActivity(), ActivityEntrance.class));
+       startActivity(new Intent(getActivity(), ActivityEntrance.class));
+     //  MyToast.makeTextAnim(MyApp.getContext(),"即将开放",0,Gravity.CENTER,0,0).show();
     }
 
     /**

@@ -8,8 +8,11 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.PopupWindow;
 
 import java.lang.reflect.Method;
 
@@ -114,5 +117,16 @@ public class DeviceUtils {
         }
     }
 
-
+    /**
+     * 显示弹窗的方法
+     */
+    public static void showPopWindow(View parent , PopupWindow popupWindow){
+        boolean b= DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext());
+        if (b == true) {
+            int navigationBarHeight= DeviceUtils.getNavigationBarHeight(MyApp.getContext());
+            popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, navigationBarHeight);
+        } else {
+            popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
+        }
+    }
 }
