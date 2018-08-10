@@ -31,6 +31,7 @@ import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.MyNestScollview;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
+import car.tzxb.b2b.Bean.ActivityDivisionBean;
 import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -51,9 +52,8 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
     ImageView iv_bg;
     @BindView(R.id.scrollView)
     MyNestScollview scollview;
-    private List<BaseDataListBean.DataBean> beanList=new ArrayList<>();
-    private CommonAdapter<BaseDataListBean.DataBean> adapter;
-    private String cateId;
+    private List<ActivityDivisionBean.DataBeanX.DataBean> beanList=new ArrayList<>();
+    private CommonAdapter<ActivityDivisionBean.DataBeanX.DataBean> adapter;
     private int bottom;
 
     @Override
@@ -69,17 +69,9 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("活动专区");
-        initEvent();
         initRecy();
-        initRg();
-    }
-
-    private void initEvent() {
-        //来获得宽度或者高度。这是获得一个view的宽度和高度的方法之一。
-        // 这是一个注册监听视图树的观察者(observer)，在视图树的全局事件改变时得到通知。
-        // ViewTreeObserver不能直接实例化，而是通过getViewTreeObserver()获得。
+        Refresh();
         scollview.setOnScrolInterface(this);
-        //实现windowChange监听
         scollview.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
             @Override
             public void onGlobalFocusChanged(View oldFocus, View newFocus) {
@@ -88,39 +80,66 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         });
     }
 
-    private void getData() {
-        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        Log.i("自营商品", Constant.baseUrl+"item/index.php?c=Goods&m=SelfGoodsList&user_id="+userId+"&cate="+cateId+"&pager=0"+"&pagesize=10"+"&sales=desc");
+    private void Refresh() {
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl + "item/index.php?c=Goods&m=SelfGoodsList&sales=desc")
-                .addParams("user_id", userId)
-                .addParams("cate", cateId)
-                .addParams("page","0")
-                .addParams("pagesize", "10")
-                .addParams("sales","desc")
+                .url(Constant.baseUrl+"item/index.php?c=Goods&m=PromotionZone")
+                .addParams("user_id",userId)
                 .build()
-                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                .execute(new GenericsCallback<ActivityDivisionBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
                     }
 
                     @Override
-                    public void onResponse(BaseDataListBean response, int id) {
-                        beanList=response.getData();
-                        adapter.add(beanList,true);
+                    public void onResponse(ActivityDivisionBean response, int id) {
+                          List<ActivityDivisionBean.DataBeanX> xList=response.getData();
+                          if(xList.size()!=0){
+                              addRb(xList);
+                          }
+
                     }
                 });
+
+    }
+
+    private void addRb(final List<ActivityDivisionBean.DataBeanX> xList) {
+        RadioButton rb=null;
+        ActivityDivisionBean.DataBeanX xBean=null;
+        RadioGroup.LayoutParams layoutParams=new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1);
+        layoutParams.setMargins(20,10,20,10);
+        for (int i = 0; i <xList.size() ; i++) {
+            rb = new RadioButton(this);
+            xBean=xList.get(i);
+            rb.setLayoutParams(layoutParams);
+            rb.setGravity(Gravity.CENTER);
+            rb.setButtonDrawable(null);
+            rb.setId(i);
+            rb.setText(xBean.getName());
+            rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_yellow_select));
+            rb.setTextColor(getResources().getColorStateList(R.color.tv_color4));
+            rg.addView(rb);
+        }
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+             List<ActivityDivisionBean.DataBeanX.DataBean> beanList=xList.get(checkedId).getData();
+                adapter.add(beanList,true);
+            }
+        });
+        RadioButton rb1=rg.findViewById(0);
+        rb1.setChecked(true);
     }
 
     private void initRecy() {
-        recyclerView.setLayoutManager(new GridLayoutManager(MyApp.getContext(),2));
+        recyclerView.setLayoutManager(new GridLayoutManager(this,2));
         recyclerView.addItemDecoration(new SpaceItemDecoration(12, 2));
-        adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(),R.layout.recommend_layout,beanList) {
+        adapter = new CommonAdapter<ActivityDivisionBean.DataBeanX.DataBean>(MyApp.getContext(),R.layout.recommend_layout,beanList) {
             @Override
-            protected void convert(ViewHolder holder, BaseDataListBean.DataBean dataBean, int position) {
+            protected void convert(ViewHolder holder, ActivityDivisionBean.DataBeanX.DataBean dataBean, int position) {
                 //图片
                 int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
                 ImageView iv_brand = holder.getView(R.id.iv_recommend);
@@ -143,9 +162,9 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                BaseDataListBean.DataBean dataBeen=beanList.get(position);
+                ActivityDivisionBean.DataBeanX.DataBean bean=beanList.get(position);
                 Intent intent=new Intent(ActivityEntrance.this, GoodsXqActivity.class);
-                intent.putExtra("mainId", dataBeen.getGoods_id());
+                intent.putExtra("mainId",bean.getGoods_id());
                 startActivity(intent);
             }
 
@@ -156,44 +175,6 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         });
     }
 
-    private void initRg() {
-        String [] str={"满赠专区","满减专区","折扣专区"};
-        RadioButton rb=null;
-        RadioGroup.LayoutParams layoutParams=new RadioGroup.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT,1);
-        layoutParams.setMargins(20,10,20,10);
-        for (int i = 0; i <str.length ; i++) {
-            rb = new RadioButton(this);
-            rb.setLayoutParams(layoutParams);
-            rb.setGravity(Gravity.CENTER);
-            rb.setButtonDrawable(null);
-            rb.setId(i);
-            rb.setText(str[i]);
-            rb.setBackgroundDrawable(getResources().getDrawable(R.drawable.white_yellow_select));
-            rb.setTextColor(getResources().getColorStateList(R.color.tv_color4));
-            rg.addView(rb);
-        }
-
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-                    switch (checkedId){
-                        case 0:
-                            cateId="1";
-                            break;
-                        case 1:
-                            cateId="206";
-                            break;
-                        case 2:
-                            cateId="205";
-                            break;
-                    }
-                    getData();
-            }
-        });
-        RadioButton rb1=rg.findViewById(0);
-        rb1.setChecked(true);
-
-    }
 
     @Override
     protected BasePresenter bindPresenter() {

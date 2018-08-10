@@ -33,7 +33,6 @@ public class SignDialogFragment extends DialogFragment implements View.OnClickLi
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         //添加动画
         Window window = this.getDialog().getWindow();
         window.setWindowAnimations(R.style.my_dialog_style2);   //设置dialog的显示动画

@@ -33,7 +33,7 @@
                 android:drawablePadding="5dp"
                 android:paddingTop="10dp"
                 android:drawableRight="@drawable/title_icon_right"
-                android:text="贴片推荐"
+                android:text="贴牌推荐"
                 android:textColor="@color/colorWhite" />
 
             <android.support.v7.widget.RecyclerView

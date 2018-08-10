@@ -31,6 +31,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
+import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.OrderBean;
@@ -90,23 +91,22 @@ public class GoodsListActivity extends MyBaseAcitivity {
                 //隐藏多余控件
                 holder.getView(R.id.tv_order_status_total).setVisibility(View.GONE);
                 holder.getView(R.id.ll_order_status_infor).setVisibility(View.GONE);
-                //留言
-                EditText et_mesg=holder.getView(R.id.et_mesg);
-                et_mesg.setClickable(false);
-                holder.setText(R.id.et_mesg,goodsBean.getMessage());
+                holder.getView(R.id.ll_order_status_infor2).setVisibility(View.GONE);
+                holder.getView(R.id.et_mesg).setVisibility(View.GONE);
                 //内嵌布局
                 RecyclerView recy=holder.getView(R.id.recy_order_inner);
                 recy.setLayoutManager(new LinearLayoutManager(MyApp.getContext()));
                 List<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> lists=goodsBean.getChild_data();
-                CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> InnerAdapter=
-                        new CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean>(MyApp.getContext(),R.layout.commn_item,lists) {
+                CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean> InnerAdapter= new CommonAdapter<OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean>(MyApp.getContext(),R.layout.commn_item,lists) {
                     @Override
                     protected void convert(ViewHolder holder, OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean dataChildBean, int position) {
+                        //总布局
                         RelativeLayout parent=holder.getView(R.id.commn_item_parent);
-                        parent.setBackgroundColor(Color.parseColor("#F5F5F5"));
                         RelativeLayout.LayoutParams params=new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        params.setMargins(0,0,0,10);
                         parent.setLayoutParams(params);
+                        //内容布局
+                        LinearLayout ll_view=holder.getView(R.id.ll_commmn);
+                        ll_view.setBackgroundColor(Color.parseColor("#F5F5F5"));
                         //图片
                         int i= DeviceUtils.dip2px(MyApp.getContext(),65);
                         ImageView iv=holder.getView(R.id.iv_category);
@@ -119,6 +119,26 @@ public class GoodsListActivity extends MyBaseAcitivity {
                         holder.setText(R.id.tv_goods_count,"X"+dataChildBean.getQuantity());
                         //隐藏类型
                         holder.getView(R.id.tv_goods_type).setVisibility(View.INVISIBLE);
+                        //退款和评价
+                        TextView tv1=holder.getView(R.id.tv_view1);
+                        TextView tv2=holder.getView(R.id.tv_view2);
+                        if("tk".equals(from)){
+                            holder.getView(R.id.ll_commn_item_infori).setVisibility(View.VISIBLE);
+                            tv2.setVisibility(View.VISIBLE);
+                            tv2.setText("申请退款");
+                        }else if("pj".equals(from)){
+                            holder.getView(R.id.ll_commn_item_infori).setVisibility(View.VISIBLE);
+                            tv1.setVisibility(View.VISIBLE);
+                            tv1.setText("晒单评价");
+                        }else if("tk_pj".equals(from)){
+                            holder.getView(R.id.ll_commn_item_infori).setVisibility(View.VISIBLE);
+                            tv1.setVisibility(View.VISIBLE);
+                            tv2.setVisibility(View.VISIBLE);
+                            tv2.setText("申请退款");
+                            tv1.setText("晒单评价");
+                        }
+
+
                     }
                 };
                 recy.setAdapter(InnerAdapter);
@@ -145,7 +165,7 @@ public class GoodsListActivity extends MyBaseAcitivity {
                 //隐藏多余控件
                 holder.getView(R.id.tv_order_status_total).setVisibility(View.GONE);
                 holder.getView(R.id.ll_order_status_infor).setVisibility(View.GONE);
-
+                holder.getView(R.id.ll_order_status_infor2).setVisibility(View.GONE);
                 //留言
                   EditText et=holder.getView(R.id.et_mesg);
                  et.addTextChangedListener(new TextWatcher() {

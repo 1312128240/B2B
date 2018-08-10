@@ -101,7 +101,7 @@ public class DeviceUtils {
     /**
      * 设置不调用系统键盘
      */
-    public static void hideSystemSoftKeyBoard(AppCompatActivity activity ,EditText et){
+    public static void hideSystemSoftKeyBoard(Activity activity ,EditText et){
         if (Build.VERSION.SDK_INT <= 10) {
             et.setInputType(InputType.TYPE_NULL);
         } else {

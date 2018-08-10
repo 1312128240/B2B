@@ -213,9 +213,9 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                     startActivity(new Intent(AccountSecurityYzmActivity.this,ResetPayPasswordActivity.class));
+                    // startActivity(new Intent(AccountSecurityYzmActivity.this,ResetPayPasswordActivity.class));
 
-                 /*  if (response.isFlag() == true) {
+                  if (response.isFlag() == true) {
                             Intent intent=new Intent();
                             switch (index){
                                 case 1:
@@ -234,7 +234,7 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
 
                         } else {
                             Snackbar.make(tv_title, response.getMsg(), Snackbar.LENGTH_SHORT).show();
-                        }*/
+                        }
                     }
                 });
     }

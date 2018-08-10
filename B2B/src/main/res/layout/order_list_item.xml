@@ -11,9 +11,9 @@
     <LinearLayout
         android:id="@+id/ll_order_title"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="35dp"
         android:gravity="center_vertical"
-        android:paddingLeft="10dp"
+        android:paddingLeft="6dp"
         android:paddingRight="10dp">
 
         <TextView
@@ -46,13 +46,14 @@
 
     <EditText
         android:id="@+id/et_mesg"
+        android:textSize="12sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="3dp"
         android:background="@color/colorLightGray3"
         android:hint="@string/mesg"
         android:maxLength="50"
-        android:padding="5dp" />
+        android:padding="8dp" />
 
     <LinearLayout
         android:id="@+id/ll_order_status_infor2"
@@ -82,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
-        android:paddingBottom="10dp">
+        android:paddingBottom="6dp">
 
 
         <TextView

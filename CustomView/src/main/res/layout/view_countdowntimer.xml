@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/ll_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:background="#000000"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_day_decade"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_day_unit"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:text="天" />
+
+    <LinearLayout
+        android:id="@+id/ll_h"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:background="#000000">
+
+        <TextView
+            android:id="@+id/tv_hour_decade"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_hour_unit"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:gravity="center_horizontal"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:textColor="#FFFFFF"
+        android:gravity="center"
+        android:text="时" />
+
+    <LinearLayout
+        android:id="@+id/ll_m"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:background="#000000"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_min_decade"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_min_unit"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:gravity="center"
+        android:text="分" />
+
+    <LinearLayout
+        android:id="@+id/ll_s"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:background="#000000"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/tv_sec_decade"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tv_sec_unit"
+            tools:text="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
+            android:textColor="@android:color/white" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:textColor="#FFFFFF"
+        android:layout_marginLeft="1dp"
+        android:layout_marginRight="1dp"
+        android:gravity="center"
+        android:text="秒" />
+</LinearLayout>

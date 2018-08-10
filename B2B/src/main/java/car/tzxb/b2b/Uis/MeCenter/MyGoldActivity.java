@@ -69,7 +69,9 @@ public class MyGoldActivity extends MyBaseAcitivity {
             @Override
             protected void convert(ViewHolder holder, MyGoldBean.DataBean.LogBean logBean, int position) {
                //日期
-                holder.setText(R.id.tv_sign_date,logBean.getAdd_time());
+                String t1=logBean.getAdd_time();
+                String t2=t1.substring(0,10);
+                holder.setText(R.id.tv_sign_date,t2);
                 //金币数量
                 holder.setText(R.id.tv_sign_gold_num,"+"+logBean.getNumber());
                 //签到成功

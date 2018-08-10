@@ -102,6 +102,9 @@ public class BaseDataListBean {
         private String cost_point;
 
 
+        public void setId(String id) {
+            this.id = id;
+        }
         public String getType() {
             return type;
         }

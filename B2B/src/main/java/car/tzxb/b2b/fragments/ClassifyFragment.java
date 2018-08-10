@@ -44,10 +44,6 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
     RecyclerView recy_gods;
     @BindView(R.id.iv_search_bar_left)
     ImageView iv_search_left;
-    @BindView(R.id.iv_search_bar_right)
-    ImageView iv_search_right;
-    @BindView(R.id.tv_classify)
-    TextView tv_classify;
     @BindView(R.id.et_classify)
     EditText et_classify;
     private MvpContact.Presenter presenter = new ClassifyPresenterIml(this);
@@ -69,6 +65,7 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
         Log.i("分类",url);
         initUi();
+
     }
 
     @Override
@@ -78,13 +75,10 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
 
    private void initUi() {
+        DeviceUtils.hideSystemSoftKeyBoard(getActivity(),et_classify);
         iv_search_left.setImageResource(R.drawable.navbar_icon_scan);
         recy_gods.setLayoutManager(new GridLayoutManager(getContext(),3));
-        tv_classify.setVisibility(View.VISIBLE);
-        et_classify.setVisibility(View.GONE);
-        recy_gods.setNestedScrollingEnabled(false);
         final int i= DeviceUtils.dip2px(MyApp.getContext(),45);
-
         final int top=DeviceUtils.dip2px(MyApp.getContext(),30);
         //商品分类
         godsAdapter = new CommonAdapter<BaseDataBean.DataBean.CategoryBean>(MyApp.getContext(), R.layout.iv_layout,goodsBeanlist) {
@@ -119,7 +113,6 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
         //品牌分类
         recy_brand.setLayoutManager(new GridLayoutManager(getContext(),3));
-        recy_brand.setNestedScrollingEnabled(false);
         brandAdapter = new CommonAdapter<BaseDataBean.DataBean.BrandBean>(getContext(), R.layout.iv_layout,brandBeanlist) {
             @Override
             protected void convert(ViewHolder holder, BaseDataBean.DataBean.BrandBean bean, int position) {
@@ -152,10 +145,11 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
 
     }
 
-    @OnClick(R.id.tv_classify)
-    public void seach(){
+    @OnClick(R.id.et_classify)
+    public void seach() {
         startActivity(new Intent(getActivity(), SeachActivity.class));
     }
+
 
     @Override
     public void showData(Object o) {

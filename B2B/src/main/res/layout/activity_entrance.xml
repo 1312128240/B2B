@@ -14,14 +14,13 @@
 
     <car.myview.MyNestScollview
         android:id="@+id/scrollView"
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:background="#2268FC"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
 
@@ -36,9 +35,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="45dp"
-
                 android:nestedScrollingEnabled="false"
                 android:padding="10dp">
+
 
             </android.support.v7.widget.RecyclerView>
 

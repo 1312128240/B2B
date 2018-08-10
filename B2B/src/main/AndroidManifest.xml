@@ -102,7 +102,7 @@
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:screenOrientation="portrait" />
         <activity android:name=".Uis.HomePager.SelfGoods.OemActivity" />
-        <activity android:name=".Uis.HomePager.ArticleActivity" />
+        <activity android:name=".Uis.ActiclePackage.ArticleActivity" />
         <activity android:name=".Uis.HomePager.Wallet.MyWalletActivity" />
         <activity android:name=".Uis.HomePager.Wallet.RechargeActivity" />
         <activity android:name=".Uis.SeachPackage.SeachActivity" />
@@ -110,7 +110,8 @@
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPasswordActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPhoneActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity" />
-        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPassword2Activity"></activity>
+        <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPassword2Activity" />
+        <activity android:name=".Uis.ActiclePackage.ArticleWebViewActivity"></activity>
     </application>
 
 </manifest>

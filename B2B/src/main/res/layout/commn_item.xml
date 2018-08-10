@@ -8,6 +8,7 @@
     android:background="@color/white">
 
     <LinearLayout
+        android:id="@+id/ll_commmn"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -118,4 +119,55 @@
             android:background="@color/red1"
             android:layout_height="match_parent" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_commn_item_infori"
+        android:visibility="gone"
+        android:layout_below="@+id/ll_commmn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:padding="8dp">
+
+
+        <TextView
+            android:id="@+id/tv_view3"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+        <TextView
+            android:id="@+id/tv_view2"
+            android:visibility="gone"
+            android:textColor="@color/colorBlack"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+        <TextView
+            android:id="@+id/tv_view1"
+            android:visibility="gone"
+            android:textColor="#ff4e3c"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg7"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+    </LinearLayout>
+
 </RelativeLayout>

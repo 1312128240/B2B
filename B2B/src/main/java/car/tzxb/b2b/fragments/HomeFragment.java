@@ -1,6 +1,4 @@
 package car.tzxb.b2b.fragments;
-
-import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
@@ -21,7 +19,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -31,11 +28,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -56,9 +51,10 @@ import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.HomePresenterIml;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.ActiclePackage.ArticleActivity;
+import car.tzxb.b2b.Uis.ActiclePackage.ArticleWebViewActivity;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance;
-import car.tzxb.b2b.Uis.HomePager.ArticleActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
 import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
@@ -72,6 +68,7 @@ import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.Views.DialogFragments.SignDialogFragment;
+import car.tzxb.b2b.Views.TextSwitchView;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -89,8 +86,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     ImageView iv_activity1;
     @BindView(R.id.iv_activity2)
     ImageView iv_activity2;
-    @BindView(R.id.tv_headline)
-    TextView tv_headerline;
     @BindView(R.id.iv_self_produc1)
     ImageView iv_self1;
     @BindView(R.id.iv_self_produc2)
@@ -119,8 +114,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     LinearLayout ll_suspension_bar;
     @BindView(R.id.et_classify)
     EditText et_classify;
-    @BindView(R.id.tv_classify)
-    TextView tv_classify;
+    @BindView(R.id.textSwitcher)
+    TextSwitchView textSwitcher;
     private String categoryId, brands;
     private int bottom, pager;
     private List<BaseDataListBean.DataBean> goodsList = new ArrayList<>();
@@ -129,7 +124,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     private LoadingDialog dialog;
     private List<HomeBean.DataBean.CategoryBean> categoryBeanList;
     private List<BaseDataListBean.DataBean> tabList;
-
 
     @Override
     public int getLayoutResId() {
@@ -140,6 +134,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void initData() {
         initUi();
         iniEvent();
+
     }
 
 
@@ -190,13 +185,12 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         iv_left.setImageResource(R.drawable.navbar_icon_scan);
         iv_right.setImageResource(R.drawable.navbar_icon_news);
         iv_right.setPadding(0, 0, 0, 5);
-        et_classify.setVisibility(View.GONE);
-        tv_classify.setVisibility(View.VISIBLE);
+        DeviceUtils.hideSystemSoftKeyBoard(getActivity(),et_classify);
         presenterGetData();
         recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
     }
 
-    @OnClick(R.id.tv_classify)
+    @OnClick(R.id.et_classify)
     public void seach() {
         startActivity(new Intent(getActivity(), SeachActivity.class));
     }
@@ -277,6 +271,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                     Log.i(TAG, "下滑");
                     if (scrollY >= bottom) {
                         classify_tabLayout.setVisibility(View.GONE);
+
                     }
                 }
                 if (scrollY < oldScrollY) {
@@ -362,26 +357,28 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
 
     }
 
+     //自营
     @OnClick(R.id.iv_self_produc1)
     public void self1() {
         Intent intent = new Intent(getActivity(), SelfGoodsActivity.class);
         intent.putExtra("list", (Serializable) categoryBeanList);
         startActivity(intent);
     }
-
+    //贴牌
     @OnClick(R.id.iv_self_produc2)
     public void self2() {
         startActivity(new Intent(getActivity(), OemActivity.class));
     }
 
-    @OnClick(R.id.tv_headline)
-    public void notice() {
-        startActivity(new Intent(getActivity(), ArticleActivity.class));
-    }
+    //活动专区
    @OnClick(R.id.rl_home_pager_activity)
     public void activity(){
        startActivity(new Intent(getActivity(), ActivityEntrance.class));
-     //  MyToast.makeTextAnim(MyApp.getContext(),"即将开放",0,Gravity.CENTER,0,0).show();
+    }
+    //查看更多文章
+    @OnClick(R.id.tv_more_article)
+    public void more_article(){
+        startActivity(new Intent(getActivity(),ArticleActivity.class));
     }
 
     /**
@@ -542,10 +539,43 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         Glide.with(getContext()).load(saleBean.get(2).getImg_url()).dontAnimate().into(iv_activity2);
         //头条内容
         HomeBean.DataBean.HotImageBean hotImageBean = bean.getData().getHotImage();
-        // String title = bean.getData().getHotActicle();
         Glide.with(getContext()).load(hotImageBean.getImg_url()).override(100, 350).into(iv_notifi);
-        tv_headerline.setText("同致相伴告客户书");
+        //跑马灯
+        getTjArticle();
     }
+
+    private void getTjArticle() {
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "messages/information.php?m=infolist")
+                .addParams("title", "tj")
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                             @Override
+                             public void onError(Call call, Exception e, int id) {
+
+                             }
+
+                             @Override
+                             public void onResponse(BaseDataListBean response, final int id) {
+                                 List<BaseDataListBean.DataBean> list = response.getData();
+                                 textSwitcher.setResources(list);
+                                 textSwitcher.setTextStillTime(3000);
+                                 textSwitcher.setListener(new TextSwitchView.clickListener() {
+                                     @Override
+                                     public void click(String title, String content) {
+                                         Intent intent = new Intent(getActivity(), ArticleWebViewActivity.class);
+                                         intent.putExtra("title", title);
+                                         intent.putExtra("content", content);
+                                         startActivity(intent);
+                                     }
+                                 });
+
+                             }
+                         });
+    }
+
 
     /**
      * 签到

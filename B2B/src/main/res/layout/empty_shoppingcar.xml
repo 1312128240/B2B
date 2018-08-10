@@ -8,7 +8,7 @@
      android:layout_width="match_parent"
      android:layout_height="wrap_content">
  <TextView
-     android:text="购物车居然是空的"
+     android:text="购物车居然是空的?"
      android:drawablePadding="10dp"
      android:textColor="@color/colorBlack"
      android:paddingTop="50dp"
@@ -20,7 +20,7 @@
 
     <TextView
         android:id="@+id/tv_empty_Shopping"
-        android:text="去逛逛"
+        android:text="先去逛逛"
         android:gravity="center"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"

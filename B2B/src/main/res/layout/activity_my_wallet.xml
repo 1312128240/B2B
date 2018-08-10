@@ -120,6 +120,7 @@
            android:layout_height="30dp" />
        <android.support.v7.widget.RecyclerView
            android:layout_below="@+id/tv_my_wallet_details"
+           android:id="@+id/recy_my_wallet"
            android:layout_width="match_parent"
            android:layout_height="wrap_content">
 

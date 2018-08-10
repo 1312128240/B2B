@@ -188,7 +188,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         userBean = response.getData().getUserInfo();
         ll_login_regist.setVisibility(View.INVISIBLE);
         tv_username.setVisibility(View.VISIBLE);
-        tv_username.setText(userBean.getNackname());
+        if("".equals(userBean.getNackname())){
+            tv_username.setText("暂无昵称");
+        }else {
+            tv_username.setText(userBean.getNackname());
+        }
+
         Glide.with(MyApp.getContext()).load(userBean.getHead_img()).asBitmap().into(cv_headerImager);
         //收藏
         List<Integer> scList=response.getData().getUserCollect();
@@ -203,7 +208,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         PropertyViews.get(3).setText(Html.fromHtml(jkList.get(3)+"  元"+"<br>"+"余额"));
 
         //订单状态
-        List<Integer> orderNumList= response.getData().getMyProperty();
+        List<Integer> orderNumList= response.getData().getOrderNumber();
         initOrderRecy(orderNumList);
     }
 
@@ -232,7 +237,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     }
 
     private void initOrderRecy(List<Integer> orderNumList) {
-        final String[] str={"全部","待付款","待发货","待收货","待评价"};
+        final String[] str={"待付款","待发货","待收货","待评价","退款/售后"};
         final int img[] ={R.mipmap.my_icon_payment,R.mipmap.my_icon_pd,R.mipmap.my_icon_gtbr,R.mipmap.my_icon_tbe,R.mipmap.my_icon_service};
         recy_status.setLayoutManager(new GridLayoutManager(getContext(),5));
         CommonAdapter<Integer> orderStatus=new CommonAdapter<Integer>(MyApp.getContext(),R.layout.order_status_item,orderNumList) {
@@ -271,8 +276,11 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                     return;
                 }
-                Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
-                intent.putExtra("index", position);
+               Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
+                if(position==4){
+                    position=-1;
+                }
+                intent.putExtra("index", position+1);
                 startActivity(intent);
             }
 
@@ -286,24 +294,13 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
 
 
     /**
-     * 登录
+     * 登录或注册
      */
-    @OnClick(R.id.tv_login)
+    @OnClick({R.id.tv_login,R.id.tv_regist})
     public void login(){
         Intent intent=new Intent(getActivity(),LoginActivity.class);
         startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
-
-    /**
-     * 注册
-     */
-    @OnClick(R.id.tv_regist)
-    public void regist(){
-        Intent intent=new Intent(getActivity(), OpenShopEntranceActivity.class);
-        intent.putExtra("from","login");
-        startActivity(intent);
-    }
-
 
     private void initRecommend() {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
@@ -402,7 +399,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         }
         Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
         intent.putExtra("index", 0);
-        intent.putExtra("type", "all");
         startActivity(intent);
     }
 

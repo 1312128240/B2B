@@ -10,7 +10,8 @@
         android:id="@+id/add_shoppingcar_top"
         android:layout_width="match_parent"
         android:layout_height="420dp"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true">
 
         <LinearLayout
             android:layout_width="match_parent"

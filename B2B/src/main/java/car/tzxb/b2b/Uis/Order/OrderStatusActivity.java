@@ -70,7 +70,6 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     private int index;
     private int pager;
     private CommonAdapter<OrderStatusBean.DataBean.OrderListBean> adapter;
-
     private List<OrderStatusBean.DataBean.OrderListBean> beanList = new ArrayList<>();
     private String type;
     private LoadingDialog loadingDialog;
@@ -79,14 +78,11 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     @Override
     public void initParms(Bundle parms) {
         index = getIntent().getIntExtra("index", -1);
-      //  type = getIntent().getStringExtra("type");
-
     }
 
     @Override
     public int bindLayout() {
-        getWindow().setEnterTransition(new Fade().setDuration(300));
-        getWindow().setExitTransition(new Fade().setDuration(300));
+
         return R.layout.activity_order_status;
     }
 
@@ -105,6 +101,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     protected void onResume() {
         super.onResume();
         pager=0;
+        type=getType(index);
         Refresh();
     }
 
@@ -215,10 +212,9 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     tv_describe.setText("等待付款");
                 } else if ("等待发货".equals(bean.getStatus())) { //待发货
                     tv1.setVisibility(View.VISIBLE);
-                    tv2.setVisibility(View.VISIBLE);
+                    tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.GONE);
                     tv1.setText("提醒发货");
-                    tv2.setText("查看物流");
                     tv_describe.setText("等待发货");
                 } else if ("商家已发货".equals(bean.getStatus())) { //待收货
                     tv1.setVisibility(View.VISIBLE);
@@ -300,13 +296,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                                     cop.dismiss();
                                 }
                             });
-                        } else if ("等待发货".equals(bean.getStatus())) {
-                            //查看物流
-                            Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
-                            intent.putExtra("orderId",bean.getAid());
-                            startActivity(intent);
-
-                        } else if ("商家已发货".equals(bean.getStatus()) ||"交易成功".equals(bean.getStatus())) {
+                        }  else if ("商家已发货".equals(bean.getStatus()) ||"交易成功".equals(bean.getStatus())) {
                             //物流详情
                             Intent intent=new Intent(OrderStatusActivity.this,LogisticsActivity.class);
                             intent.putExtra("orderId",bean.getAid());
@@ -502,28 +492,37 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
     }
 
     @Override
-    public void onEndTabSelected(String title, int index) {
+    public void onEndTabSelected(String title, int i) {
         // 查询状态->全部订单：all；待付款：stay_payment；待发货：stay_shipment；待收货：stay_take；待评价： stay_evaluate
-        switch (index) {
-            case 0:
-                type = "all";
-                break;
-            case 1:
-                type = "stay_payment";
-                break;
-            case 2:
-                type = "stay_shipment";
-                break;
-            case 3:
-                type = "stay_take";
-                break;
-            case 4:
-                type = "stay_evaluate";
-                break;
-        }
+        index=i;
+        type=getType(index);
         pager=0;
         Refresh();
     }
+
+    //方法名
+    public String getType(int i){
+        String m=null;
+        switch (i) {
+            case 0:
+                m = "all";
+                break;
+            case 1:
+                m = "stay_payment";
+                break;
+            case 2:
+                m = "stay_shipment";
+                break;
+            case 3:
+                m = "stay_take";
+                break;
+            case 4:
+                m = "stay_evaluate";
+                break;
+        }
+        return   m;
+    }
+
 
     /*
      *下拉刷新

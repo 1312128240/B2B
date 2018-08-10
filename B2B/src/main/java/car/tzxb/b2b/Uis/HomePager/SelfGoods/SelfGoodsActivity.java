@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -150,9 +151,10 @@ public class SelfGoodsActivity extends MyBaseAcitivity implements NestedScrollVi
                 //加入
                 TextView tv_add=holder.getView(R.id.tv_goods_count);
                 tv_add.setText("立即购买");
+                tv_add.setTextSize(TypedValue.COMPLEX_UNIT_SP,13);
+                tv_add.setPadding(5,2,5,2);
                 tv_add.setTextColor(Color.WHITE);
                 tv_add.setBackground(getResources().getDrawable(R.drawable.bg1));
-
             }
         };
         recyclerView.setAdapter(adapter);
