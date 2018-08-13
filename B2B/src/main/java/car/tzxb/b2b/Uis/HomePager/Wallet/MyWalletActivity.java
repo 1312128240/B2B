@@ -8,10 +8,13 @@ import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
@@ -41,11 +44,12 @@ import okhttp3.Call;
 public class MyWalletActivity extends MyBaseAcitivity {
 
     private int pay;
-
+    @BindView(R.id.tv_my_wallet_price)
+    TextView tv_my_balance;
     @BindView(R.id.recy_my_wallet)
     RecyclerView recyclerView;
     private String userId;
-    private List<MyWalletBean.DataBean.DetailBean> beanList=new ArrayList<>();
+    private List<MyWalletBean.DataBean.DetailBean> beanList = new ArrayList<>();
     private CommonAdapter<MyWalletBean.DataBean.DetailBean> adapter;
 
     @Override
@@ -61,31 +65,32 @@ public class MyWalletActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
 
-       initAdapter();
+        initAdapter();
     }
-
 
 
     private void initAdapter() {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        adapter = new CommonAdapter<MyWalletBean.DataBean.DetailBean>(MyApp.getContext(), R.layout.my_gold_sign_item,beanList) {
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        adapter = new CommonAdapter<MyWalletBean.DataBean.DetailBean>(MyApp.getContext(), R.layout.my_gold_sign_item, beanList) {
             @Override
             protected void convert(ViewHolder holder, MyWalletBean.DataBean.DetailBean dataBean, int position) {
-                  TextView tv1=holder.getView(R.id.tv_offline_payment);
-                  tv1.setVisibility(View.VISIBLE);
-                  tv1.setTextColor(Color.parseColor("#030303"));
-                  tv1.setBackgroundColor(Color.parseColor("#FFFFFF"));
-                  tv1.setText(dataBean.getTitle());
+                RelativeLayout parent= holder.getView(R.id.my_gold_sign_parent);
+                parent.setPadding(20,10,20,10);
+                parent.setBackgroundColor(Color.WHITE);
+                TextView tv1 = holder.getView(R.id.tv_offline_payment);
+                tv1.setVisibility(View.VISIBLE);
+                tv1.setPadding(0,0,0,10);
+                tv1.setTextColor(Color.parseColor("#030303"));
+                tv1.setBackgroundColor(Color.parseColor("#FFFFFF"));
+                tv1.setText(dataBean.getTitle());
+                holder.getView(R.id.ll_gold_sign).setVisibility(View.GONE);
+                LinearLayout ll_discoutn=holder.getView(R.id.ll_dicounts);
+                ll_discoutn.setVisibility(View.VISIBLE);
+                ll_discoutn.setBackgroundColor(Color.WHITE);
 
-                //日期
-                TextView tv_date=holder.getView(R.id.tv_sign_date);
-                tv_date.setTextColor(Color.parseColor("#949494"));
-                tv_date.setText(dataBean.getAdd_time());
-                //金额
-                TextView tv_price=holder.getView(R.id.tv_sign_gold_num);
-                tv_price.setTextColor(Color.parseColor("#303030"));
-                tv_price.setText(dataBean.getTotal_fee());
+                holder.setText(R.id.tv_discounts_content,dataBean.getAdd_time());
+                holder.setText(R.id.tv_discounts_num,dataBean.getTotal_fee());
             }
         };
         recyclerView.setAdapter(adapter);
@@ -99,18 +104,18 @@ public class MyWalletActivity extends MyBaseAcitivity {
     @Override
     protected void onResume() {
         super.onResume();
-        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         getPassword();
         getData();
     }
 
     private void getPassword() {
-        Log.i("是否设置过支付密码",Constant.baseUrl+"item/index.php?c=Home&m=UserIsSetPayPassWord"+"&user_id="+userId);
+        Log.i("是否设置过支付密码", Constant.baseUrl + "item/index.php?c=Home&m=UserIsSetPayPassWord" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"item/index.php?c=Home&m=UserIsSetPayPassWord")
-                .addParams("user_id",userId)
+                .url(Constant.baseUrl + "item/index.php?c=Home&m=UserIsSetPayPassWord")
+                .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -124,57 +129,61 @@ public class MyWalletActivity extends MyBaseAcitivity {
                     }
                 });
     }
+
     private void getData() {
-        Log.i("我的充值明细",Constant.baseUrl+"orders/user_wallet.php?m=user_details"+"&user_id="+"446");
-                OkHttpUtils
-                        .get()
-                        .tag(this)
-                        .url(Constant.baseUrl+"orders/user_wallet.php?m=user_details")
-                        .addParams("user_id","446")
-                        .build()
-                        .execute(new GenericsCallback<MyWalletBean>(new JsonGenericsSerializator()) {
-                            @Override
-                            public void onError(Call call, Exception e, int id) {
+        Log.i("我的充值明细", Constant.baseUrl + "orders/user_wallet.php?m=user_details" + "&user_id=" + userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "orders/user_wallet.php?m=user_details")
+                .addParams("user_id", userId)
+                .build()
+                .execute(new GenericsCallback<MyWalletBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
 
-                            }
+                    }
 
-                            @Override
-                            public void onResponse(MyWalletBean response, int id) {
-                                beanList=response.getData().getDetail();
-                                adapter.add(beanList,true);
-                            }
-                        });
+                    @Override
+                    public void onResponse(MyWalletBean response, int id) {
+                        beanList = response.getData().getDetail();
+                        adapter.add(beanList, true);
+                        //可用余额
+                        tv_my_balance.setText(Html.fromHtml("¥ "+"<big>"+response.getData().getB2b_balance()+"</big>"));
+                    }
+                });
+
     }
 
     @OnClick(R.id.tv_recharge)
-    public void recharge(){
-        if(pay==32){
+    public void recharge() {
+        if (pay != 32) {
             showDialogFragment();
-        }else {
+        } else {
             startActivity(RechargeActivity.class);
         }
 
     }
 
     private void showDialogFragment() {
-        final AlterDialogFragment adf=new AlterDialogFragment();
+        final AlterDialogFragment adf = new AlterDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", "充值前请选设置支付密码");
         bundle.putString("ok", "去设置");
         bundle.putString("no", "以后再说");
         adf.setArguments(bundle);
-        adf.show(getSupportFragmentManager(),"aa");
+        adf.show(getSupportFragmentManager(), "aa");
         adf.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
-                 adf.dismiss();
+                adf.dismiss();
             }
 
             @Override
             public void sure() {
-                Intent intent=new Intent(MyWalletActivity.this, AccountSecurityYzmActivity.class);
-                intent.putExtra("index",2);
-                intent.putExtra("title","身份验证");
+                Intent intent = new Intent(MyWalletActivity.this, AccountSecurityYzmActivity.class);
+                intent.putExtra("index", 2);
+                intent.putExtra("title", "身份验证");
                 startActivity(intent);
                 adf.dismiss();
             }

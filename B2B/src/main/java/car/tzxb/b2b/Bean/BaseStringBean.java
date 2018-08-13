@@ -5,8 +5,6 @@ package car.tzxb.b2b.Bean;
  */
 
 public class BaseStringBean {
-
-
     private String AccessKeySecret;
     private String SecurityToken;
     private String Expiration;
@@ -27,6 +25,16 @@ public class BaseStringBean {
     private String AccessKeyId;
     private String versionName;
     private int StrLen;
+    private String order_seqno;
+
+    public String getOrder_seqno() {
+        return order_seqno;
+    }
+
+    public void setOrder_seqno(String order_seqno) {
+        this.order_seqno = order_seqno;
+    }
+
 
     public int getStrLen() {
         return StrLen;

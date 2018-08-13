@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/search_bar" />
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawerlayout_find_shop"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <car.myview.MyNestScollview
+                android:id="@+id/my_nestcscollview"
+                android:layout_above="@+id/ll_find_shop_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_find_shop"
+                        android:layout_width="match_parent"
+                        android:layout_height="110dp"
+                        android:background="@mipmap/shop_icon_bg">
+
+                        <car.myview.CircleImageView.CircleImageView
+                            android:id="@+id/civ_shop"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp" />
+
+                        <TextView
+                            android:id="@+id/tv_find_shop_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="25dp"
+                            android:layout_toRightOf="@+id/civ_shop"
+                            android:text="平安积分店"
+                            android:textColor="@color/colorWhite" />
+
+                        <ImageView
+                            android:id="@+id/iv_find_shop_pf"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tv_find_shop_name"
+                            android:layout_marginTop="3dp"
+                            android:layout_toRightOf="@+id/civ_shop"
+                            android:src="@mipmap/shop_icon_score8" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/civ_shop"
+                            android:layout_toRightOf="@+id/civ_shop">
+
+                            <TextView
+                                android:id="@+id/tv_find_shop_sc"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="收藏"
+                                android:textColor="@color/colorWhite" />
+
+                            <TextView
+                                android:layout_width="1dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:background="@color/colorWhite" />
+
+                            <TextView
+                                android:id="@+id/tv_find_shop_sc_saleas"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="销量"
+                                android:textColor="@color/colorWhite" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/tv_find_shop_sc_status"
+                            android:layout_marginRight="10dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignBottom="@+id/civ_shop"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:text="已收藏"
+                            android:textColor="@color/colorWhite" />
+                    </RelativeLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recy_find_shop_xq"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        android:layout_marginTop="45dp"
+                        android:paddingTop="5dp"
+                        android:scrollbars="none">
+
+                    </android.support.v7.widget.RecyclerView>
+
+                    <TextView
+                        android:id="@+id/tv_emptyh_gods_xq2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="100dp"
+                        android:drawableTop="@mipmap/shop_icon_blank"
+                        android:gravity="center"
+                        android:text="抱歉,没有搜索到....."
+                        android:textStyle="italic"
+                        android:visibility="gone" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_suspension"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:background="@color/colorWhite">
+
+                        <TextView
+                            android:id="@+id/tv_gods_xq2_zh"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="综合"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_gods_xq2_jg"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginRight="20dp"
+                            android:layout_weight="0.5"
+                            android:drawableRight="@drawable/shop_icon_sort"
+                            android:gravity="center"
+                            android:text="价格"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_gods_xq2_xl"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="20dp"
+                            android:layout_weight="0.5"
+                            android:drawableRight="@drawable/shop_icon_sort"
+                            android:gravity="center"
+                            android:text="销量"
+                            android:textColor="@color/colorBlack" />
+
+                        <TextView
+                            android:id="@+id/tv_gods_xq2_zx"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="上新"
+                            android:textColor="@color/colorBlack" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+            </car.myview.MyNestScollview>
+
+
+            <LinearLayout
+                android:id="@+id/ll_find_shop_bottom"
+                android:elevation="10dp"
+                android:background="@color/colorWhite"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:layout_height="50dp"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:id="@+id/tv_find_shop_call"
+                    android:text="联系卖家"
+                    android:drawablePadding="3dp"
+                    android:textColor="@color/colorBlack"
+                    android:gravity="center"
+                    android:drawableTop="@drawable/shop_icon_contact"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:background="@color/colorLightGray3"
+                    android:layout_width="1.5dp"
+                    android:layout_height="30dp" />
+                <TextView
+                    android:id="@+id/tv_find_shop_fl"
+                    android:drawableTop="@drawable/shop_icon_fl"
+                    android:textColor="@color/colorBlack"
+                    android:drawablePadding="3dp"
+                    android:text="商品分类"
+                    android:gravity="center"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_gods_xq2_drawer"
+            android:layout_width="200dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+            android:background="@color/colorWhite"
+            android:layoutAnimation="@anim/layout_animation_fall_right" />
+    </android.support.v4.widget.DrawerLayout>
+</LinearLayout>

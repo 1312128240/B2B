@@ -79,7 +79,7 @@
         <activity android:name=".Uis.GoodsXqPackage.ShoppingCarActivity" />
         <activity android:name=".Uis.Order.OrderActivity" />
         <activity android:name=".Uis.Order.GoodsListActivity" />
-        <activity android:name=".wxapi.WXPayEntryActivity" />
+        <!-- <activity android:name=".wxapi.WXPayEntryActivity" /> -->
         <activity android:name=".Uis.Order.OrderXqActivity" />
         <activity android:name=".Uis.Order.OrderStatusActivity" />
         <activity android:name=".Uis.MeCenter.SettingsActivity" />
@@ -101,6 +101,12 @@
             android:name="com.unionpay.uppay.PayActivity"
             android:configChanges="orientation|keyboardHidden|keyboard"
             android:screenOrientation="portrait" />
+
+        <!-- 微信支付回调 -->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop" />
         <activity android:name=".Uis.HomePager.SelfGoods.OemActivity" />
         <activity android:name=".Uis.ActiclePackage.ArticleActivity" />
         <activity android:name=".Uis.HomePager.Wallet.MyWalletActivity" />
@@ -111,7 +117,9 @@
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPhoneActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity" />
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPassword2Activity" />
-        <activity android:name=".Uis.ActiclePackage.ArticleWebViewActivity"></activity>
+        <activity android:name=".Uis.ActiclePackage.ArticleWebViewActivity" />
+        <activity android:name=".wxapi.RechargeSuccessActivity" />
+        <activity android:name=".Uis.HomePager.FindShop.FindShopXqActivity"></activity>
     </application>
 
 </manifest>

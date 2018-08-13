@@ -61,7 +61,7 @@ public class KeyboardAdapter extends RecyclerView.Adapter<KeyboardAdapter.Keyboa
             holder.tvKey.setBackgroundResource(R.drawable.selector_item_del);
         } else if (position == 11) {
             holder.rlDel.setVisibility(View.VISIBLE);
-            holder.tvKey.setVisibility(View.GONE);
+            holder.tvKey.setVisibility(View.VISIBLE);
         } else {
             holder.tvKey.setText(datas.get(position));
         }

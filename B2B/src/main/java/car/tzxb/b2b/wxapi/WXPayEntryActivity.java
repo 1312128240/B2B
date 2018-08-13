@@ -1,6 +1,7 @@
 package car.tzxb.b2b.wxapi;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Message;
 import android.os.Bundle;
 import android.provider.SyncStateContract;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -61,6 +63,7 @@ import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
+import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -82,7 +85,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private final String mMode = "00";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
     private final int SDK_PAY_FLAG = 1;
     private String from;
-
+    public static AppCompatActivity sInstance = null;
     @Override
     public void initParms(Bundle parms) {
         total = getIntent().getStringExtra("total");
@@ -93,6 +96,9 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     @Override
     public int bindLayout() {
+        //注册微信支付
+        api = WXAPIFactory.createWXAPI(MyApp.getContext(), null);
+        api.registerApp(Constant.AppID);
         return R.layout.activity_wxpay_entry;
     }
     @Override
@@ -103,10 +109,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     @Override
     public void doBusiness(Context mContext) {
-        //注册微信支付
-        api = WXAPIFactory.createWXAPI(mContext, null);
-        api.registerApp(Constant.AppID);
-        api.handleIntent(getIntent(), this);
+        sInstance=this;
         tv_title.setText("收银台");
         tv_money.setText(Html.fromHtml("¥" + "<big>" + total + "</big>"));
         btn_pay.setText("使用支付宝支付 ¥" + total);
@@ -114,9 +117,15 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     }
 
     private void initLv() {
-        String[] str = {"支付宝", "微信", "银联支付", "线下支付"};
-        List<String> strList = Arrays.asList(str);
-        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(), strList);
+        List<String> lists=null;
+        if("Recharge".equals(from)){
+            String[] str = {"支付宝", "微信", "银联支付"};
+            lists=Arrays.asList(str);
+        }else {
+            String[] str = {"支付宝", "微信", "银联支付", "线下支付"};
+            lists=Arrays.asList(str);
+        }
+        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(),lists);
         lv.setAdapter(cashAdapter);
         cashAdapter.setClickPosition(new CashAdapter.ClickPosition() {
             @Override
@@ -160,16 +169,23 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     @Override
     public void onResp(BaseResp resp) {
-
-        Log.i("微信支付结果回调", "onResp, errCode = " + resp.errCode);
         String result = "";
         if (resp.getType() == ConstantsAPI.COMMAND_PAY_BY_WX) {
             switch (resp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
                     result = "微信支付成功";
+                    if("Recharge".equals(from)){
+                        Intent intent=new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
+                        intent.putExtra("total", total);
+                        startActivity(intent);
+                    }else {
+                        Intent intent=new Intent(WXPayEntryActivity.this, OrderStatusActivity.class);
+                        intent.putExtra("index", 0);
+                        startActivity(intent);
+                    }
                     break;
                 case BaseResp.ErrCode.ERR_COMM:
-                    result = "微信支付失败：" + resp.errCode + "，" + resp.errStr;
+                    result = "调试版：" + resp.errCode + "，" + resp.errStr;
                     break;
                 case BaseResp.ErrCode.ERR_USER_CANCEL:
                     result = "微信支付取消：" + resp.errCode + "，" + resp.errStr;
@@ -179,37 +195,81 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     break;
             }
         }
-        Toast.makeText(this, result, Toast.LENGTH_LONG).show();
+        MyToast.makeTextAnim(MyApp.getContext(),result,0,Gravity.CENTER,0,0).show();
     }
 
     @OnClick(R.id.btn_start_pay)
     public void pay() {
         if (isFastClick()) {
             if("Recharge".equals(from)){
-                MyToast.makeTextAnim(MyApp.getContext(),"暂未开放",0,Gravity.CENTER,0,0).show();
-                return;
+                RechargePay();
+            }else {
+                switch (position) {
+                    case 0:
+                        ZfbPay();
+                        break;
+                    case 1:
+                        WxPay();
+                        break;
+                    case 2:
+                        getTn();
+                        break;
+                    case 3:
+                        offlinePayment();
+                        break;
+                }
             }
 
-            switch (position) {
-                case 0:
-                    ZfbPay();
-                    break;
-                case 1:
-                    WxPay();
-                    break;
-                case 2:
-                    getTn();
-                    break;
-                case 3:
-                    offlinePayment();
-                    break;
-            }
         }
     }
 
+    /**
+     * 充值
+     */
+    private void RechargePay() {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        String username=SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/user_wallet.php?m=wallet_order")
+                .addParams("user_id",userId)
+                .addParams("username",username)
+                .addParams("total_fee",total)
+                .addParams("pay_device","Android")
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.i("充值返回错误",e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                         if(response.getStatus()==1){
+                             order_seqnos=response.getOrder_seqno();
+                             if(order_seqnos!=null){
+                                 Log.i("走充值",order_seqnos+"___"+position);
+                                 switch (position) {
+                                     case 0:
+                                         ZfbPay();
+                                         break;
+                                     case 1:
+                                         WxPay();
+                                         break;
+                                     case 2:
+                                         getTn();
+                                         break;
+                                 }
+                             }
+                         }
+                    }
+                });
+
+    }
+
     private void getTn() {
-        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
-        //http://www.yntzxb.cn/mobile_api/orders/orders_mobile.php?m=pay&order_seqnos=Z2018062914212149494955&pay_type=UnionPay&pay_device=iOS&user_id=446
+          String userId = SPUtil.getInstance(this).getUserId("UserId", null);
           OkHttpUtils
                   .get()
                   .url(Constant.baseUrl+"orders/orders_mobile.php?m=pay")
@@ -229,7 +289,10 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                            Log.i("返回tn号",response.getTn());
                            if(response.getStatus()==1){
                                String tn=response.getTn();
-                               UPPayAssistEx.startPayByJAR(WXPayEntryActivity.this, PayActivity.class, null, null,tn, mMode);
+                               if(tn!=null){
+                                   UPPayAssistEx.startPayByJAR(WXPayEntryActivity.this, PayActivity.class, null, null,tn, mMode);
+                               }
+
                            }
                       }
                   });
@@ -288,18 +351,21 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         final String orderPaht = response.getOrder();
-                        //调起支付宝支付
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                PayTask alipay = new PayTask(WXPayEntryActivity.this);
-                                Map<String, String> result = alipay.payV2(orderPaht, true);
-                                Message msg = new Message();
-                                msg.what = SDK_PAY_FLAG;
-                                msg.obj = result;
-                                mHandler.sendMessage(msg);
-                            }
-                        }).start();
+                        if(orderPaht!=null){
+                            //调起支付宝支付
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    PayTask alipay = new PayTask(WXPayEntryActivity.this);
+                                    Map<String, String> result = alipay.payV2(orderPaht, true);
+                                    Message msg = new Message();
+                                    msg.what = SDK_PAY_FLAG;
+                                    msg.obj = result;
+                                    mHandler.sendMessage(msg);
+                                }
+                            }).start();
+                        }
+
                     }
                 });
     }
@@ -325,15 +391,18 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         BaseDataBean.DataBean dataBean = response.getData();
-                        PayReq request = new PayReq();
-                        request.appId = dataBean.getAppid();
-                        request.partnerId = dataBean.getPartnerid();
-                        request.prepayId = dataBean.getPrepayid();
-                        request.packageValue = "Sign=WXPay";
-                        request.nonceStr = dataBean.getNoncestr();
-                        request.timeStamp = dataBean.getTimestamp();
-                        request.sign = dataBean.getPaySign();
-                        api.sendReq(request);
+                        if(dataBean!=null){
+                            PayReq request = new PayReq();
+                            request.appId = dataBean.getAppid();
+                            request.partnerId = dataBean.getPartnerid();
+                            request.prepayId = dataBean.getPrepayid();
+                            request.packageValue = "Sign=WXPay";
+                            request.nonceStr = dataBean.getNoncestr();
+                            request.timeStamp = dataBean.getTimestamp();
+                            request.sign = dataBean.getPaySign();
+                            api.sendReq(request);
+                        }
+
                     }
                 });
     }
@@ -354,10 +423,17 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        MyToast.makeTextAnim(MyApp.getContext(), "支付成功", 0, Gravity.CENTER, 0, 0).show();
+                        if("Recharge".equals(from)){
+                            Intent intent=new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
+                            intent.putExtra("total", total);
+                            startActivity(intent);
+                        }else {
+                            Intent intent=new Intent(WXPayEntryActivity.this, OrderStatusActivity.class);
+                            intent.putExtra("index", 0);
+                            startActivity(intent);
+                        }
                     } else {
                         MyToast.makeTextAnim(MyApp.getContext(), "支付取消", 0, Gravity.CENTER, 0, 0).show();
-
                     }
 
                     break;
@@ -399,5 +475,11 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
             });
             builder.create().show();
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sInstance=null;
     }
 }

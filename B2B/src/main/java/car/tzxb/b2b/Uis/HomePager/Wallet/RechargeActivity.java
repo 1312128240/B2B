@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
@@ -85,10 +87,25 @@ public class RechargeActivity extends MyBaseAcitivity implements KeyboardAdapter
                     etInput.setText(num);
                     etInput.setSelection(etInput.getText().length());
                 }
+                if(".".equals(String.valueOf(num.charAt(0)))){
+                    etInput.setText("");
+                }
                 break;
             default: // 按下数字键
-                if ("0".equals(etInput.getText().toString().trim())) { // 第一个数字按下0的话，第二个数字只能按小数点
+                String num2=etInput.getText().toString().trim();
+                if("0".equals(num2)){
                     break;
+                }
+                //取出前2位
+                if(num2.length()>=2){
+                    if("0.".equals(num2.substring(0,2))){
+                        if(num2.length()>3){
+                            String str = etInput.getText().toString();
+                            String body = str.substring(0, str.length() - 1);
+                            etInput.setText(body);
+                            etInput.setSelection(body.length());
+                        }
+                    }
                 }
                 etInput.setText(etInput.getText().toString().trim() + datas.get(position));
                 etInput.setSelection(etInput.getText().length());
@@ -123,7 +140,7 @@ public class RechargeActivity extends MyBaseAcitivity implements KeyboardAdapter
     @OnClick(R.id.btn_recharge_next)
     public void next() {
         String price = etInput.getText().toString();
-        if (TextUtils.isEmpty(price)||"0".equals(price)) {
+        if (TextUtils.isEmpty(price)||"0".equals(price)||"0.".equals(price)) {
             MyToast.makeTextAnim(MyApp.getContext(), "请输入要充值的金额", 0, Gravity.CENTER, 0, 0).show();
             return;
         }

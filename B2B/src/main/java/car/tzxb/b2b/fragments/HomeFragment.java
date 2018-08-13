@@ -55,6 +55,7 @@ import car.tzxb.b2b.Uis.ActiclePackage.ArticleActivity;
 import car.tzxb.b2b.Uis.ActiclePackage.ArticleWebViewActivity;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance;
+import car.tzxb.b2b.Uis.HomePager.FindShop.FindShopXqActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
 import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
@@ -72,8 +73,7 @@ import car.tzxb.b2b.Views.TextSwitchView;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class HomeFragment extends MyBaseFragment implements MvpViewInterface, MyNestScollview.OnScrollviewListener, WindowFocusChang,
-        ViewTreeObserver.OnGlobalFocusChangeListener {
+public class HomeFragment extends MyBaseFragment implements MvpViewInterface, MyNestScollview.OnScrollviewListener, WindowFocusChang{
     @BindView(R.id.iv_search_bar_left)
     ImageView iv_left;
     @BindView(R.id.home_banner)
@@ -257,12 +257,14 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
 
             }
         });
-        //来获得宽度或者高度。这是获得一个view的宽度和高度的方法之一。
-        // 这是一个注册监听视图树的观察者(observer)，在视图树的全局事件改变时得到通知。
-        // ViewTreeObserver不能直接实例化，而是通过getViewTreeObserver()获得。
         scrollView.setOnScrolInterface(this);
         //实现windowChange监听
-        scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(this);
+        scrollView.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+            @Override
+            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
+                onScroll(scrollView.getScrollY());
+            }
+        });
         //滚动监听
         scrollView.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
             @Override
@@ -380,7 +382,11 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void more_article(){
         startActivity(new Intent(getActivity(),ArticleActivity.class));
     }
-
+    //发现好店
+    @OnClick(R.id.rl_home_find_shop)
+  public void find(){
+        startActivity(new Intent(getActivity(), FindShopXqActivity.class));
+    }
     /**
      * 自定义tablayout
      *
@@ -710,8 +716,5 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         }
     }
 
-    @Override
-    public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-        onScroll(scrollView.getScrollY());
-    }
+
 }

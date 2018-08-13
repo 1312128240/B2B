@@ -8,8 +8,10 @@
 
     <include layout="@layout/base_actionbar"/>
 
+
     <WebView
         android:id="@+id/article_webview"
+        android:layout_marginTop="1.5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 

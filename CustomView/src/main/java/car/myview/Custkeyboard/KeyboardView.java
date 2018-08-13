@@ -51,7 +51,6 @@ public class KeyboardView extends RelativeLayout {
             }
         });
 
-
         initData();
         initView();
         initAnimation();
@@ -64,7 +63,7 @@ public class KeyboardView extends RelativeLayout {
             if (i < 9) {
                 datas.add(String.valueOf(i + 1));
             } else if (i == 9) {
-                datas.add("");
+                datas.add(".");
             } else if (i == 10) {
                 datas.add("0");
             } else {
@@ -116,7 +115,7 @@ public class KeyboardView extends RelativeLayout {
         return datas;
     }
 
-   /* public RelativeLayout getRlBack() {
+  public RelativeLayout getRlBack() {
         return rlBack;
-    }*/
+    }
 }
