@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<car.myview.TagTextViewItem xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:total="http://schemas.android.com/tools"
     android:id="@+id/tv_item"
     total:text="ssssssss"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-</TextView>
+</car.myview.TagTextViewItem>

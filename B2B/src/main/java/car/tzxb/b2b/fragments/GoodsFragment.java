@@ -244,7 +244,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
          FlexboxLayout.LayoutParams layoutParams=new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
          layoutParams.setMargins(0,0,20,20);
         for (int i = 0; i <ggList.size() ; i++) {
-            rb=new RadioButton(getContext());
+            rb=new RadioButton(MyApp.getContext());
             rb.setLayoutParams(layoutParams);
             rb.setGravity(Gravity.CENTER);
             rb.setMinWidth(minWidth);
@@ -258,8 +258,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
                 rb.setText("默认");
             }
             rb.setId(i);
-            rb.setBackground(getContext().getResources().getDrawable(R.drawable.gg_select));
-            rb.setTextColor(getContext().getResources().getColorStateList(R.color.tv_color2));
+            rb.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.gg_select));
+            rb.setTextColor(MyApp.getContext().getResources().getColorStateList(R.color.tv_color2));
             rg_gg.addView(rb);
         }
         rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {

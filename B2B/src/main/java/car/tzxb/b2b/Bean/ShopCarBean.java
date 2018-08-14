@@ -7,8 +7,6 @@ import java.util.List;
  */
 
 public class ShopCarBean {
-
-
     private String msg;
     private String status;
     private double totals;
@@ -82,9 +80,28 @@ public class ShopCarBean {
         private String shops_name;
         private String types;
         private String shop_id;
+        private String special_promotion;
+        private String special_id;
         private int coun;
         private List<DataChildBean> data_child;
         private boolean isCheck;
+
+        public String getSpecial_id() {
+            return special_id;
+        }
+
+        public void setSpecial_id(String special_id) {
+            this.special_id = special_id;
+        }
+
+
+      public String getSpecial_promotion() {
+            return special_promotion;
+        }
+
+        public void setSpecial_promotion(String special_promotion) {
+            this.special_promotion = special_promotion;
+        }
 
         public String getShop_id() {
             return shop_id;

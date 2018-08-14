@@ -48,7 +48,25 @@ public class OrderBean implements Serializable{
         private int amount_point;
         private String goods_kind_number;
         private String amount_price;
+        private double all_offset;
+        private double special_money;
         private List<GoodsBean> goods;
+
+        public double getSpecial_money() {
+            return special_money;
+        }
+
+        public void setSpecial_money(double special_money) {
+            this.special_money = special_money;
+        }
+
+        public double getAll_offset() {
+            return all_offset;
+        }
+
+        public void setAll_offset(double all_offset) {
+            this.all_offset = all_offset;
+        }
 
         public String getDiscount_amount() {
             return discount_amount;
@@ -59,7 +77,7 @@ public class OrderBean implements Serializable{
         }
 
         private String discount_amount;
-      //  private String Discount;
+
 
         public String getAmount_price() {
             return amount_price;
@@ -68,14 +86,6 @@ public class OrderBean implements Serializable{
         public void setAmount_price(String amount_price) {
             this.amount_price = amount_price;
         }
-    /*    public String getDiscount() {
-            return Discount;
-        }
-
-        public void setDiscount(String discount) {
-            Discount = discount;
-        }
-*/
 
         public String getGoods_kind_number() {
             return goods_kind_number;
@@ -84,9 +94,6 @@ public class OrderBean implements Serializable{
         public void setGoods_kind_number(String goods_kind_number) {
             this.goods_kind_number = goods_kind_number;
         }
-
-
-
 
         public int getShop_car() {
             return shop_car;

@@ -489,7 +489,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 ImageView iv = holder.getView(R.id.iv_item);
                 int width = DeviceUtils.dip2px(MyApp.getContext(), 45);
                 int height = DeviceUtils.dip2px(MyApp.getContext(), 45);
-
                 Glide.with(MyApp.getContext()).load(btnImgBean.getImg_url()).asBitmap().override(width, height).into(iv);
                 //名字
                 TextView tv = holder.getView(R.id.iv_layout_title);
@@ -566,17 +565,20 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                              @Override
                              public void onResponse(BaseDataListBean response, final int id) {
                                  List<BaseDataListBean.DataBean> list = response.getData();
-                                 textSwitcher.setResources(list);
-                                 textSwitcher.setTextStillTime(3000);
-                                 textSwitcher.setListener(new TextSwitchView.clickListener() {
-                                     @Override
-                                     public void click(String title, String content) {
-                                         Intent intent = new Intent(getActivity(), ArticleWebViewActivity.class);
-                                         intent.putExtra("title", title);
-                                         intent.putExtra("content", content);
-                                         startActivity(intent);
-                                     }
-                                 });
+                                 if(list.size()!=0){
+                                     textSwitcher.setResources(list);
+                                     textSwitcher.setTextStillTime(3000);
+                                     textSwitcher.setListener(new TextSwitchView.clickListener() {
+                                         @Override
+                                         public void click(String title, String content) {
+                                             Intent intent = new Intent(getActivity(), ArticleWebViewActivity.class);
+                                             intent.putExtra("title", title);
+                                             intent.putExtra("content", content);
+                                             startActivity(intent);
+                                         }
+                                     });
+                                 }
+
 
                              }
                          });

@@ -83,7 +83,9 @@
             android:layout_weight="1"
             android:inAnimation="@anim/text_push_up_in"
             android:outAnimation="@anim/text_push_up_out"
-            android:textAlignment="center"></car.tzxb.b2b.Views.TextSwitchView>
+            android:textAlignment="center">
+
+        </car.tzxb.b2b.Views.TextSwitchView>
 
         <TextView
             android:id="@+id/tv_more_article"

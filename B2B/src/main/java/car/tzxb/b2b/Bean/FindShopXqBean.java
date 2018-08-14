@@ -73,6 +73,16 @@ public class FindShopXqBean {
             private String img;
             private String imgs;
             private String Collect;
+            private double shop_pf;
+            public double getShop_pf() {
+                return shop_pf;
+            }
+
+            public void setShop_pf(double shop_pf) {
+                this.shop_pf = shop_pf;
+            }
+
+
 
             public String getID() {
                 return ID;

@@ -53,7 +53,7 @@
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="¥0.00"
-            android:textColor="@color/red" />
+            android:textColor="@color/colorBlack2" />
     </LinearLayout>
 
     <LinearLayout

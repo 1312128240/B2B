@@ -1,42 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:background="@color/colorWhite"
-    android:padding="10dp"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recommend_parent"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-   <ImageView
-       android:id="@+id/iv_recommend"
-       android:src="@mipmap/ic_launcher"
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content" />
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/iv_recommend"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher" />
+
     <TextView
         android:id="@+id/tv_recommend_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_recommend"
         android:ellipsize="end"
         android:text="嘉实多新磁护"
-        android:layout_below="@+id/iv_recommend"
-        android:textColor="@color/colorBlack2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:textColor="@color/colorBlack2" />
+
     <TextView
         android:id="@+id/tv_recommend_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/tv_recommend_title"
         android:textColor="@color/colorBlack2"
-        android:text="¥279"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        tools:text="¥279" />
+
     <TextView
-        android:layout_below="@+id/tv_recommend_price"
         android:id="@+id/tv_recomment_sales"
-        android:textColor="@color/gray"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_recommend_price"
         android:text="销量"
+        android:textColor="@color/gray" />
+
+    <TextView
+        android:id="@+id/tv_recommend_original_prices"
+        tools:text="原价379"
+        android:layout_toRightOf="@+id/tv_recomment_sales"
+        android:layout_below="@+id/tv_recommend_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <ImageView
         android:id="@+id/iv_gwc_icon"
-        android:src="@drawable/commodity_icon_atc"
-        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/tv_recomment_sales"
+        android:layout_alignParentRight="true"
+        android:src="@drawable/commodity_icon_atc" />
+
+    <TextView
+        android:id="@+id/tv_recommend_sales2"
+        tools:text="销量2"
+        android:layout_alignBottom="@+id/tv_recomment_sales"
+        android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>

@@ -131,7 +131,6 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
         tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
         cb_all.setOnCheckedChangeListener(this);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         adapter = new CommonAdapter<ShopCarBean.DataBean>(MyApp.getContext(), R.layout.shopping_car_layout, beanList) {
             @Override
             protected void convert(final ViewHolder vh, final ShopCarBean.DataBean dataBean, final int i) {
@@ -141,6 +140,15 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                 final List<ShopCarBean.DataBean.DataChildBean> InnerList = dataBean.getData_child();
                 InnerRecy.setLayoutManager(new LinearLayoutManager(MyApp.getContext()));
                 InnerRecy.setItemAnimator(new DefaultItemAnimator());
+                //订单优惠
+                TextView tv_special_promotion=vh.getView(R.id.tv_special_promotion);
+                String special_promotion=dataBean.getSpecial_promotion();
+                if("".equals(special_promotion)){
+                    tv_special_promotion.setVisibility(View.GONE);
+                }else {
+                    tv_special_promotion.setText(special_promotion);
+                }
+                //内部recy
                 final CommonAdapter<ShopCarBean.DataBean.DataChildBean> childBeanCommonAdapter = new CommonAdapter<ShopCarBean.DataBean.DataChildBean>(MyApp.getContext(), R.layout.shopping_car_item, InnerList) {
                     @Override
                     protected void convert(final ViewHolder holder, final ShopCarBean.DataBean.DataChildBean dataChildBean, final int position) {
@@ -593,12 +601,15 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
         StringBuilder sb2 = new StringBuilder();
         StringBuilder sb3 = new StringBuilder();
         StringBuilder sb4 = new StringBuilder();
+        StringBuilder sb5=new StringBuilder();
         ShopCarBean.DataBean dataBean = null;
         ShopCarBean.DataBean.DataChildBean childBean = null;
         for (int i = 0; i < isCheckList.size(); i++) {
             dataBean = isCheckList.get(i);
             //门店id
             sb1.append(dataBean.getShop_id()).append(",");
+            //订单优惠id
+            sb5.append(dataBean.getSpecial_id()).append(",");
             List<ShopCarBean.DataBean.DataChildBean> childBeanList = isCheckList.get(i).getData_child();
             for (int j = 0; j < childBeanList.size(); j++) {
                 childBean = childBeanList.get(j);
@@ -615,6 +626,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
         intent.putExtra("carId", sb2.toString());
         intent.putExtra("num", sb3.toString());
         intent.putExtra("proId", sb4.toString());
+        intent.putExtra("special_id",sb5.toString()); //订单优惠id
         startActivity(intent);
     }
 }

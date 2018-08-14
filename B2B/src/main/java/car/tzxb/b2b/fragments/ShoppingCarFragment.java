@@ -154,6 +154,15 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                 final List<ShopCarBean.DataBean.DataChildBean> InnerList = dataBean.getData_child();
                 InnerRecy.setLayoutManager(new LinearLayoutManager(MyApp.getContext()));
                 InnerRecy.setItemAnimator(new DefaultItemAnimator());
+                //订单优惠
+               TextView tv_special_promotion=vh.getView(R.id.tv_special_promotion);
+                String special_promotion=dataBean.getSpecial_promotion();
+                if("".equals(special_promotion)){
+                    tv_special_promotion.setVisibility(View.GONE);
+                }else {
+                    tv_special_promotion.setText(special_promotion);
+                }
+                //内部recy
                 final CommonAdapter<ShopCarBean.DataBean.DataChildBean> childBeanCommonAdapter = new CommonAdapter<ShopCarBean.DataBean.DataChildBean>(MyApp.getContext(), R.layout.shopping_car_item, InnerList) {
                     @Override
                     protected void convert(final ViewHolder holder, final ShopCarBean.DataBean.DataChildBean dataChildBean, final int position) {
@@ -170,6 +179,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
                         //商品数量
                         TextView tv_number = holder.getView(R.id.tv_shoppingcar_num);
                         tv_number.setText("X" + dataChildBean.getNumber());
+
                         //优惠信息
                         LinearLayout ll_discounts = holder.getView(R.id.ll_shopingcar_discounts);
                         RecyclerView recy = holder.getView(R.id.recy_discounts);
@@ -607,12 +617,15 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         StringBuilder sb2 = new StringBuilder();
         StringBuilder sb3 = new StringBuilder();
         StringBuilder sb4 = new StringBuilder();
+        StringBuilder sb5=new StringBuilder();
         ShopCarBean.DataBean dataBean = null;
         ShopCarBean.DataBean.DataChildBean childBean = null;
         for (int i = 0; i < isCheckList.size(); i++) {
             dataBean = isCheckList.get(i);
             //门店id
             sb1.append(dataBean.getShop_id()).append(",");
+            //订单优惠id
+            sb5.append(dataBean.getSpecial_id()).append(",");
             List<ShopCarBean.DataBean.DataChildBean> childBeanList = isCheckList.get(i).getData_child();
             for (int j = 0; j < childBeanList.size(); j++) {
                 childBean = childBeanList.get(j);
@@ -629,6 +642,7 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         intent.putExtra("carId", sb2.toString());
         intent.putExtra("num", sb3.toString());
         intent.putExtra("proId", sb4.toString());
+        intent.putExtra("special_id",sb5.toString()); //订单优惠id
         startActivity(intent);
     }
 

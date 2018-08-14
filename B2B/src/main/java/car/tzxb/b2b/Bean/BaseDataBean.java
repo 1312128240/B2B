@@ -240,6 +240,18 @@ public class BaseDataBean {
             private String sort_id;
             private String img_url;
             private String category_name;
+            private boolean isCheck;
+
+            public boolean isCheck() {
+                return isCheck;
+            }
+
+            public void setCheck(boolean check) {
+                isCheck = check;
+            }
+
+
+
             public String getCategory_name() {
                 return category_name;
             }

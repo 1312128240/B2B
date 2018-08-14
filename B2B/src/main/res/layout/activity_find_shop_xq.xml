@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/search_bar" />
@@ -26,6 +25,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:descendantFocusability="blocksDescendants"
                     android:orientation="vertical">
 
                     <RelativeLayout
@@ -41,6 +43,8 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp" />
+
+
 
                         <TextView
                             android:id="@+id/tv_find_shop_name"
@@ -58,7 +62,7 @@
                             android:layout_below="@+id/tv_find_shop_name"
                             android:layout_marginTop="3dp"
                             android:layout_toRightOf="@+id/civ_shop"
-                            android:src="@mipmap/shop_icon_score8" />
+                            tools:src="@mipmap/shop_icon_score8" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -91,16 +95,30 @@
                         <TextView
                             android:id="@+id/tv_find_shop_sc_status"
                             android:layout_marginRight="10dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="60dp"
+                            android:layout_height="25dp"
+                            android:textSize="12sp"
+                            android:padding="5dp"
                             android:layout_alignParentRight="true"
                             android:layout_alignBottom="@+id/civ_shop"
                             android:layout_gravity="center"
                             android:gravity="center"
-                            android:text="已收藏"
+                            tools:drawableLeft="@mipmap/shop_icon_collection"
+                            tools:text="已收藏"
                             android:textColor="@color/colorWhite" />
                     </RelativeLayout>
 
+                    <TextView
+                        android:id="@+id/tv_empty_layout"
+                        android:text="抱歉,没有搜索到....."
+                        android:textStyle="italic"
+                        android:textColor="#303030"
+                        android:gravity="center"
+                        android:paddingTop="50dp"
+                        android:visibility="gone"
+                        android:drawableTop="@mipmap/shop_icon_blank"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recy_find_shop_xq"
                         android:layout_width="match_parent"
@@ -112,35 +130,25 @@
 
                     </android.support.v7.widget.RecyclerView>
 
-                    <TextView
-                        android:id="@+id/tv_emptyh_gods_xq2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="100dp"
-                        android:drawableTop="@mipmap/shop_icon_blank"
-                        android:gravity="center"
-                        android:text="抱歉,没有搜索到....."
-                        android:textStyle="italic"
-                        android:visibility="gone" />
 
                     <LinearLayout
                         android:id="@+id/ll_suspension"
+                        android:elevation="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@color/colorWhite">
 
                         <TextView
-                            android:id="@+id/tv_gods_xq2_zh"
+                            android:id="@+id/tv_find_shop_zh"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
                             android:gravity="center"
                             android:text="综合"
-                            android:textColor="@color/colorBlack" />
+                            android:textColor="#F93214" />
 
                         <TextView
-                            android:id="@+id/tv_gods_xq2_jg"
+                            android:id="@+id/tv_find_shop_jg"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginRight="20dp"
@@ -151,7 +159,7 @@
                             android:textColor="@color/colorBlack" />
 
                         <TextView
-                            android:id="@+id/tv_gods_xq2_xl"
+                            android:id="@+id/tv_find_shop_xl"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_marginLeft="20dp"
@@ -162,7 +170,7 @@
                             android:textColor="@color/colorBlack" />
 
                         <TextView
-                            android:id="@+id/tv_gods_xq2_zx"
+                            android:id="@+id/tv_find_shop_sx"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
                             android:layout_weight="1"
@@ -215,7 +223,7 @@
         </RelativeLayout>
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/recy_gods_xq2_drawer"
+            android:id="@+id/recy_find_shop_drawer"
             android:layout_width="200dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"

@@ -122,25 +122,23 @@ public class ArticleActivity extends MyBaseAcitivity {
                 });
     }
 
-    private void initTab(List<BaseDataListBean.DataBean> list) {
-        final List<BaseDataListBean.DataBean> tempList = new ArrayList<>();
+    private void initTab(final List<BaseDataListBean.DataBean> list) {
         BaseDataListBean.DataBean bean1 = new BaseDataListBean.DataBean();
         bean1.setTitle("全部");
         bean1.setId("qb");
         BaseDataListBean.DataBean bean2 = new BaseDataListBean.DataBean();
         bean2.setTitle("推荐");
         bean2.setId("tj");
-        tempList.add(bean1);
-        tempList.add(bean2);
-        tempList.addAll(list);
-        for (int i = 0; i < tempList.size(); i++) {
-            BaseDataListBean.DataBean bean = tempList.get(i);
+        list.add(0,bean1);
+        list.add(1,bean2);
+        for (int i = 0; i < list.size(); i++) {
+            BaseDataListBean.DataBean bean =list.get(i);
             tablayout.addTab(tablayout.newTab().setText(bean.getTitle()));
         }
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                String id = tempList.get(tab.getPosition()).getId();
+                String id = list.get(tab.getPosition()).getId();
                 getAcricle(id);
             }
 
