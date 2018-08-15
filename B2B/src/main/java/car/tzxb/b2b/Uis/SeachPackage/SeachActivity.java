@@ -207,8 +207,8 @@ public class SeachActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
-                        historyBeanList = response.getData();
-                        historyAdapter.add(historyBeanList, true);
+                        historyBeanList=response.getData();
+                        historyAdapter.add(historyBeanList,true);
                     }
                 });
 

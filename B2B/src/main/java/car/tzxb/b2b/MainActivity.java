@@ -12,7 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
@@ -29,7 +28,7 @@ import car.tzxb.b2b.Interface.WindowFocusChang;
 import car.tzxb.b2b.Util.ActivityManager;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.PermissionUtil;
-import car.tzxb.b2b.Util.UpdateApp;
+import car.tzxb.b2b.Util.UpdateApp.DownLoadApk;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.fragments.ClassifyFragment;
@@ -144,7 +143,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
 
         FragmentTransaction  transaction = getSupportFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(R.id.main_framelayout,homeFragment).commit();
+        transaction.add(R.id.main_framelayout,homeFragment).commitAllowingStateLoss();
         mFragment = homeFragment;
     }
 
@@ -174,19 +173,19 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
             //判断切换的Fragment是否已经添加过
             if (!fragment.isAdded()) {
                 //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
-               getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).hide(mFragment)
-                        .add(R.id.main_framelayout,fragment).commit();
+             getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).hide(mFragment)
+                        .add(R.id.main_framelayout,fragment).commitAllowingStateLoss();
 
             } else {
                 //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
-                getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).hide(mFragment).show(fragment).commit();
+              getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                      .hide(mFragment).show(fragment).commitAllowingStateLoss();
             }
             mFragment = fragment;
         }
     }
     @Override
     public void onTabSelected(int position) {
-
             switch (position){
                 case 0:
                     switchFragment(homeFragment);
@@ -276,8 +275,8 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                     PermissionUtil.getExternalStoragePermissions(MainActivity.this, 101);
 
                 } else {
-                    UpdateApp updateApp=new UpdateApp(MainActivity.this);
-                    updateApp.downloadFile(response);
+                    DownLoadApk.download(MyApp.getContext(),response.getData(),"正在下载同致相伴","txj");
+                    dialogFragment.dismiss();
                 }
             }
         });

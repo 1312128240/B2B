@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="car.tzxb.b2b.Uis.Vip.VipCenterActivity">
+    tools:context="car.tzxb.b2b.Uis.HomePager.Vip.VipCenterActivity">
 
     <include layout="@layout/base_actionbar"/>
 

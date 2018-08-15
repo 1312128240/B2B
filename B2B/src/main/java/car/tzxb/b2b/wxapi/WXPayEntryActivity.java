@@ -427,10 +427,12 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                             Intent intent=new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
                             intent.putExtra("total", total);
                             startActivity(intent);
+                            finish();
                         }else {
                             Intent intent=new Intent(WXPayEntryActivity.this, OrderStatusActivity.class);
                             intent.putExtra("index", 0);
                             startActivity(intent);
+                            finish();
                         }
                     } else {
                         MyToast.makeTextAnim(MyApp.getContext(), "支付取消", 0, Gravity.CENTER, 0, 0).show();

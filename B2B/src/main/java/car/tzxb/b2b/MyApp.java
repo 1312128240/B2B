@@ -2,6 +2,8 @@ package car.tzxb.b2b;
 
 import android.app.Application;
 import android.content.Context;
+
+import com.bumptech.glide.request.target.ViewTarget;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.commonsdk.UMConfigure;
 

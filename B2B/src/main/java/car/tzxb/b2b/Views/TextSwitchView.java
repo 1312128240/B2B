@@ -1,6 +1,7 @@
 package car.tzxb.b2b.Views;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -84,6 +85,7 @@ public class TextSwitchView extends TextSwitcher implements ViewSwitcher.ViewFac
     public View makeView() {
         TextView tv =new TextView(context);
         tv.setSingleLine(true);
+        tv.setTextColor(Color.parseColor("#000000"));
         tv.setEllipsize(TextUtils.TruncateAt.END);
         tv.setOnClickListener(new OnClickListener() {
             @Override

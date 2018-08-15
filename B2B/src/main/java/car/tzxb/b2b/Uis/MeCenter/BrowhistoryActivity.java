@@ -51,9 +51,13 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
     TextView tv_empty;
     @BindView(R.id.tv_actionbar_right)
     TextView tv_right;
+    @BindView(R.id.ll_all_delete)
+    LinearLayout ll_all_deletee;
+    @BindView(R.id.ll_browhistory_parent)
+    LinearLayout ll_browhistory_parent;
     private boolean flag;
-    private boolean isShow=true;
-    private List<BrowhistoryBean.DataBean> dataBeanList=new ArrayList<>();
+    private boolean isShow = true;
+    private List<BrowhistoryBean.DataBean> dataBeanList = new ArrayList<>();
     private CommonAdapter<BrowhistoryBean.DataBean> adapter;
 
     @Override
@@ -75,44 +79,44 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
     private void initRecy() {
         recy.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommonAdapter<BrowhistoryBean.DataBean>(MyApp.getContext(), R.layout.order_list_item,dataBeanList) {
+        adapter = new CommonAdapter<BrowhistoryBean.DataBean>(MyApp.getContext(), R.layout.order_list_item, dataBeanList) {
             @Override
             protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean dataBean, int position) {
-                LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0,0,0,0);
-                View parent=holder.getView(R.id.parent);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(0, 0, 0, 0);
+                View parent = holder.getView(R.id.parent);
                 parent.setLayoutParams(layoutParams);
                 holder.getView(R.id.ll_order_title).setBackgroundColor(Color.parseColor("#E1E1E1"));
-                TextView tv_time=holder.getView(R.id.tv_order_status_shop_name);
+                TextView tv_time = holder.getView(R.id.tv_order_status_shop_name);
                 tv_time.setText(dataBean.getAdd_time());
-                tv_time.setCompoundDrawablesWithIntrinsicBounds(null,null,null,null);
+                tv_time.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
                 //隐藏
                 holder.getView(R.id.ll_order_status_infor).setVisibility(View.GONE);
                 holder.getView(R.id.ll_order_status_infor2).setVisibility(View.GONE);
                 holder.getView(R.id.et_mesg).setVisibility(View.GONE);
                 //内部recyclerview
-                RecyclerView InnerRecy=holder.getView(R.id.recy_order_inner);
+                RecyclerView InnerRecy = holder.getView(R.id.recy_order_inner);
                 InnerRecy.setLayoutManager(new LinearLayoutManager(BrowhistoryActivity.this));
-                final List<BrowhistoryBean.DataBean.ChildDataBean> InnList=dataBean.getChild_data();
-                CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean> InnAdaper=new CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean>(MyApp.getContext(),R.layout.commn_item,InnList) {
+                final List<BrowhistoryBean.DataBean.ChildDataBean> InnList = dataBean.getChild_data();
+                CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean> InnAdaper = new CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean>(MyApp.getContext(), R.layout.commn_item, InnList) {
                     @Override
                     protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean.ChildDataBean childDataBean, int position) {
                         //图片
                         Glide.with(MyApp.getContext()).load(childDataBean.getImg_url()).into((ImageView) holder.getView(R.id.iv_category));
                         //名字
-                        holder.setText(R.id.tv_catagroy_name,childDataBean.getTitle());
+                        holder.setText(R.id.tv_catagroy_name, childDataBean.getTitle());
                         //价格
-                        holder.setText(R.id.tv_category_pice,"¥"+childDataBean.getSeal_price());
+                        holder.setText(R.id.tv_category_pice, "¥" + childDataBean.getSeal_price());
                         //隐藏控件
                         holder.getView(R.id.tv_goods_type).setVisibility(View.GONE);
-                        ImageView iv= holder.getView(R.id.iv_gwc_icon);
+                        ImageView iv = holder.getView(R.id.iv_gwc_icon);
                         iv.setVisibility(View.VISIBLE);
                         iv.setImageResource(R.mipmap.commodity_icon_atc2);
                         //删除
-                        TextView tv_del=holder.getView(R.id.tv_del_browhistory);
-                        if(!isShow){
+                        TextView tv_del = holder.getView(R.id.tv_del_browhistory);
+                        if (!isShow) {
                             tv_del.setVisibility(View.VISIBLE);
-                        }else {
+                        } else {
                             tv_del.setVisibility(View.GONE);
                         }
                         tv_del.setOnClickListener(new View.OnClickListener() {
@@ -128,9 +132,9 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                 InnAdaper.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        BrowhistoryBean.DataBean.ChildDataBean bean=InnList.get(position);
-                        Intent intent=new Intent(BrowhistoryActivity.this, GoodsXqActivity.class);
-                        intent.putExtra("mainId",bean.getId());
+                        BrowhistoryBean.DataBean.ChildDataBean bean = InnList.get(position);
+                        Intent intent = new Intent(BrowhistoryActivity.this, GoodsXqActivity.class);
+                        intent.putExtra("mainId", bean.getId());
                         startActivity(intent);
                     }
 
@@ -146,30 +150,33 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
     /**
      * 删除浏览
+     *
      * @param id
      */
     private void delBrow(String id) {
-       String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        Log.i("删除浏览历史",Constant.baseUrl+"item/index.php?c=Goods&m=DeleteUserHistory"+"&user_id="+userId+"&goods_ids="+id);
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("删除浏览历史", Constant.baseUrl + "item/index.php?c=Goods&m=DeleteUserHistory" + "&user_id=" + userId + "&goods_ids=" + id);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"item/index.php?c=Goods&m=DeleteUserHistory")
-                .addParams("user_id",userId)
-                .addParams("goods_ids",id)
+                .url(Constant.baseUrl + "item/index.php?c=Goods&m=DeleteUserHistory")
+                .addParams("user_id", userId)
+                .addParams("goods_ids", id)
                 .build()
-                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
                     }
 
                     @Override
-                    public void onResponse(BaseDataListBean response, int id) {
-                           if(response.getStatus()==1){
-                               MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0, Gravity.CENTER,0,0).show();
-                              Refresh();
-                           }
+                    public void onResponse(BaseStringBean response, int id) {
+                        if (response.getStatus() == 1) {
+
+                            Refresh();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
+                        }
                     }
                 });
     }
@@ -188,7 +195,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
     private void Refresh() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        Log.i("我的浏览记录", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsHistoryList" + "&user_id=1");
+        Log.i("我的浏览记录", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsHistoryList" + "&user_id="+userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -204,11 +211,12 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BrowhistoryBean response, int id) {
                         dataBeanList = response.getData();
-                        adapter.add(dataBeanList,true);
-                       if(dataBeanList.size()==0){
-                           tv_empty.setVisibility(View.VISIBLE);
-                           tv_right.setVisibility(View.VISIBLE);
-                       }
+                        adapter.add(dataBeanList, true);
+                        if (dataBeanList.size() == 0) {
+                            tv_empty.setVisibility(View.VISIBLE);
+                            tv_right.setVisibility(View.GONE);
+                            ll_browhistory_parent.setVisibility(View.GONE);
+                        }
                     }
                 });
     }
@@ -218,18 +226,34 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
     public void bcak() {
         onBackPressed();
     }
+
     @OnClick(R.id.tv_actionbar_right)
-    public void edit(){
-        if(!flag){
+    public void edit() {
+        if (!flag) {
             tv_right.setText("完成");
-            flag=true;
-            isShow=false;
+            flag = true;
+            isShow = false;
             adapter.notifyDataSetChanged();
-        }else {
+            ll_all_deletee.setVisibility(View.VISIBLE);
+        } else {
             tv_right.setText("编缉");
-            flag=false;
-            isShow=true;
+            flag = false;
+            isShow = true;
             adapter.notifyDataSetChanged();
+            ll_all_deletee.setVisibility(View.GONE);
         }
+    }
+
+    @OnClick(R.id.tv_all_dele)
+    public void all_dele() {
+        StringBuilder sb=new StringBuilder();
+        for (int i = 0; i <dataBeanList.size() ; i++) {
+           List<BrowhistoryBean.DataBean.ChildDataBean> childList =dataBeanList.get(i).getChild_data();
+            for (int j = 0; j <childList.size() ; j++) {
+                BrowhistoryBean.DataBean.ChildDataBean bean=childList.get(j);
+                sb.append(bean.getId()).append(",");
+            }
+        }
+        delBrow(sb.toString());
     }
 }

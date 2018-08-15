@@ -119,7 +119,8 @@
         <activity android:name=".Uis.MeCenter.AccountSecurityPackage.ResetPayPassword2Activity" />
         <activity android:name=".Uis.ActiclePackage.ArticleWebViewActivity" />
         <activity android:name=".wxapi.RechargeSuccessActivity" />
-        <activity android:name=".Uis.HomePager.FindShop.FindShopXqActivity"></activity>
+        <activity android:name=".Uis.HomePager.FindShop.FindShopXqActivity" />
+        <activity android:name=".Uis.HomePager.FindShop.FindShopsActivity"></activity>
     </application>
 
 </manifest>

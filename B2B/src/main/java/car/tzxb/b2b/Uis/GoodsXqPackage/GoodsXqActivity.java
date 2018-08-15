@@ -318,8 +318,8 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         onBackPressed();
     }
 
-    public void setCurrent(int i) {
-        vp.setCurrentItem(i);
+    public void setTabSelect(int i){
+        tabLayout.getTabAt(i).select();
     }
 
     @Override

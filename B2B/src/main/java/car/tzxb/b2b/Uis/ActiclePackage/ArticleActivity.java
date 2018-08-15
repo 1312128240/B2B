@@ -102,11 +102,11 @@ public class ArticleActivity extends MyBaseAcitivity {
 
 
     private void Refresh() {
-        Log.i("文章", Constant.baseUrl + "messages/information.php?m=titles");
+        Log.i("文章", Constant.baseUrl + "messages/information.php?m=titles&api=xw");
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl + "messages/information.php?m=titles")
+                .url(Constant.baseUrl + "messages/information.php?m=titles&api=xw")
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                     @Override

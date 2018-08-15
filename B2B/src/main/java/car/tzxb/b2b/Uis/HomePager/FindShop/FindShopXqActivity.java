@@ -118,9 +118,11 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
     private LoadingDialog loadingDialog;
     private String userId;
     private int page;
+    private String shop_id;
+
     @Override
     public void initParms(Bundle parms) {
-
+        shop_id = getIntent().getStringExtra("shop_id");
     }
 
     @Override
@@ -409,7 +411,7 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
     }
     //获取商品数据
     private void Refesh() {
-        Log.i("门店详情数据",Constant.baseUrl+"item/index.php?c=Home&m=ShopIndexPage"+ "&shop_id=12&pagesize=20" +
+        Log.i("门店详情数据",Constant.baseUrl+"item/index.php?c=Home&m=ShopIndexPage"+ "&shop_id="+shop_id+"&pagesize=20" +
                 "&page="+page+"&price=" + param1 + "&sales=" + param2+"&user_id="+userId+"&cate="+cate+"&search="+search);
         showLoadingDialog();
         OkHttpUtils
@@ -417,7 +419,7 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
                 .tag(this)
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=ShopIndexPage")
                 .addParams("user_id",userId)
-                .addParams("shop_id", "12")
+                .addParams("shop_id", shop_id)
                 .addParams("pagesize", "20")
                 .addParams("page",String.valueOf(page))
                 .addParams("price", param1)
@@ -459,13 +461,13 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
         closeLoadingDialog();
         showLoadingDialog();
         Log.i("门店商品加载更多",Constant.baseUrl+"item/index.php?c=Home&m=ShopIndexPage"+
-                "&shop_id=12&pagesize=20&page="+page+"&price=" + param1 + "&sales=" + param2+"&user_id="+userId+"&cate="+cate+"&search="+search);
+                "&shop_id="+shop_id+"&pagesize=20&page="+page+"&price=" + param1 + "&sales=" + param2+"&user_id="+userId+"&cate="+cate+"&search="+search);
         OkHttpUtils
                 .get()
                 .tag(this)
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=ShopIndexPage")
                 .addParams("user_id",userId)
-                .addParams("shop_id", "12")
+                .addParams("shop_id", shop_id)
                 .addParams("pagesize", "20")
                 .addParams("page", String.valueOf(page))
                 .addParams("price", param1)

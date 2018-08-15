@@ -112,8 +112,6 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     private int y;
     private String shopId;
 
-
-
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_goods;
@@ -210,7 +208,6 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         tv_img.getLocationOnScreen(location);
         int x = location[0];
         y = location[1];
-
     }
 
     /**
@@ -453,11 +450,9 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         ll_all_pj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goodsActivity.setCurrent(1);
+                goodsActivity.setTabSelect(2);
             }
         });
-
-
     }
 
     /**
@@ -483,6 +478,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         ExplainPop ep = ExplainPop.getmInstance(MyApp.getContext());
         ep.show(scrollView);
     }
+
 
     @Override
     public void scollLv() {

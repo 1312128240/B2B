@@ -125,11 +125,13 @@ public class EvaluateFragment extends MyBaseFragment {
                 recy_img.setLayoutManager(new GridLayoutManager(MyApp.getContext(), 3));
                 List<String> imgList = evaluteBean.getImg_urls();
                 recy_img.addItemDecoration(new SpaceItemDecoration(8, 3));
+                final int w=DeviceUtils.dip2px(MyApp.getContext(),60);
+                final int h=DeviceUtils.dip2px(MyApp.getContext(),80);
                 CommonAdapter<String> imgAdapter = new CommonAdapter<String>(MyApp.getContext(), R.layout.iv_item, imgList) {
                     @Override
                     protected void convert(ViewHolder holder, String s, int position) {
                         ImageView iv = holder.getView(R.id.iv_item);
-                        Glide.with(MyApp.getContext()).load(s).override(210, 210).into(iv);
+                        Glide.with(MyApp.getContext()).load(s).override(w, h).into(iv);
                     }
                 };
                 recy_img.setAdapter(imgAdapter);

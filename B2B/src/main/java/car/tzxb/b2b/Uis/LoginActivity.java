@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.text.Editable;
 import android.text.Html;
 import android.text.InputFilter;
@@ -23,20 +24,13 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.androidkun.xtablayout.XTabLayout;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import com.umeng.analytics.MobclickAgent;
-
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CountDown.CountDownTextView;
@@ -45,15 +39,17 @@ import car.myview.MorphButton.MorphingButton;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
+import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.ActiclePackage.ArticleWebViewActivity;
 import car.tzxb.b2b.Uis.MeCenter.FindPassWordActivity;
-import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopActivity;
 import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
+import car.tzxb.b2b.Util.TabLayoutUtils;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -63,7 +59,7 @@ public class LoginActivity extends MyBaseAcitivity {
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
     @BindView(R.id.tab_login)
-    XTabLayout tabLayout;
+    TabLayout tabLayout;
     @BindView(R.id.mor_button)
     MorphingButton morphingButton;
     @BindView(R.id.et_login_phone)
@@ -110,9 +106,15 @@ public class LoginActivity extends MyBaseAcitivity {
     private void initUi() {
         tabLayout.addTab(tabLayout.newTab().setText("账号密码登录"));
         tabLayout.addTab(tabLayout.newTab().setText("手机验证码登录"));
-        tabLayout.setOnTabSelectedListener(new XTabLayout.OnTabSelectedListener() {
+        tabLayout.post(new Runnable() {
             @Override
-            public void onTabSelected(XTabLayout.Tab tab) {
+            public void run() {
+                TabLayoutUtils.setIndicator(tabLayout,40,40,0);
+            }
+        });
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
                 index = tab.getPosition();
                 etLoginPass.setText("");
                 etLoginPhone.setText("");
@@ -128,19 +130,19 @@ public class LoginActivity extends MyBaseAcitivity {
                     iv_pass_visiable.setVisibility(View.INVISIBLE);
                     tv_get_yzm.setVisibility(View.VISIBLE);
                 }
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
 
             }
 
             @Override
-            public void onTabUnselected(XTabLayout.Tab tab) {
-
-            }
-
-            @Override
-            public void onTabReselected(XTabLayout.Tab tab) {
+            public void onTabReselected(TabLayout.Tab tab) {
 
             }
         });
+
         //输入框的监听
         etLoginPhone.addTextChangedListener(new TextWatcher() {
             @Override
@@ -466,6 +468,34 @@ public class LoginActivity extends MyBaseAcitivity {
             intent.putExtra("from", "login");
             startActivity(intent);
         }
+    }
+    @OnClick(R.id.tv_agreement)
+    public void agreement(){
+        if(isFastClick()){
+            OkHttpUtils
+                    .get()
+                    .tag(this)
+                    .url(Constant.baseUrl+"messages/information.php?m=infolist&title=90")
+                    .build()
+                    .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                        @Override
+                        public void onError(Call call, Exception e, int id) {
+
+                        }
+
+                        @Override
+                        public void onResponse(BaseDataListBean response, int id) {
+                            BaseDataListBean.DataBean bean=response.getData().get(0);
+                            String title=bean.getTitle();
+                            String content=bean.getContent();
+                            Intent intent=new Intent(LoginActivity.this,ArticleWebViewActivity.class);
+                            intent.putExtra("title",title);
+                            intent.putExtra("content",content);
+                            startActivity(intent);
+                        }
+                    });
+        }
+
 
     }
 

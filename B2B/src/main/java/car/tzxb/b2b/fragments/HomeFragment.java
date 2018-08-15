@@ -56,6 +56,7 @@ import car.tzxb.b2b.Uis.ActiclePackage.ArticleWebViewActivity;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance;
 import car.tzxb.b2b.Uis.HomePager.FindShop.FindShopXqActivity;
+import car.tzxb.b2b.Uis.HomePager.FindShop.FindShopsActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
 import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
@@ -286,10 +287,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                 View view = v.getChildAt(0);
                 if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
                     Log.i(TAG, "到底部");
-                    if(dialog!=null) {
-                        dialog.dismiss();
-                    }
-                    showLoadingDialog();
                     LoadMore();
                 }
             }
@@ -377,19 +374,27 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void activity(){
        startActivity(new Intent(getActivity(), ActivityEntrance.class));
     }
+
     //查看更多文章
     @OnClick(R.id.tv_more_article)
     public void more_article(){
         startActivity(new Intent(getActivity(),ArticleActivity.class));
     }
+
     //发现好店
     @OnClick(R.id.rl_home_find_shop)
-  public void find(){
-        startActivity(new Intent(getActivity(), FindShopXqActivity.class));
+    public void find(){
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        if(userId==null){
+            Intent intent=new Intent(getActivity(),LoginActivity.class);
+            startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+            return;
+        }
+        startActivity(new Intent(getActivity(),FindShopsActivity.class));
     }
+
     /**
      * 自定义tablayout
-     *
      * @param beanList
      */
     private void setCustomTab(final List<BaseDataListBean.DataBean> beanList) {
@@ -549,6 +554,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
         getTjArticle();
     }
 
+
     private void getTjArticle() {
         OkHttpUtils
                 .get()
@@ -665,6 +671,10 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
      * 加载更多
      */
     private void LoadMore() {
+        if(dialog!=null) {
+            dialog.dismiss();
+        }
+        showLoadingDialog();
         Log.i("首页品牌商品加载更多", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsList" + "&cate=" + categoryId +
                 "&brand=" + brands + "&page=" + pager + "&pagesize=10" + "&sales=desc");
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
