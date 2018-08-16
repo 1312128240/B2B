@@ -9,7 +9,6 @@ import java.util.List;
 
 public class OrderBean implements Serializable{
 
-
     private DataBean data;
     private String status;
     private String msg;
@@ -38,19 +37,24 @@ public class OrderBean implements Serializable{
         this.msg = msg;
     }
 
-    public static class DataBean implements Serializable {
+    public static class DataBean implements Serializable{
 
-
-        private int shop_car;
-        private double offset;
-        private double amount_pay;
-        private int amount_cost_point;
-        private int amount_point;
-        private String goods_kind_number;
-        private String amount_price;
-        private double all_offset;
+        private int goods_kind_number;
         private double special_money;
+        private int offset;
+        private int all_offset;
+        private int amount_price;
+        private int discount_amount;
+        private int amount_pay;
         private List<GoodsBean> goods;
+
+        public int getGoods_kind_number() {
+            return goods_kind_number;
+        }
+
+        public void setGoods_kind_number(int goods_kind_number) {
+            this.goods_kind_number = goods_kind_number;
+        }
 
         public double getSpecial_money() {
             return special_money;
@@ -60,79 +64,44 @@ public class OrderBean implements Serializable{
             this.special_money = special_money;
         }
 
-        public double getAll_offset() {
-            return all_offset;
-        }
-
-        public void setAll_offset(double all_offset) {
-            this.all_offset = all_offset;
-        }
-
-        public String getDiscount_amount() {
-            return discount_amount;
-        }
-
-        public void setDiscount_amount(String discount_amount) {
-            this.discount_amount = discount_amount;
-        }
-
-        private String discount_amount;
-
-
-        public String getAmount_price() {
-            return amount_price;
-        }
-
-        public void setAmount_price(String amount_price) {
-            this.amount_price = amount_price;
-        }
-
-        public String getGoods_kind_number() {
-            return goods_kind_number;
-        }
-
-        public void setGoods_kind_number(String goods_kind_number) {
-            this.goods_kind_number = goods_kind_number;
-        }
-
-        public int getShop_car() {
-            return shop_car;
-        }
-
-        public void setShop_car(int shop_car) {
-            this.shop_car = shop_car;
-        }
-
-        public double getOffset() {
+        public int getOffset() {
             return offset;
         }
 
-        public void setOffset(double offset) {
+        public void setOffset(int offset) {
             this.offset = offset;
         }
 
-        public double getAmount_pay() {
+        public int getAll_offset() {
+            return all_offset;
+        }
+
+        public void setAll_offset(int all_offset) {
+            this.all_offset = all_offset;
+        }
+
+        public int getAmount_price() {
+            return amount_price;
+        }
+
+        public void setAmount_price(int amount_price) {
+            this.amount_price = amount_price;
+        }
+
+        public int getDiscount_amount() {
+            return discount_amount;
+        }
+
+        public void setDiscount_amount(int discount_amount) {
+            this.discount_amount = discount_amount;
+        }
+
+        public int getAmount_pay() {
             return amount_pay;
         }
 
-        public void setAmount_pay(double amount_pay) {
+        public void setAmount_pay(int amount_pay) {
             this.amount_pay = amount_pay;
-        }
-
-        public int getAmount_cost_point() {
-            return amount_cost_point;
-        }
-
-        public void setAmount_cost_point(int amount_cost_point) {
-            this.amount_cost_point = amount_cost_point;
-        }
-
-        public int getAmount_point() {
-            return amount_point;
-        }
-
-        public void setAmount_point(int amount_point) {
-            this.amount_point = amount_point;
         }
 
         public List<GoodsBean> getGoods() {
@@ -147,17 +116,19 @@ public class OrderBean implements Serializable{
 
             private String shop_id;
             private String shop_name;
-            private String mesg;
+            private int shop_disc;
+            private int shop_amount;
+            private String special_promotion;
+            private List<DataChildBean> data_child;
+            private String Mesg;
             public String getMesg() {
-                return mesg;
+                return Mesg;
             }
 
             public void setMesg(String mesg) {
-                this.mesg = mesg;
+                Mesg = mesg;
             }
 
-
-            private List<DataChildBean> data_child;
 
             public String getShop_id() {
                 return shop_id;
@@ -175,6 +146,30 @@ public class OrderBean implements Serializable{
                 this.shop_name = shop_name;
             }
 
+            public int getShop_disc() {
+                return shop_disc;
+            }
+
+            public void setShop_disc(int shop_disc) {
+                this.shop_disc = shop_disc;
+            }
+
+            public int getShop_amount() {
+                return shop_amount;
+            }
+
+            public void setShop_amount(int shop_amount) {
+                this.shop_amount = shop_amount;
+            }
+
+            public String getSpecial_promotion() {
+                return special_promotion;
+            }
+
+            public void setSpecial_promotion(String special_promotion) {
+                this.special_promotion = special_promotion;
+            }
+
             public List<DataChildBean> getData_child() {
                 return data_child;
             }
@@ -183,8 +178,38 @@ public class OrderBean implements Serializable{
                 this.data_child = data_child;
             }
 
-            public static class DataChildBean implements Serializable {
-
+            public static class DataChildBean {
+                /**
+                 * id : 1602
+                 * user_id : 11821
+                 * goods_id : 1615
+                 * number : 1
+                 * is_del : 0
+                 * add_time : 2017-12-02 14:07:30
+                 * type : 0
+                 * shop_id : 12
+                 * seck_amount : null
+                 * disc_id : null
+                 * is_seck : 0
+                 * motion_id : 0
+                 * motion_type : 提示
+                 * motion_zpid : 0
+                 * pro_id : 1615
+                 * bgoods_id : 532
+                 * bis_del : 0
+                 * title : 同致相伴防冻玻璃水-10℃ 【1.8L/瓶 】
+                 * market_price : 20.00
+                 * seal_price : 12.00
+                 * pic : product_img/20171219/20171219102739677934.jpg
+                 * point : 10000
+                 * cost_point : 20.00
+                 * offset : 0.00
+                 * img_url : https://img.aiucar.cn/product_img/20171219/20171219102739677934.jpg
+                 * child_title : 您的身份发生了变化,请重新选择优惠类型
+                 * child_type : 1
+                 * gift : []
+                 * discount_amount : 0
+                 */
 
                 private String id;
                 private String user_id;
@@ -198,7 +223,8 @@ public class OrderBean implements Serializable{
                 private Object disc_id;
                 private String is_seck;
                 private String motion_id;
-                private Object motion_type;
+                private String motion_type;
+                private String motion_zpid;
                 private String pro_id;
                 private String bgoods_id;
                 private String bis_del;
@@ -210,6 +236,10 @@ public class OrderBean implements Serializable{
                 private String cost_point;
                 private String offset;
                 private String img_url;
+                private String child_title;
+                private String child_type;
+                private int discount_amount;
+                private List<?> gift;
 
                 public String getId() {
                     return id;
@@ -307,12 +337,20 @@ public class OrderBean implements Serializable{
                     this.motion_id = motion_id;
                 }
 
-                public Object getMotion_type() {
+                public String getMotion_type() {
                     return motion_type;
                 }
 
-                public void setMotion_type(Object motion_type) {
+                public void setMotion_type(String motion_type) {
                     this.motion_type = motion_type;
+                }
+
+                public String getMotion_zpid() {
+                    return motion_zpid;
+                }
+
+                public void setMotion_zpid(String motion_zpid) {
+                    this.motion_zpid = motion_zpid;
                 }
 
                 public String getPro_id() {
@@ -401,6 +439,38 @@ public class OrderBean implements Serializable{
 
                 public void setImg_url(String img_url) {
                     this.img_url = img_url;
+                }
+
+                public String getChild_title() {
+                    return child_title;
+                }
+
+                public void setChild_title(String child_title) {
+                    this.child_title = child_title;
+                }
+
+                public String getChild_type() {
+                    return child_type;
+                }
+
+                public void setChild_type(String child_type) {
+                    this.child_type = child_type;
+                }
+
+                public int getDiscount_amount() {
+                    return discount_amount;
+                }
+
+                public void setDiscount_amount(int discount_amount) {
+                    this.discount_amount = discount_amount;
+                }
+
+                public List<?> getGift() {
+                    return gift;
+                }
+
+                public void setGift(List<?> gift) {
+                    this.gift = gift;
                 }
             }
         }

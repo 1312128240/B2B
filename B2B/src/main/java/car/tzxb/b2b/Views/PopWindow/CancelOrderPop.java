@@ -136,19 +136,4 @@ public class CancelOrderPop extends PopupWindow {
         void cancle(String s);
     }
 
-    /**
-     * 显示方法
-     * @param parent
-     */
-    public void show(View parent){
-
-        if(DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())){
-            int navgationHeight=DeviceUtils.getNavigationBarHeight(MyApp.getContext());
-            showAtLocation(parent, Gravity.BOTTOM,0,navgationHeight);
-        }else {
-            showAtLocation(parent,Gravity.BOTTOM,0,0);
-        }
-
-    }
-
 }

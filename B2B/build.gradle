@@ -7,15 +7,33 @@ android {
         applicationId "car.tzxb.b2b"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 5
+        versionName "1.0.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true     //突破方法数65535限制
 
         ndk {
             abiFilters "armeabi"
         }
+
     }
+
+    //添加签名文件配置要放buildTypes前面
+    signingConfigs {
+
+        debug {}
+
+        release {
+            storeFile file("../b2b.jks")
+            storePassword "123456"
+            keyAlias "b2bKey"
+            keyPassword "123456"
+            v2SigningEnabled false
+        }
+
+    }
+
+
     buildTypes {
         release {
             minifyEnabled false
@@ -44,6 +62,7 @@ dependencies {
     compile files('src/main/jniLibs/alipaySdk-20170922.jar')
     compile files('libs/UPPayAssistEx.jar')
     compile files('libs/UPPayPluginExPro.jar')
+
     compile 'com.android.support:appcompat-v7:26.1.0'
     compile 'com.android.support:design:26.1.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -60,6 +79,5 @@ dependencies {
     compile 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
     compile 'com.umeng.sdk:common:latest.integration'
     compile 'com.umeng.sdk:analytics:latest.integration'
-
     testCompile 'junit:junit:4.12'
 }

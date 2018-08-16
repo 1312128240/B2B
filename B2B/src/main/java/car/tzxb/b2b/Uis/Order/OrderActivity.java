@@ -19,16 +19,13 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -193,11 +190,11 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 .get()
                 .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=pay_list")
                 .tag(this)
+                .addParams("user_id", userid)
                 .addParams("car_id", carId)
                 .addParams("pro_id", proId)
                 .addParams("num", num)
                 .addParams("shop_id", shopId)
-                .addParams("user_id", userid)
                 .addParams("motion_id", "")
                 .addParams("type", "")
                 .addParams("special_id", special_id)
@@ -205,12 +202,13 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 .execute(new GenericsCallback<OrderBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                       Log.i("走错误",e.toString());
                     }
 
                     @Override
                     public void onResponse(OrderBean response, int id) {
                         dataBean = response.getData();
+                        Log.i("走成功",response.toString());
                         initData();
                     }
                 });
@@ -243,6 +241,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
             }
         }
 
+
         CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean> adapter = new CommonAdapter<OrderBean.DataBean.GoodsBean.DataChildBean>(MyApp.getContext(), R.layout.iv_item, lists) {
             @Override
             protected void convert(ViewHolder holder, OrderBean.DataBean.GoodsBean.DataChildBean dataChildBean, int position) {
@@ -272,6 +271,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 addressLayout.setVisibility(View.GONE);
                 tv_goods_offset.setText("¥" + offset2);
                 double pay = dataBean.getAmount_pay() - dataBean.getAll_offset();
+                Log.i("总价钱是",dataBean.getAmount_pay()+"");
                 DecimalFormat df  = new DecimalFormat("######0.00");
                 tv_finally_price.setText(Html.fromHtml("实付款  " + "<font color='#FA3314'><big>" + "¥" + df.format(pay)+ "</big></font>"));
                 break;
@@ -373,7 +373,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         String orderType = tv_distribution.getText().toString();
         Log.i("提交订单", Constant.baseUrl + "orders/orders_mobile.php?m=order_add" + "&user_id=" + userId + "&username=" + mobile +
                 "&dealer_address=" + dealer_address + "&dealer_name=" + dealer_name + "&dealer_mobile=" + dealer_mobile + "&message=" + mesg
-                + "&order_type=" + orderType + "&expect_time=" + "&pay_device=Android" + "&coupon_id=0" + "&is_car=0" + "&carid_proid=" + carId);
+                + "&order_type=" + orderType + "&expect_time=" + "&pay_device=Android" + "&coupon_id=0" + "&is_car=0" + "&carid_proid=" + carId+"&special_id="+special_id);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "orders/orders_mobile.php?m=order_add")
@@ -390,6 +390,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 .addParams("coupon_id", "0")
                 .addParams("is_car", "0")
                 .addParams("carid_proid", carId)
+                .addParams("special_id",special_id)
                 .build()
                 .execute(new GenericsCallback<BaseDataBean>(new JsonGenericsSerializator()) {
                     @Override

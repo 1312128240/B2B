@@ -63,9 +63,13 @@ public class ShapeLoadingDialog extends Dialog {
 
         private CharSequence mLoadText;
 
+
+
         private boolean mCancelable = true;
 
         private boolean mCanceledOnTouchOutside = true;
+
+
 
         public Builder(Context context) {
             mContext = context;

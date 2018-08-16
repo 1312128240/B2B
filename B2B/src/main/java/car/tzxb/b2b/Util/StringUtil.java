@@ -1,7 +1,4 @@
 package car.tzxb.b2b.Util;
-
-import android.util.Base64;
-
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

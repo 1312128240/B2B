@@ -105,7 +105,6 @@ public class tjr_province extends PopupWindow  implements OnWheelChangedListener
         } else {
             showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         }
-
     }
 
 

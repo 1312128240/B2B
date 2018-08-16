@@ -4,6 +4,7 @@ import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,18 +21,22 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
+import car.myrecyclerviewadapter.SpaceItem_StaggerLayoutManager;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
 import car.myview.CircleImageView.CircleImageView;
@@ -57,7 +62,7 @@ import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
 
-public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedChangeListener{
+public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedChangeListener {
 
     @BindView(R.id.rg_my_service)
     RadioGroup rg_service;
@@ -75,16 +80,16 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     LinearLayout ll_login_regist;
     @BindView(R.id.img_avatar)
     CircleImageView cv_headerImager;
-    @BindViews({ R.id.rb_yhq_number, R.id.rb_gold_number, R.id.rb_jf_number,R.id.rb_balance_number })
+    @BindViews({R.id.rb_yhq_number, R.id.rb_gold_number, R.id.rb_jf_number, R.id.rb_balance_number})
     List<RadioButton> PropertyViews;
-    @BindViews({R.id.rb_collect_goods,R.id.rb_collect_shop,R.id.rb_browse_record})
+    @BindViews({R.id.rb_collect_goods, R.id.rb_collect_shop, R.id.rb_browse_record})
     List<RadioButton> CollectViews;
     @BindView(R.id.recy_order_status)
     RecyclerView recy_status;
     @BindView(R.id.rg_coffers)
     RadioGroup rg_coffers;
     private MyCenterBean.DataBean.UserInfoBean userBean;
-    private List<BaseDataListBean.DataBean> beanList=new ArrayList<>();
+    private List<BaseDataListBean.DataBean> beanList = new ArrayList<>();
     private CommonAdapter<BaseDataListBean.DataBean> adapter;
     private String userId;
 
@@ -118,7 +123,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
             Judge();
             Guess();
@@ -129,18 +134,18 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
      * 获取个人信息
      */
     private void Judge() {
-       Log.i("我的个人中心",Constant.baseUrl+"item/index.php?c=Home&m=MyCenter&user_id="+userId);
+        Log.i("我的个人中心", Constant.baseUrl + "item/index.php?c=Home&m=MyCenter&user_id=" + userId);
         OkHttpUtils
                 .get()
-                .url(Constant.baseUrl+"item/index.php?c=Home&m=MyCenter")
+                .url(Constant.baseUrl + "item/index.php?c=Home&m=MyCenter")
                 .tag(this)
-                .addParams("user_id",userId)
+                .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<MyCenterBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                         Log.i("走错误","aa");
-                         notLogin();
+                        Log.i("走错误", "aa");
+                        notLogin();
                     }
 
                     @Override
@@ -153,17 +158,16 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     /**
      * 猜你在找
      */
-    public void Guess(){
-        Log.i("猜你在找",Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id="+userId);
+    public void Guess() {
+        Log.i("猜你在找", Constant.baseUrl + "item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"item/index.php?c=Goods&m=UserLike&pagesize=10&page=0")
-                .addParams("user_id",userId)
-                .addParams("sales","desc")
+                .url(Constant.baseUrl + "item/index.php?c=Goods&m=UserLike&pagesize=10&page=0")
+                .addParams("user_id", userId)
+                .addParams("sales", "desc")
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
-
 
 
                     @Override
@@ -174,7 +178,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
                         beanList = response.getData();
-                        adapter.add(beanList,true);
+                        adapter.add(beanList, true);
                     }
                 });
     }
@@ -182,33 +186,34 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
 
     /**
      * 已登录
+     *
      * @param response
      */
     private void hasLogin(MyCenterBean response) {
         userBean = response.getData().getUserInfo();
         ll_login_regist.setVisibility(View.INVISIBLE);
         tv_username.setVisibility(View.VISIBLE);
-        if("".equals(userBean.getNackname())){
+        if ("".equals(userBean.getNackname())) {
             tv_username.setText("暂无昵称");
-        }else {
+        } else {
             tv_username.setText(userBean.getNackname());
         }
 
         Glide.with(MyApp.getContext()).load(userBean.getHead_img()).asBitmap().into(cv_headerImager);
         //收藏
-        List<Integer> scList=response.getData().getUserCollect();
+        List<Integer> scList = response.getData().getUserCollect();
         CollectViews.get(0).setText(scList.get(0) + "\n收藏商品");
         CollectViews.get(1).setText(scList.get(1) + "\n收藏店铺");
         CollectViews.get(2).setText(scList.get(2) + "\n浏览记录");
         //金库
-        List<Integer> jkList=response.getData().getMyProperty();
-        PropertyViews.get(0).setText(Html.fromHtml(jkList.get(0)+"  张"+"<br>"+"优惠券"));
-        PropertyViews.get(1).setText(Html.fromHtml(jkList.get(1)+"  个"+"<br>"+"金币"));
-        PropertyViews.get(2).setText(Html.fromHtml(jkList.get(2)+"  分"+"<br>"+"积分"));
-        PropertyViews.get(3).setText(Html.fromHtml(jkList.get(3)+"  元"+"<br>"+"余额"));
+        List<Integer> jkList = response.getData().getMyProperty();
+        PropertyViews.get(0).setText(Html.fromHtml(jkList.get(0) + "  张" + "<br>" + "优惠券"));
+        PropertyViews.get(1).setText(Html.fromHtml(jkList.get(1) + "  个" + "<br>" + "金币"));
+        PropertyViews.get(2).setText(Html.fromHtml(jkList.get(2) + "  分" + "<br>" + "积分"));
+        PropertyViews.get(3).setText(Html.fromHtml(jkList.get(3) + "  元" + "<br>" + "余额"));
 
         //订单状态
-        List<Integer> orderNumList= response.getData().getOrderNumber();
+        List<Integer> orderNumList = response.getData().getOrderNumber();
         initOrderRecy(orderNumList);
     }
 
@@ -224,44 +229,44 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         CollectViews.get(1).setText("0" + "\n收藏店铺");
         CollectViews.get(2).setText("0" + "\n浏览记录");
         //金库
-        PropertyViews.get(0).setText(Html.fromHtml("0  张"+"<br>"+"优惠券"));
-        PropertyViews.get(1).setText(Html.fromHtml("0  个"+"<br>"+"金币"));
-        PropertyViews.get(2).setText(Html.fromHtml("0  分"+"<br>"+"积分"));
-        PropertyViews.get(3).setText(Html.fromHtml("0  元"+"<br>"+"余额"));
+        PropertyViews.get(0).setText(Html.fromHtml("0  张" + "<br>" + "优惠券"));
+        PropertyViews.get(1).setText(Html.fromHtml("0  个" + "<br>" + "金币"));
+        PropertyViews.get(2).setText(Html.fromHtml("0  分" + "<br>" + "积分"));
+        PropertyViews.get(3).setText(Html.fromHtml("0  元" + "<br>" + "余额"));
         //订单数
-        List<Integer> numList=new ArrayList<>();
-        for (int i = 0; i <5 ; i++) {
+        List<Integer> numList = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
             numList.add(0);
         }
         initOrderRecy(numList);
     }
 
     private void initOrderRecy(List<Integer> orderNumList) {
-        final String[] str={"待付款","待发货","待收货","待评价","退款/售后"};
-        final int img[] ={R.mipmap.my_icon_payment,R.mipmap.my_icon_pd,R.mipmap.my_icon_gtbr,R.mipmap.my_icon_tbe,R.mipmap.my_icon_service};
-        recy_status.setLayoutManager(new GridLayoutManager(getContext(),5));
-        CommonAdapter<Integer> orderStatus=new CommonAdapter<Integer>(MyApp.getContext(),R.layout.order_status_item,orderNumList) {
+        final String[] str = {"待付款", "待发货", "待收货", "待评价", "退款/售后"};
+        final int img[] = {R.mipmap.my_icon_payment, R.mipmap.my_icon_pd, R.mipmap.my_icon_gtbr, R.mipmap.my_icon_tbe, R.mipmap.my_icon_service};
+        recy_status.setLayoutManager(new GridLayoutManager(getContext(), 5));
+        CommonAdapter<Integer> orderStatus = new CommonAdapter<Integer>(MyApp.getContext(), R.layout.order_status_item, orderNumList) {
             @Override
             protected void convert(ViewHolder holder, Integer integer, int position) {
-                LinearLayout.LayoutParams parasm=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                LinearLayout parent=holder.getView(R.id.order_item_parent);
+                LinearLayout.LayoutParams parasm = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                LinearLayout parent = holder.getView(R.id.order_item_parent);
                 parent.setLayoutParams(parasm);
                 parent.setGravity(Gravity.CENTER);
                 //图片
-                Glide.with(getContext()).load(img[position]).override(50,50).into((ImageView) holder.getView(R.id.iv_order));
+                Glide.with(getContext()).load(img[position]).override(50, 50).into((ImageView) holder.getView(R.id.iv_order));
                 //标题
-                TextView tv=holder.getView(R.id.tv_order_title);
-                if(position==2){
-                    tv.setPadding(0,8,0,0);
+                TextView tv = holder.getView(R.id.tv_order_title);
+                if (position == 2) {
+                    tv.setPadding(0, 8, 0, 0);
                 }
                 tv.setText(str[position]);
 
                 //数量
-                BadgeView bv=holder.getView(R.id.order_number_bv);
+                BadgeView bv = holder.getView(R.id.order_number_bv);
                 bv.setBackground(getResources().getDrawable(R.drawable.circle_bg2));
                 bv.setTextColor(Color.RED);
                 bv.setTypeface(Typeface.DEFAULT);
-                bv.setText(integer+"");
+                bv.setText(integer + "");
             }
         };
         recy_status.setAdapter(orderStatus);
@@ -276,11 +281,11 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                     return;
                 }
-               Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
-                if(position==4){
-                    position=-1;
+                Intent intent = new Intent(getActivity(), OrderStatusActivity.class);
+                if (position == 4) {
+                    position = -1;
                 }
-                intent.putExtra("index", position+1);
+                intent.putExtra("index", position + 1);
                 startActivity(intent);
             }
 
@@ -296,16 +301,15 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     /**
      * 登录或注册
      */
-    @OnClick({R.id.tv_login,R.id.tv_regist})
-    public void login(){
-        Intent intent=new Intent(getActivity(),LoginActivity.class);
-        startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+    @OnClick({R.id.tv_login, R.id.tv_regist})
+    public void login() {
+        Intent intent = new Intent(getActivity(), LoginActivity.class);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
     private void initRecommend() {
         recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.addItemDecoration(new SpaceItemDecoration(10, 2));
-        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.addItemDecoration(new SpaceItem_StaggerLayoutManager(10, 2));
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout, beanList) {
             @Override
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
@@ -314,14 +318,14 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
                 holder.setText(R.id.tv_recommend_title, bean.getShop_name());
                 //名字
-                holder.setText(R.id.tv_recommend_title,bean.getGoods_name());
+                holder.setText(R.id.tv_recommend_title, bean.getGoods_name());
                 //价格
-                TextView tv_price=holder.getView(R.id.tv_recommend_price);
+                TextView tv_price = holder.getView(R.id.tv_recommend_price);
                 tv_price.setText(Html.fromHtml("¥ <big>" + bean.getPrice() + "</big>"));
-     ;           //销量
-                TextView tv_sales=holder.getView(R.id.tv_recomment_sales);
-                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-                tv_sales.setText("销量 "+bean.getSales());
+                ;           //销量
+                TextView tv_sales = holder.getView(R.id.tv_recomment_sales);
+                tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                tv_sales.setText("销量 " + bean.getSales());
             }
         };
         recyclerView.setAdapter(adapter);
@@ -343,7 +347,6 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     }
 
 
-
     @Override
     public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
         RadioButton rb = radioGroup.findViewById(i);
@@ -357,12 +360,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         switch (i) {
             case R.id.rb_collect_goods:
                 intent.setClass(getActivity(), CollectActivity.class);
-                intent.putExtra("index",0);
+                intent.putExtra("index", 0);
                 startActivity(intent);
                 break;
             case R.id.rb_collect_shop:
                 intent.setClass(getActivity(), CollectActivity.class);
-                intent.putExtra("index",1);
+                intent.putExtra("index", 1);
                 startActivity(intent);
                 break;
             case R.id.rb_browse_record:
@@ -370,7 +373,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 startActivity(intent);
                 break;
             case R.id.rb_address:
-                intent.setClass(getActivity(),MyAddressActivity.class);
+                intent.setClass(getActivity(), MyAddressActivity.class);
                 startActivity(intent);
                 break;
             case R.id.rb_gold_number:
@@ -380,38 +383,44 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             case R.id.rb_balance_number:
                 intent.setClass(getActivity(), MyWalletActivity.class);
                 startActivity(intent);
-              break;
+                break;
+            case R.id.rb_my_kf:
+                String phoneNo = "0755-23732254";
+                Intent action = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNo));
+                action.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(action);
+                break;
             default:
-                MyToast.makeTextAnim(MyApp.getContext(),"还未开放",0,Gravity.CENTER,0,0).show();
+                MyToast.makeTextAnim(MyApp.getContext(), "还未开放", 0, Gravity.CENTER, 0, 0).show();
                 break;
         }
 
     }
 
 
-      //查看全部订单
+    //查看全部订单
     @OnClick(R.id.tv_all_order)
-    public void all_order(){
+    public void all_order() {
         if (userId == null) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
-        Intent intent=new Intent(getActivity(),OrderStatusActivity.class);
+        Intent intent = new Intent(getActivity(), OrderStatusActivity.class);
         intent.putExtra("index", 0);
         startActivity(intent);
     }
 
     //设置
     @OnClick(R.id.iv_my_setup)
-    public void setup(){
+    public void setup() {
         if (userId == null) {
             Intent intent = new Intent(getActivity(), LoginActivity.class);
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
-        Intent intent=new Intent(getActivity(),SettingsActivity.class);
-        startActivity(intent,ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+        Intent intent = new Intent(getActivity(), SettingsActivity.class);
+        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
     }
 
 

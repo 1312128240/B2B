@@ -2,7 +2,6 @@ package car.tzxb.b2b.Views.PopWindow;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,15 +11,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.bumptech.glide.Glide;
-
 import java.util.List;
-
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.tzxb.b2b.Bean.GoodsXqBean;
@@ -101,25 +95,6 @@ public class DiscountsPop extends PopupWindow {
                 }else if("mjt".equals(type)||"mjy".equals(type)){
                     tv_type.setText("满减");
                 }
-                //优惠内容
-                List<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftList=bean.getGift();
-            /*    RecyclerView recy=holder.getView(R.id.recy_inner_disconts);
-                recy.setNestedScrollingEnabled(false);
-                recy.setLayoutManager(new LinearLayoutManager(mContext));
-                CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean> giftAdapter= new CommonAdapter<GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean>(mContext,R.layout.my_gold_sign_item,giftList) {
-                    @Override
-                    protected void convert(ViewHolder holder, GoodsXqBean.DataBean.ProductBean.PromotionBean.GiftBean giftBean, int position) {
-                        //图片
-                        ImageView iv=holder.getView(R.id.iv_discounts);
-                        iv.setVisibility(View.VISIBLE);
-                        int i=DeviceUtils.dip2px(mContext,30);
-                        Glide.with(mContext).load(giftBean.getZp_pro_img()).override(i,i).into((ImageView) holder.getView(R.id.iv_discounts));
-                        //内容
-                        holder.setText(R.id.tv_sign_date,giftBean.getZp_title());
-                    }
-                };
-                recy.setAdapter(giftAdapter);*/
-
             }
         };
         recyclerView.setAdapter(adapter);

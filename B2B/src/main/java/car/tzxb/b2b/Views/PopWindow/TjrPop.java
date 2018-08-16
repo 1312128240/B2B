@@ -42,9 +42,7 @@ import okhttp3.Call;
 
 public class TjrPop extends PopupWindow{
     private Context mContext;
-   // private List<BaseStringBean> lists;
     private RecyclerView recyclerView;
-  //  private List<BaseDataListBean.DataBean> beanList=new ArrayList<>();
     private RadioGroup rg_tjr;
     private View parent;
     private RadioButton rb1;

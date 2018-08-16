@@ -108,6 +108,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     LinearLayout ll_discounts;
     @BindView(R.id.recy_discounts)
     RecyclerView recyclerView_discounts;
+    @BindView(R.id.tv_miaoshu)
+    TextView tv_ms;
     private String flag;
     private int y;
     private String shopId;
@@ -216,30 +218,35 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
      */
     private void initdetails(final List<GoodsXqBean.DataBean.ProductBean> product) {
 
-        List<String> imgList = new ArrayList<>();
         List<String> ggList=new ArrayList<>();
-        for (int i = 0; i < product.size(); i++) {
-            GoodsXqBean.DataBean.ProductBean productBean=product.get(i);
-            //取出图片
-            imgList.addAll(productBean.getContents_mobi());
-            //取出规格颜色
-            ggList.add(productBean.getColor_name()+productBean.getNetwork_name());
+
+        if(product.size()!=0){
+
+            for (int i = 0; i <product.size(); i++) {
+                GoodsXqBean.DataBean.ProductBean productBean=product.get(i);
+                //取出规格颜色
+                ggList.add(productBean.getColor_name()+productBean.getNetwork_name());
+            }
+            Log.i("商品规格",ggList.size()+"");
+            //规格信息自定义radiobutton
+            custRadioButton(ggList,product);
+            //适配底部图片
+            List<String> imgUrl=product.get(0).getContents_mobi();
+            DetailsAdapter detailsAdapter = new DetailsAdapter(MyApp.getContext(), imgUrl);
+            lv_details.setAdapter(detailsAdapter);
         }
-         //规格信息自定义radiobutton
-        custRadioButton(ggList,product);
-        //适配底部图片
-        DetailsAdapter detailsAdapter = new DetailsAdapter(MyApp.getContext(), imgList);
-        lv_details.setAdapter(detailsAdapter);
+
+
     }
     /**
      * 自定义规格radioButton
      */
     public void custRadioButton(List<String> ggList, final List<GoodsXqBean.DataBean.ProductBean> product){
-        RadioButton rb=null;
-        int minWidth=DeviceUtils.dip2px(MyApp.getContext(),80);
-        int height=DeviceUtils.dip2px(MyApp.getContext(),25);
+         RadioButton rb=null;
+         int minWidth=DeviceUtils.dip2px(MyApp.getContext(),80);
+         int height=DeviceUtils.dip2px(MyApp.getContext(),25);
          FlexboxLayout.LayoutParams layoutParams=new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
-         layoutParams.setMargins(0,0,20,20);
+        layoutParams.setMargins(0,0,15,15);
         for (int i = 0; i <ggList.size() ; i++) {
             rb=new RadioButton(MyApp.getContext());
             rb.setLayoutParams(layoutParams);
@@ -259,6 +266,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
             rb.setTextColor(MyApp.getContext().getResources().getColorStateList(R.color.tv_color2));
             rg_gg.addView(rb);
         }
+        Log.i("添加进去没有",rg_gg.getChildCount()+"");
         rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@IdRes int checkedId) {
@@ -277,6 +285,12 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
                     initDiscounts(promotionBeanList);
                 }else {
                     ll_discounts.setVisibility(View.GONE);
+                }
+                //描述
+                String ms=productBean.getMiaoshu();
+                if(!"".equals(ms)){
+                    tv_ms.setVisibility(View.VISIBLE);
+                    tv_ms.setText(ms);
                 }
             }
         });
@@ -457,12 +471,12 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
 
     /**
      * 商品参数信息
-     *
      * @param goods
      */
     private void initInfor(GoodsXqBean.DataBean.GoodsBean goods) {
         //价钱销量信息
         tv_sales.setText("月销量: " + goods.getSales());
+        tv_type.setBackground(MyApp.getContext().getResources().getDrawable(R.drawable.bg7));
         tv_type.setText(goods.getDealer());
         tv_goods_name.setText("\u3000\u3000" + goods.getTitle());
         tv_city.setText(goods.getProvince() + goods.getCity() + goods.getArea());
@@ -476,7 +490,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     @OnClick(R.id.ll_goods_xq_explain)
     public void explain() {
         ExplainPop ep = ExplainPop.getmInstance(MyApp.getContext());
-        ep.show(scrollView);
+        DeviceUtils.showPopWindow(scrollView,ep);
     }
 
 

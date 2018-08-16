@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
@@ -28,6 +29,8 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
+import car.myview.Loading.LoadingView;
+import car.myview.Loading.ShapeLoadingDialog;
 import car.myview.NoScollViewPager;
 import car.tzxb.b2b.Adapter.XqPagerAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
@@ -43,6 +46,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.GoodsXqPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.LoginActivity;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.AddShoppingCarPop;
 import car.tzxb.b2b.config.Constant;
@@ -62,13 +66,13 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     RadioGroup rg;
     @BindView(R.id.goods_xq_parent)
     View parent;
-    boolean sc;
     private MvpContact.Presenter presenter = new GoodsXqPresenterIml(this);
     private String mainId;
     private GoodsXqBean goodsXqBean;
     private int index;
-    GoodsXqInterface goodsXqInterface;
     private String from;
+    GoodsXqInterface goodsXqInterface;
+    private ShapeLoadingDialog shapeLoadingDialog;
 
     public void setDataSource(GoodsXqInterface ds) {
         this.goodsXqInterface = ds;
@@ -243,7 +247,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     private void showShoppingCarWindow() {
         List<GoodsXqBean.DataBean.ProductBean> productBeanList=goodsXqBean.getData().getProduct();
         AddShoppingCarPop window = new AddShoppingCarPop(MyApp.getContext(), productBeanList,index);
-        window.show(parent);
+        DeviceUtils.showPopWindow(parent,window);
         window.setAddShoppingCar(new AddShoppingCarPop.AddShoppingCarListener() {
             @Override
             public void Click(int number, String pro_id, String shop_id,String discountsId) {
@@ -297,16 +301,22 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         goodsXqBean = (GoodsXqBean) o;
         //传递到第一个fragment
         goodsXqInterface.getData(goodsXqBean);
+
     }
 
     @Override
     public void showLoading() {
+        shapeLoadingDialog = new ShapeLoadingDialog.Builder(this)
+                  .loadText("拼命加载中...")
+                  .cancelable(false)
+                  .build();
+        shapeLoadingDialog.show();
 
     }
 
     @Override
     public void closeLoading() {
-
+       shapeLoadingDialog.dismiss();
     }
 
     @Override

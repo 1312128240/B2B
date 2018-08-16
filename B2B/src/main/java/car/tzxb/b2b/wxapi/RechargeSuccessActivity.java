@@ -2,10 +2,8 @@ package car.tzxb.b2b.wxapi;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.tzxb.b2b.BasePackage.BasePresenter;

@@ -1,5 +1,4 @@
 package car.tzxb.b2b.Util.UpdateApp;
-
 import android.app.DownloadManager;
 import android.content.Context;
 import android.database.Cursor;
@@ -40,7 +39,7 @@ public class FileDownloadManager {
         //设置文件的保存的位置[三种方式]
         //第一种
         //file:///storage/emulated/0/Android/data/your-package/files/Download/update.apk
-        req.setDestinationInExternalFilesDir(context, Environment.DIRECTORY_DOWNLOADS, appName+".apk");
+         req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "tzxb.apk");
         //第二种
         //file:///storage/emulated/0/Download/update.apk
       //  req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, appName+".apk");

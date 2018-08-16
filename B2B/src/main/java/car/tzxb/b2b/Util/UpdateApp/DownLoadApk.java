@@ -1,6 +1,8 @@
 package car.tzxb.b2b.Util.UpdateApp;
 
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -8,10 +10,10 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Gravity;
-import android.widget.Toast;
-
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.MyApp;
 

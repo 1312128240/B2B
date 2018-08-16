@@ -223,7 +223,7 @@ public class PermissionUtil {
     /**
      * 申请权限返回
      */
-//    public interface OnRequestPermissionsResultCallbacks extends ActivityCompat.OnRequestPermissionsResultCallback {
+
     public interface OnRequestPermissionsResultCallbacks {
 
         /**

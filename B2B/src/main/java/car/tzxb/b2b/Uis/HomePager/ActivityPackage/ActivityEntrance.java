@@ -80,6 +80,13 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         });
     }
 
+
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
+    }
+
+
     private void Refresh() {
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         OkHttpUtils
@@ -99,8 +106,9 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
                           List<ActivityDivisionBean.DataBeanX> xList=response.getData();
                           if(xList.size()!=0){
                               addRb(xList);
+                          }else {
+                            scollview.setVisibility(View.GONE);
                           }
-
                     }
                 });
 
@@ -175,11 +183,6 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         });
     }
 
-
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
-    }
 
     @OnClick(R.id.tv_actionbar_back)
     public void back() {

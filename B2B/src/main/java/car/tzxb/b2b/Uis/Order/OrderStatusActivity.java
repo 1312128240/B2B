@@ -134,7 +134,6 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                         }
                     }
                 });
-
     }
 
 
@@ -235,7 +234,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     tv1.setVisibility(View.GONE);
                     tv2.setVisibility(View.GONE);
                     tv3.setVisibility(View.VISIBLE);
-                    tv3.setText("已取消");
+                    tv3.setText("删除订单");
                     tv_describe.setText("交易关闭");
                 }
 
@@ -276,7 +275,6 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
 
                         } else if ("交易成功".equals(bean.getStatus())) {
                             //晒单评价
-
                         }
 
                     }
@@ -288,7 +286,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                         if ("等待付款".equals(bean.getStatus())) {
                             //取消订单
                             final CancelOrderPop cop = new CancelOrderPop(MyApp.getContext());
-                            cop.show(parent);
+                            DeviceUtils.showPopWindow(parent,cop);
                             cop.setOnClickCancle(new CancelOrderPop.onClickCancleOrder() {
                                 @Override
                                 public void cancle(String s) {
@@ -304,10 +302,11 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                         }
                     }
                 });
+
                 tv3.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if("交易成功".equals(bean.getStatus())){
+                        if("交易成功".equals(bean.getStatus())||"已取消".equals(bean.getStatus())){
                             final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
                             Bundle bundle=new Bundle();
                             bundle.putString("title","确认删除订单");
@@ -324,7 +323,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                                 @Override
                                 public void sure() {
                                     alterDialogFragment.dismiss();
-                                    delOrder(bean.getAid());
+                                    delOrder(bean.getAid(),position);
                                 }
                             });
                         }
@@ -374,7 +373,7 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
      * 删除订单
      * @param aid
      */
-    private void delOrder(String aid) {
+    private void delOrder(String aid, final int index) {
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         OkHttpUtils
                 .get()
@@ -392,7 +391,8 @@ public class OrderStatusActivity extends MyBaseAcitivity implements NavigationTa
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         if(response.getStatus()==1){
-                            onBackPressed();
+                            beanList.remove(index);
+                            adapter.add(beanList,true);
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
                         }

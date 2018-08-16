@@ -124,16 +124,6 @@ public class Modify_DiscountsPop extends PopupWindow {
                     }
                     listener.modity(cxId,zpId);
                     dismiss();
-               /*     String zpid=null;
-                    StringBuilder sb=new StringBuilder();
-                    if(giftBeen.size()==0){
-                        zpid="0";
-                    }else {
-                        for (int i = 0; i <giftBeen.size() ; i++) {
-                            sb.append(giftBeen.get(i).getId());
-                        }
-                    }
-                    listener.modity(dataBean.getId(),zpid);*/
                 }
             });
             cb_select.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -196,17 +186,6 @@ public class Modify_DiscountsPop extends PopupWindow {
             }
 
         }
-
-    /*    car.tzxb.b2b.Adapter.ShoppinCarDiscountsAdapter.DiscountsId listener;
-        public void setClick(car.tzxb.b2b.Adapter.ShoppinCarDiscountsAdapter.DiscountsId discountsId){
-            this.listener=discountsId;
-        }
-
-        public interface DiscountsId{
-            void clickDiscountsId(String cxid,String zpid);
-        }*/
-
-
     }
     public interface ModityDiscount{
         void modity(String cxid,String zpid);

@@ -118,7 +118,6 @@ public class ShapeLoadingView extends View {
                     mAnimPercent = 0;
                     path.close();
                     canvas.drawPath(path, mPaint);
-
                 }
                 break;
             case SHAPE_CIRCLE:

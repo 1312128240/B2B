@@ -17,5 +17,5 @@ public class BannerImageLoader extends ImageLoader {
     public void displayImage(Context context, Object path, ImageView imageView) {
         //Glide 加载图片简单用法
         Glide.with(MyApp.getContext()).load(path).into(imageView);
-           }
+  }
 }

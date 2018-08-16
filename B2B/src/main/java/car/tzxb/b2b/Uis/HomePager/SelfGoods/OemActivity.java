@@ -105,12 +105,13 @@ public class OemActivity extends MyBaseAcitivity {
 
     private void getData() {
         String usreId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        Log.i("贴牌商品", Constant.baseUrl+"item/index.php?c=Goods&m=TZXBGoodsList&user_id="+usreId);
+        Log.i("贴牌商品", Constant.baseUrl+"item/index.php?c=Goods&m=TZXBGoodsList&user_id="+usreId+"&sales=desc");
         OkHttpUtils
                 .get()
                 .tag(this)
                 .url( Constant.baseUrl+"item/index.php?c=Goods&m=TZXBGoodsList")
                 .addParams("user_id",usreId)
+                .addParams("sales","desc")
                 .build()
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                     @Override

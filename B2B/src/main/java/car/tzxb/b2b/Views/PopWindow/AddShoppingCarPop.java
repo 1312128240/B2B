@@ -114,7 +114,7 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
         int width=DeviceUtils.dip2px(mContext,80);
         int height=DeviceUtils.dip2px(mContext,25);
         FlexboxLayout.LayoutParams layoutParams=new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
-        layoutParams.setMargins(20,0,0,20);
+        layoutParams.setMargins(15,0,0,15);
         for (int i = 0; i <lists.size() ; i++) {
             GoodsXqBean.DataBean.ProductBean bean=lists.get(i);
             RadioButton rb=new RadioButton(mContext);
@@ -159,21 +159,6 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
 
         RadioButton checkButton= (RadioButton) rg_gg.getChildAt(index);
         checkButton.setChecked(true);
-    }
-
-    /**
-     * 显示方法
-     * @param parent
-     */
-    public void show(View parent){
-
-        if(DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())){
-            int navgationHeight=DeviceUtils.getNavigationBarHeight(MyApp.getContext());
-            showAtLocation(parent, Gravity.BOTTOM,0,navgationHeight);
-        }else {
-            showAtLocation(parent,Gravity.BOTTOM,0,0);
-        }
-
     }
 
     @Override

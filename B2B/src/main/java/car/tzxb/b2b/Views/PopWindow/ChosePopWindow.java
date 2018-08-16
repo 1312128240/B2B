@@ -15,27 +15,20 @@ import android.view.ViewGroup;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.List;
-
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
-import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
-import car.tzxb.b2b.Util.SPUtil;
-
 
 /**
  * Created by Administrator on 2018/1/9 0009.
  */
 
 public class ChosePopWindow extends PopupWindow {
-
-
- private List<String> lists;
- private Context mContext;
+    private List<String> lists;
+    private Context mContext;
     public ChosePopWindow(Context context, List<String> stringList) {
         super(context);
         this.mContext=context;

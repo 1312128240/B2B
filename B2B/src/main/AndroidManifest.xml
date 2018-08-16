@@ -26,6 +26,8 @@
     <!-- 摄影机 -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <!--申请安装外部应用-->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <application
         android:name=".MyApp"
@@ -46,6 +48,14 @@
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
         -->
+
+
+        <!-- 下载更新服务 -->
+        <receiver android:name=".Util.UpdateApp.ApkInstallReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
         <!-- 百度地图服务 -->
         <meta-data
             android:name="com.baidu.lbsapi.API_KEY"
@@ -56,15 +66,15 @@
             android:enabled="true"
             android:process=":remote" />
 
-        <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTask">
+        <activity android:name=".Uis.StartActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".MainActivity" android:launchMode="singleTask"></activity>
         <activity android:name=".Uis.LoginActivity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopActivity" />
         <activity android:name=".Uis.OpenShopPackage.OpenShopEntranceActivity" />
@@ -79,7 +89,6 @@
         <activity android:name=".Uis.GoodsXqPackage.ShoppingCarActivity" />
         <activity android:name=".Uis.Order.OrderActivity" />
         <activity android:name=".Uis.Order.GoodsListActivity" />
-        <!-- <activity android:name=".wxapi.WXPayEntryActivity" /> -->
         <activity android:name=".Uis.Order.OrderXqActivity" />
         <activity android:name=".Uis.Order.OrderStatusActivity" />
         <activity android:name=".Uis.MeCenter.SettingsActivity" />
@@ -120,7 +129,18 @@
         <activity android:name=".Uis.ActiclePackage.ArticleWebViewActivity" />
         <activity android:name=".wxapi.RechargeSuccessActivity" />
         <activity android:name=".Uis.HomePager.FindShop.FindShopXqActivity" />
-        <activity android:name=".Uis.HomePager.FindShop.FindShopsActivity"></activity>
+        <activity android:name=".Uis.HomePager.FindShop.FindShopsActivity" />
+
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tzxn.app.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

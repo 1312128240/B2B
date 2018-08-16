@@ -7,13 +7,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
-import com.example.mylibrary.HttpClient.OkHttpUtils;
-
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
@@ -79,7 +75,7 @@ public class ExplainPop extends PopupWindow {
         });
     }
 
-    public void show(View parent) {
+  /*  public void show(View parent) {
         Log.i("有底部导航栏", DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext()) + "");
         if (DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext())) {
             int navigationHeight = DeviceUtils.getNavigationBarHeight(mContext);
@@ -87,5 +83,5 @@ public class ExplainPop extends PopupWindow {
         } else {
             showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         }
-    }
+    }*/
 }

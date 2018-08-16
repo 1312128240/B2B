@@ -619,13 +619,20 @@ public class ShoppingCarFragment extends MyBaseFragment implements MvpViewInterf
         StringBuilder sb4 = new StringBuilder();
         StringBuilder sb5=new StringBuilder();
         ShopCarBean.DataBean dataBean = null;
+        String special_id;
         ShopCarBean.DataBean.DataChildBean childBean = null;
         for (int i = 0; i < isCheckList.size(); i++) {
             dataBean = isCheckList.get(i);
             //门店id
             sb1.append(dataBean.getShop_id()).append(",");
             //订单优惠id
-            sb5.append(dataBean.getSpecial_id()).append(",");
+
+            if("".equals(dataBean.getSpecial_id())){
+                 special_id="0";
+            }else {
+                special_id=dataBean.getSpecial_id();
+            }
+            sb5.append(special_id).append(",");
             List<ShopCarBean.DataBean.DataChildBean> childBeanList = isCheckList.get(i).getData_child();
             for (int j = 0; j < childBeanList.size(); j++) {
                 childBean = childBeanList.get(j);

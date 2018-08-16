@@ -34,15 +34,19 @@ public class GoodsXqPresenterIml implements MvpContact.Presenter {
 
     @Override
     public void PresenterGetData(String url, Map<String, String> params) {
+             view.showLoading();
              modelIml.ModelGetData(url, params, new BaseCallbackListener<GoodsXqBean>() {
                  @Override
                  public void onSucceed(GoodsXqBean result) {
-                      view.showData(result);
+                       view.closeLoading();
+                       view.showData(result);
+
                  }
 
                  @Override
                  public void onError(Throwable errorMsg) {
                      Log.i("商品详情错误",errorMsg.toString());
+                     view.closeLoading();
                  }
              });
     }

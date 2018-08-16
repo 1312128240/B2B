@@ -6,6 +6,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -81,7 +82,6 @@ public class LoadingView extends LinearLayout {
         mIndicationIm = findViewById(R.id.indication);
         mLoadTextView =  findViewById(R.id.promptTV);
         ViewHelper.setScaleX(mIndicationIm, 0.2f);
-
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.LoadingView);
         String loadText = typedArray.getString(R.styleable.LoadingView_loadingText);
         int textAppearance = typedArray.getResourceId(R.styleable.LoadingView_loadingText, -1);
@@ -197,6 +197,8 @@ public class LoadingView extends LinearLayout {
 
         mLoadTextView.setText(loadingText);
     }
+
+
 
     public CharSequence getLoadingText(){
         return mLoadTextView.getText();

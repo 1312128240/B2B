@@ -1,15 +1,11 @@
 package car.tzxb.b2b.Views.DialogFragments;
 
-import android.app.Dialog;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import car.tzxb.b2b.R;

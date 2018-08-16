@@ -7,7 +7,6 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;

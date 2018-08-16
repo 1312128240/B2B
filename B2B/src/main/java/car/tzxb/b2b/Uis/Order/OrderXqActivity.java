@@ -332,7 +332,57 @@ public class OrderXqActivity extends MyBaseAcitivity {
             Intent intent=new Intent(this,LogisticsActivity.class);
             intent.putExtra("orderId",bean.getAid());
             startActivity(intent);
+        }else if("已取消".equals(bean.getStatus())){
+             deleOrder();
         }
+    }
+    //删除订单
+    private void deleOrder() {
+        final AlterDialogFragment alterDialogFragment=new AlterDialogFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("title","确认删除订单");
+        bundle.putString("ok","确定");
+        bundle.putString("no","再想想");
+        alterDialogFragment.setArguments(bundle);
+        alterDialogFragment.show(getSupportFragmentManager(),"del");
+        alterDialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+            @Override
+            public void cancle() {
+                alterDialogFragment.dismiss();
+            }
+
+            @Override
+            public void sure() {
+                alterDialogFragment.dismiss();
+                delOrder(bean.getAid());
+            }
+        });
+    }
+
+    private void delOrder(String aid) {
+        String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_del")
+                .addParams("user_id",userId)
+                .addParams("order_id",aid)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        if(response.getStatus()==1){
+                            onBackPressed();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
+                        }
+                    }
+                });
     }
 
     /**
@@ -388,7 +438,7 @@ public class OrderXqActivity extends MyBaseAcitivity {
      */
     private void cancleOrder() {
         final CancelOrderPop cop=new CancelOrderPop(MyApp.getContext());
-        cop.show(parent);
+        DeviceUtils.showPopWindow(parent,cop);
         cop.setOnClickCancle(new CancelOrderPop.onClickCancleOrder() {
             @Override
             public void cancle(final String s) {
@@ -415,7 +465,6 @@ public class OrderXqActivity extends MyBaseAcitivity {
                                     tv1.setVisibility(View.GONE);
                                     tv2.setVisibility(View.GONE);
                                     tv3.setVisibility(View.VISIBLE);
-
                                     tv_status.setText("交易已关闭");
                                     tv_hint.setText(s);
                                 }else {
