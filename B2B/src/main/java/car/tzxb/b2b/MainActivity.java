@@ -37,7 +37,7 @@ import car.tzxb.b2b.fragments.MyFragment;
 import car.tzxb.b2b.fragments.ShoppingCarFragment;
 import okhttp3.Call;
 
-public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener,PermissionUtil.OnRequestPermissionsResultCallbacks{
+public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener,PermissionUtil.OnRequestPermissionsResultCallbacks {
     @BindView(R.id.navigation_bar)
     BottomNavigationBar navigationBar;
     private static boolean isExit = false;
@@ -57,8 +57,8 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms, boolean isAllGranted) {
 
-        if(requestCode==101){
-            Log.i("权限","同意:" + perms.size() + "个权限,isAllGranted=" + isAllGranted);
+        if (requestCode == 101) {
+            Log.i("权限", "同意:" + perms.size() + "个权限,isAllGranted=" + isAllGranted);
         }
 
 
@@ -67,9 +67,9 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms, boolean isAllDenied) {
         if (requestCode == 101) {
-            if(isAllDenied){
+            if (isAllDenied) {
                 Log.i("权限", "拒绝:" + perms.size() + "个权限,isAllDenied=" + isAllDenied);
-                MyToast.makeTextAnim(MyApp.getContext(),"需要开启读写权限才能更新",1, Gravity.CENTER,0,0).show();
+                MyToast.makeTextAnim(MyApp.getContext(), "需要开启读写权限才能更新", 1, Gravity.CENTER, 0, 0).show();
             }
         }
     }
@@ -103,14 +103,14 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
 
     @Override
     public void doBusiness(Context mContext) {
-              initNavigationBar();
+        initNavigationBar();
 
-              initFragment();
-              checkVersion();
+        initFragment();
+        checkVersion();
     }
 
 
-    public void checkVersion(){
+    public void checkVersion() {
         Log.i("b2b检测版本", Constant.baseUrl + "item/index.php?c=Home&m=Edition&From=Android");
         OkHttpUtils
                 .get()
@@ -126,9 +126,9 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         String checkVersion = DeviceUtils.getVersionName(MyApp.getContext());
-                        String version=response.getVersionName();
-                        if(!version.equals(checkVersion)){
-                           showAlertDialog(response);
+                        String version = response.getVersionName();
+                        if (!version.equals(checkVersion)) {
+                            showAlertDialog(response);
                         }
 
                     }
@@ -141,9 +141,9 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         shopingFrgament = new ShoppingCarFragment();
         myFrgament = new MyFragment();
 
-        FragmentTransaction  transaction = getSupportFragmentManager().beginTransaction();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(R.id.main_framelayout,homeFragment).commitAllowingStateLoss();
+        transaction.add(R.id.main_framelayout, homeFragment).commitAllowingStateLoss();
         mFragment = homeFragment;
     }
 
@@ -169,38 +169,39 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     public void switchFragment(Fragment fragment) {
 
         //判断当前显示的Fragment是不是切换的Fragment
-        if(mFragment != fragment) {
+        if (mFragment != fragment) {
             //判断切换的Fragment是否已经添加过
             if (!fragment.isAdded()) {
                 //如果没有，则先把当前的Fragment隐藏，把切换的Fragment添加上
-             getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).hide(mFragment)
-                        .add(R.id.main_framelayout,fragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN).hide(mFragment)
+                        .add(R.id.main_framelayout, fragment).commitAllowingStateLoss();
 
             } else {
                 //如果已经添加过，则先把当前的Fragment隐藏，把切换的Fragment显示出来
-              getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                      .hide(mFragment).show(fragment).commitAllowingStateLoss();
+                getSupportFragmentManager().beginTransaction().setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                        .hide(mFragment).show(fragment).commitAllowingStateLoss();
             }
             mFragment = fragment;
         }
     }
+
     @Override
     public void onTabSelected(int position) {
-            switch (position){
-                case 0:
-                    switchFragment(homeFragment);
-                    break;
-                case 1:
-                    switchFragment(classifyFragment);
-                    break;
-                case 2:
-                    switchFragment(shopingFrgament);
-                    break;
-                case 3:
-                    switchFragment(myFrgament);
-                    break;
+        switch (position) {
+            case 0:
+                switchFragment(homeFragment);
+                break;
+            case 1:
+                switchFragment(classifyFragment);
+                break;
+            case 2:
+                switchFragment(shopingFrgament);
+                break;
+            case 3:
+                switchFragment(myFrgament);
+                break;
 
-            }
+        }
     }
 
     @Override
@@ -236,10 +237,12 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         }
     }
 
-    /**切换
+    /**
+     * 切换
+     *
      * @param position
      */
-    public void select(int position){
+    public void select(int position) {
         navigationBar.selectTab(position);
     }
 
@@ -248,9 +251,11 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         super.onWindowFocusChanged(hasFocus);
         listener.focus(hasFocus);
     }
+
     WindowFocusChang listener;
-    public void setFocusChanged(WindowFocusChang focusChanged){
-        this.listener=focusChanged;
+
+    public void setFocusChanged(WindowFocusChang focusChanged) {
+        this.listener = focusChanged;
     }
 
     public void showAlertDialog(final BaseStringBean response) {
@@ -260,7 +265,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         bundle.putString("ok", "确定");
         bundle.putString("no", "取消");
         dialogFragment.setArguments(bundle);
-        dialogFragment.show(getSupportFragmentManager(),"aa");
+        dialogFragment.show(getSupportFragmentManager(), "aa");
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
@@ -275,7 +280,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                     PermissionUtil.getExternalStoragePermissions(MainActivity.this, 101);
 
                 } else {
-                    DownLoadApk.download(MyApp.getContext(),response.getData(),"正在下载同致相伴","txj");
+                    DownLoadApk.download(MyApp.getContext(), response.getData(), "正在下载同致相伴", "txj");
                     dialogFragment.dismiss();
                 }
             }

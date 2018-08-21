@@ -43,9 +43,9 @@ public class OrderBean implements Serializable{
         private double special_money;
         private int offset;
         private int all_offset;
-        private int amount_price;
-        private int discount_amount;
-        private int amount_pay;
+        private double amount_price;
+        private double discount_amount;
+        private double amount_pay;
         private List<GoodsBean> goods;
 
         public int getGoods_kind_number() {
@@ -80,7 +80,7 @@ public class OrderBean implements Serializable{
             this.all_offset = all_offset;
         }
 
-        public int getAmount_price() {
+        public double getAmount_price() {
             return amount_price;
         }
 
@@ -88,7 +88,7 @@ public class OrderBean implements Serializable{
             this.amount_price = amount_price;
         }
 
-        public int getDiscount_amount() {
+        public double getDiscount_amount() {
             return discount_amount;
         }
 
@@ -96,7 +96,7 @@ public class OrderBean implements Serializable{
             this.discount_amount = discount_amount;
         }
 
-        public int getAmount_pay() {
+        public double getAmount_pay() {
             return amount_pay;
         }
 
@@ -117,10 +117,11 @@ public class OrderBean implements Serializable{
             private String shop_id;
             private String shop_name;
             private int shop_disc;
-            private int shop_amount;
+            private double shop_amount;
             private String special_promotion;
             private List<DataChildBean> data_child;
             private String Mesg;
+
             public String getMesg() {
                 return Mesg;
             }
@@ -154,7 +155,7 @@ public class OrderBean implements Serializable{
                 this.shop_disc = shop_disc;
             }
 
-            public int getShop_amount() {
+            public double getShop_amount() {
                 return shop_amount;
             }
 
@@ -178,39 +179,7 @@ public class OrderBean implements Serializable{
                 this.data_child = data_child;
             }
 
-            public static class DataChildBean {
-                /**
-                 * id : 1602
-                 * user_id : 11821
-                 * goods_id : 1615
-                 * number : 1
-                 * is_del : 0
-                 * add_time : 2017-12-02 14:07:30
-                 * type : 0
-                 * shop_id : 12
-                 * seck_amount : null
-                 * disc_id : null
-                 * is_seck : 0
-                 * motion_id : 0
-                 * motion_type : 提示
-                 * motion_zpid : 0
-                 * pro_id : 1615
-                 * bgoods_id : 532
-                 * bis_del : 0
-                 * title : 同致相伴防冻玻璃水-10℃ 【1.8L/瓶 】
-                 * market_price : 20.00
-                 * seal_price : 12.00
-                 * pic : product_img/20171219/20171219102739677934.jpg
-                 * point : 10000
-                 * cost_point : 20.00
-                 * offset : 0.00
-                 * img_url : https://img.aiucar.cn/product_img/20171219/20171219102739677934.jpg
-                 * child_title : 您的身份发生了变化,请重新选择优惠类型
-                 * child_type : 1
-                 * gift : []
-                 * discount_amount : 0
-                 */
-
+            public static class DataChildBean implements Serializable {
                 private String id;
                 private String user_id;
                 private String goods_id;

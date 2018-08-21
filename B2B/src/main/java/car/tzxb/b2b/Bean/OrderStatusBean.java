@@ -55,7 +55,7 @@ public class OrderStatusBean {
             private String amount_goods;
             private Object amount_coupon;
             private Object amount_offset;
-            private String amount_pay_able;
+            private double amount_pay_able;
             private Object amount_real;
             private String payment_status;
             private String status;
@@ -120,11 +120,11 @@ public class OrderStatusBean {
                 this.amount_offset = amount_offset;
             }
 
-            public String getAmount_pay_able() {
+            public double getAmount_pay_able() {
                 return amount_pay_able;
             }
 
-            public void setAmount_pay_able(String amount_pay_able) {
+            public void setAmount_pay_able(double amount_pay_able) {
                 this.amount_pay_able = amount_pay_able;
             }
 
@@ -313,8 +313,6 @@ public class OrderStatusBean {
             }
 
             public static class ChildDataBean {
-
-
                 private String shop_name;
                 private String address;
                 private String add_time;

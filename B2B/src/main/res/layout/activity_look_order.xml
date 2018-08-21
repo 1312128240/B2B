@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/order_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.Order.LookOrderActivity">
+
+    <include layout="@layout/base_actionbar" />
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_order"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginTop="3dp"
+        android:background="@color/colorWhite"
+        app:tabIndicatorColor="@color/red"
+        app:tabIndicatorHeight="1.5dp"
+        app:tabSelectedTextColor="@color/red"
+        app:tabTextColor="@color/colorBlack">
+
+    </android.support.design.widget.TabLayout>
+
+    <car.myview.SpringView.SpringView
+        android:id="@+id/springview"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_order"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </car.myview.SpringView.SpringView>
+
+    <TextView
+        android:id="@+id/tv_empty_order"
+        android:visibility="gone"
+        android:drawableTop="@drawable/shop_icon_blank4"
+        android:layout_marginTop="150dp"
+        android:text="还没订单喔~"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>

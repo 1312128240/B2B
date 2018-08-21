@@ -26,6 +26,15 @@ public class BaseStringBean {
     private String versionName;
     private int StrLen;
     private String order_seqno;
+    private String vitewType;
+    public String getVitewType() {
+        return vitewType;
+    }
+
+    public void setVitewType(String vitewType) {
+        this.vitewType = vitewType;
+    }
+
 
     public String getOrder_seqno() {
         return order_seqno;

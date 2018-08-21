@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <include layout="@layout/search_bar" />
@@ -12,29 +13,27 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <car.myview.MyNestScollview
-                android:id="@+id/my_nestcscollview"
-                android:layout_above="@+id/ll_find_shop_bottom"
+
+            <android.support.design.widget.CoordinatorLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-                <LinearLayout
+                <android.support.design.widget.AppBarLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:descendantFocusability="blocksDescendants"
-                    android:orientation="vertical">
+                    android:layout_height="wrap_content">
 
                     <RelativeLayout
                         android:id="@+id/rl_find_shop"
                         android:layout_width="match_parent"
                         android:layout_height="110dp"
-                        android:background="@mipmap/shop_icon_bg">
+                        android:background="@mipmap/shop_icon_bg"
+                        app:layout_scrollFlags="scroll|enterAlways">
 
                         <car.myview.CircleImageView.CircleImageView
                             android:id="@+id/civ_shop"
@@ -43,8 +42,6 @@
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp" />
-
-
 
                         <TextView
                             android:id="@+id/tv_find_shop_name"
@@ -94,46 +91,22 @@
 
                         <TextView
                             android:id="@+id/tv_find_shop_sc_status"
-                            android:layout_marginRight="10dp"
                             android:layout_width="60dp"
                             android:layout_height="25dp"
-                            android:textSize="12sp"
-                            android:padding="5dp"
-                            android:layout_alignParentRight="true"
                             android:layout_alignBottom="@+id/civ_shop"
+                            android:layout_alignParentRight="true"
                             android:layout_gravity="center"
+                            android:layout_marginRight="10dp"
                             android:gravity="center"
+                            android:padding="5dp"
+                            android:textColor="@color/colorWhite"
+                            android:textSize="12sp"
                             tools:drawableLeft="@mipmap/shop_icon_collection"
-                            tools:text="已收藏"
-                            android:textColor="@color/colorWhite" />
+                            tools:text="已收藏" />
                     </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_empty_layout"
-                        android:text="抱歉,没有搜索到....."
-                        android:textStyle="italic"
-                        android:textColor="#303030"
-                        android:gravity="center"
-                        android:paddingTop="50dp"
-                        android:visibility="gone"
-                        android:drawableTop="@mipmap/shop_icon_blank"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recy_find_shop_xq"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:nestedScrollingEnabled="false"
-                        android:layout_marginTop="45dp"
-                        android:paddingTop="5dp"
-                        android:scrollbars="none">
-
-                    </android.support.v7.widget.RecyclerView>
-
 
                     <LinearLayout
                         android:id="@+id/ll_suspension"
-                        android:elevation="3dp"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@color/colorWhite">
@@ -179,48 +152,54 @@
                             android:textColor="@color/colorBlack" />
                     </LinearLayout>
 
-                </LinearLayout>
+                </android.support.design.widget.AppBarLayout>
 
 
-            </car.myview.MyNestScollview>
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recy_find_shop_xq"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
+            </android.support.design.widget.CoordinatorLayout>
 
             <LinearLayout
                 android:id="@+id/ll_find_shop_bottom"
-                android:elevation="10dp"
-                android:background="@color/colorWhite"
                 android:layout_width="match_parent"
-                android:gravity="center_vertical"
                 android:layout_height="50dp"
-                android:layout_alignParentBottom="true">
+                android:background="@color/colorWhite"
+                android:elevation="10dp"
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/tv_find_shop_call"
-                    android:text="联系卖家"
-                    android:drawablePadding="3dp"
-                    android:textColor="@color/colorBlack"
-                    android:gravity="center"
-                    android:drawableTop="@drawable/shop_icon_contact"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@drawable/shop_icon_contact"
+                    android:gravity="center"
+                    android:text="联系卖家"
+                    android:textColor="@color/colorBlack" />
+
                 <TextView
-                    android:background="@color/colorLightGray3"
                     android:layout_width="1.5dp"
-                    android:layout_height="30dp" />
+                    android:layout_height="30dp"
+                    android:background="@color/colorLightGray3" />
+
                 <TextView
                     android:id="@+id/tv_find_shop_fl"
-                    android:drawableTop="@drawable/shop_icon_fl"
-                    android:textColor="@color/colorBlack"
-                    android:drawablePadding="3dp"
-                    android:text="商品分类"
-                    android:gravity="center"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content" />
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawablePadding="3dp"
+                    android:drawableTop="@drawable/shop_icon_fl"
+                    android:gravity="center"
+                    android:text="商品分类"
+                    android:textColor="@color/colorBlack" />
             </LinearLayout>
 
-        </RelativeLayout>
+        </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recy_find_shop_drawer"
@@ -230,4 +209,6 @@
             android:background="@color/colorWhite"
             android:layoutAnimation="@anim/layout_animation_fall_right" />
     </android.support.v4.widget.DrawerLayout>
+
+
 </LinearLayout>

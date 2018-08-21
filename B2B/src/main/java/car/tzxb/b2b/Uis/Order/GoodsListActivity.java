@@ -64,7 +64,7 @@ public class GoodsListActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("商品清单");
-        if("Order".equals(from)){
+       if("Order".equals(from)){
             initRecy1();
         }else {
             initRecy2();
@@ -160,7 +160,7 @@ public class GoodsListActivity extends MyBaseAcitivity {
                 int p=DeviceUtils.dip2px(MyApp.getContext(),10);
                 View view=holder.getView(R.id.parent);
                 view.setPadding(p,0,p,0);
-                     //店名
+                //店名
                 holder.setText(R.id.tv_order_status_shop_name,goodsBean.getShop_name());
                 //隐藏多余控件
                 holder.getView(R.id.tv_order_status_total).setVisibility(View.GONE);

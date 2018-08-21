@@ -11,8 +11,7 @@
 
         <include layout="@layout/my_header" />
 
-        <include
-            layout="@layout/my_footer" />
+        <include layout="@layout/my_footer" />
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.animation.AnimationSet;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -63,8 +65,9 @@ import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
-import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
+import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
+import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.BannerImageLoader;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
@@ -117,6 +120,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     EditText et_classify;
     @BindView(R.id.textSwitcher)
     TextSwitchView textSwitcher;
+    @BindView(R.id.iv_folatbutton)
+    ImageView iv_floatingbutton;
     private String categoryId, brands;
     private int bottom, pager;
     private List<BaseDataListBean.DataBean> goodsList = new ArrayList<>();
@@ -135,7 +140,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
     public void initData() {
         initUi();
         iniEvent();
-
     }
 
 
@@ -274,9 +278,17 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                     Log.i(TAG, "下滑");
                     if (scrollY >= bottom) {
                         classify_tabLayout.setVisibility(View.GONE);
-
                     }
                 }
+
+                if(scrollY>1000){
+                    AnimationUtil.FABAnimation(iv_floatingbutton,1);
+                    iv_floatingbutton.setVisibility(View.VISIBLE);
+                }else {
+                    AnimationUtil.FABAnimation(iv_floatingbutton,0);
+                    iv_floatingbutton.setVisibility(View.INVISIBLE);
+                }
+
                 if (scrollY < oldScrollY) {
                     Log.i(TAG, "上滑");
                     if (scrollY >= bottom) {
@@ -391,6 +403,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
             return;
         }
         startActivity(new Intent(getActivity(),FindShopsActivity.class));
+    }
+
+    //快速回到顶部
+    @OnClick(R.id.iv_folatbutton)
+    public void goTop(){
+        scrollView.fling(0);
+        scrollView.smoothScrollTo(0, 0);
     }
 
     /**
@@ -528,7 +547,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface, My
                         startActivity(intent);
                         break;
                     case 4:
-                        intent.setClass(getActivity(), OrderStatusActivity.class);
+                        intent.setClass(getActivity(), LookOrderActivity.class);
                         intent.putExtra("type", "all");
                         intent.putExtra("index", 0);
                         startActivity(intent);

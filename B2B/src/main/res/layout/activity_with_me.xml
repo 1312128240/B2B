@@ -40,73 +40,7 @@
             android:textSize="12sp" />
     </LinearLayout>
 
-    <LinearLayout
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="官方微信"
-            android:textColor="@color/colorBlack2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="cjk451"
-            android:textColor="@color/colorLightGray2" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@color/colorWhite"
-        android:layout_marginTop="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="官方微信"
-            android:textColor="@color/colorBlack2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="cjk451"
-            android:textColor="@color/colorLightGray2" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:background="@color/colorWhite"
-        android:layout_marginTop="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="官方微信"
-            android:textColor="@color/colorBlack2" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="end"
-            android:text="cjk451"
-            android:textColor="@color/colorLightGray2" />
-    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:background="@color/colorWhite"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <EditText
+        android:id="@+id/et_mesg"
+        android:textSize="12sp"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:background="@color/colorLightGray3"
+        android:hint="@string/mesg"
+        android:maxLength="50"
+        android:padding="8dp" />
+
+    <LinearLayout
+        android:id="@+id/ll_order_status_infor2"
+        android:gravity="end|center_vertical"
+        android:layout_width="match_parent"
+        android:paddingRight="10dp"
+        android:layout_height="36dp">
+
+        <TextView
+            android:id="@+id/tv_order_status_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack2"
+            android:layout_marginRight="6dp"
+            tools:text="共1件" />
+        <TextView
+            android:id="@+id/tv_order_status_total"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorBlack2"
+            tools:text="合计:¥126.00" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_order_status_infor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="6dp"
+        android:gravity="end">
+
+        <TextView
+            android:id="@+id/tv_view3"
+            android:visibility="gone"
+            android:gravity="center"
+            android:textColor="@color/colorBlack"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+        <TextView
+            android:id="@+id/tv_view2"
+            android:visibility="gone"
+            android:textColor="@color/colorBlack"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg5"
+            android:padding="5dp"
+            android:text="提醒发货" />
+
+        <TextView
+            android:id="@+id/tv_view1"
+            android:visibility="gone"
+            android:layout_marginRight="10dp"
+            android:textColor="#ff4e3c"
+            android:gravity="center"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/bg7"
+            android:padding="5dp"
+            android:text="提醒发货" />
+    </LinearLayout>
+</LinearLayout>

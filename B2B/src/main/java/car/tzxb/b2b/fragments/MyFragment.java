@@ -19,23 +19,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.BindViews;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
-import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.SpaceItem_StaggerLayoutManager;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
@@ -55,8 +50,7 @@ import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
-import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
-import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
+import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -281,7 +275,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                     startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
                     return;
                 }
-                Intent intent = new Intent(getActivity(), OrderStatusActivity.class);
+                Intent intent = new Intent(getActivity(), LookOrderActivity.class);
                 if (position == 4) {
                     position = -1;
                 }
@@ -406,7 +400,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
-        Intent intent = new Intent(getActivity(), OrderStatusActivity.class);
+        Intent intent = new Intent(getActivity(), LookOrderActivity.class);
         intent.putExtra("index", 0);
         startActivity(intent);
     }

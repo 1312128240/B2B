@@ -1,48 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorWhite"
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance">
 
-    <include
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_marginBottom="1dp"
-        layout="@layout/base_actionbar" />
+    <include layout="@layout/base_actionbar" />
 
-    <car.myview.MyNestScollview
-        android:id="@+id/scrollView"
+    <TextView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:background="@color/colorLightGray1"
+        android:layout_height="0.5dp" />
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorlayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#2268FC">
 
-        <LinearLayout
-            android:id="@+id/ll_activity_parent"
-            android:background="#2268FC"
+
+        <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/iv_activity_bg"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/activity_banner" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_activity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="45dp"
-                android:nestedScrollingEnabled="false"
-                android:padding="10dp">
-
-
-            </android.support.v7.widget.RecyclerView>
-
-
+                android:background="@drawable/activity_banner"
+                app:layout_scrollFlags="scroll|enterAlways" />
 
             <RadioGroup
                 android:id="@+id/rg_activity"
@@ -52,12 +41,32 @@
                 android:orientation="horizontal">
 
             </RadioGroup>
+        </android.support.design.widget.AppBarLayout>
 
 
-        </LinearLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_activity"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
+        </android.support.v7.widget.RecyclerView>
+    </android.support.design.widget.CoordinatorLayout>
 
-    </car.myview.MyNestScollview>
+    <ImageView
+        android:id="@+id/iv_empty_activity"
+        android:visibility="gone"
+        android:src="@drawable/activity_state_empty"
+        android:layout_marginTop="360px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/iv_gift"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="360px"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

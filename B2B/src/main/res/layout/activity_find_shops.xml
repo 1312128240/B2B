@@ -8,18 +8,38 @@
 
     <include layout="@layout/base_actionbar" />
 
-   <HorizontalScrollView
-       android:scrollbars="none"
-       android:layout_width="match_parent"
-       android:layout_height="45dp">
-       <RadioGroup
-           android:id="@+id/rg_find_shop"
-           android:orientation="horizontal"
-           android:layout_width="match_parent"
-           android:layout_height="match_parent">
+    <LinearLayout
+        android:background="#333333"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
+        <HorizontalScrollView
 
-       </RadioGroup>
-   </HorizontalScrollView>
+            android:scrollbars="none"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="45dp">
+            <RadioGroup
+                android:id="@+id/rg_find_shop"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </RadioGroup>
+
+        </HorizontalScrollView>
+        <TextView
+            android:background="@color/colorWhite"
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/iv_shaixuan"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/find_icon_more"
+            android:layout_width="50dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_find_shop"
         android:background="#F3F2F1"

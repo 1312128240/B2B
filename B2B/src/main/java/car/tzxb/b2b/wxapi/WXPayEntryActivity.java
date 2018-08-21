@@ -42,8 +42,8 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
-import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -159,7 +159,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                         intent.putExtra("total", total);
                         startActivity(intent);
                     }else {
-                        Intent intent=new Intent(WXPayEntryActivity.this, OrderStatusActivity.class);
+                        Intent intent=new Intent(WXPayEntryActivity.this,LookOrderActivity.class);
                         intent.putExtra("index", 0);
                         startActivity(intent);
                     }
@@ -409,7 +409,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                             startActivity(intent);
                             finish();
                         }else {
-                            Intent intent=new Intent(WXPayEntryActivity.this, OrderStatusActivity.class);
+                            Intent intent=new Intent(WXPayEntryActivity.this, LookOrderActivity.class);
                             intent.putExtra("index", 0);
                             startActivity(intent);
                             finish();

@@ -6,6 +6,7 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -227,6 +228,7 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
      * @return
      */
     protected abstract BasePresenter bindPresenter();
+
 
     @Override
     protected void onResume() {

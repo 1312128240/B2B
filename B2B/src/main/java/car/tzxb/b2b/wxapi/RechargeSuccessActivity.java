@@ -9,7 +9,8 @@ import butterknife.OnClick;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.R;
-import car.tzxb.b2b.Uis.Order.OrderStatusActivity;
+import car.tzxb.b2b.Uis.Order.LookOrderActivity;
+
 
 public class RechargeSuccessActivity extends MyBaseAcitivity {
 
@@ -46,7 +47,7 @@ public class RechargeSuccessActivity extends MyBaseAcitivity {
     }
     @OnClick(R.id.btn_recharge_success)
     public void next(){
-        Intent intent=new Intent(this, OrderStatusActivity.class);
+        Intent intent=new Intent(this,LookOrderActivity.class);
         intent.putExtra("index", 0);
         startActivity(intent);
 

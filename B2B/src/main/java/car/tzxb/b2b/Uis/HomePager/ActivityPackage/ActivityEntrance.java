@@ -2,8 +2,10 @@ package car.tzxb.b2b.Uis.HomePager.ActivityPackage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.annotation.IdRes;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,7 +13,6 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -28,11 +29,9 @@ import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
-import car.myview.MyNestScollview;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.ActivityDivisionBean;
-import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
@@ -41,7 +40,7 @@ import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview.OnScrollviewListener{
+public class ActivityEntrance extends MyBaseAcitivity{
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
     @BindView(R.id.rg_activity)
@@ -50,11 +49,15 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
     RecyclerView recyclerView;
     @BindView(R.id.iv_activity_bg)
     ImageView iv_bg;
-    @BindView(R.id.scrollView)
-    MyNestScollview scollview;
+    @BindView(R.id.coordinatorlayout)
+    CoordinatorLayout coordinatorLayout;
+    @BindView(R.id.iv_empty_activity)
+    ImageView iv_empty;
+    @BindView(R.id.iv_gift)
+    ImageView iv_gift;
     private List<ActivityDivisionBean.DataBeanX.DataBean> beanList=new ArrayList<>();
     private CommonAdapter<ActivityDivisionBean.DataBeanX.DataBean> adapter;
-    private int bottom;
+
 
     @Override
     public void initParms(Bundle parms) {
@@ -69,15 +72,16 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("活动专区");
-        initRecy();
-        Refresh();
-        scollview.setOnScrolInterface(this);
-        scollview.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+        Glide.with(mContext).load("file:///android_asset/loading.gif").asGif().override(300,300).into(iv_gift);
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                onScroll(scollview.getScrollY());
+            public void run() {
+                iv_gift.setVisibility(View.GONE);
+                initRecy();
+                Refresh();
             }
-        });
+        },1500);
+
     }
 
 
@@ -89,6 +93,7 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
 
     private void Refresh() {
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        Log.i("活动专区",Constant.baseUrl+"item/index.php?c=Goods&m=PromotionZone"+"&user_id="+userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -105,9 +110,12 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
                     public void onResponse(ActivityDivisionBean response, int id) {
                           List<ActivityDivisionBean.DataBeanX> xList=response.getData();
                           if(xList.size()!=0){
+                              coordinatorLayout.setVisibility(View.VISIBLE);
+                              iv_empty.setVisibility(View.GONE);
                               addRb(xList);
                           }else {
-                            scollview.setVisibility(View.GONE);
+                              coordinatorLayout.setVisibility(View.GONE);
+                              iv_empty.setVisibility(View.VISIBLE);
                           }
                     }
                 });
@@ -144,7 +152,7 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
 
     private void initRecy() {
         recyclerView.setLayoutManager(new GridLayoutManager(this,2));
-        recyclerView.addItemDecoration(new SpaceItemDecoration(12, 2));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(8, 2));
         adapter = new CommonAdapter<ActivityDivisionBean.DataBeanX.DataBean>(MyApp.getContext(),R.layout.recommend_layout,beanList) {
             @Override
             protected void convert(ViewHolder holder, ActivityDivisionBean.DataBeanX.DataBean dataBean, int position) {
@@ -189,18 +197,4 @@ public class ActivityEntrance extends MyBaseAcitivity implements MyNestScollview
         onBackPressed();
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            bottom = iv_bg.getBottom();
-        }
-    }
-
-
-    @Override
-    public void onScroll(int scrollY) {
-         int top = Math.max(scrollY, bottom);
-         rg.layout(0, top, rg.getWidth(), top + rg.getHeight());
-    }
 }

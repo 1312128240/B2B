@@ -102,16 +102,20 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
 
     @Override
     public void doBusiness(Context mContext) {
+
+        initUi();
+        initRecy();
+    }
+
+    private void initUi() {
         tv_title.setText("购物车");
         tv_right.setText("编缉");
         recy_empty.addItemDecoration(new SpaceItemDecoration(10, 2));
-        //获取数据
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list";
-        Map<String, String> params = new HashMap<>();
-        params.put("user_id", userId);
-        presenter.PresenterGetData(url, params);
 
+        tv_total_num.setText("结算(0)");
+        tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
+        cb_all.setOnCheckedChangeListener(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
 
@@ -120,17 +124,28 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
         return presenter;
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Refresh();
+    }
+
+    private void Refresh() {
+        //获取数据
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list";
+        Map<String, String> params = new HashMap<>();
+        params.put("user_id", userId);
+        presenter.PresenterGetData(url, params);
+        cb_all.setChecked(false);
+    }
+
     @OnClick(R.id.tv_actionbar_back)
     public void back() {
         onBackPressed();
     }
 
     private void initRecy() {
-        content.setVisibility(View.VISIBLE);
-        tv_total_num.setText("结算(0)");
-        tv_total_price.setText(Html.fromHtml("合计: " + "<font color='#ff0000'><big>" + "¥" + total + "</big>"));
-        cb_all.setOnCheckedChangeListener(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CommonAdapter<ShopCarBean.DataBean>(MyApp.getContext(), R.layout.shopping_car_layout, beanList) {
             @Override
             protected void convert(final ViewHolder vh, final ShopCarBean.DataBean dataBean, final int i) {
@@ -266,6 +281,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
                                                             tv_right.setVisibility(View.INVISIBLE);
                                                             content.setVisibility(View.GONE);
                                                             empty.setVisibility(View.VISIBLE);
+                                                            getGuess();
                                                         }
 
                                                         if (dataBean.isCheck()) {
@@ -436,13 +452,16 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
 
     @Override
     public void showData(Object o) {
+
         ShopCarBean bean = (ShopCarBean) o;
         beanList = bean.getData();
-        if (beanList.size() != 0) {
+        adapter.add(beanList,true);
 
-            initRecy();
-
+        Log.i("走这里了吗",beanList.size()+"");
+        if (beanList.size()>0) {
+            content.setVisibility(View.VISIBLE);
         } else {
+            content.setVisibility(View.GONE);
             empty.setVisibility(View.VISIBLE);
             tv_right.setVisibility(View.INVISIBLE);
             getGuess();
@@ -564,6 +583,7 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 BaseDataListBean.DataBean bean = guessList.get(position);
                 Intent intent = new Intent(ShoppingCarActivity.this, GoodsXqActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra("mainId", bean.getId());
                 startActivity(intent);
                 finish();

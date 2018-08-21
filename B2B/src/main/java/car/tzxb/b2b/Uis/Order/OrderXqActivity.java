@@ -462,11 +462,18 @@ public class OrderXqActivity extends MyBaseAcitivity {
                             public void onResponse(BaseStringBean response, int id) {
 
                                 if("1".equals(String.valueOf(response.getStatus()))){
-                                    tv1.setVisibility(View.GONE);
+                                    tv1.setVisibility(View.VISIBLE);
                                     tv2.setVisibility(View.GONE);
-                                    tv3.setVisibility(View.VISIBLE);
+                                    tv3.setVisibility(View.GONE);
+                                    tv1.setText("删除订单");
                                     tv_status.setText("交易已关闭");
                                     tv_hint.setText(s);
+                                    tv1.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            deleOrder();
+                                        }
+                                    });
                                 }else {
                                     MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
                                 }

@@ -208,7 +208,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                     @Override
                     public void onResponse(OrderBean response, int id) {
                         dataBean = response.getData();
-                        Log.i("走成功",response.toString());
                         initData();
                     }
                 });
@@ -341,13 +340,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
-                Intent intent = new Intent(OrderActivity.this, OrderXqActivity.class);
-                intent.putExtra("orderid", response.getData().getOrder_id());
-                startActivity(intent);
-                if (isStateEnable()) {
-                    dialogFragment.dismiss();
-                }
-
+                 onBackPressed();
             }
 
             @Override

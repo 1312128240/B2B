@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我的订单"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack2" />
 
         <TextView
             android:id="@+id/tv_all_order"
@@ -26,7 +26,7 @@
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="end"
             android:text="查看全部"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/grayBlack" />
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
@@ -54,7 +54,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="我的资产"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/colorBlack2" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -63,7 +63,7 @@
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="end"
             android:text="查看全部"
-            android:textColor="@color/colorBlack" />
+            android:textColor="@color/grayBlack" />
     </LinearLayout>
 
     <RadioGroup
@@ -124,7 +124,7 @@
         android:background="@color/colorWhite"
         android:padding="10dp"
         android:text="我的服务"
-        android:textColor="@color/colorBlack" />
+        android:textColor="@color/colorBlack2" />
 
     <RadioGroup
         android:id="@+id/rg_my_service"

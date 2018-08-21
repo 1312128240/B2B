@@ -38,6 +38,7 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnEditorAction;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
@@ -61,13 +62,11 @@ import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollview.OnScrollviewListener {
+public class FindShopXqActivity extends MyBaseAcitivity {
     @BindView(R.id.recy_find_shop_xq)
     RecyclerView recy;
     @BindView(R.id.recy_find_shop_drawer)
     RecyclerView recy_drawer;
-    @BindView(R.id.my_nestcscollview)
-    MyNestScollview scollview;
     @BindView(R.id.ll_suspension)
     LinearLayout ll_suspension;
     @BindView(R.id.rl_find_shop)
@@ -106,10 +105,9 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
     Drawable d_s3;
     @BindView(R.id.et_classify)
     EditText et_seach;
-    @BindView(R.id.tv_empty_layout)
-    TextView tv_empty;
+   /* @BindView(R.id.tv_empty_layout)
+    TextView tv_empty;*/
     private CommonAdapter<FindShopXqBean.DataBean.GoodsBean> adapter;
-    private int bottom;
     private FindShopXqBean.DataBean.InfoBean inforBean;
     private boolean b;
     private String param1, param2,cate,search;
@@ -133,37 +131,10 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
     @Override
     public void doBusiness(Context mContext) {
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        initEvent();
         iniAdapter();
         Refesh();
         getCate();
-    }
 
-
-    private void initEvent() {
-        //来获得宽度或者高度。这是获得一个view的宽度和高度的方法之一。
-        // 这是一个注册监听视图树的观察者(observer)，在视图树的全局事件改变时得到通知。
-        // ViewTreeObserver不能直接实例化，而是通过getViewTreeObserver()获得。
-        scollview.setOnScrolInterface(this);
-        //实现windowChange监听
-        scollview.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(View oldFocus, View newFocus) {
-                onScroll(scollview.getScrollY());
-            }
-        });
-
-        scollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
-            @Override
-            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-               View view = v.getChildAt(0);
-               if (view.getMeasuredHeight() <= v.getScrollY() + v.getHeight()) {
-                    if(goodsBeanList.size()!=0)
-                        LoadMore();
-                }
-            }
-        });
-        //点击搜索
         et_seach.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -177,7 +148,12 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
             }
         });
 
-
+        recy.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        });
+    }
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
     private void iniAdapter() {
@@ -231,24 +207,7 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
         });
     }
 
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
-    }
 
-    @Override
-    public void onScroll(int scrollY) {
-        int top = Math.max(scrollY, bottom);
-        ll_suspension.layout(0, top, ll_suspension.getWidth(), top + ll_suspension.getHeight());
-    }
-
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus) {
-            bottom = rl_bottom.getBottom();
-        }
-    }
 
     //门店信息
     private void initShopInfor() {
@@ -420,8 +379,8 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=ShopIndexPage")
                 .addParams("user_id",userId)
                 .addParams("shop_id", shop_id)
-                .addParams("pagesize", "20")
-                .addParams("page",String.valueOf(page))
+             /*   .addParams("pagesize", "20")
+                .addParams("page",String.valueOf(page))*/
                 .addParams("price", param1)
                 .addParams("sales", param2)
                 .addParams("cate",cate)
@@ -436,8 +395,6 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
                     @Override
                     public void onResponse(FindShopXqBean response, int id) {
                         closeLoadingDialog();
-                        scollview.fling(0);
-                        scollview.smoothScrollTo(0, 0);
                         //门店信息
                         inforBean = response.getData().getInfo();
                         initShopInfor();
@@ -445,11 +402,9 @@ public class FindShopXqActivity extends MyBaseAcitivity implements MyNestScollvi
                         goodsBeanList = response.getData().getGoods();
                         adapter.add(goodsBeanList, true);
                         if(goodsBeanList.size()>0){
-                            tv_empty.setVisibility(View.GONE);
                             recy.setVisibility(View.VISIBLE);
                             page++;
                         }else {
-                            tv_empty.setVisibility(View.VISIBLE);
                             recy.setVisibility(View.GONE);
                         }
 

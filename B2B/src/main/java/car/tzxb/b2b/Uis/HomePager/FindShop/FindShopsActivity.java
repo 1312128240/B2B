@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
+import android.support.v4.widget.PopupWindowCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -42,6 +44,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Views.PopWindow.FindShopPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -52,10 +55,14 @@ public class FindShopsActivity extends MyBaseAcitivity {
     TextView tv_title;
     @BindView(R.id.recy_find_shop)
     RecyclerView recy;
+    @BindView(R.id.iv_shaixuan)
+    ImageView iv_sx;
     private String userId;
     private String cate;
     private List<FindShopsBenn.DataBean> beanList=new ArrayList<>();
     private CommonAdapter<FindShopsBenn.DataBean> adapter;
+    private FindShopPop findShopPop;
+
 
     @Override
     public void initParms(Bundle parms) {
@@ -72,7 +79,6 @@ public class FindShopsActivity extends MyBaseAcitivity {
         tv_title.setText("发现好店");
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         getCate();
-
         initAdapter();
     }
 
@@ -81,6 +87,7 @@ public class FindShopsActivity extends MyBaseAcitivity {
         final GradientDrawable drawable = new GradientDrawable();
         drawable.setColor(Color.parseColor("#FF9900"));
         drawable.setCornerRadius(50);
+
         adapter = new CommonAdapter<FindShopsBenn.DataBean>(MyApp.getContext(), R.layout.find_shop_item,beanList) {
             @Override
             protected void convert(ViewHolder holder, final FindShopsBenn.DataBean dataBean, int position) {
@@ -110,6 +117,8 @@ public class FindShopsActivity extends MyBaseAcitivity {
                 String imgUrl1=goodsBeen.get(0).getImg_url();
                 String imgUrl2=goodsBeen.get(1).getImg_url();
                 String imgUrl3=goodsBeen.get(2).getImg_url();
+
+
                 Glide.with(MyApp.getContext()).load(imgUrl1).error(R.drawable.bucket_no_picture).into(iv1);
                 Glide.with(MyApp.getContext()).load(imgUrl2).error(R.drawable.bucket_no_picture).into(iv2);
                 Glide.with(MyApp.getContext()).load(imgUrl3).error(R.drawable.bucket_no_picture).into(iv3);
@@ -138,14 +147,13 @@ public class FindShopsActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
-                        List<BaseDataBean.DataBean.CategoryBean> cateList=response.getData().getCategory();
+                        List<BaseDataBean.DataBean.CategoryBean> cateList = response.getData().getCategory();
                         initTabLayout(cateList);
                     }
                 });
     }
 
     private void initTabLayout(final List<BaseDataBean.DataBean.CategoryBean> cateList) {
-
         for (int i = 0; i <cateList.size() ; i++) {
             RadioButton rb=new RadioButton(this);
             BaseDataBean.DataBean.CategoryBean cateBean=cateList.get(i);
@@ -158,13 +166,6 @@ public class FindShopsActivity extends MyBaseAcitivity {
             rb.setBackground(getResources().getDrawable(R.drawable.yell_black_select));
             rg.addView(rb);
         }
-        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
-
-            }
-        });
-
 
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -175,6 +176,10 @@ public class FindShopsActivity extends MyBaseAcitivity {
         });
         RadioButton rb1= rg.findViewById(0);
         rb1.setChecked(true);
+
+        //初始化popwindow
+        findShopPop = new FindShopPop(this,cateList);
+
     }
 
     //刷新数据
@@ -200,7 +205,29 @@ public class FindShopsActivity extends MyBaseAcitivity {
                     }
                 });
     }
-
+    @OnClick(R.id.iv_shaixuan)
+    public void sx(){
+        int[] location = new int[2];
+        recy.getLocationOnScreen(location);
+        int  y = location[1];
+        findShopPop.showAtLocation(iv_sx, Gravity.NO_GRAVITY, 0,y);
+        if(findShopPop.isShowing()){
+            iv_sx.setImageResource(R.drawable.find_icon_more2);
+        }
+        findShopPop.setOnDismissListener(new PopupWindow.OnDismissListener() {
+            @Override
+            public void onDismiss() {
+                iv_sx.setImageResource(R.drawable.find_icon_more);
+            }
+        });
+        findShopPop.setItemClickListener(new FindShopPop.ItemClickListener() {
+            @Override
+            public void click(String cateId) {
+                cate=cateId;
+                Refresh();
+            }
+        });
+    }
 
     @OnClick(R.id.tv_actionbar_back)
     public void back() {
