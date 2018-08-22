@@ -51,6 +51,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.ShoppingCarPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.Modify_DiscountsPop;
 import car.tzxb.b2b.config.Constant;
@@ -564,7 +565,8 @@ public class ShoppingCarActivity extends MyBaseAcitivity implements MvpViewInter
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
                 //图片
                 ImageView iv = holder.getView(R.id.iv_recommend);
-                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
+                int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i, i).into(iv);
                 holder.setText(R.id.tv_recommend_title, bean.getShop_name());
                 //名字
                 holder.setText(R.id.tv_recommend_title, bean.getGoods_name());

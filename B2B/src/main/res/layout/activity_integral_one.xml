@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity">
+
+    <include layout="@layout/base_red_actionbar" />
+
+    <HorizontalScrollView
+        android:scrollbars="none"
+
+        android:background="@color/colorWhite"
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <RadioGroup
+            android:id="@+id/rg_ingegral"
+            android:layout_gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="28dp"
+            android:orientation="horizontal">
+
+        </RadioGroup>
+    </HorizontalScrollView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:src="@drawable/sm_banner1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="同致播报"
+            android:textColor="@color/colorBlack2" />
+
+        <car.tzxb.b2b.Views.TextSwitchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </car.tzxb.b2b.Views.TextSwitchView>
+
+    </LinearLayout>
+
+    <TextView
+        android:text="热门商品"
+        android:padding="8dp"
+        android:drawableLeft="@drawable/shop_icon_title"
+        android:background="@color/colorLightGray1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
+</LinearLayout>

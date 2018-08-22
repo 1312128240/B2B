@@ -88,7 +88,7 @@ public class FindShopPop extends PopupWindow {
                 tv.setText(categoryBean.getCategory_name());
                 tv.setCheckTextColor(Color.parseColor("#FEBB66"));
                 tv.setUncheckTextColor(Color.parseColor("#303030"));
-                tv.setPadding(0,10,0,10);
+                tv.setPadding(0,15,0,15);
                 tv.setCheckBackgroundDrawable(mContext.getDrawable(R.drawable.bg13));
                 tv.setUncheckbackgroundDrawable(mContext.getDrawable(R.drawable.bg3));
                 tv.setChecked(categoryBean.isCheck());

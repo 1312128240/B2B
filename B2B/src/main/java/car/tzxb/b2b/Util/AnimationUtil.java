@@ -25,19 +25,4 @@ public class AnimationUtil {
         view.startAnimation(shake);
     }
 
-    public static void FABAnimation(View view,int type) {
-
-        if(type==1){      //显示
-            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 1f);
-            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 1f);
-            PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 1f);
-            ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY,pvhZ).setDuration(300).start();
-        }else {          //隐藏
-            PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("alpha", 0f);
-            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 0f);
-            PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 0f);
-            ObjectAnimator.ofPropertyValuesHolder(view, pvhX, pvhY,pvhZ).setDuration(300).start();
-        }
-    }
-
 }

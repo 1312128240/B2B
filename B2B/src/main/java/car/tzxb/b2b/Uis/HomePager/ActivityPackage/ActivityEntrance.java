@@ -72,7 +72,8 @@ public class ActivityEntrance extends MyBaseAcitivity{
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("活动专区");
-        Glide.with(mContext).load("file:///android_asset/loading.gif").asGif().override(300,300).into(iv_gift);
+        int wh=DeviceUtils.dip2px(MyApp.getContext(),180);
+        Glide.with(mContext).load("file:///android_asset/loading.gif").asGif().override(wh,wh).into(iv_gift);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

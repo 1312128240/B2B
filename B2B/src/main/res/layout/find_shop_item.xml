@@ -60,7 +60,8 @@
             android:textSize="13sp" />
 
      <LinearLayout
-         android:layout_below="@+id/iv_find_shop"
+         android:layout_below="@+id/tv_find_shop_fk"
+         android:layout_marginTop="1dp"
          android:layout_width="match_parent"
          android:layout_height="match_parent">
          <ImageView

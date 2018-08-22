@@ -3,6 +3,7 @@ package car.tzxb.b2b.Uis.Order;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -35,6 +36,7 @@ import car.tzxb.b2b.Bean.LogisticsData;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -69,7 +71,8 @@ public class LogisticsActivity extends MyBaseAcitivity {
     }
 
     private void initGuess() {
-        recy_guess.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+      //  recy_guess.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        recy_guess.setLayoutManager(new GridLayoutManager(this,2));
         recy_guess.addItemDecoration(new SpaceItemDecoration(10, 2));
         recy_guess.setNestedScrollingEnabled(false);
         guessAdapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout, beanList) {
@@ -77,7 +80,8 @@ public class LogisticsActivity extends MyBaseAcitivity {
               protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
                   //图片
                   ImageView iv = holder.getView(R.id.iv_recommend);
-                  Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
+                  int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
+                  Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i, i).into(iv);
                   holder.setText(R.id.tv_recommend_title, bean.getShop_name());
                   //名字
                   holder.setText(R.id.tv_recommend_title,bean.getGoods_name());

@@ -246,18 +246,6 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         navigationBar.selectTab(position);
     }
 
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        listener.focus(hasFocus);
-    }
-
-    WindowFocusChang listener;
-
-    public void setFocusChanged(WindowFocusChang focusChanged) {
-        this.listener = focusChanged;
-    }
-
     public void showAlertDialog(final BaseStringBean response) {
         final AlterDialogFragment dialogFragment = new AlterDialogFragment();
         Bundle bundle = new Bundle();

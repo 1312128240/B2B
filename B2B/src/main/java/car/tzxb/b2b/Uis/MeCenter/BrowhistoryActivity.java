@@ -82,89 +82,18 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
             }
 
             @Override
-            public void dele(String id,int i1,int i2) {
-              delBrow(id,i1,i2);
+            public void dele(String id) {
+              delBrow(id);
             }
         });
     }
-
-   /* private void initRecy() {
-        recy.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CommonAdapter<BrowhistoryBean.DataBean>(MyApp.getContext(), R.layout.order_list_item, dataBeanList) {
-            @Override
-            protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean dataBean, int position) {
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(0, 0, 0, 0);
-                View parent = holder.getView(R.id.parent);
-                parent.setLayoutParams(layoutParams);
-                holder.getView(R.id.ll_order_title).setBackgroundColor(Color.parseColor("#E1E1E1"));
-                TextView tv_time = holder.getView(R.id.tv_order_status_shop_name);
-                tv_time.setText(dataBean.getAdd_time());
-                tv_time.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-                //隐藏
-                holder.getView(R.id.ll_order_status_infor).setVisibility(View.GONE);
-                holder.getView(R.id.ll_order_status_infor2).setVisibility(View.GONE);
-                holder.getView(R.id.et_mesg).setVisibility(View.GONE);
-                //内部recyclerview
-                RecyclerView InnerRecy = holder.getView(R.id.recy_order_inner);
-                InnerRecy.setLayoutManager(new LinearLayoutManager(BrowhistoryActivity.this));
-                final List<BrowhistoryBean.DataBean.ChildDataBean> InnList = dataBean.getChild_data();
-                CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean> InnAdaper = new CommonAdapter<BrowhistoryBean.DataBean.ChildDataBean>(MyApp.getContext(), R.layout.commn_item, InnList) {
-                    @Override
-                    protected void convert(ViewHolder holder, final BrowhistoryBean.DataBean.ChildDataBean childDataBean, int position) {
-                        //图片
-                        Glide.with(MyApp.getContext()).load(childDataBean.getImg_url()).into((ImageView) holder.getView(R.id.iv_category));
-                        //名字
-                        holder.setText(R.id.tv_catagroy_name, childDataBean.getTitle());
-                        //价格
-                        holder.setText(R.id.tv_category_pice, "¥" + childDataBean.getSeal_price());
-                        //隐藏控件
-                        holder.getView(R.id.tv_goods_type).setVisibility(View.GONE);
-                        ImageView iv = holder.getView(R.id.iv_gwc_icon);
-                        iv.setVisibility(View.VISIBLE);
-                        iv.setImageResource(R.mipmap.commodity_icon_atc2);
-                        //删除
-                        TextView tv_del = holder.getView(R.id.tv_del_browhistory);
-                        if (!isShow) {
-                            tv_del.setVisibility(View.VISIBLE);
-                        } else {
-                            tv_del.setVisibility(View.GONE);
-                        }
-                        tv_del.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                delBrow(childDataBean.getId());
-                            }
-                        });
-
-                    }
-                };
-                InnerRecy.setAdapter(InnAdaper);
-                InnAdaper.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        BrowhistoryBean.DataBean.ChildDataBean bean = InnList.get(position);
-                        Intent intent = new Intent(BrowhistoryActivity.this, GoodsXqActivity.class);
-                        intent.putExtra("mainId", bean.getId());
-                        startActivity(intent);
-                    }
-
-                    @Override
-                    public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                        return false;
-                    }
-                });
-            }
-        };
-        recy.setAdapter(adapter);
-    }*/
 
     /**
      * 删除浏览
      *
      * @param id
      */
-    private void delBrow(String id, final int i1, final int i2) {
+    private void delBrow(String id) {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("删除浏览历史", Constant.baseUrl + "item/index.php?c=Goods&m=DeleteUserHistory" + "&user_id=" + userId + "&goods_ids=" + id);
         OkHttpUtils
@@ -279,7 +208,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
        }
     }
 
-  /*  @OnClick(R.id.tv_all_dele)
+  @OnClick(R.id.tv_all_dele)
     public void all_dele() {
         StringBuilder sb=new StringBuilder();
         for (int i = 0; i <dataBeanList.size() ; i++) {
@@ -289,6 +218,6 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                 sb.append(bean.getId()).append(",");
             }
         }
-       // delBrow(sb.toString());
-    }*/
+        delBrow(sb.toString());
+    }
 }

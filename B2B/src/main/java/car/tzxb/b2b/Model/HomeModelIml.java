@@ -41,7 +41,5 @@ public class HomeModelIml implements MvpContact.Model<HomeBean> {
                         listener.onSucceed(response);
                     }
                 });
-
-        Log.i("首页详情路径", url+"");
     }
 }

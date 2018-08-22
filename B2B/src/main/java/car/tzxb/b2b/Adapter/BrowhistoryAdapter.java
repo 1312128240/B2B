@@ -101,7 +101,7 @@ public class BrowhistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
              ((MyViewHolderContent) holder).tv_dele.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
-                     listener.dele(datas.getId(),datas.getI1(),datas.getI2());
+                     listener.dele(datas.getId());
                  }
              });
         }
@@ -161,6 +161,6 @@ public class BrowhistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public interface  OnItemClick{
         void goxq(String id);
 
-        void dele(String id,int i1,int i2);
+        void dele(String id);
     }
 }

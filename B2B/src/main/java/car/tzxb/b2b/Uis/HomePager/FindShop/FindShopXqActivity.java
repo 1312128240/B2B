@@ -105,8 +105,8 @@ public class FindShopXqActivity extends MyBaseAcitivity {
     Drawable d_s3;
     @BindView(R.id.et_classify)
     EditText et_seach;
-   /* @BindView(R.id.tv_empty_layout)
-    TextView tv_empty;*/
+    @BindView(R.id.tv_empty)
+    TextView tv_empty;
     private CommonAdapter<FindShopXqBean.DataBean.GoodsBean> adapter;
     private FindShopXqBean.DataBean.InfoBean inforBean;
     private boolean b;
@@ -403,9 +403,11 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                         adapter.add(goodsBeanList, true);
                         if(goodsBeanList.size()>0){
                             recy.setVisibility(View.VISIBLE);
+                            tv_empty.setVisibility(View.GONE);
                             page++;
                         }else {
                             recy.setVisibility(View.GONE);
+                            tv_empty.setVisibility(View.VISIBLE);
                         }
 
                     }

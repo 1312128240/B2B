@@ -305,7 +305,7 @@ public class GoodsClassifyActivity extends MyBaseAcitivity implements MvpViewInt
 
     private void initRecy() {
         recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+    //    recyclerview.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.commn_item, beanList) {
             @Override
             protected void convert(ViewHolder holder, final BaseDataListBean.DataBean bean, int position) {

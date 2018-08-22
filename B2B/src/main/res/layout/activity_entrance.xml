@@ -37,6 +37,7 @@
                 android:id="@+id/rg_activity"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
+                android:gravity="center_vertical"
                 android:background="@color/colorWhite"
                 android:orientation="horizontal">
 

@@ -190,6 +190,7 @@ public class ResetPhoneActivity extends MyBaseAcitivity {
                     public void onResponse(BaseStringBean response, int id) {
 
                           if(response.getStatus()==1){
+                              MyToast.makeTextAnim(MyApp.getContext(),"换绑成功,请您重新登录",0, Gravity.CENTER,0,0).show();
                               deleteActivity(new_phone);
                           }else {
                               MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0, Gravity.CENTER,0,0).show();
@@ -208,6 +209,9 @@ public class ResetPhoneActivity extends MyBaseAcitivity {
         this.finish();
         //保存新手机号
         SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile",new_phone);
+        //删除用户id
+        SPUtil.getInstance(MyApp.getContext()).dele("UserId");
+        MobclickAgent.onProfileSignOff();           //友盟统计退出
         onBackPressed();
     }
 }

@@ -31,6 +31,7 @@ import butterknife.BindViews;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
+import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.SpaceItem_StaggerLayoutManager;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
@@ -47,10 +48,12 @@ import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
+import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -302,14 +305,15 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
     }
 
     private void initRecommend() {
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.addItemDecoration(new SpaceItem_StaggerLayoutManager(10, 2));
+        recyclerView.setLayoutManager(new GridLayoutManager(MyApp.getContext(),2));
+        recyclerView.addItemDecoration(new SpaceItemDecoration(10, 2));
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout, beanList) {
             @Override
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
                 //图片
                 ImageView iv = holder.getView(R.id.iv_recommend);
-                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(256, 256).into(iv);
+                int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
+                Glide.with(MyApp.getContext()).load(bean.getImg_url()).override(i, i).into(iv);
                 holder.setText(R.id.tv_recommend_title, bean.getShop_name());
                 //名字
                 holder.setText(R.id.tv_recommend_title, bean.getGoods_name());
@@ -384,7 +388,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 action.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(action);
                 break;
+            case R.id.rb_jfsc:
+                intent.setClass(getActivity(), IntegralOneActivity.class);
+                startActivity(intent);
+                break;
             default:
+
                 MyToast.makeTextAnim(MyApp.getContext(), "还未开放", 0, Gravity.CENTER, 0, 0).show();
                 break;
         }

@@ -159,7 +159,16 @@
                     android:id="@+id/recy_find_shop_xq"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:visibility="gone"
                     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+                <TextView
+                    android:id="@+id/tv_empty"
+                    android:drawableTop="@drawable/shop_icon_blank"
+                    android:visibility="gone"
+                    android:layout_marginTop="250dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
             </android.support.design.widget.CoordinatorLayout>
 

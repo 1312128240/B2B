@@ -25,6 +25,8 @@ import com.bumptech.glide.Glide;
 import com.google.android.flexbox.FlexboxLayout;
 import java.util.ArrayList;
 import java.util.List;
+
+import car.myview.CustomToast.MyToast;
 import car.myview.FlexRadioGroupPackage.FlexRadioGroup;
 import car.tzxb.b2b.Adapter.MyLvBaseAdapter;
 import car.tzxb.b2b.Bean.GoodsXqBean;
@@ -46,6 +48,7 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     private String shopId;
     private int index;
     private String discountsId;
+    private int kc;
     private GoodsXqBean.DataBean.ProductBean productBean;
     private View view;
     private List<GoodsXqBean.DataBean.ProductBean.PromotionBean> promotionBeanList=new ArrayList<>();
@@ -136,6 +139,9 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
             rg_gg.addView(rb);
         }
         rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {
+
+
+
             @Override
             public void onCheckedChanged(@IdRes int checkedId) {
                 productBean = lists.get(checkedId);
@@ -144,7 +150,8 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                 //价格
                 tv_price.setText(Html.fromHtml("¥"+"<big>"+ productBean.getSeal_price()+"</big>"));
                 //库存
-                tv_stock.setText("库存: "+ productBean.getStock_headquarters());
+                kc = Integer.valueOf(productBean.getStock_headquarters());
+                tv_stock.setText("库存: "+ kc);
                 //切换选择的商品id
                 pro_id= productBean.getProduct_id();
                 shopId= productBean.getShop_id();
@@ -165,7 +172,6 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
     public void onClick(View v) {
          switch (v.getId()){
              case R.id.iv_subtract:
-
                  if(num==1||num==productBean.getMinimum_order_quantity()){
                      return;
                  }
@@ -179,6 +185,11 @@ public class AddShoppingCarPop extends PopupWindow implements View.OnClickListen
                  adapter.notifyDataSetChanged();
                  break;
              case R.id.btn_add_shoppingcar:
+                  if(productBean.getMinimum_order_quantity()>kc){
+                      MyToast.makeTextAnim(MyApp.getContext(),"当前库存不足(余:"+kc+")",0,Gravity.CENTER,0,0).show();
+                      return;
+                  }
+
                   listener.Click(num,pro_id,shopId,discountsId);
                   dismiss();
                   break;

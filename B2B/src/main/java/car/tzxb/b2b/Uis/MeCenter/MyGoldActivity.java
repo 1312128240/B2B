@@ -9,6 +9,7 @@ import android.text.Html;
 import android.transition.Explode;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -41,7 +42,9 @@ public class MyGoldActivity extends MyBaseAcitivity {
     TextView tv_my_gold;
     @BindView(R.id.tv_my_gold_sign)
     TextView tv_sign_date;
-    private List<MyGoldBean.DataBean.LogBean> beanList=new ArrayList<>();
+    private String isSign;
+
+    private List<MyGoldBean.DataBean.LogBean> beanList = new ArrayList<>();
     private CommonAdapter<MyGoldBean.DataBean.LogBean> adapter;
 
 
@@ -65,17 +68,17 @@ public class MyGoldActivity extends MyBaseAcitivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         //日期
-        adapter = new CommonAdapter<MyGoldBean.DataBean.LogBean>(MyApp.getContext(), R.layout.my_gold_sign_item,beanList) {
+        adapter = new CommonAdapter<MyGoldBean.DataBean.LogBean>(MyApp.getContext(), R.layout.my_gold_sign_item, beanList) {
             @Override
             protected void convert(ViewHolder holder, MyGoldBean.DataBean.LogBean logBean, int position) {
-               //日期
-                String t1=logBean.getAdd_time();
-                String t2=t1.substring(0,10);
-                holder.setText(R.id.tv_sign_date,t2);
+                //日期
+              /*  String t1=logBean.getAdd_time();
+                String t2=t1.substring(0,10);*/
+                holder.setText(R.id.tv_sign_date, logBean.getAdd_time());
                 //金币数量
-                holder.setText(R.id.tv_sign_gold_num,"+"+logBean.getNumber());
+                holder.setText(R.id.tv_sign_gold_num, "+" + logBean.getNumber());
                 //签到成功
-                holder.setText(R.id.tv_sign_succeed,"签到成功");
+                holder.setText(R.id.tv_sign_succeed, "签到成功");
             }
         };
         recyclerView.setAdapter(adapter);
@@ -98,16 +101,18 @@ public class MyGoldActivity extends MyBaseAcitivity {
     }
 
     private void getData() {
-        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        String url= Constant.baseUrl+"item/index.php?c=Home&m=UserSignInData&user_id="+userId;
-        Log.i("我的金币",url+"");
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        String url = Constant.baseUrl + "item/index.php?c=Home&m=UserSignInData&user_id=" + userId;
+        Log.i("我的金币", url + "");
         OkHttpUtils
                 .get()
-                .url(Constant.baseUrl+"item/index.php?c=Home&m=UserSignInData")
+                .url(Constant.baseUrl + "item/index.php?c=Home&m=UserSignInData")
                 .tag(this)
-                .addParams("user_id",userId)
+                .addParams("user_id", userId)
                 .build()
                 .execute(new GenericsCallback<MyGoldBean>(new JsonGenericsSerializator()) {
+
+
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
@@ -115,21 +120,30 @@ public class MyGoldActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(MyGoldBean response, int id) {
-                          if(response.getStatus()==1){
-                              MyGoldBean.DataBean.UserBean bean=response.getData().getUser();
-                              tv_my_gold.setText(Html.fromHtml("<big>"+bean.getGold()+"</big>"+"个"));
-                              tv_sign_date.setText(Html.fromHtml("<big>"+bean.getSign_in()+"</big>"+"天"));
-                              beanList=response.getData().getLog();
-                              adapter.add(beanList,true);
+                        if (response.getStatus() == 1) {
+                            MyGoldBean.DataBean.UserBean bean = response.getData().getUser();
+                            tv_my_gold.setText(Html.fromHtml("<big>" + bean.getGold() + "</big>" + "个"));
+                            tv_sign_date.setText(Html.fromHtml("<big>" + bean.getSign_in() + "</big>" + "天"));
+                            beanList = response.getData().getLog();
+                            adapter.add(beanList, true);
+                            isSign = bean.getIs_sign_in();
+                            if ("1".equals(bean.getIs_sign_in())) {
+                                tv_clcik.setText("今日" + "\n已签到");
+                            } else {
+                                tv_clcik.setText("点击签到");
+                            }
 
-                              if("1".equals(bean.getIs_sign_in())){
-                                  tv_clcik.setText("今日" + "\n已签到");
-                              }else {
-                                  tv_clcik.setText("点击签到");
-                              }
-
-                          }
+                        }
                     }
                 });
-                        }
-                        }
+    }
+
+    @OnClick(R.id.tv_click_sign)
+    public void sign(){
+        if(isFastClick()){
+            if("0".equals(isSign)){
+               getData();
+            }
+        }
+    }
+}

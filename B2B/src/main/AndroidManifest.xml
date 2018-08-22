@@ -141,7 +141,8 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".Uis.Order.LookOrderActivity"></activity>
+        <activity android:name=".Uis.Order.LookOrderActivity" />
+        <activity android:name=".Uis.MeCenter.IntegralShop.IntegralOneActivity"></activity>
     </application>
 
 </manifest>

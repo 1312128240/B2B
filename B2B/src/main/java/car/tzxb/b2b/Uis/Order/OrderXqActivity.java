@@ -392,7 +392,7 @@ public class OrderXqActivity extends MyBaseAcitivity {
         ll_countdown_time.setVisibility(View.VISIBLE);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date currdate = sdf.parse("2018-08-09 10:36:56");
+            Date currdate = sdf.parse(bean.getAdd_time());
             Calendar c = Calendar.getInstance();
             c.setTime(currdate);
             c.add(Calendar.DAY_OF_MONTH, 3);//+3天

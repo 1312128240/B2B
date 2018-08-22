@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/shoppincar_parent"
+    android:descendantFocusability="blocksDescendants"
     tools:context="car.tzxb.b2b.fragments.ShoppingCarFragment">
 
     <include layout="@layout/base_actionbar" />

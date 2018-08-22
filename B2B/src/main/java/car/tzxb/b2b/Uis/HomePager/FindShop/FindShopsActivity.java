@@ -42,6 +42,8 @@ import car.tzxb.b2b.Bean.BaseDataBean;
 import car.tzxb.b2b.Bean.FindShopsBenn;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.PopWindow.FindShopPop;
@@ -113,15 +115,45 @@ public class FindShopsActivity extends MyBaseAcitivity {
                 ImageView iv1=holder.getView(R.id.iv_find_shop1);
                 ImageView iv2=holder.getView(R.id.iv_find_shop2);
                 ImageView iv3=holder.getView(R.id.iv_find_shop3);
-                List<FindShopsBenn.DataBean.GoodsBean> goodsBeen=dataBean.getGoods();
+                final List<FindShopsBenn.DataBean.GoodsBean> goodsBeen=dataBean.getGoods();
+                //商品图片
                 String imgUrl1=goodsBeen.get(0).getImg_url();
                 String imgUrl2=goodsBeen.get(1).getImg_url();
                 String imgUrl3=goodsBeen.get(2).getImg_url();
-
-
                 Glide.with(MyApp.getContext()).load(imgUrl1).error(R.drawable.bucket_no_picture).into(iv1);
                 Glide.with(MyApp.getContext()).load(imgUrl2).error(R.drawable.bucket_no_picture).into(iv2);
                 Glide.with(MyApp.getContext()).load(imgUrl3).error(R.drawable.bucket_no_picture).into(iv3);
+
+                iv1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
+                        String mainId=goodsBeen.get(0).getID();
+                        intent.putExtra("mainId", mainId);
+                        startActivity(intent);
+                    }
+                });
+
+                iv2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
+                        String mainId=goodsBeen.get(1).getID();
+                        intent.putExtra("mainId", mainId);
+                        startActivity(intent);
+                    }
+                });
+
+                 iv3.setOnClickListener(new View.OnClickListener() {
+                     @Override
+                     public void onClick(View v) {
+                         Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
+                         String mainId=goodsBeen.get(2).getID();
+                         intent.putExtra("mainId", mainId);
+                         startActivity(intent);
+                     }
+                 });
+
             }
         };
         recy.setAdapter(adapter);
@@ -154,12 +186,13 @@ public class FindShopsActivity extends MyBaseAcitivity {
     }
 
     private void initTabLayout(final List<BaseDataBean.DataBean.CategoryBean> cateList) {
+        int w=DeviceUtils.dip2px(MyApp.getContext(),80);
         for (int i = 0; i <cateList.size() ; i++) {
             RadioButton rb=new RadioButton(this);
             BaseDataBean.DataBean.CategoryBean cateBean=cateList.get(i);
             rb.setButtonDrawable(null);
             rb.setId(i);
-            rb.setLayoutParams(new RadioGroup.LayoutParams(150, ViewGroup.LayoutParams.MATCH_PARENT));
+            rb.setLayoutParams(new RadioGroup.LayoutParams(w, ViewGroup.LayoutParams.MATCH_PARENT));
             rb.setText(cateBean.getCategory_name());
             rb.setTextColor(Color.WHITE);
             rb.setGravity(Gravity.CENTER);

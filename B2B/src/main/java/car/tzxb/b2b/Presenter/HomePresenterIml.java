@@ -54,7 +54,7 @@ public class HomePresenterIml implements MvpContact.Presenter {
 
             @Override
             public void onError(Throwable errorMsg) {
-                Log.i("mvp回调错误",errorMsg.toString());
+                Log.i("首页mvp回调错误",errorMsg.toString());
 
             }
         });

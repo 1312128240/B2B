@@ -213,8 +213,6 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                    // startActivity(new Intent(AccountSecurityYzmActivity.this,ResetPayPasswordActivity.class));
-
                   if (response.isFlag() == true) {
                             Intent intent=new Intent();
                             switch (index){
