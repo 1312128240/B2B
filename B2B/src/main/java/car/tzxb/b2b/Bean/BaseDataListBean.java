@@ -12,6 +12,15 @@ public class BaseDataListBean {
     private String msg;
     private int status;
     private List<DataBean> data;
+    private List<InfoBean> info;
+
+    public List<InfoBean> getInfo() {
+        return info;
+    }
+
+    public void setInfo(List<InfoBean> info) {
+        this.info = info;
+    }
 
     public String getMsg() {
         return msg;
@@ -72,6 +81,7 @@ public class BaseDataListBean {
         private String min_seal_price;
         private String content;
         private String type;
+        private String contents;
         private String Name;
         private String shop_id;
         private String product_title;
@@ -102,9 +112,18 @@ public class BaseDataListBean {
         private String cost_point;
 
 
+        public String getContents() {
+            return contents;
+        }
+
+        public void setContents(String contents) {
+            this.contents = contents;
+        }
+
         public void setId(String id) {
             this.id = id;
         }
+
         public String getType() {
             return type;
         }
@@ -161,6 +180,7 @@ public class BaseDataListBean {
         public void setCheck(boolean check) {
             isCheck = check;
         }
+
         public String getTitle() {
             return title;
         }
@@ -229,6 +249,7 @@ public class BaseDataListBean {
         public String getName() {
             return Name;
         }
+
         public String getDealer() {
             return dealer;
         }
@@ -326,9 +347,6 @@ public class BaseDataListBean {
         }
 
 
-
-
-
         public String getUsername() {
             return Username;
         }
@@ -336,7 +354,6 @@ public class BaseDataListBean {
         public void setUsername(String username) {
             Username = username;
         }
-
 
 
         public String getID() {
@@ -476,4 +493,35 @@ public class BaseDataListBean {
         }
 
     }
+
+    public static class InfoBean {
+        private String Group_id;
+        private String gold;
+        private String b2b_point;
+
+        public String getGroup_id() {
+            return Group_id;
+        }
+
+        public void setGroup_id(String Group_id) {
+            this.Group_id = Group_id;
+        }
+
+        public String getGold() {
+            return gold;
+        }
+
+        public void setGold(String gold) {
+            this.gold = gold;
+        }
+
+        public String getB2b_point() {
+            return b2b_point;
+        }
+
+        public void setB2b_point(String b2b_point) {
+            this.b2b_point = b2b_point;
+        }
+    }
 }
+

@@ -18,8 +18,9 @@
         android:padding="10dp">
 
         <car.myview.CircleImageView.CircleImageView
-            android:id="@+id/civ_headimg"
+            android:id="@+id/img_avatar"
             android:layout_width="50dp"
+            android:transitionName="share"
             android:layout_height="50dp"
             tools:background="@mipmap/ic_launcher" />
 

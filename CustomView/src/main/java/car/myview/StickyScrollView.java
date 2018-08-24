@@ -14,6 +14,7 @@ import android.widget.ScrollView;
 
 import java.util.ArrayList;
 
+
 /**
  * @author Emil Sj�lander - sjolander.emil@gmail.com
  */
@@ -473,4 +474,6 @@ public class StickyScrollView extends ScrollView {
         }
         return super.onInterceptTouchEvent(ev);
     }
+
+
 }

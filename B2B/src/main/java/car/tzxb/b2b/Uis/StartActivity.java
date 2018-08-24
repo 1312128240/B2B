@@ -2,14 +2,9 @@ package car.tzxb.b2b.Uis;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.Interpolator;
 import android.widget.ImageView;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
@@ -56,7 +51,7 @@ public class StartActivity extends MyBaseAcitivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 startActivity(MainActivity.class);
-                overridePendingTransition(R.anim.tran, R.anim.alpha);
+                overridePendingTransition(R.anim.right_in, R.anim.left_out);
                 finish();
             }
 

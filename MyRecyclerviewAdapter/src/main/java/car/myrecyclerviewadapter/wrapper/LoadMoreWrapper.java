@@ -3,6 +3,7 @@ package car.myrecyclerviewadapter.wrapper;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -32,16 +33,15 @@ public class LoadMoreWrapper <T> extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-    private boolean isShowLoadMore(int position)
-    {
+    public boolean isShowLoadMore(int position) {
+
         return hasLoadMore() && (position >= mInnerAdapter.getItemCount());
     }
 
     @Override
-    public int getItemViewType(int position)
-    {
-        if (isShowLoadMore(position))
-        {
+    public int getItemViewType(int position) {
+
+        if (isShowLoadMore(position)) {
             return ITEM_TYPE_LOAD_MORE;
         }
         return mInnerAdapter.getItemViewType(position);
@@ -68,8 +68,7 @@ public class LoadMoreWrapper <T> extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        if (isShowLoadMore(position))
-        {
+        if (isShowLoadMore(position)) {
             if (mOnLoadMoreListener != null)
             {
                 mOnLoadMoreListener.onLoadMoreRequested();

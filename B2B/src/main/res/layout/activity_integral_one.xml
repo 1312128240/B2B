@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,59 +9,136 @@
 
     <include layout="@layout/base_red_actionbar" />
 
-    <HorizontalScrollView
-        android:scrollbars="none"
-
-        android:background="@color/colorWhite"
-        android:layout_width="match_parent"
-        android:layout_height="48dp">
-
-        <RadioGroup
-            android:id="@+id/rg_ingegral"
-            android:layout_gravity="center_vertical"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:orientation="horizontal">
-
-        </RadioGroup>
-    </HorizontalScrollView>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:src="@drawable/sm_banner1" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="同致播报"
-            android:textColor="@color/colorBlack2" />
-
-        <car.tzxb.b2b.Views.TextSwitchView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </car.tzxb.b2b.Views.TextSwitchView>
-
-    </LinearLayout>
-
-    <TextView
-        android:text="热门商品"
-        android:padding="8dp"
-        android:drawableLeft="@drawable/shop_icon_title"
-        android:background="@color/colorLightGray1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-
-    <android.support.v7.widget.RecyclerView
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    </android.support.v7.widget.RecyclerView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:background="@color/colorWhite"
+                android:scrollbars="none"
+                app:layout_scrollFlags="scroll|enterAlways">
+
+                <RadioGroup
+                    android:id="@+id/rg_ingegral"
+                    android:layout_width="match_parent"
+                    android:layout_height="28dp"
+                    android:layout_gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                </RadioGroup>
+            </HorizontalScrollView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scaleType="fitXY"
+                android:src="@drawable/sm_banner1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorWhite"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:drawableLeft="@drawable/sm_icon_bb"
+                    android:drawablePadding="5dp"
+                    android:text="同致播报"
+                    android:textColor="@color/colorBlack2" />
+
+                <car.tzxb.b2b.Views.TextSwitchView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                </car.tzxb.b2b.Views.TextSwitchView>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/colorWhite"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/sm_icon_jf"
+                    android:text="积分" />
+
+                <TextView
+                    android:id="@+id/tv_jf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorBlack2"
+                    android:textSize="17sp"
+                    tools:text="497" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="60dp"
+                    android:drawablePadding="10dp"
+                    android:drawableTop="@drawable/sm_icon_jb"
+                    android:text="金币" />
+
+                <TextView
+                    android:id="@+id/tv_jb"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorBlack2"
+                    android:textSize="17sp"
+                    tools:text="488" />
+
+                <TextView
+                    android:id="@+id/tv_dh_jf"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/bg1"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="6dp"
+                    android:paddingRight="6dp"
+                    android:paddingTop="4dp"
+                    android:text="兑换记录"
+                    android:textColor="@color/colorWhite" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorLightGray1"
+                android:drawableLeft="@drawable/shop_icon_title"
+                android:padding="8dp"
+                android:text="热门商品" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recy_jf"
+                android:nestedScrollingEnabled="false"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 </LinearLayout>

@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,11 +16,11 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
@@ -46,7 +45,6 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.GoodsXqBean;
-import car.tzxb.b2b.Interface.GoodsXqInterface;
 import car.tzxb.b2b.Interface.ScollListener;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -60,12 +58,11 @@ import car.tzxb.b2b.Views.PopWindow.ExplainPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, ScollListener {
+public class GoodsFragment extends MyBaseFragment implements ScollListener {
     @BindView(R.id.xq_banner)
     Banner banner;
     @BindView(R.id.tv_xq_goods_shop_collect)
     TextView tv_collect;
-    GoodsXqActivity goodsActivity;
     @BindView(R.id.tv_xq_goods_name)
     TextView tv_goods_name;
     @BindView(R.id.tv_xq_goods_current_price)
@@ -110,10 +107,11 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     RecyclerView recyclerView_discounts;
     @BindView(R.id.tv_miaoshu)
     TextView tv_ms;
+    public GoodsXqActivity goodsXqActivity;
     private String flag;
-    private int y;
     private String shopId;
-
+    private GoodsXqBean.DataBean xqBean;
+    private   ClickListener listener;
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_goods;
@@ -121,33 +119,36 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
 
     @Override
     public void initData() {
-        goodsActivity.setDataSource(this);
-        goodsActivity.scoll(this);
+        //商品详情头部
+        initInfor(xqBean.getGoods());
+        //评价
+        initEvaluate(xqBean.getComment());
+        //店铺信息
+        initShop(xqBean.getShop(), xqBean.getHot());
+        //底部详情图片
+        initdetails(xqBean.getProduct());
     }
+
+
+
 
     @Override
     protected BasePresenter bindPresenter() {
         return null;
     }
-    // 2.1 定义用来与外部activity交互，获取到宿主activity
-    private FragmentInteraction listterner;
-
-    // 1 定义了所有activity必须实现的接口方法
-    public interface FragmentInteraction {
-        void process(int checkId);
-    }
-
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        goodsActivity = (GoodsXqActivity) activity;
 
-        if(activity instanceof FragmentInteraction) {
-            listterner = (FragmentInteraction)activity; // 2.2 获取到宿主activity并赋值
-        } else{
-            throw new IllegalArgumentException("activity must implements FragmentInteraction");
-        }
+        goodsXqActivity = (GoodsXqActivity) activity;
+
+        xqBean = goodsXqActivity.getResultBean();
+
+        goodsXqActivity.SetScollTo(this);
+
+        listener= (ClickListener) getActivity();
+
     }
 
 
@@ -155,8 +156,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
     public void collect() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         if (userId == null) {
-            Intent intent = new Intent(goodsActivity, LoginActivity.class);
-            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(goodsActivity).toBundle());
+            Intent intent = new Intent(getActivity(), LoginActivity.class);
+            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
         //是否收藏
@@ -193,24 +194,6 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
 
     }
 
-
-    @Override
-    public void getData(GoodsXqBean bean) {
-       GoodsXqBean.DataBean xqBean = bean.getData();
-        //商品详情头部
-        initInfor(xqBean.getGoods());
-        //评价
-        initEvaluate(xqBean.getComment());
-        //店铺信息
-        initShop(xqBean.getShop(), xqBean.getHot());
-        //底部详情图片
-        initdetails(xqBean.getProduct());
-        //详情详情列表的高度
-        int[] location = new int[2];
-        tv_img.getLocationOnScreen(location);
-        int x = location[0];
-        y = location[1];
-    }
 
     /**
      * 底部图片和商品规格
@@ -270,7 +253,8 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@IdRes int checkedId) {
-                listterner.process(checkedId);
+                //listterner.process(checkedId);
+                listener.checkId(checkedId);
                 GoodsXqBean.DataBean.ProductBean productBean=product.get(checkedId);
                 //切换轮播图
                 viewpager(productBean.getImgs());
@@ -288,7 +272,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
                 }
                 //描述
                 String ms=productBean.getMiaoshu();
-                if(!"".equals(ms)){
+                if(!"".equals(ms)&&ms!=null){
                     tv_ms.setVisibility(View.VISIBLE);
                     tv_ms.setText(ms);
                 }
@@ -464,7 +448,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         ll_all_pj.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goodsActivity.setTabSelect(2);
+                goodsXqActivity.setTabSelect(2);
             }
         });
     }
@@ -481,7 +465,7 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         tv_goods_name.setText("\u3000\u3000" + goods.getTitle());
         tv_city.setText(goods.getProvince() + goods.getCity() + goods.getArea());
         //商品收藏
-        goodsActivity.collect(goods.getCollect());
+        goodsXqActivity.collect(goods.getCollect());
     }
 
 
@@ -493,17 +477,24 @@ public class GoodsFragment extends MyBaseFragment implements GoodsXqInterface, S
         DeviceUtils.showPopWindow(scrollView,ep);
     }
 
-
     @Override
     public void scollLv() {
+
         scrollView.fling(0);
-        scrollView.smoothScrollTo(0, y-150);
+        scrollView.smoothScrollTo(0,1600);
     }
 
     @Override
     public void scollTop() {
         scrollView.fling(0);
         scrollView.smoothScrollTo(0, 0);
+    }
+
+
+
+
+    public interface  ClickListener{
+        void checkId(int position);
     }
 
 }

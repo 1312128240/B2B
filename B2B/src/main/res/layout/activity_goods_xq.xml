@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/goods_xq_parent"
@@ -9,8 +9,15 @@
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity">
 
+    <LinearLayout
+        android:id="@+id/ll_xq_content"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <RelativeLayout
-        android:id="@+id/xq_toolbar"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
@@ -115,6 +122,16 @@
             android:text="加入购物车"
             android:textColor="@color/colorWhite" />
     </RadioGroup>
+    </LinearLayout>
+
+    <car.myview.Loading.LoadingView
+        android:id="@+id/loadingview"
+        app:loadingText="拼命加载中...."
+        android:layout_centerInParent="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </car.myview.Loading.LoadingView>
 
 
-</LinearLayout>
+</RelativeLayout>

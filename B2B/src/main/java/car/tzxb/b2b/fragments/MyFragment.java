@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.util.Log;
 import android.util.TypedValue;
@@ -32,7 +31,6 @@ import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
-import car.myrecyclerviewadapter.SpaceItem_StaggerLayoutManager;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.BageView.BadgeView;
 import car.myview.CircleImageView.CircleImageView;
@@ -48,7 +46,6 @@ import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
-import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
@@ -320,7 +317,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 //价格
                 TextView tv_price = holder.getView(R.id.tv_recommend_price);
                 tv_price.setText(Html.fromHtml("¥ <big>" + bean.getPrice() + "</big>"));
-                ;           //销量
+                //销量
                 TextView tv_sales = holder.getView(R.id.tv_recomment_sales);
                 tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 tv_sales.setText("销量 " + bean.getSales());
@@ -388,13 +385,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 action.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(action);
                 break;
-            case R.id.rb_jfsc:
+          /*  case R.id.rb_jfsc:
                 intent.setClass(getActivity(), IntegralOneActivity.class);
                 startActivity(intent);
-                break;
+                break;*/
             default:
-
-                MyToast.makeTextAnim(MyApp.getContext(), "还未开放", 0, Gravity.CENTER, 0, 0).show();
+                MyToast.makeTextAnim(MyApp.getContext(), "暂未开放", 0, Gravity.CENTER, 0, 0).show();
                 break;
         }
 
@@ -422,8 +418,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
             return;
         }
-        Intent intent = new Intent(getActivity(), SettingsActivity.class);
-        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(getActivity()).toBundle());
+        startActivity(new Intent(getActivity(),SettingsActivity.class));
     }
 
 

@@ -33,7 +33,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="110dp"
                         android:background="@mipmap/shop_icon_bg"
-                        app:layout_scrollFlags="scroll|enterAlways">
+                        app:layout_scrollFlags="scroll">
 
                         <car.myview.CircleImageView.CircleImageView
                             android:id="@+id/civ_shop"
@@ -173,7 +173,6 @@
             </android.support.design.widget.CoordinatorLayout>
 
             <LinearLayout
-                android:id="@+id/ll_find_shop_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:background="@color/colorWhite"

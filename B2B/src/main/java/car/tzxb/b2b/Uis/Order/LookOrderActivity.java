@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
 import butterknife.OnClick;
+import car.myrecyclerviewadapter.wrapper.LoadMoreWrapper;
 import car.myview.CustomToast.MyToast;
 import car.myview.SpringView.DefaultFooter;
 import car.myview.SpringView.SpringView;
@@ -42,7 +44,7 @@ import okhttp3.Call;
 
 public class LookOrderActivity extends MyBaseAcitivity {
 
-   @BindView(R.id.recy_order)
+    @BindView(R.id.recy_order)
     RecyclerView recyclerView;
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
@@ -50,8 +52,6 @@ public class LookOrderActivity extends MyBaseAcitivity {
     TabLayout tablayout;
     @BindView(R.id.order_parent)
     LinearLayout parent;
-    @BindView(R.id.springview)
-    SpringView springView;
     @BindView(R.id.tv_empty_order)
     TextView tv_emtpy;
     private List<Object> resultList=new ArrayList<>();
@@ -61,6 +61,9 @@ public class LookOrderActivity extends MyBaseAcitivity {
     private String m;
     private LoadingDialog loadingDialog;
     private int pager;
+    private View loadview;
+    private LoadMoreWrapper<Object> loadMoreWrapper;
+
     @Override
     public void initParms(Bundle parms) {
         position = getIntent().getIntExtra("index",-1);
@@ -81,7 +84,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
     @Override
     protected void onResume() {
         super.onResume();
-        pager=0;
+
         Refresh();
     }
 
@@ -90,19 +93,6 @@ public class LookOrderActivity extends MyBaseAcitivity {
         tv_title.setText("我的订单");
         initTab();
         initRecy();
-
-        springView.setFooter(new DefaultFooter(MyApp.getContext()));
-        springView.setListener(new SpringView.OnFreshListener() {
-            @Override
-            public void onRefresh() {
-
-            }
-
-            @Override
-            public void onLoadmore() {
-                    LoadMore();
-            }
-        });
     }
 
     private void initTab() {
@@ -136,6 +126,8 @@ public class LookOrderActivity extends MyBaseAcitivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new OrderAdapter(MyApp.getContext(),resultList);
         recyclerView.setAdapter(adapter);
+        loadMoreWrapper = new LoadMoreWrapper<>(adapter);
+        recyclerView.setAdapter(loadMoreWrapper);
         //点击接口回调
         adapter.setTextClickListener(new OrderAdapter.TextClickListener() {
             @Override
@@ -208,6 +200,13 @@ public class LookOrderActivity extends MyBaseAcitivity {
                 startActivity(i);
             }
         });
+        //加载更多监听
+        loadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+                LoadMore();
+            }
+        });
     }
 
     /**
@@ -267,7 +266,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     public void onResponse(BaseStringBean response, int id) {
                         if(response.getStatus()==1){
                              beanList.remove(index);
-                             DataHelper(beanList);
+                             DataHelper(beanList,false);
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
                         }
@@ -351,6 +350,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
 
     private void Refresh() {
         showLoading();
+        pager=0;
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("我的订单", Constant.baseUrl + "orders/order_list_mobile.php?m=order_lists" + "&user_id=" + userId + "&list=" + m+"&page="+pager+"&pagesize=10");
         OkHttpUtils
@@ -372,21 +372,21 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     public void onResponse(OrderStatusBean response, int id) {
                         closeLoading();
                         beanList = response.getData().getOrder_list();
-                        DataHelper(beanList);
                         if(beanList.size()>0){
+                            DataHelper(beanList,true);
                             tv_emtpy.setVisibility(View.GONE);
-                            springView.setVisibility(View.VISIBLE);
+                            recyclerView.setVisibility(View.VISIBLE);
                             pager++;
                         }else {
                             tv_emtpy.setVisibility(View.VISIBLE);
-                            springView.setVisibility(View.GONE);
+                            recyclerView.setVisibility(View.GONE);
                         }
                     }
                 });
     }
 
       //整理数据
-    private void DataHelper(List<OrderStatusBean.DataBean.OrderListBean> beanList) {
+    private void DataHelper(List<OrderStatusBean.DataBean.OrderListBean> beanList,boolean Refresh) {
         List<Object> dataList=new ArrayList<>();
         for (int i = 0; i < beanList.size() ; i++) {
             OrderStatusBean.DataBean.OrderListBean xBean= beanList.get(i);
@@ -421,6 +421,17 @@ public class LookOrderActivity extends MyBaseAcitivity {
         }
 
         adapter.add(dataList,true);
+        if(Refresh){
+            if(beanList.size()<10){  //不用加载更多
+                loadview =null;
+            }else {
+                loadview = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.default_footer,recyclerView,false);
+            }
+        }else {
+            loadview = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.default_footer,recyclerView,false);
+        }
+        loadMoreWrapper.setLoadMoreView(loadview);
+        loadMoreWrapper.notifyDataSetChanged();
 
     }
 
@@ -443,24 +454,29 @@ public class LookOrderActivity extends MyBaseAcitivity {
                 .execute(new GenericsCallback<OrderStatusBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        springView.onFinishFreshAndLoad();
+
                     }
 
                     @Override
                     public void onResponse(OrderStatusBean response, int id) {
-                        springView.onFinishFreshAndLoad();
                         List<OrderStatusBean.DataBean.OrderListBean> tempList=response.getData().getOrder_list();
                         if(tempList.size()>0){
                             beanList.addAll(tempList);
-                            DataHelper(beanList);
+                            DataHelper(beanList,false);
                             pager++;
                         }else {
+                            loadview =null;
+                            loadMoreWrapper.setLoadMoreView(loadview);
                             MyToast.makeTextAnim(MyApp.getContext(), "已经全部为您加载完毕", 0, Gravity.CENTER, 0, 0).show();
                         }
+                       loadMoreWrapper.notifyDataSetChanged();
                     }
                 });
 
     }
+
+
+
     //生成方法名
     public String createMethod(int i){
         switch (i) {

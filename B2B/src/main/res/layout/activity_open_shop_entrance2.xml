@@ -5,9 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntrance2Activity">
-<include
-    android:id="@+id/open_shop_entrance2_actionbar"
-    layout="@layout/base_red_actionbar"/>
+<include layout="@layout/base_red_actionbar"/>
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

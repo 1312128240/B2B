@@ -3,6 +3,9 @@ package car.tzxb.b2b.fragments;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
+import android.os.Message;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,7 +20,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -27,11 +29,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -151,9 +151,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden) {
-            Log.i("可见", hidden + "");
             pager = 0;
-            presenterGetData();
             getBrandData();
         }
     }
@@ -198,7 +196,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                 HomeBean.DataBean.CategoryBean categoryBean = categoryBeanList.get(tab.getPosition());
                 //刷新品牌
                 categoryId = categoryBean.getId();
-                Log.i("根据上面点击id获取下面品牌",Constant.baseUrl + "item/index.php?c=Goods&m=BrandList"+"&id="+categoryId);
+                Log.i("根据上面点击id获取下面品牌", Constant.baseUrl + "item/index.php?c=Goods&m=BrandList" + "&id=" + categoryId);
                 OkHttpUtils
                         .get()
                         .url(Constant.baseUrl + "item/index.php?c=Goods&m=BrandList")
@@ -258,29 +256,29 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         scrollView.setOnScrollListener(new StickyScrollView.OnScrollChangedListener() {
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
-                if (t > 1000) {
+             if (t > 1000) {
                     iv_floatingbutton.setVisibility(View.VISIBLE);
                 } else {
                     iv_floatingbutton.setVisibility(View.INVISIBLE);
                 }
+
             }
         });
 
         scrollView.setOnTouchListener(new View.OnTouchListener() {
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 // TODO Auto-generated method stub
-                switch(event.getAction()){
-                    case MotionEvent.ACTION_MOVE:{
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_MOVE: {
                         break;
                     }
-                    case MotionEvent.ACTION_DOWN:{
+                    case MotionEvent.ACTION_DOWN: {
                         break;
                     }
-                    case MotionEvent.ACTION_UP:{
+                    case MotionEvent.ACTION_UP: {
                         //当文本的measureheight 等于scroll滚动的长度+scroll的height
-                        if(scrollView.getChildAt(0).getMeasuredHeight()<=scrollView.getScrollY()+scrollView.getHeight()){
+                        if (scrollView.getChildAt(0).getMeasuredHeight() <= scrollView.getScrollY() + scrollView.getHeight()) {
                             LoadMore();
                         }
                         break;
@@ -289,8 +287,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                 return false;
             }
         });
-
-
 
 
     }
@@ -449,14 +445,14 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                     @Override
                     public void onError(Call call, Exception e, int id) {
 
-                          if(loadingDialog!=null){
-                              loadingDialog.dismiss();
-                          }
+                        if (loadingDialog != null) {
+                            loadingDialog.dismiss();
+                        }
                     }
 
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
-                        if(loadingDialog!=null){
+                        if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
                         goodsList = response.getData();
@@ -527,8 +523,9 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                         sign();
                         break;
                     case 1:
-                        intent.setClass(getActivity(), VipHomePagerActivity.class);
-                        startActivity(intent);
+                      /*  intent.setClass(getActivity(), VipHomePagerActivity.class);
+                        startActivity(intent);*/
+                        MyToast.makeTextAnim(MyApp.getContext(),"暂未开放",0,Gravity.CENTER,0,0).show();
                         break;
                     case 2:
                         minProgess();
@@ -682,14 +679,14 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
      * 加载更多
      */
     private void LoadMore() {
-        if(loadingDialog!=null){
+        if (loadingDialog != null) {
             loadingDialog.dismiss();
         }
-         showLoadingDialog();
+        showLoadingDialog();
 
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("首页品牌商品加载更多", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsList" + "&cate=" + categoryId +
-                "&brand=" + brands + "&page=" + pager + "&pagesize=10" + "&sales=desc"+"&user_id="+userId);
+                "&brand=" + brands + "&page=" + pager + "&pagesize=10" + "&sales=desc" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -704,14 +701,14 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                 .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        if(loadingDialog!=null){
+                        if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
                     }
 
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
-                        if(loadingDialog!=null){
+                        if (loadingDialog != null) {
                             loadingDialog.dismiss();
                         }
                         List<BaseDataListBean.DataBean> tempList = response.getData();

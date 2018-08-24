@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralXqActivity">
+
+    <include layout="@layout/base_red_actionbar" />
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/iv_jf_xq"
+                android:layout_width="match_parent"
+                android:layout_height="175dp"
+                android:transitionName="share"
+                tools:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_jf_goods_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textColor="@color/colorBlack2"
+                android:textSize="17sp"
+                tools:text="新款商品" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp">
+
+                <TextView
+                    android:id="@+id/tv_jf_gold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/sm_icon_tb"
+                    android:drawablePadding="5dp"
+                    android:gravity="center_vertical"
+                    android:text="456积分+754金币"
+                    android:textColor="#ff9d00"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:id="@+id/tv_jf_original_prices"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:text="原价"
+                    android:textSize="11sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="兑换数量"
+                    android:textColor="@color/colorBlack2" />
+
+                <ImageView
+                    android:id="@+id/iv_subtract"
+                    android:layout_width="34dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/sm_icon_reduce" />
+
+
+                <TextView
+                    android:id="@+id/tv_show_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="@color/colorBlack" />
+
+
+                <ImageView
+                    android:id="@+id/iv_plus"
+                    android:layout_width="34dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/sm_icon_plus" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_dh"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="20dp"
+                android:text="兑换"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="商品详情"
+                android:textColor="@color/colorBlack2"
+                android:textSize="17sp" />
+
+            <TextView
+                android:id="@+id/tv_jf_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:textSize="13sp"
+                tools:text="详情内容" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:text="兑换流程"
+                android:textColor="@color/colorBlack2"
+                android:textSize="17sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:text="1`确保积分和金币充足" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:text="2`点击兑换按钮并选择您的收货地址" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="5dp"
+                android:paddingLeft="10dp"
+                android:text="3`兑换完成后我们将以最快速度安排工作人员为您发货,兑换进度可在兑换记录中查看" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
+
+</LinearLayout>

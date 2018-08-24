@@ -238,11 +238,14 @@ public class FindShopsActivity extends MyBaseAcitivity {
                     }
                 });
     }
+
+
     @OnClick(R.id.iv_shaixuan)
     public void sx(){
         int[] location = new int[2];
         recy.getLocationOnScreen(location);
         int  y = location[1];
+
         findShopPop.showAtLocation(iv_sx, Gravity.NO_GRAVITY, 0,y);
         if(findShopPop.isShowing()){
             iv_sx.setImageResource(R.drawable.find_icon_more2);

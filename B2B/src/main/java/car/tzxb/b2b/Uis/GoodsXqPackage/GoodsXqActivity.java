@@ -7,40 +7,32 @@ import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
 import car.myview.Loading.LoadingView;
-import car.myview.Loading.ShapeLoadingDialog;
 import car.myview.NoScollViewPager;
 import car.tzxb.b2b.Adapter.XqPagerAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MvpViewInterface;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
-import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.GoodsXqBean;
 import car.tzxb.b2b.ContactPackage.MvpContact;
-import car.tzxb.b2b.Interface.GoodsXqInterface;
 import car.tzxb.b2b.Interface.ScollListener;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.Presenter.GoodsXqPresenterIml;
@@ -54,7 +46,7 @@ import car.tzxb.b2b.fragments.EvaluateFragment;
 import car.tzxb.b2b.fragments.GoodsFragment;
 import okhttp3.Call;
 
-public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener, MvpViewInterface,GoodsFragment.FragmentInteraction {
+public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener,MvpViewInterface,GoodsFragment.ClickListener{
 
     @BindView(R.id.xq_tab)
     TabLayout tabLayout;
@@ -66,23 +58,25 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     RadioGroup rg;
     @BindView(R.id.goods_xq_parent)
     View parent;
+    @BindView(R.id.ll_xq_content)
+    LinearLayout ll_content;
+    @BindView(R.id.loadingview)
+    LoadingView loadingView;
     private MvpContact.Presenter presenter = new GoodsXqPresenterIml(this);
     private String mainId;
     private GoodsXqBean goodsXqBean;
     private int index;
     private String from;
-    GoodsXqInterface goodsXqInterface;
-    private ShapeLoadingDialog shapeLoadingDialog;
 
-    public void setDataSource(GoodsXqInterface ds) {
-        this.goodsXqInterface = ds;
-    }
+    public GoodsXqBean.DataBean ResultBean;
 
     ScollListener scollListener;
 
-    public void scoll(ScollListener listener) {
+    public void SetScollTo(ScollListener listener) {
         this.scollListener = listener;
     }
+
+
 
     @Override
     public void initParms(Bundle parms) {
@@ -231,7 +225,8 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                     MyToast.makeTextAnim(MyApp.getContext(), "店铺", 0, Gravity.CENTER, 0, 0).show();
                     break;
                 case R.id.rb_to_gwc:
-                    startActivity(new Intent(this, ShoppingCarActivity.class));
+                  //  startActivity(new Intent(this, ShoppingCarActivity.class));
+                    startActivity(new Intent(this,ShoppingCartActivity.class));
                     if("fragment".equals(from)){
                         finish();
                     }
@@ -245,6 +240,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     }
 
     private void showShoppingCarWindow() {
+
         List<GoodsXqBean.DataBean.ProductBean> productBeanList=goodsXqBean.getData().getProduct();
         AddShoppingCarPop window = new AddShoppingCarPop(MyApp.getContext(), productBeanList,index);
         DeviceUtils.showPopWindow(parent,window);
@@ -299,24 +295,24 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
     @Override
     public void showData(Object o) {
         goodsXqBean = (GoodsXqBean) o;
-        //传递到第一个fragment
-        goodsXqInterface.getData(goodsXqBean);
 
+        this.ResultBean=goodsXqBean.getData();
     }
+
+
+
+
+
 
     @Override
     public void showLoading() {
-        shapeLoadingDialog = new ShapeLoadingDialog.Builder(this)
-                  .loadText("拼命加载中...")
-                  .cancelable(false)
-                  .build();
-        shapeLoadingDialog.show();
 
     }
 
     @Override
     public void closeLoading() {
-       shapeLoadingDialog.dismiss();
+        loadingView.setVisibility(View.GONE);
+        ll_content.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -332,8 +328,14 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         tabLayout.getTabAt(i).select();
     }
 
-    @Override
-    public void process(int i) {
-         this.index=i;
+
+    public GoodsXqBean.DataBean getResultBean() {
+        return ResultBean;
     }
+
+    @Override
+    public void checkId(int position) {
+       this.index=position;
+    }
+
 }

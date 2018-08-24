@@ -8,7 +8,6 @@ import java.util.List;
 
 public class GoodsXqBean {
 
-
     private String msg;
     private int status;
     private DataBean data;
@@ -37,7 +36,7 @@ public class GoodsXqBean {
         this.data = data;
     }
 
-    public static class DataBean {
+    public static class DataBean extends GoodsXqBean {
 
 
         private GoodsBean goods;

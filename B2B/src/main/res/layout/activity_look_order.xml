@@ -23,19 +23,13 @@
 
     </android.support.design.widget.TabLayout>
 
-    <car.myview.SpringView.SpringView
-        android:id="@+id/springview"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_order"
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recy_order"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        </android.support.v7.widget.RecyclerView>
-    </car.myview.SpringView.SpringView>
+    </android.support.v7.widget.RecyclerView>
 
     <TextView
         android:id="@+id/tv_empty_order"

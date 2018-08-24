@@ -5,9 +5,7 @@
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.fragments.ClassifyFragment">
 
-    <include
-        android:id="@+id/et_parent"
-        layout="@layout/search_bar" />
+    <include layout="@layout/search_bar" />
 
  <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

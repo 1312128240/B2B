@@ -7,8 +7,6 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,8 +16,8 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,20 +36,17 @@ import java.util.List;
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
-import butterknife.OnEditorAction;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
-import car.myrecyclerviewadapter.wrapper.EmptyWrapper;
+import car.myrecyclerviewadapter.wrapper.LoadMoreWrapper;
 import car.myview.CircleImageView.CircleImageView;
 import car.myview.CustomToast.MyToast;
-import car.myview.MyNestScollview;
 import car.myview.TagTextViewItem;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseDataBean;
-import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.FindShopXqBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -59,6 +54,7 @@ import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
+import car.tzxb.b2b.Views.PopWindow.FindShopPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -107,16 +103,16 @@ public class FindShopXqActivity extends MyBaseAcitivity {
     EditText et_seach;
     @BindView(R.id.tv_empty)
     TextView tv_empty;
-    private CommonAdapter<FindShopXqBean.DataBean.GoodsBean> adapter;
-    private FindShopXqBean.DataBean.InfoBean inforBean;
-    private boolean b;
-    private String param1, param2,cate,search;
-    private boolean flag1, flag2;
-    private List<FindShopXqBean.DataBean.GoodsBean> goodsBeanList = new ArrayList<>();
+    private boolean flag1, flag2,b;
     private LoadingDialog loadingDialog;
-    private String userId;
     private int page;
-    private String shop_id;
+    private List<FindShopXqBean.DataBean.GoodsBean> goodsBeanList = new ArrayList<>();
+    private LoadMoreWrapper<FindShopXqBean.DataBean.GoodsBean> loadMoreWrapper;
+    private CommonAdapter<FindShopXqBean.DataBean.GoodsBean> adapter;
+    private String param1, param2,cate,search,userId,shop_id,mobile;
+    private View Loadview;
+
+
 
     @Override
     public void initParms(Bundle parms) {
@@ -190,7 +186,16 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                 tv_sales2.setPadding(0, 0, 0, 5);
             }
         };
-        recy.setAdapter(adapter);
+
+        loadMoreWrapper = new LoadMoreWrapper<>(adapter);
+        loadMoreWrapper.setOnLoadMoreListener(new LoadMoreWrapper.OnLoadMoreListener() {
+            @Override
+            public void onLoadMoreRequested() {
+               LoadMore();
+            }
+        });
+
+
         adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
@@ -205,15 +210,17 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                 return false;
             }
         });
+        recy.setAdapter(loadMoreWrapper);
     }
 
 
-
     //门店信息
-    private void initShopInfor() {
+    private void initShopInfor( FindShopXqBean.DataBean.InfoBean inforBean) {
         //门店图片
         if (inforBean != null)
             Glide.with(MyApp.getContext()).load(inforBean.getImg()).asBitmap().error(R.drawable.bucket_no_picture).into(civ_shop);
+        //电话号码
+        mobile = inforBean.getMobile();
         //店名
         tv_shop_name.setText(inforBean.getShop_name());
         //销量
@@ -265,7 +272,7 @@ public class FindShopXqActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_find_shop_call)
     public void call() {
         Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + inforBean.getMobile());
+        Uri data = Uri.parse("tel:" +mobile);
         intent.setData(data);
         startActivity(intent);
     }
@@ -276,7 +283,6 @@ public class FindShopXqActivity extends MyBaseAcitivity {
         tv_sx.setTextColor(Color.parseColor("#303030"));
         tv_jg.setTextColor(Color.parseColor("#303030"));
         tv_xl.setTextColor(Color.parseColor("#303030"));
-
         tv_xl.setCompoundDrawablesWithIntrinsicBounds(null, null, d_s1, null);
         tv_jg.setCompoundDrawablesWithIntrinsicBounds(null, null, d_s1, null);
         page=0;
@@ -379,8 +385,8 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=ShopIndexPage")
                 .addParams("user_id",userId)
                 .addParams("shop_id", shop_id)
-             /*   .addParams("pagesize", "20")
-                .addParams("page",String.valueOf(page))*/
+                .addParams("pagesize", "10")
+                .addParams("page",String.valueOf(page))
                 .addParams("price", param1)
                 .addParams("sales", param2)
                 .addParams("cate",cate)
@@ -396,11 +402,15 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                     public void onResponse(FindShopXqBean response, int id) {
                         closeLoadingDialog();
                         //门店信息
-                        inforBean = response.getData().getInfo();
-                        initShopInfor();
+                         FindShopXqBean.DataBean.InfoBean inforBean = response.getData().getInfo();
+                         initShopInfor(inforBean);
                         //商品数据
-                        goodsBeanList = response.getData().getGoods();
-                        adapter.add(goodsBeanList, true);
+                         goodsBeanList = response.getData().getGoods();
+                         adapter.add(goodsBeanList, true);
+                         Loadview = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.default_footer,null);
+                         loadMoreWrapper.setLoadMoreView(Loadview);
+                         loadMoreWrapper.notifyDataSetChanged();
+
                         if(goodsBeanList.size()>0){
                             recy.setVisibility(View.VISIBLE);
                             tv_empty.setVisibility(View.GONE);
@@ -409,14 +419,14 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                             recy.setVisibility(View.GONE);
                             tv_empty.setVisibility(View.VISIBLE);
                         }
-
                     }
                 });
     }
-    //加载更多
+
+
+   //加载更多
     private void LoadMore() {
-        closeLoadingDialog();
-        showLoadingDialog();
+
         Log.i("门店商品加载更多",Constant.baseUrl+"item/index.php?c=Home&m=ShopIndexPage"+
                 "&shop_id="+shop_id+"&pagesize=20&page="+page+"&price=" + param1 + "&sales=" + param2+"&user_id="+userId+"&cate="+cate+"&search="+search);
         OkHttpUtils
@@ -435,23 +445,30 @@ public class FindShopXqActivity extends MyBaseAcitivity {
                 .execute(new GenericsCallback<FindShopXqBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        closeLoadingDialog();
+
+
                     }
 
                     @Override
                     public void onResponse(FindShopXqBean response, int id) {
-                        closeLoadingDialog();
+
                         List<FindShopXqBean.DataBean.GoodsBean> tempList=response.getData().getGoods();
                         goodsBeanList.addAll(tempList);
                         adapter.add(goodsBeanList,true);
                         if(tempList.size()>0){
                             page++;
                         }else {
+                            Loadview=null;
+                            loadMoreWrapper.setLoadMoreView(Loadview);
                             MyToast.makeTextAnim(MyApp.getContext(),"已全部为您加载完毕",0,Gravity.CENTER,0,0).show();
                         }
+                        loadMoreWrapper.notifyDataSetChanged();
+
                     }
                 });
     }
+
+
 
 
     //获取品牌分类数据

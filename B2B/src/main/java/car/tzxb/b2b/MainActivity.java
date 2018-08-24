@@ -24,7 +24,6 @@ import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
-import car.tzxb.b2b.Interface.WindowFocusChang;
 import car.tzxb.b2b.Util.ActivityManager;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.PermissionUtil;

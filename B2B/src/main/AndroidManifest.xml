@@ -142,7 +142,10 @@
         </provider>
 
         <activity android:name=".Uis.Order.LookOrderActivity" />
-        <activity android:name=".Uis.MeCenter.IntegralShop.IntegralOneActivity"></activity>
+        <activity android:name=".Uis.MeCenter.IntegralShop.IntegralOneActivity" />
+        <activity android:name=".Uis.MeCenter.IntegralShop.IntegralExchangeActivity" />
+        <activity android:name=".Uis.MeCenter.IntegralShop.IntegralXqActivity" />
+        <activity android:name=".Uis.GoodsXqPackage.ShoppingCartActivity"></activity>
     </application>
 
 </manifest>

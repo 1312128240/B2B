@@ -170,10 +170,10 @@ public class ResetPayPassword2Activity extends MyBaseAcitivity implements Keyboa
     }
 
     private void deleActivity() {
-        SettingsActivity a1= (SettingsActivity) SettingsActivity.sInstance;
+      /*  SettingsActivity a1= (SettingsActivity) SettingsActivity.sInstance;
         if(a1!=null){
             a1.finish();
-        }
+        }*/
         AccountSecurityHomePageActivity a2= (AccountSecurityHomePageActivity) AccountSecurityHomePageActivity.sInstance;
         if(a2!=null){
             a2.finish();

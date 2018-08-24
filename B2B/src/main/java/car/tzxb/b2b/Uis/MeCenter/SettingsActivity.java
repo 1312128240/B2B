@@ -50,12 +50,13 @@ public class SettingsActivity extends MyBaseAcitivity {
     Button btn_exit;
     @BindView(R.id.tv_user_mobile)
     TextView tv_mobile;
-    @BindView(R.id.civ_headimg)
+    @BindView(R.id.img_avatar)
     CircleImageView civ;
     @BindView(R.id.tv_cache)
     TextView tv_cache;
-
     public static AppCompatActivity sInstance = null;
+
+
     @Override
     public void initParms(Bundle parms) {
 
@@ -63,8 +64,7 @@ public class SettingsActivity extends MyBaseAcitivity {
 
     @Override
     public int bindLayout() {
-        getWindow().setEnterTransition(new Slide(Gravity.RIGHT).setDuration(300));
-        getWindow().setExitTransition(new Slide(Gravity.RIGHT).setDuration(300));
+
         return R.layout.activity_settings;
     }
 
@@ -225,4 +225,5 @@ public class SettingsActivity extends MyBaseAcitivity {
         super.onDestroy();
         sInstance = null;
     }
+
 }

@@ -9,9 +9,7 @@
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.LoginActivity">
 
-    <include
-        android:id="@+id/login_actionbar"
-        layout="@layout/base_actionbar" />
+    <include layout="@layout/base_actionbar" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_login"

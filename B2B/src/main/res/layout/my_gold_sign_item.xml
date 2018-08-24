@@ -24,7 +24,6 @@
         android:padding="8dp">
 
         <ImageView
-            android:id="@+id/iv_discounts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
@@ -32,7 +31,7 @@
             tools:src="@mipmap/ic_launcher" />
 
         <CheckBox
-            android:id="@+id/cb_selet_discounts_type"
+            android:id="@+id/my_gold_cb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"

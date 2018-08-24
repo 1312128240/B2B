@@ -3,6 +3,7 @@ package car.tzxb.b2b.Uis.SeachPackage;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DividerItemDecoration;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
@@ -51,6 +53,8 @@ public class SeachActivity extends MyBaseAcitivity {
 
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
+    @BindView(R.id.tv_actionbar_back)
+    TextView tv_back;
     @BindView(R.id.recy_seach)
     RecyclerView rech_history;
     @BindView(R.id.rg_hot_seach)
@@ -80,6 +84,7 @@ public class SeachActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("搜索");
+        tv_back.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,null,null);
         rech_history.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         recy_content.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         initHot();
@@ -187,6 +192,14 @@ public class SeachActivity extends MyBaseAcitivity {
             rb.setGravity(Gravity.CENTER);
             rb.setTextColor(Color.parseColor("#303030"));
             rg.addView(rb);
+            rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                      String s=buttonView.getText().toString();
+                      et_seach.setText(s);
+
+                }
+            });
         }
     }
 

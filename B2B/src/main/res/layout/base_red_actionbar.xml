@@ -29,7 +29,6 @@
         android:layout_height="wrap_content" />
     <ImageView
         android:layout_alignParentBottom="true"
-        android:id="@+id/iv_actionbar_right"
         android:layout_alignParentRight="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

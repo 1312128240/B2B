@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context="car.tzxb.b2b.Uis.SeachPackage.SeachActivity">
 
@@ -66,6 +67,7 @@
                 <car.myview.FlexRadioGroupPackage.FlexRadioGroup
                     android:id="@+id/rg_hot_seach"
                     android:paddingTop="10dp"
+                    app:flexWrap="wrap"
                     android:paddingBottom="15dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
