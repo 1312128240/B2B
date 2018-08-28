@@ -8,7 +8,9 @@
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
-    <LinearLayout
+    <include layout="@layout/order_header_item"/>
+
+    <!--<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:gravity="center_vertical"
@@ -34,7 +36,7 @@
             android:gravity="end"
             android:textColor="@color/red"
             tools:text="待付款" />
-    </LinearLayout>
+    </LinearLayout>-->
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_order_inner"
@@ -43,7 +45,8 @@
 
     </android.support.v7.widget.RecyclerView>
 
-    <EditText
+    <include layout="@layout/order_footer_item"/>
+  <!--  <EditText
         android:id="@+id/et_mesg"
         android:textSize="12sp"
         android:layout_width="match_parent"
@@ -125,5 +128,5 @@
             android:text="提醒发货" />
 
     </LinearLayout>
-
+-->
 </LinearLayout>

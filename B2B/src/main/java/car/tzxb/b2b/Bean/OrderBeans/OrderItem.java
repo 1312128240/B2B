@@ -4,10 +4,14 @@ package car.tzxb.b2b.Bean.OrderBeans;
  * Created by admin on 2016/11/8.
  */
 
+import java.util.List;
+
+import car.tzxb.b2b.Bean.ShopCarBean;
+
 /**
  * orderDetailList字段的每一项
  */
-public class OrderGoodsItem {
+public class OrderItem {
     private String shop_name;
     private String address;
     private String add_time;
@@ -38,6 +42,125 @@ public class OrderGoodsItem {
     private String shop_id;
     private String expect_time;
     private String viewTyep;
+    private String motion_id;
+    private String motion_type;
+    private String name;
+    private boolean isChoosed;
+    private String child_title;
+    private double discount_amount;
+    private List<ShopCarBean.DataBean.DataChildBean.GiftBean> gift;
+    private String imageUrl;
+    private double price;
+    private int postion;
+    private int count;
+    private int goodsImg;
+
+    public double getDiscount_amount() {
+        return discount_amount;
+    }
+
+    public void setDiscount_amount(double discount_amount) {
+        this.discount_amount = discount_amount;
+    }
+
+
+    public List<ShopCarBean.DataBean.DataChildBean.GiftBean> getGift() {
+        return gift;
+    }
+
+    public void setGift(List<ShopCarBean.DataBean.DataChildBean.GiftBean> gift) {
+        this.gift = gift;
+    }
+
+
+
+    public String getChild_title() {
+        return child_title;
+    }
+
+    public void setChild_title(String child_title) {
+        this.child_title = child_title;
+    }
+
+    public String getMotion_id() {
+        return motion_id;
+    }
+
+    public void setMotion_id(String motion_id) {
+        this.motion_id = motion_id;
+    }
+
+    public String getMotion_type() {
+        return motion_type;
+    }
+
+    public void setMotion_type(String motion_type) {
+        this.motion_type = motion_type;
+    }
+
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isChoosed() {
+        return isChoosed;
+    }
+
+
+    public void setChoosed(boolean choosed) {
+        isChoosed = choosed;
+    }
+
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getPostion() {
+        return postion;
+    }
+
+    public void setPostion(int postion) {
+        this.postion = postion;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getGoodsImg() {
+        return goodsImg;
+    }
+
+    public void setGoodsImg(int goodsImg) {
+        this.goodsImg = goodsImg;
+    }
+
+
+
+
     private int i1;
     private int i2;
 
@@ -304,5 +427,107 @@ public class OrderGoodsItem {
 
     public void setExpect_time(String expect_time) {
         this.expect_time = expect_time;
+    }
+    public static class GiftBean {
+
+        private String id;
+        private String full_product_id;
+        private String zp_pro_id;
+        private String zp_number;
+        private String zp_pro_img;
+        private String is_del;
+        private String add_time;
+        private String zp_title;
+        private String promotion_id;
+        private String goods_id;
+        private int zp_numbers;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getFull_product_id() {
+            return full_product_id;
+        }
+
+        public void setFull_product_id(String full_product_id) {
+            this.full_product_id = full_product_id;
+        }
+
+        public String getZp_pro_id() {
+            return zp_pro_id;
+        }
+
+        public void setZp_pro_id(String zp_pro_id) {
+            this.zp_pro_id = zp_pro_id;
+        }
+
+        public String getZp_number() {
+            return zp_number;
+        }
+
+        public void setZp_number(String zp_number) {
+            this.zp_number = zp_number;
+        }
+
+        public String getZp_pro_img() {
+            return zp_pro_img;
+        }
+
+        public void setZp_pro_img(String zp_pro_img) {
+            this.zp_pro_img = zp_pro_img;
+        }
+
+        public String getIs_del() {
+            return is_del;
+        }
+
+        public void setIs_del(String is_del) {
+            this.is_del = is_del;
+        }
+
+        public String getAdd_time() {
+            return add_time;
+        }
+
+        public void setAdd_time(String add_time) {
+            this.add_time = add_time;
+        }
+
+        public String getZp_title() {
+            return zp_title;
+        }
+
+        public void setZp_title(String zp_title) {
+            this.zp_title = zp_title;
+        }
+
+        public String getPromotion_id() {
+            return promotion_id;
+        }
+
+        public void setPromotion_id(String promotion_id) {
+            this.promotion_id = promotion_id;
+        }
+
+        public String getGoods_id() {
+            return goods_id;
+        }
+
+        public void setGoods_id(String goods_id) {
+            this.goods_id = goods_id;
+        }
+
+        public int getZp_numbers() {
+            return zp_numbers;
+        }
+
+        public void setZp_numbers(int zp_numbers) {
+            this.zp_numbers = zp_numbers;
+        }
     }
 }

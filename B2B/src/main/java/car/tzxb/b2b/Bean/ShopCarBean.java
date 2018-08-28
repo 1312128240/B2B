@@ -152,8 +152,6 @@ public class ShopCarBean {
         }
 
         public static class DataChildBean {
-
-
             private String shop_name;
             private String aid;
             private String type;
@@ -165,9 +163,8 @@ public class ShopCarBean {
             private String title;
             private String name;
             private String market_price;
-            private double seal_price;
+            private String seal_price;
             private String discount_price;
-            private String motion_type;
             private int point;
             private Object cost_point;
             private String pic;
@@ -212,9 +209,11 @@ public class ShopCarBean {
             private double total;
             private boolean isChecked;
             private String child_title;
+            private String motion_id;
+            private String motion_type;
             private double discount_amount;
             private int  minimum_order_quantity;
-            private String motion_id;
+            private List<ShopCarBean.DataBean.DataChildBean.GiftBean> gift;
 
             public String getMotion_id() {
                 return motion_id;
@@ -250,7 +249,7 @@ public class ShopCarBean {
             }
 
 
-            private List<ShopCarBean.DataBean.DataChildBean.GiftBean> gift;
+
 
             public String getChild_title() {
                 return child_title;
@@ -367,11 +366,11 @@ public class ShopCarBean {
                 this.market_price = market_price;
             }
 
-            public double getSeal_price() {
+            public String getSeal_price() {
                 return seal_price;
             }
 
-            public void setSeal_price(double seal_price) {
+            public void setSeal_price(String seal_price) {
                 this.seal_price = seal_price;
             }
 

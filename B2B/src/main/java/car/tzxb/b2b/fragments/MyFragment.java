@@ -107,21 +107,12 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
 
 
     @Override
-    public void onResume() {
-        super.onResume();
+    protected void onVisible() {
+        super.onVisible();
+        Log.i("myFragment可见时再加载","bb");
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Judge();
         Guess();
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-            Judge();
-            Guess();
-        }
     }
 
     /**
@@ -153,7 +144,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
      * 猜你在找
      */
     public void Guess() {
-        Log.i("猜你在找", Constant.baseUrl + "item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id=" + userId);
+        Log.i("我的界面猜你在找", Constant.baseUrl + "item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .tag(this)

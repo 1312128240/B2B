@@ -59,6 +59,8 @@ public class FindShopsActivity extends MyBaseAcitivity {
     RecyclerView recy;
     @BindView(R.id.iv_shaixuan)
     ImageView iv_sx;
+     @BindView(R.id.ll_test)
+     LinearLayout popTop;
     private String userId;
     private String cate;
     private List<FindShopsBenn.DataBean> beanList=new ArrayList<>();
@@ -242,11 +244,10 @@ public class FindShopsActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.iv_shaixuan)
     public void sx(){
-        int[] location = new int[2];
+      /*  int[] location = new int[2];
         recy.getLocationOnScreen(location);
-        int  y = location[1];
-
-        findShopPop.showAtLocation(iv_sx, Gravity.NO_GRAVITY, 0,y);
+        int  y = location[1];*/
+        findShopPop.showAsDropDown(popTop);
         if(findShopPop.isShowing()){
             iv_sx.setImageResource(R.drawable.find_icon_more2);
         }

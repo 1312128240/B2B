@@ -6,7 +6,6 @@
       <module fileurl="file://$PROJECT_DIR$/CustomView/CustomView.iml" filepath="$PROJECT_DIR$/CustomView/CustomView.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyApplication4.iml" filepath="$PROJECT_DIR$/MyApplication4.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyRecyclerviewAdapter/MyRecyclerviewAdapter.iml" filepath="$PROJECT_DIR$/MyRecyclerviewAdapter/MyRecyclerviewAdapter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/TbCar/TbCar.iml" filepath="$PROJECT_DIR$/TbCar/TbCar.iml" />
       <module fileurl="file://$PROJECT_DIR$/okhttp/okhttp.iml" filepath="$PROJECT_DIR$/okhttp/okhttp.iml" />
     </modules>
   </component>

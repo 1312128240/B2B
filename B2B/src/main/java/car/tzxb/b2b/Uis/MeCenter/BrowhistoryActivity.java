@@ -9,11 +9,13 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -22,8 +24,8 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.BrowhistoryBean;
-import car.tzxb.b2b.Bean.OrderBeans.GoodsOrderInfo;
-import car.tzxb.b2b.Bean.OrderBeans.OrderGoodsItem;
+import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
+import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
@@ -83,7 +85,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
             @Override
             public void dele(String id) {
-              delBrow(id);
+                delBrow(id);
             }
         });
     }
@@ -112,7 +114,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         if (response.getStatus() == 1) {
-                                 Refresh();
+                            Refresh();
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
                         }
@@ -132,7 +134,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
         Refresh();
     }
 
-   private void Refresh() {
+    private void Refresh() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("我的浏览记录", Constant.baseUrl + "item/index.php?c=Goods&m=GoodsHistoryList" + "&user_id="+userId);
         OkHttpUtils
@@ -149,23 +151,23 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(BrowhistoryBean response, int id) {
-                      dataBeanList=response.getData();
-                      DataHelpers(dataBeanList);
+                        dataBeanList=response.getData();
+                        DataHelpers(dataBeanList);
 
-                      if(dataBeanList.size()==0){
-                          tv_right.setVisibility(View.INVISIBLE);
-                          ll_browhistory_parent.setVisibility(View.GONE);
-                          tv_empty.setVisibility(View.VISIBLE);
-                      }
+                        if(dataBeanList.size()==0){
+                            tv_right.setVisibility(View.INVISIBLE);
+                            ll_browhistory_parent.setVisibility(View.GONE);
+                            tv_empty.setVisibility(View.VISIBLE);
+                        }
                     }
                 });
     }
 
     private void DataHelpers(List<BrowhistoryBean.DataBean> lists) {
-         List<Object> temp=new ArrayList<>();
+        List<Object> temp=new ArrayList<>();
         for (int i = 0; i <lists.size() ; i++) {
             BrowhistoryBean.DataBean xBean=lists.get(i);
-            GoodsOrderInfo headerBean=new GoodsOrderInfo();
+            OrderHeader headerBean=new OrderHeader();
             headerBean.setTime(xBean.getAdd_time());
 
             List<BrowhistoryBean.DataBean.ChildDataBean> childBeanList=xBean.getChild_data();
@@ -173,7 +175,7 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
             for (int j = 0; j <childBeanList.size() ; j++) {
                 BrowhistoryBean.DataBean.ChildDataBean childBean=childBeanList.get(j);
 
-                OrderGoodsItem itemBean=new OrderGoodsItem();
+                OrderItem itemBean=new OrderItem();
                 itemBean.setProduct_title(childBean.getTitle());
                 itemBean.setReal_price(childBean.getSeal_price());
                 itemBean.setId(childBean.getId());
@@ -195,24 +197,24 @@ public class BrowhistoryActivity extends MyBaseAcitivity {
 
     @OnClick(R.id.tv_actionbar_right)
     public void edit() {
-       if(!flag){
-           tv_right.setText("完成");
-           flag = true;
-           adapter.isShow(true);
-           ll_all_deletee.setVisibility(View.VISIBLE);
-       }else {
-           tv_right.setText("编缉");
-           flag = false;
-           adapter.isShow(false);
-           ll_all_deletee.setVisibility(View.GONE);
-       }
+        if(!flag){
+            tv_right.setText("完成");
+            flag = true;
+            adapter.isShow(true);
+            ll_all_deletee.setVisibility(View.VISIBLE);
+        }else {
+            tv_right.setText("编缉");
+            flag = false;
+            adapter.isShow(false);
+            ll_all_deletee.setVisibility(View.GONE);
+        }
     }
 
-  @OnClick(R.id.tv_all_dele)
+    @OnClick(R.id.tv_all_dele)
     public void all_dele() {
         StringBuilder sb=new StringBuilder();
         for (int i = 0; i <dataBeanList.size() ; i++) {
-           List<BrowhistoryBean.DataBean.ChildDataBean> childList =dataBeanList.get(i).getChild_data();
+            List<BrowhistoryBean.DataBean.ChildDataBean> childList =dataBeanList.get(i).getChild_data();
             for (int j = 0; j <childList.size() ; j++) {
                 BrowhistoryBean.DataBean.ChildDataBean bean=childList.get(j);
                 sb.append(bean.getId()).append(",");

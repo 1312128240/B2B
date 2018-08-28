@@ -5,9 +5,10 @@
     xmlns:tootls="http://schemas.android.com/tools"
     android:background="@color/colorWhite"
     android:focusable="true"
-    android:paddingLeft="10dp"
-    android:paddingRight="10dp"
+    android:paddingLeft="15dp"
+    android:paddingRight="15dp"
     android:elevation="0.5dp"
+    android:animateLayoutChanges="true"
     android:focusableInTouchMode="true">
 
     <ImageView
@@ -24,8 +25,8 @@
         android:layout_gravity="bottom"
         android:layout_width="0dp"
         android:layout_height="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:layout_weight="1"
         android:background="@drawable/bg4"
         android:drawableLeft="@mipmap/rhxi_tab_lefdj"
@@ -38,6 +39,7 @@
         android:textSize="13sp" />
 
     <FrameLayout
+        android:id="@+id/seach_bar_framelayout"
         android:layout_gravity="bottom"
         android:layout_marginBottom="10dp"
         android:layout_width="wrap_content"

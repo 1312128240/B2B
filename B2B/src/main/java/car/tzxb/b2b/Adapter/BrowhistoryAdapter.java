@@ -3,7 +3,6 @@ package car.tzxb.b2b.Adapter;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +16,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import car.tzxb.b2b.Bean.OrderBeans.GoodsOrderInfo;
-import car.tzxb.b2b.Bean.OrderBeans.OrderGoodsItem;
-import car.tzxb.b2b.Bean.OrderBeans.OrderPayInfo;
+import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
+import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
 import car.tzxb.b2b.R;
-import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 
 /**
  * Created by Administrator on 2018/8/21 0021.
@@ -73,11 +70,11 @@ public class BrowhistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MyViewHolderHeader) {
-            GoodsOrderInfo datas = (GoodsOrderInfo) data.get(position);
+            OrderHeader datas = (OrderHeader) data.get(position);
             ((MyViewHolderHeader) holder).tv_date.setPadding(20,15,0,15);
             ((MyViewHolderHeader) holder).tv_date.setText(datas.getTime());
         }else if(holder instanceof MyViewHolderContent){
-             final OrderGoodsItem datas= (OrderGoodsItem) data.get(position);
+             final OrderItem datas= (OrderItem) data.get(position);
              Glide.with(context).load(datas.getImg_url()).into(((MyViewHolderContent) holder).iv_goods);
              ((MyViewHolderContent) holder).tv_type.setVisibility(View.GONE);
              ((MyViewHolderContent) holder).tv_name.setText(datas.getProduct_title());
@@ -112,9 +109,9 @@ public class BrowhistoryAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     @Override
     public int getItemViewType(int position) {
-        if (data.get(position) instanceof GoodsOrderInfo) {
+        if (data.get(position) instanceof OrderHeader) {
             return ITEM_HEADER;
-        } else if (data.get(position) instanceof OrderGoodsItem) {
+        } else if (data.get(position) instanceof OrderItem) {
             return ITEM_CONTENT;
         }
 

@@ -59,8 +59,8 @@ public class BrowhistoryBean {
         }
 
         public static class ChildDataBean {
-
-
+            private int Groupindex;
+            private int Childindex;
             private String history_id;
             private String id;
             private String title;
@@ -76,6 +76,23 @@ public class BrowhistoryBean {
             private String max_seal_price;
             private String min_seal_price;
             private String price;
+
+            public int getChildindex() {
+                return Childindex;
+            }
+
+            public void setChildindex(int childindex) {
+                Childindex = childindex;
+            }
+
+            public int getGroupindex() {
+                return Groupindex;
+            }
+
+            public void setGroupindex(int groupindex) {
+                Groupindex = groupindex;
+            }
+
 
             public String getHistory_id() {
                 return history_id;

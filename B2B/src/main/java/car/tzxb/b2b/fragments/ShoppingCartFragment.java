@@ -1,8 +1,8 @@
-package car.tzxb.b2b.Uis.GoodsXqPackage;
-import android.content.Context;
+package car.tzxb.b2b.fragments;
+
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -33,16 +33,20 @@ import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.Adapter.ShopcatAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
-import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
+import car.tzxb.b2b.BasePackage.MvpViewInterface;
+import car.tzxb.b2b.BasePackage.MyBaseFragment;
 import car.tzxb.b2b.Bean.BaseDataListBean;
 import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.DiscountsBean;
 import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
 import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
 import car.tzxb.b2b.Bean.ShopCarBean;
+import car.tzxb.b2b.ContactPackage.MvpContact;
 import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
+import car.tzxb.b2b.Presenter.ShoppingCarPresenterIml;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
@@ -50,8 +54,12 @@ import car.tzxb.b2b.Views.PopWindow.Modify_DiscountsPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener {
+/**
+ * A simple {@link Fragment} subclass.
+ */
+public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInterface,ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener {
 
+    MvpContact.Presenter presenter = new ShoppingCarPresenterIml(this);
     @BindView(R.id.listView)
     ExpandableListView listView;
     @BindView(R.id.all_checkBox)
@@ -68,6 +76,8 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
     LinearLayout llCart;
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
+    @BindView(R.id.tv_actionbar_back)
+    TextView tv_back;
     @BindView(R.id.tv_actionbar_right)
     TextView tv_right;
     @BindView(R.id.empty_shopcart)
@@ -88,81 +98,80 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
     private String userId;
     private StringBuilder sb1,sb2,sb3,sb4,sb5;
 
-    @Override
-    public void initParms(Bundle parms) {
 
+    @Override
+    public int getLayoutResId() {
+        return R.layout.fragment_shopping_cart;
     }
 
     @Override
-    public int bindLayout() {
-        return R.layout.activity_shopping_cart;
-    }
-
-    @Override
-    public void doBusiness(Context mContext) {
+    public void initData() {
+        tv_back.setVisibility(View.INVISIBLE);
         tv_title.setText("购物车");
         tv_right.setText("编缉");
-
-        recy_empty.setLayoutManager(new GridLayoutManager(this, 2));
+        recy_empty.setLayoutManager(new GridLayoutManager(getContext(), 2));
         recy_empty.addItemDecoration(new SpaceItemDecoration(10,2));
     }
 
+
     @Override
     protected BasePresenter bindPresenter() {
-        return null;
+
+        return presenter;
+    }
+
+
+    @Override
+    public void showData(Object o) {
+        ShopCarBean bean = (ShopCarBean) o;
+        List<ShopCarBean.DataBean> beanList =bean.getData();
+        Log.i("什么情况",beanList.size()+"");
+        if (beanList.size() == 0) {
+            getGuess();
+        } else {
+            DataHelpers(beanList);
+        }
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        getData();
-    }
-    private void initLv() {
-        adapter = new ShopcatAdapter(groups, childs, this);
-        adapter.setCheckInterface(this);//关键步骤1：设置复选框的接口
-        adapter.setModifyCountInterface(this); //关键步骤2:设置增删减的接口
-        adapter.setGroupEditorListener(this);//关键步骤3:监听组列表的编辑状态
-        listView.setGroupIndicator(null); //设置属性 GroupIndicator 去掉向下箭头
-        listView.setAdapter(adapter);
-        for (int i = 0; i < adapter.getGroupCount(); i++) {
-            listView.expandGroup(i); //关键步骤4:初始化，将ExpandableListView以展开的方式显示
-        }
+    public void showLoading() {
 
     }
 
+    @Override
+    public void closeLoading() {
 
-    private void  getData() {
+    }
+
+    @Override
+    public void showErro() {
+          getGuess();
+    }
+
+    @Override
+    protected void onVisible() {
+        super.onVisible();
+        RefreshData();
+        Log.i("购物车可见时执行一次","aaa");
+    }
+
+    @OnClick(R.id.tv_empty_Shopping)
+    public void shopping() {
+        MainActivity mainActivity= (MainActivity) getActivity();
+        mainActivity.select(0);
+    }
+
+    public void RefreshData(){
+
         allCheckBox.setChecked(false);
         totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
         tv_discounts_total.setText(Html.fromHtml("优惠: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
         goPay.setText("去结算(" + 0 + ")");
-        //获取数据
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        OkHttpUtils
-                .get()
-                .tag(this)
-                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list")
-                .addParams("user_id", userId)
-                .addParams("shop_id", "-1")
-                .addParams("type", "0")
-                .build()
-                .execute(new GenericsCallback<ShopCarBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
+        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id="+ userId +"&shop_id=-1&type=0";
+        presenter.PresenterGetData(url, null);
 
-                    }
-
-                    @Override
-                    public void onResponse(ShopCarBean response, int id) {
-                        List<ShopCarBean.DataBean> beanList = response.getData();
-                        if (beanList.size() == 0) {
-                           getGuess();
-                        } else {
-                            DataHelpers(beanList);
-                        }
-
-                    }
-                });
+        Log.i("购物车fragmentUrl", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId + "&shop_id=-1" + "&type=0");
     }
 
     //空购物车时猜你在找
@@ -170,8 +179,6 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         tv_right.setVisibility(View.GONE);
         llCart.setVisibility(View.GONE);
         emptyView.setVisibility(View.VISIBLE);
-
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         Log.i("猜你在找", Constant.baseUrl + "item/index.php?c=Goods&m=UserLike&pagesize=10&page=0&user_id=" + userId);
         OkHttpUtils
                 .get()
@@ -222,11 +229,10 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
             @Override
             public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
                 BaseDataListBean.DataBean bean = guessList.get(position);
-                Intent intent = new Intent(ShoppingCartActivity.this, GoodsXqActivity.class);
+                Intent intent = new Intent(getActivity(), GoodsXqActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
                 intent.putExtra("mainId", bean.getId());
                 startActivity(intent);
-                finish();
             }
 
             @Override
@@ -268,7 +274,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
                 gInfor.setMotion_type(childBean.getMotion_type());
                 gInfor.setShop_id(childBean.getShop_id());
                 gInfor.setName(childBean.getTitle());
-               gInfor.setPrice(Double.parseDouble(childBean.getSeal_price()));
+                gInfor.setPrice(Double.parseDouble(childBean.getSeal_price()));
                 gInfor.setImageUrl(childBean.getImg_url());
                 gInfor.setCount(childBean.getNumber());
                 gInfor.setAid(childBean.getAid());
@@ -278,14 +284,19 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
             }
             childs.put(groups.get(i).getId(), goods);
         }
-         initLv();
+        initLv();
     }
 
-   //去逛逛
-    @OnClick(R.id.tv_empty_Shopping)
-    public void goMain(){
-        startActivity(MainActivity.class);
-        finish();
+    private void initLv() {
+        adapter = new ShopcatAdapter(groups, childs, MyApp.getContext());
+        adapter.setCheckInterface(this);//关键步骤1：设置复选框的接口
+        adapter.setModifyCountInterface(this); //关键步骤2:设置增删减的接口
+        adapter.setGroupEditorListener(this);//关键步骤3:监听组列表的编辑状态
+        listView.setGroupIndicator(null); //设置属性 GroupIndicator 去掉向下箭头
+        listView.setAdapter(adapter);
+        for (int i = 0; i < adapter.getGroupCount(); i++) {
+            listView.expandGroup(i); //关键步骤4:初始化，将ExpandableListView以展开的方式显示
+        }
     }
 
     //全选
@@ -330,10 +341,6 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
 
     }
 
-    @OnClick(R.id.tv_actionbar_back)
-    public void back(){
-        onBackPressed();
-    }
 
     //全部删除
     @OnClick(R.id.tv_del_all_goods)
@@ -342,7 +349,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
             MyToast.makeTextAnim(MyApp.getContext(), "请选择要删除的商品", 0, Gravity.CENTER, 0, 0).show();
             return;
         }
-        AlertDialog dialog = new AlertDialog.Builder(this).create();
+        AlertDialog dialog = new AlertDialog.Builder(getActivity()).create();
         dialog.setMessage("确认要删除该商品吗?");
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定", new DialogInterface.OnClickListener() {
             @Override
@@ -356,6 +363,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
                         sb.append(list.get(i).getAid()).append(",");
                     }
                 }
+
                 OkHttpUtils
                         .get()
                         .tag(this)
@@ -388,6 +396,8 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         dialog.show();
     }
 
+
+
     @OnClick(R.id.go_pay)
     public void goPay() {
         if (mtotalCount == 0) {
@@ -395,7 +405,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
             return;
         }
 
-        Intent intent = new Intent(this, OrderActivity.class);
+        Intent intent = new Intent(getActivity(), OrderActivity.class);
         intent.putExtra("shopId", sb1.toString());
         intent.putExtra("carId", sb2.toString());
         intent.putExtra("num", sb3.toString());
@@ -403,7 +413,6 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         intent.putExtra("special_id", sb5.toString()); //订单优惠id
         startActivity(intent);
     }
-
 
 
     @Override
@@ -420,6 +429,8 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         }
         adapter.notifyDataSetChanged();
         calulate();
+
+
     }
 
     @Override
@@ -503,7 +514,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
 
     @Override
     public void childDelete(final int groupPosition, final int childPosition, final String Aid) {
-        new AlertDialog.Builder(this)
+        new AlertDialog.Builder(getActivity())
                 .setMessage("确定要删除该商品吗")
                 .setNegativeButton("取消", null)
                 .setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -603,7 +614,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
                                                 public void onResponse(BaseStringBean response, int id) {
                                                     if ("1".equals(response.getStatus() + "")) {
                                                         mdp.dismiss();
-                                                        getData();
+                                                        RefreshData();
                                                     }
                                                 }
                                             });
@@ -673,7 +684,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         }
         //购物车已经清空
         if (count == 0) {
-           getGuess();
+            getGuess();
         }
     }
 
@@ -704,6 +715,4 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         setCartNum();
         adapter.notifyDataSetChanged();
     }
-
-
 }

@@ -87,7 +87,7 @@
         <activity android:name=".Uis.MeCenter.MyAddressActivity" />
         <activity android:name=".Uis.MeCenter.EditAddressActivity" />
         <activity android:name=".Uis.MeCenter.CollectActivity" />
-        <activity android:name=".Uis.GoodsXqPackage.ShoppingCarActivity" />
+
         <activity android:name=".Uis.Order.OrderActivity" />
         <activity android:name=".Uis.Order.GoodsListActivity" />
         <activity android:name=".Uis.Order.OrderXqActivity" />

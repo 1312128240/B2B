@@ -7,7 +7,7 @@ package car.tzxb.b2b.Bean.OrderBeans;
 /**
  *  列表页中每一个大订单的金额信息View所用的数据实体
  */
-public class OrderPayInfo {
+public class OrderFooter {
 
     private String status;
     private int id;

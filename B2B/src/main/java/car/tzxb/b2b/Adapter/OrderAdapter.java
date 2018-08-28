@@ -3,12 +3,10 @@ package car.tzxb.b2b.Adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -19,9 +17,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import car.tzxb.b2b.Bean.OrderBeans.GoodsOrderInfo;
-import car.tzxb.b2b.Bean.OrderBeans.OrderGoodsItem;
-import car.tzxb.b2b.Bean.OrderBeans.OrderPayInfo;
+import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
+import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
+import car.tzxb.b2b.Bean.OrderBeans.OrderFooter;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Util.DeviceUtils;
@@ -76,7 +74,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
 
         if (holder instanceof MyViewHolderHeader) {
-            GoodsOrderInfo datas = (GoodsOrderInfo) data.get(position);
+            OrderHeader datas = (OrderHeader) data.get(position);
             //店名
             ((OrderAdapter.MyViewHolderHeader) holder).tvAllOrderItemShopName.setText(datas.getShopName());
             //订单状态
@@ -89,7 +87,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             params.setMargins(0,0,0,5);
             ((MyViewHolderContent) holder).parent.setLayoutParams(params);
 
-            final OrderGoodsItem datas = (OrderGoodsItem) data.get(position);
+            final OrderItem datas = (OrderItem) data.get(position);
             //图片
             Glide.with(context).load(datas.getImg_url()).into(((MyViewHolderContent) holder).iv_goods);
             //名字
@@ -110,7 +108,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
 
         } else if (holder instanceof MyViewHolderFooter) {
-            final OrderPayInfo datas = (OrderPayInfo) data.get(position);
+            final OrderFooter datas = (OrderFooter) data.get(position);
             ((MyViewHolderFooter) holder).tv_number.setText("共" + datas.getNumber() + "种,");
             ((MyViewHolderFooter) holder).tv_total_price.setText("合计: ¥" + datas.getAmount_pay_able());
             if ("等待付款".equals(datas.getStatus())) {    //待付款
@@ -171,11 +169,11 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public int getItemViewType(int position) {
-        if (data.get(position) instanceof GoodsOrderInfo) {
+        if (data.get(position) instanceof OrderHeader) {
             return ITEM_HEADER;
-        } else if (data.get(position) instanceof OrderGoodsItem) {
+        } else if (data.get(position) instanceof OrderItem) {
             return ITEM_CONTENT;
-        } else if (data.get(position) instanceof OrderPayInfo) {
+        } else if (data.get(position) instanceof OrderFooter) {
             return ITEM_FOOTER;
         }
         return ITEM_CONTENT;

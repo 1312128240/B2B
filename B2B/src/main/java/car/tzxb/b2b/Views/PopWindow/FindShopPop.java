@@ -24,8 +24,8 @@ import car.tzxb.b2b.R;
  */
 
 public class FindShopPop extends PopupWindow {
-     private Context mContext;
-     private  List<BaseDataBean.DataBean.CategoryBean> lists;
+    private Context mContext;
+    private  List<BaseDataBean.DataBean.CategoryBean> lists;
     private RecyclerView recyclerView;
 
     public FindShopPop(Context context, List<BaseDataBean.DataBean.CategoryBean> cateList) {
@@ -45,12 +45,11 @@ public class FindShopPop extends PopupWindow {
         LinearLayout linearLayout=new LinearLayout(mContext);
         recyclerView = new RecyclerView(mContext);
         recyclerView.setBackgroundColor(Color.parseColor("#FFFFFF"));
-        linearLayout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         recyclerView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         recyclerView.setPadding(10,20,10,20);
         linearLayout.addView(recyclerView);
         setContentView(linearLayout);
-        setHeight(LinearLayout.LayoutParams.MATCH_PARENT);
+        setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         setWidth(LinearLayout.LayoutParams.MATCH_PARENT);
         setClippingEnabled(false);
         setFocusable(true);

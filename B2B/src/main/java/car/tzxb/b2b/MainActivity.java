@@ -33,7 +33,7 @@ import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.fragments.ClassifyFragment;
 import car.tzxb.b2b.fragments.HomeFragment;
 import car.tzxb.b2b.fragments.MyFragment;
-import car.tzxb.b2b.fragments.ShoppingCarFragment;
+import car.tzxb.b2b.fragments.ShoppingCartFragment;
 import okhttp3.Call;
 
 public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar.OnTabSelectedListener,PermissionUtil.OnRequestPermissionsResultCallbacks {
@@ -43,9 +43,10 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     public Handler mHandler = new MyHandler(this);
     private Fragment mFragment;
     private ClassifyFragment classifyFragment;
-    private ShoppingCarFragment shopingFrgament;
+   // private ShoppingCarFragment shopingFrgament;
     private MyFragment myFrgament;
     private HomeFragment homeFragment;
+    private ShoppingCartFragment shoppingCartFragment;
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -137,7 +138,8 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     private void initFragment() {
         homeFragment = new HomeFragment();
         classifyFragment = new ClassifyFragment();
-        shopingFrgament = new ShoppingCarFragment();
+       // shopingFrgament = new ShoppingCarFragment();
+        shoppingCartFragment = new ShoppingCartFragment();
         myFrgament = new MyFragment();
 
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -194,7 +196,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                 switchFragment(classifyFragment);
                 break;
             case 2:
-                switchFragment(shopingFrgament);
+                switchFragment(shoppingCartFragment);
                 break;
             case 3:
                 switchFragment(myFrgament);
@@ -274,4 +276,9 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         });
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
+    }
 }

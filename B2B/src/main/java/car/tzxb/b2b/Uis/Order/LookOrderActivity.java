@@ -21,15 +21,13 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.wrapper.LoadMoreWrapper;
 import car.myview.CustomToast.MyToast;
-import car.myview.SpringView.DefaultFooter;
-import car.myview.SpringView.SpringView;
 import car.tzxb.b2b.Adapter.OrderAdapter;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
-import car.tzxb.b2b.Bean.OrderBeans.GoodsOrderInfo;
-import car.tzxb.b2b.Bean.OrderBeans.OrderGoodsItem;
-import car.tzxb.b2b.Bean.OrderBeans.OrderPayInfo;
+import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
+import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
+import car.tzxb.b2b.Bean.OrderBeans.OrderFooter;
 import car.tzxb.b2b.Bean.OrderStatusBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
@@ -391,16 +389,16 @@ public class LookOrderActivity extends MyBaseAcitivity {
         for (int i = 0; i < beanList.size() ; i++) {
             OrderStatusBean.DataBean.OrderListBean xBean= beanList.get(i);
             //头部信息
-            GoodsOrderInfo headerBean=new GoodsOrderInfo();
+            OrderHeader headerBean=new OrderHeader();
             headerBean.setShopName(xBean.getShop_name());
             headerBean.setStatus(xBean.getStatus());
             dataList.add(headerBean);
             //商品信息
             List<OrderStatusBean.DataBean.OrderListBean.ChildDataBean> xxBean=xBean.getChild_data();
-            OrderGoodsItem orderGoodsItem=null;
+            OrderItem orderGoodsItem=null;
             for (int j = 0; j <xxBean.size() ; j++) {
                 OrderStatusBean.DataBean.OrderListBean.ChildDataBean childBean=xxBean.get(j);
-                orderGoodsItem=new OrderGoodsItem();
+                orderGoodsItem=new OrderItem();
                 orderGoodsItem.setAid(childBean.getAid());
                 orderGoodsItem.setImg_url(childBean.getImg_url());
                 orderGoodsItem.setProduct_title(childBean.getProduct_title());
@@ -410,7 +408,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
             }
 
             //尾部信息
-            OrderPayInfo footerBean=new OrderPayInfo();
+            OrderFooter footerBean=new OrderFooter();
             footerBean.setAmount_pay_able(xBean.getAmount_pay_able());
             footerBean.setNumber(xBean.getNumbers());
             footerBean.setStatus(xBean.getStatus());

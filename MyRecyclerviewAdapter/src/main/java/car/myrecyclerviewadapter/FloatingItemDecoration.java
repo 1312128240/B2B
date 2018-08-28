@@ -26,7 +26,6 @@ import java.util.Map;
  */
 
 public class FloatingItemDecoration extends RecyclerView.ItemDecoration {
-    private static final String TAG = "FloatingItemDecoration";
     private static final int[] ATTRS = new int[]{android.R.attr.listDivider};
     private Drawable mDivider;
     private int dividerHeight;
@@ -86,14 +85,14 @@ public class FloatingItemDecoration extends RecyclerView.ItemDecoration {
         mTextPaint=new Paint();
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP,16,mContext.getResources().getDisplayMetrics()));
-        mTextPaint.setColor(Color.WHITE);
+        mTextPaint.setColor(Color.BLACK);
         Paint.FontMetrics fm=mTextPaint.getFontMetrics();
         mTextHeight=fm.bottom-fm.top;//计算文字高度
         mTextBaselineOffset=fm.bottom;
 
         mBackgroundPaint=new Paint();
         mBackgroundPaint.setAntiAlias(true);
-        mBackgroundPaint.setColor(Color.MAGENTA);
+        mBackgroundPaint.setColor(Color.parseColor("#f5f5f5"));
     }
 
     @Override

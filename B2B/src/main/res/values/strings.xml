@@ -19,6 +19,9 @@
 
     <string name="mesg"><font size="12">选填:给商家留言(50字以内)</font></string>
     <string name="feedback"><font size="12"> 请告诉我们您的意见和建议,我们将不断改进</font></string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--  tv_seales.setText(Html.fromHtml("销量:  "+"<font color='#ff0000'><big>" + dataChildBean.getSales_count()+ "</big>"));-->
 
 </resources>

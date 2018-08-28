@@ -1,6 +1,7 @@
 package car.myrecyclerviewadapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 
 
@@ -25,7 +26,6 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T>
             mDatas.clear();
         }
         mDatas.addAll(datas);
-
         notifyDataSetChanged();
     }
     //删除

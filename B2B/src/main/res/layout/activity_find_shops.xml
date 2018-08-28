@@ -9,6 +9,7 @@
     <include layout="@layout/base_actionbar" />
 
     <LinearLayout
+        android:id="@+id/ll_test"
         android:background="#333333"
         android:orientation="horizontal"
         android:layout_width="match_parent"

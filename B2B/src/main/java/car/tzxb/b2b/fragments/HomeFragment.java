@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -17,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -60,6 +62,8 @@ import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
 import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
+import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity;
+import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralXqActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
@@ -113,6 +117,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     ImageView iv_floatingbutton;
     @BindView(R.id.sticky_scrollview)
     StickyScrollView scrollView;
+    @BindView(R.id.seach_bar_framelayout)
+    FrameLayout frameLayout;
     private String categoryId, brands;
     private int pager;
     private List<BaseDataListBean.DataBean> goodsList = new ArrayList<>();
@@ -120,10 +126,9 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     private CommonAdapter<BaseDataListBean.DataBean> brandAndGoodsAdapter;
     private List<HomeBean.DataBean.CategoryBean> categoryBeanList;
     private List<BaseDataListBean.DataBean> tabList;
-
     private LoadingDialog loadingDialog;
-
-
+    private String userId;
+    private String saveUserId="00";
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_home;
@@ -131,9 +136,15 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
 
     @Override
     public void initData() {
-        initUi();
+        iv_left.setImageResource(R.drawable.navbar_icon_scan);
+        iv_right.setImageResource(R.drawable.navbar_icon_news);
+        iv_right.setPadding(0, 0, 0, 5);
+        recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
+        recy_track.setLayoutManager(new GridLayoutManager(getContext(), 5));
+
         iniEvent();
     }
+
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -148,41 +159,45 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     }
 
     @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            pager = 0;
-            getBrandData();
+    protected void onVisible() {
+        super.onVisible();
+        userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", "-1");
+        if("00".equals(saveUserId)){
+            presenterGetData();
+            Log.i("表示是第一次创建首页","aaa");
+            return;
         }
+
+        if(!saveUserId.equals(userId)){
+            Log.i("首页用户id发生变化执行刷新", "aaa");
+            pager=0;
+            getBrandData();
+        }else {
+            Log.i("首页用户id没变化不用刷新","bbb");
+        }
+    }
+
+    @Override
+    protected void onHidden() {
+        super.onHidden();
+        saveUserId = userId;
+        Log.i("首页fragment切换为不可见时保存数据",saveUserId);
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveUserId = userId;
     }
 
     /**
      * 获取数据
      */
     public void presenterGetData() {
-        //获取数据
-        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         String url = Constant.baseUrl + "item/index.php?c=Home&m=Index&user_id=" + userId;
         presenter.PresenterGetData(url, null);
         Log.i("首页接口", url + "");
-    }
-
-
-    private void initUi() {
-        iv_left.setImageResource(R.drawable.navbar_icon_scan);
-        iv_right.setImageResource(R.drawable.navbar_icon_news);
-        iv_right.setPadding(0, 0, 0, 5);
-        presenterGetData();
-
-        DeviceUtils.hideSystemSoftKeyBoard(getActivity(), et_classify);
-
-        recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
-        recy_track.setLayoutManager(new GridLayoutManager(getContext(), 5));
-    }
-
-    @OnClick(R.id.et_classify)
-    public void seach() {
-        startActivity(new Intent(getActivity(), SeachActivity.class));
     }
 
     /**
@@ -261,7 +276,13 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                 } else {
                     iv_floatingbutton.setVisibility(View.INVISIBLE);
                 }
-
+             if(t==0){
+                 iv_left.setVisibility(View.VISIBLE);
+                 frameLayout.setVisibility(View.VISIBLE);
+             }else {
+                 iv_left.setVisibility(View.GONE);
+                 frameLayout.setVisibility(View.GONE);
+             }
             }
         });
 
@@ -352,7 +373,15 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         });
 
     }
+    //搜索
+    @OnClick(R.id.et_classify)
+    public void seach() {
+        DeviceUtils.hideSystemSoftKeyBoard(getActivity(), et_classify);
+        Intent intent=new Intent(getActivity(),SeachActivity.class);
+        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), et_classify, "share");
+        startActivity(intent, compat.toBundle());
 
+    }
     //自营
     @OnClick(R.id.iv_self_produc1)
     public void self1() {

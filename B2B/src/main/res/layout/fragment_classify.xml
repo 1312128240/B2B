@@ -7,54 +7,12 @@
 
     <include layout="@layout/search_bar" />
 
- <android.support.v4.widget.NestedScrollView
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recy_classify"
+        android:background="@color/colorWhite"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:background="@color/colorWhite"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/colorLightGray1"
-                android:padding="8dp"
-                android:text="商品分类"
-                android:textColor="@color/colorBlack" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_gods_classify"
-                android:nestedScrollingEnabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
-                android:background="@color/colorLightGray1"
-                android:padding="8dp"
-                android:text="品牌分类"
-                android:textColor="@color/colorBlack" />
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recy_brand_classify"
-                android:nestedScrollingEnabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            </android.support.v7.widget.RecyclerView>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="30dp" />
-        </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </android.support.v7.widget.RecyclerView>
 
 </LinearLayout>

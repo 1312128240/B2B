@@ -237,8 +237,8 @@ public class BaseDataBean {
 
             private String id;
             private String title;
-            private String sort_id;
             private String img_url;
+            private String sort_id;
             private String category_name;
             private boolean isCheck;
 
