@@ -186,7 +186,7 @@ public class MyAddressActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         if (1 == response.getStatus()) {
-                            adapter.del(beanList, index);
+                            adapter.del(index);
                         } else {
                             MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
                         }

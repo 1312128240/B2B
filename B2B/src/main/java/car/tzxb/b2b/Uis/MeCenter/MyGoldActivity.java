@@ -102,8 +102,7 @@ public class MyGoldActivity extends MyBaseAcitivity {
 
     private void getData() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        String url = Constant.baseUrl + "item/index.php?c=Home&m=UserSignInData&user_id=" + userId;
-        Log.i("我的金币", url + "");
+        Log.i("我的金币", Constant.baseUrl + "item/index.php?c=Home&m=UserSignInData&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=UserSignInData")

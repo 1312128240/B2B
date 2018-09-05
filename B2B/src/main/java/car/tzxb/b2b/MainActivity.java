@@ -43,7 +43,6 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     public Handler mHandler = new MyHandler(this);
     private Fragment mFragment;
     private ClassifyFragment classifyFragment;
-   // private ShoppingCarFragment shopingFrgament;
     private MyFragment myFrgament;
     private HomeFragment homeFragment;
     private ShoppingCartFragment shoppingCartFragment;
@@ -104,11 +103,8 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     @Override
     public void doBusiness(Context mContext) {
         initNavigationBar();
-
-        initFragment();
         checkVersion();
     }
-
 
     public void checkVersion() {
         Log.i("b2b检测版本", Constant.baseUrl + "item/index.php?c=Home&m=Edition&From=Android");
@@ -135,18 +131,6 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                 });
     }
 
-    private void initFragment() {
-        homeFragment = new HomeFragment();
-        classifyFragment = new ClassifyFragment();
-       // shopingFrgament = new ShoppingCarFragment();
-        shoppingCartFragment = new ShoppingCartFragment();
-        myFrgament = new MyFragment();
-
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
-        transaction.add(R.id.main_framelayout, homeFragment).commitAllowingStateLoss();
-        mFragment = homeFragment;
-    }
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -164,7 +148,15 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
                 .addItem(new BottomNavigationItem(R.mipmap.laberbar_icon_my, "我的").setInactiveIconResource(R.mipmap.laberbar_icon_my2))
                 .setFirstSelectedPosition(0)
                 .initialise(); //所有的设置需在调用该方法前完成
-
+        //创建fragment
+        homeFragment = new HomeFragment();
+        classifyFragment = new ClassifyFragment();
+        shoppingCartFragment = new ShoppingCartFragment();
+        myFrgament = new MyFragment();
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        transaction.add(R.id.main_framelayout, homeFragment).commitAllowingStateLoss();
+        mFragment = homeFragment;
     }
 
     public void switchFragment(Fragment fragment) {

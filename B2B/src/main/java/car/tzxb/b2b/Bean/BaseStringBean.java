@@ -22,11 +22,22 @@ public class BaseStringBean {
     private String category_name;
     private String tn;
     private String Code;
+    private double balance;
     private String AccessKeyId;
     private String versionName;
     private int StrLen;
     private String order_seqno;
     private String vitewType;
+
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
+    }
+
     public String getVitewType() {
         return vitewType;
     }

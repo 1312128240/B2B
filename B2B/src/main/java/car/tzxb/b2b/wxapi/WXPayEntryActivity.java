@@ -1,8 +1,10 @@
 package car.tzxb.b2b.wxapi;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
@@ -28,9 +30,12 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.unionpay.UPPayAssistEx;
 import com.unionpay.uppay.PayActivity;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+
+import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CustomToast.MyToast;
@@ -42,9 +47,13 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
+import car.tzxb.b2b.Uis.Order.OrderActivity;
+import car.tzxb.b2b.Util.ActivityManager;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
@@ -57,15 +66,29 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     Button btn_pay;
     @BindView(R.id.lv_zf)
     ListView lv;
+    @BindDrawable(R.mipmap.pyt_icon_ye)
+    Drawable d1;
+    @BindDrawable(R.mipmap.pyt_icon_zfb)
+    Drawable d2;
+    @BindDrawable(R.mipmap.pyt_icon_wx)
+    Drawable d3;
+    @BindDrawable(R.mipmap.pyt_icon_yl)
+    Drawable d4;
+    @BindDrawable(R.mipmap.pyt_icon_xj)
+    Drawable d5;
+    String[] str1 = {"支付宝", "微信", "银联支付"};
+    String[] str2 = {"余额支付", "支付宝", "微信", "银联支付", "线下支付"};
     private String total;
     private IWXAPI api;
     private String order_seqnos;
     private int position;
     private String orderid;
-    private final String mMode = "00";  // mMode参数解释： "00" - 启动银联正式环境 ,"01" - 连接银联测试环境
+    private final String mMode = "00";  //"00" - 启动银联正式环境 ,"01" - 连接银联测试环境
     private final int SDK_PAY_FLAG = 1;
     private String from;
+    private boolean isShow;
     public static AppCompatActivity sInstance = null;
+
     @Override
     public void initParms(Bundle parms) {
         total = getIntent().getStringExtra("total");
@@ -81,6 +104,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
         api.registerApp(Constant.AppID);
         return R.layout.activity_wxpay_entry;
     }
+
     @Override
     protected BasePresenter bindPresenter() {
         return null;
@@ -89,41 +113,79 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     @Override
     public void doBusiness(Context mContext) {
-        sInstance=this;
+        sInstance = this;
         tv_title.setText("收银台");
         tv_money.setText(Html.fromHtml("¥" + "<big>" + total + "</big>"));
-        btn_pay.setText("使用支付宝支付 ¥" + total);
-        initLv();
+        if ("Recharge".equals(from)) {
+            btn_pay.setText("使用支付宝支付 ¥" + total);
+            initLv1();
+        } else {
+            btn_pay.setText("使用余额支付 ¥" + total);
+            queryBalance();
+        }
     }
 
-    private void initLv() {
-        List<String> lists=null;
-        if("Recharge".equals(from)){
-            String[] str = {"支付宝", "微信", "银联支付"};
-            lists=Arrays.asList(str);
-        }else {
-            String[] str = {"支付宝", "微信", "银联支付", "线下支付"};
-            lists=Arrays.asList(str);
-        }
-        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(),lists);
+    private void initLv1() {
+        Drawable[] img1 = {d2, d3, d4};
+        List<String> stringList = Arrays.asList(str1);
+        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(), stringList, img1, isShow);
         lv.setAdapter(cashAdapter);
         cashAdapter.setClickPosition(new CashAdapter.ClickPosition() {
             @Override
-            public void onClick(int index) {
+            public void onClick(int index, String name) {
                 position = index;
-                switch (index) {
-                    case 0:
-                        btn_pay.setText("使用支付宝支付 ¥" + total);
-                        break;
-                    case 1:
-                        btn_pay.setText("使用微信支付 ¥" + total);
-                        break;
-                    case 2:
-                        btn_pay.setText("使用银联支付 ¥" + total);
-                        break;
-                    case 3:
-                        btn_pay.setText("收货时您需要付款 ¥" + total);
-                        break;
+                if ("线下支付".equals(name)) {
+                    btn_pay.setText("收货时您需要付款 ¥" + total);
+                } else {
+                    btn_pay.setText("使用" + name + "支付 ¥" + total);
+                }
+            }
+        });
+    }
+
+    public void queryBalance() {
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "orders/orders_mobile.php?m=user_balance")
+                .addParams("user_id", userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        double balance = response.getBalance() + 110;
+                        initLv2(balance);
+
+                    }
+                });
+    }
+
+    private void initLv2(double balance) {
+        Double t1 = Double.valueOf(total);
+        if (balance < t1) {
+            Log.i("余额不足", "aa");
+            isShow = true;
+        } else {
+            Log.i("余额充足", "bb");
+            isShow = false;
+        }
+        Drawable[] img2 = {d1, d2, d3, d4, d5};
+        List<String> stringList = Arrays.asList(str2);
+        CashAdapter cashAdapter = new CashAdapter(MyApp.getContext(), stringList, img2, isShow);
+        lv.setAdapter(cashAdapter);
+        cashAdapter.setClickPosition(new CashAdapter.ClickPosition() {
+            @Override
+            public void onClick(int index, String name) {
+                position = index;
+                if ("线下支付".equals(name)) {
+                    btn_pay.setText("收货时您需要付款 ¥" + total);
+                } else {
+                    btn_pay.setText("使用" + name + "支付 ¥" + total);
                 }
             }
         });
@@ -154,12 +216,12 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
             switch (resp.errCode) {
                 case BaseResp.ErrCode.ERR_OK:
                     result = "微信支付成功";
-                    if("Recharge".equals(from)){
-                        Intent intent=new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
+                    if ("Recharge".equals(from)) {
+                        Intent intent = new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
                         intent.putExtra("total", total);
                         startActivity(intent);
-                    }else {
-                        Intent intent=new Intent(WXPayEntryActivity.this,LookOrderActivity.class);
+                    } else {
+                        Intent intent = new Intent(WXPayEntryActivity.this, LookOrderActivity.class);
                         intent.putExtra("index", 0);
                         startActivity(intent);
                     }
@@ -175,26 +237,29 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     break;
             }
         }
-        MyToast.makeTextAnim(MyApp.getContext(),result,0,Gravity.CENTER,0,0).show();
+        MyToast.makeTextAnim(MyApp.getContext(), result, 0, Gravity.CENTER, 0, 0).show();
     }
 
     @OnClick(R.id.btn_start_pay)
     public void pay() {
         if (isFastClick()) {
-            if("Recharge".equals(from)){
+            if ("Recharge".equals(from)) {
                 RechargePay();
-            }else {
+            } else {
                 switch (position) {
                     case 0:
-                        ZfbPay();
+                        BalancePay();
                         break;
                     case 1:
-                        WxPay();
+                        ZfbPay();
                         break;
                     case 2:
-                        getTn();
+                        WxPay();
                         break;
                     case 3:
+                        getTn();
+                        break;
+                    case 4:
                         offlinePayment();
                         break;
                 }
@@ -203,79 +268,120 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
         }
     }
 
+    private void BalancePay() {
+        if(isShow){
+           showDialogFragment();
+        }else {
+            MyToast.makeTextAnim(MyApp.getContext(),"余额充足",0,Gravity.CENTER,0,0).show();
+        }
+    }
+
+    private void showDialogFragment() {
+        final AlterDialogFragment dialogFragment = new AlterDialogFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("title", "余额不足");
+        bundle.putString("ok", "确认");
+        bundle.putString("no", "取消");
+        dialogFragment.setArguments(bundle);
+        if (isStateEnable()) {
+            dialogFragment.show(getSupportFragmentManager(), "order");
+        }
+        dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
+            @Override
+            public void cancle() {
+                if (isStateEnable()) {
+                    dialogFragment.dismiss();
+                }
+
+            }
+
+            @Override
+            public void sure() {
+                if (isStateEnable()) {
+                    dialogFragment.dismiss();
+                }
+                if("order".equals(from)){
+                    OrderActivity orderActivity= (OrderActivity) OrderActivity.sInstance;
+                    ActivityManager.getInstance().deleteActivity(orderActivity);
+                }
+                startActivity(new Intent(WXPayEntryActivity.this, MyWalletActivity.class));
+                finish();
+            }
+        });
+    }
+
     /**
      * 充值
      */
     private void RechargePay() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        String username=SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
+        String username = SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile", null);
         OkHttpUtils
                 .get()
                 .tag(this)
-                .url(Constant.baseUrl+"orders/user_wallet.php?m=wallet_order")
-                .addParams("user_id",userId)
-                .addParams("username",username)
-                .addParams("total_fee",total)
-                .addParams("pay_device","Android")
+                .url(Constant.baseUrl + "orders/user_wallet.php?m=wallet_order")
+                .addParams("user_id", userId)
+                .addParams("username", username)
+                .addParams("total_fee", total)
+                .addParams("pay_device", "Android")
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.i("充值返回错误",e.toString());
+                        Log.i("充值返回错误", e.toString());
                     }
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                         if(response.getStatus()==1){
-                             order_seqnos=response.getOrder_seqno();
-                             if(order_seqnos!=null){
-                                 Log.i("走充值",order_seqnos+"___"+position);
-                                 switch (position) {
-                                     case 0:
-                                         ZfbPay();
-                                         break;
-                                     case 1:
-                                         WxPay();
-                                         break;
-                                     case 2:
-                                         getTn();
-                                         break;
-                                 }
-                             }
-                         }
+                        if (response.getStatus() == 1) {
+                            order_seqnos = response.getOrder_seqno();
+                            if (order_seqnos != null) {
+                                Log.i("走充值", order_seqnos + "___" + position);
+                                switch (position) {
+                                    case 0:
+                                        ZfbPay();
+                                        break;
+                                    case 1:
+                                        WxPay();
+                                        break;
+                                    case 2:
+                                        getTn();
+                                        break;
+                                }
+                            }
+                        }
                     }
                 });
 
     }
 
     private void getTn() {
-          String userId = SPUtil.getInstance(this).getUserId("UserId", null);
-          OkHttpUtils
-                  .get()
-                  .url(Constant.baseUrl+"orders/orders_mobile.php?m=pay")
-                  .addParams("order_seqnos",order_seqnos)
-                  .addParams("pay_type","UnionPay")
-                  .addParams("pay_device","Android")
-                  .addParams("user_id",userId)
-                  .build()
-                  .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                      @Override
-                      public void onError(Call call, Exception e, int id) {
-                             Log.i("银联支付错误",e.toString());
-                      }
+        String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "orders/orders_mobile.php?m=pay")
+                .addParams("order_seqnos", order_seqnos)
+                .addParams("pay_type", "UnionPay")
+                .addParams("pay_device", "Android")
+                .addParams("user_id", userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.i("银联支付错误", e.toString());
+                    }
 
-                      @Override
-                      public void onResponse(BaseStringBean response, int id) {
-                           Log.i("返回tn号",response.getTn());
-                           if(response.getStatus()==1){
-                               String tn=response.getTn();
-                               if(tn!=null){
-                                   UPPayAssistEx.startPayByJAR(WXPayEntryActivity.this, PayActivity.class, null, null,tn, mMode);
-                               }
-
-                           }
-                      }
-                  });
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        Log.i("返回tn号", response.getTn());
+                        if (response.getStatus() == 1) {
+                            String tn = response.getTn();
+                            if (tn != null) {
+                                UPPayAssistEx.startPayByJAR(WXPayEntryActivity.this, PayActivity.class, null, null, tn, mMode);
+                            }
+                        }
+                    }
+                });
     }
 
     /**
@@ -331,7 +437,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         final String orderPaht = response.getOrder();
-                        if(orderPaht!=null){
+                        if (orderPaht != null) {
                             //调起支付宝支付
                             new Thread(new Runnable() {
                                 @Override
@@ -371,7 +477,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         BaseDataBean.DataBean dataBean = response.getData();
-                        if(dataBean!=null){
+                        if (dataBean != null) {
                             PayReq request = new PayReq();
                             request.appId = dataBean.getAppid();
                             request.partnerId = dataBean.getPartnerid();
@@ -403,13 +509,13 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
                     String resultStatus = payResult.getResultStatus();
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
-                        if("Recharge".equals(from)){
-                            Intent intent=new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
+                        if ("Recharge".equals(from)) {
+                            Intent intent = new Intent(WXPayEntryActivity.this, RechargeSuccessActivity.class);
                             intent.putExtra("total", total);
                             startActivity(intent);
                             finish();
-                        }else {
-                            Intent intent=new Intent(WXPayEntryActivity.this, LookOrderActivity.class);
+                        } else {
+                            Intent intent = new Intent(WXPayEntryActivity.this, LookOrderActivity.class);
                             intent.putExtra("index", 0);
                             startActivity(intent);
                             finish();
@@ -462,6 +568,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sInstance=null;
+        sInstance = null;
     }
 }

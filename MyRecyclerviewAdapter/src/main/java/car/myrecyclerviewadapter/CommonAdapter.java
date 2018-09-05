@@ -29,10 +29,11 @@ public abstract class CommonAdapter<T> extends MultiItemTypeAdapter<T>
         notifyDataSetChanged();
     }
     //删除
-    public void del(List<T> datas, int position){
-        datas.remove(position);
+    public void del( int position){
+        mDatas.remove(position);
+        //删除动画
         notifyItemRemoved(position);
-        notifyItemRangeChanged(0,datas.size());
+        notifyDataSetChanged();
     }
     public CommonAdapter(final Context context, final int layoutId, List<T> datas)
     {

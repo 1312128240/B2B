@@ -304,11 +304,11 @@ public class StickyScrollView extends ScrollView {
     }
 
     public interface OnScrollChangedListener {
-        public void onScrollChanged(int l, int t, int oldl, int oldt);
+         void onScrollChanged(int l, int t, int oldl, int oldt);
     }
 
     public interface IOnScrollToEnd {
-        public void onScrollToEnd();
+        void onScrollToEnd();
     }
 
     public void setOnScrollToEndListener(IOnScrollToEnd handler) {

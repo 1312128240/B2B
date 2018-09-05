@@ -46,6 +46,7 @@ import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Uis.MeCenter.CollectActivity;
+import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyAddressActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
@@ -376,10 +377,10 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 action.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(action);
                 break;
-          /*  case R.id.rb_jfsc:
+          case R.id.rb_jfsc:
                 intent.setClass(getActivity(), IntegralOneActivity.class);
                 startActivity(intent);
-                break;*/
+                break;
             default:
                 MyToast.makeTextAnim(MyApp.getContext(), "暂未开放", 0, Gravity.CENTER, 0, 0).show();
                 break;

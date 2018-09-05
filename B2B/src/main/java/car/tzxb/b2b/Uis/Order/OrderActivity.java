@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -97,7 +98,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     private String dealer_mobile;
     private String dealer_address;
 
-
+    public static AppCompatActivity sInstance = null;
     @Override
     public void initParms(Bundle parms) {
 
@@ -117,6 +118,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
     @Override
     public void doBusiness(Context mContext) {
+        sInstance=this;
         rb1.setChecked(true);
         rg.setOnCheckedChangeListener(this);
         rb1.setText("送货上门");
@@ -348,6 +350,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 Intent intent = new Intent(OrderActivity.this, WXPayEntryActivity.class);
                 double total = response.getData().getTotal_fee();
                 intent.putExtra("total", String.valueOf(total));
+                intent.putExtra("from","order");
                 intent.putExtra("order_seqnos", response.getData().getCount_seqnos());
                 intent.putExtra("orderid", response.getData().getOrder_id());
                 startActivity(intent);
@@ -438,4 +441,9 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         onBackPressed();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        sInstance=null;
+    }
 }

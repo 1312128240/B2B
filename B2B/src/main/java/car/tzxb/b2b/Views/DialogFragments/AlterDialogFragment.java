@@ -25,7 +25,6 @@ public class AlterDialogFragment extends DialogFragment implements View.OnClickL
         TextView tv_cancle= view.findViewById(R.id.tv_alter_dialog_cancle);
         TextView tv_sure=  view.findViewById(R.id.tv_alter_dialog_sure);
         TextView tv_title=  view.findViewById(R.id.tv_alter_dialog_title);
-
         // 接收关联Activity传来的数据 -----
         Bundle bundle = getArguments();
         if (bundle != null) {

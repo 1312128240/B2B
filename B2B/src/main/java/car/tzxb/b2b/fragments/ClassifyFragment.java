@@ -1,5 +1,6 @@
 package car.tzxb.b2b.fragments;
 import android.content.Intent;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,7 @@ import car.tzxb.b2b.Presenter.ClassifyPresenterIml;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.ClassifyPackage.GoodsClassifyActivity;
 import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
+import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 
@@ -38,9 +40,8 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
     @BindView(R.id.et_classify)
     EditText et_classify;
     List<GrideData> grideDataList=new ArrayList<>();
+
     private MvpContact.Presenter presenter = new ClassifyPresenterIml(this);
-
-
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_classify;
@@ -88,14 +89,17 @@ public class ClassifyFragment extends MyBaseFragment implements MvpViewInterface
                     intent.putExtra("from",from);
                     startActivity(intent);
                 }
-
             }
         });
     }
 
+    //搜索
     @OnClick(R.id.et_classify)
     public void seach() {
-        startActivity(new Intent(getActivity(), SeachActivity.class));
+        DeviceUtils.hideSystemSoftKeyBoard(getActivity(), et_classify);
+        Intent intent=new Intent(getActivity(),SeachActivity.class);
+        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), et_classify, "share");
+        startActivity(intent, compat.toBundle());
     }
 
 

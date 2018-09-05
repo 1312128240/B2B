@@ -138,7 +138,6 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     public void initData() {
         iv_left.setImageResource(R.drawable.navbar_icon_scan);
         iv_right.setImageResource(R.drawable.navbar_icon_news);
-        iv_right.setPadding(0, 0, 0, 5);
         recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
         recy_track.setLayoutManager(new GridLayoutManager(getContext(), 5));
 

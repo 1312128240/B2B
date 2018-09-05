@@ -94,12 +94,11 @@ public class SelfGoodsActivity extends MyBaseAcitivity implements NestedScrollVi
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-
-                  TextView tv = tab.getCustomView().findViewById(tab.getPosition());
+                int position=tab.getPosition();
+                  TextView tv = tab.getCustomView().findViewById(position);
                   tv.setTextColor(Color.parseColor("#000000"));
                   tv.setBackground(getResources().getDrawable(R.drawable.bg2));
                   showLoad();
-                  int position=tab.getPosition();
                   pager=0;
                   cateId=categoryBeanList.get(position).getId();
                   getData();

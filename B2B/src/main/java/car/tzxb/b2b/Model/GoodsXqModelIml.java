@@ -31,6 +31,9 @@ public class GoodsXqModelIml implements MvpContact.Model<GoodsXqBean> {
                 .url(url)
                 .params(params)
                 .build()
+                .connTimeOut(20000)
+                .readTimeOut(20000)
+                .writeTimeOut(20000)
                 .execute(new GenericsCallback<GoodsXqBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {

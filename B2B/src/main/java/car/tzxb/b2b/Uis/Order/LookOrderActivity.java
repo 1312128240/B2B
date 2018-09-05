@@ -370,7 +370,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     public void onResponse(OrderStatusBean response, int id) {
                         closeLoading();
                         beanList = response.getData().getOrder_list();
-                        if(beanList.size()>0){
+                        if(beanList.size()!=0){
                             DataHelper(beanList,true);
                             tv_emtpy.setVisibility(View.GONE);
                             recyclerView.setVisibility(View.VISIBLE);
