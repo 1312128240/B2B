@@ -28,6 +28,7 @@ import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
 import car.tzxb.b2b.Bean.ShopCarBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Util.StringUtil;
 
 /**
  * Created by Administrator on 2017/3/26.
@@ -195,10 +196,11 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
 
         final OrderItem child = (OrderItem) getChild(groupPosition, childPosition);
         if (child != null) {
-            childViewHolder.goodsPrice.setText("￥" + child.getPrice() + "");
+            String p= StringUtil.doubleConvert(child.getPrice());
+            childViewHolder.goodsPrice.setText("¥" +p);
             childViewHolder.goodsNum.setText(String.valueOf(child.getCount()));
             childViewHolder.goodsName.setText(child.getName());
-            Glide.with(MyApp.getContext()).load(child.getImageUrl()).into(childViewHolder.goodsImage);
+            Glide.with(mcontext).load(child.getImageUrl()).into(childViewHolder.goodsImage);
             childViewHolder.goodsBuyNum.setText("x" + child.getCount() + "");
             childViewHolder.singleCheckBox.setChecked(child.isChoosed());
             //优惠信息

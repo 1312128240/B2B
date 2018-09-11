@@ -45,7 +45,7 @@ public class FindShopsBenn {
         private String day_click_num;
         private Object last_click_time;
         private String img;
-        private String imgs;
+        private List<String> imgs;
         private int day_click;
         private List<GoodsBean> goods;
 
@@ -105,11 +105,11 @@ public class FindShopsBenn {
             this.img = img;
         }
 
-        public String getImgs() {
+        public List<String> getImgs() {
             return imgs;
         }
 
-        public void setImgs(String imgs) {
+        public void setImgs(List<String> imgs) {
             this.imgs = imgs;
         }
 

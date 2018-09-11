@@ -1,11 +1,16 @@
 package car.tzxb.b2b.Views.DialogFragments;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 
 import car.tzxb.b2b.R;
 
@@ -39,9 +44,30 @@ public class AlterDialogFragment extends DialogFragment implements View.OnClickL
         tv_cancle.setOnClickListener(this);
         tv_sure.setOnClickListener(this);
 
-
         return view;
     }
+
+    @Override
+    public void show(FragmentManager manager, String tag) {
+//        super.show(manager, tag);
+        try {
+            Class c = Class.forName("android.support.v4.app.DialogFragment");
+            Constructor con = c.getConstructor();
+            Object obj = con.newInstance();
+            Field dismissed = c.getDeclaredField(" mDismissed");
+            dismissed.setAccessible(true);
+            dismissed.set(obj, false);
+            Field shownByMe = c.getDeclaredField("mShownByMe");
+            shownByMe.setAccessible(true);
+            shownByMe.set(obj, false);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.add(this, tag);
+        ft.commitAllowingStateLoss();
+    }
+
 
     @Override
     public void onClick(View v) {
@@ -64,4 +90,6 @@ public class AlterDialogFragment extends DialogFragment implements View.OnClickL
         void cancle();
         void sure();
     }
+
+
 }

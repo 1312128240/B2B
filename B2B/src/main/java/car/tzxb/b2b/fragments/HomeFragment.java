@@ -3,9 +3,6 @@ package car.tzxb.b2b.fragments;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
-import android.os.Message;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.GridLayoutManager;
@@ -31,6 +28,7 @@ import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.listener.OnBannerClickListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,11 +57,8 @@ import car.tzxb.b2b.Uis.HomePager.ActivityPackage.ActivityEntrance;
 import car.tzxb.b2b.Uis.HomePager.FindShop.FindShopsActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
 import car.tzxb.b2b.Uis.HomePager.SelfGoods.SelfGoodsActivity;
-import car.tzxb.b2b.Uis.HomePager.Vip.VipHomePagerActivity;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
 import car.tzxb.b2b.Uis.LoginActivity;
-import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralOneActivity;
-import car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralXqActivity;
 import car.tzxb.b2b.Uis.MeCenter.MyGoldActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.SeachPackage.SeachActivity;
@@ -128,7 +123,8 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     private List<BaseDataListBean.DataBean> tabList;
     private LoadingDialog loadingDialog;
     private String userId;
-    private String saveUserId="00";
+    private String saveUserId = "00";
+
     @Override
     public int getLayoutResId() {
         return R.layout.fragment_home;
@@ -140,6 +136,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         iv_right.setImageResource(R.drawable.navbar_icon_news);
         recy_goods.addItemDecoration(new SpaceItemDecoration(10, 2));
         recy_track.setLayoutManager(new GridLayoutManager(getContext(), 5));
+
 
         iniEvent();
     }
@@ -161,18 +158,18 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     protected void onVisible() {
         super.onVisible();
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", "-1");
-        if("00".equals(saveUserId)){
+        if ("00".equals(saveUserId)) {
             presenterGetData();
-            Log.i("表示是第一次创建首页","aaa");
+            Log.i("表示是第一次创建首页", "aaa");
             return;
         }
 
-        if(!saveUserId.equals(userId)){
+        if (!saveUserId.equals(userId)) {
             Log.i("首页用户id发生变化执行刷新", "aaa");
-            pager=0;
+            pager = 0;
             getBrandData();
-        }else {
-            Log.i("首页用户id没变化不用刷新","bbb");
+        } else {
+            Log.i("首页用户id没变化不用刷新", "bbb");
         }
     }
 
@@ -180,7 +177,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
     protected void onHidden() {
         super.onHidden();
         saveUserId = userId;
-        Log.i("首页fragment切换为不可见时保存数据",saveUserId);
+        Log.i("首页fragment切换为不可见时保存数据", saveUserId);
     }
 
 
@@ -270,18 +267,18 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         scrollView.setOnScrollListener(new StickyScrollView.OnScrollChangedListener() {
             @Override
             public void onScrollChanged(int l, int t, int oldl, int oldt) {
-             if (t > 1000) {
+                if (t > 1000) {
                     iv_floatingbutton.setVisibility(View.VISIBLE);
                 } else {
                     iv_floatingbutton.setVisibility(View.INVISIBLE);
                 }
-             if(t==0){
-                 iv_left.setVisibility(View.VISIBLE);
-                 frameLayout.setVisibility(View.VISIBLE);
-             }else {
-                 iv_left.setVisibility(View.GONE);
-                 frameLayout.setVisibility(View.GONE);
-             }
+                if (t == 0) {
+                    iv_left.setVisibility(View.VISIBLE);
+                    frameLayout.setVisibility(View.VISIBLE);
+                } else {
+                    iv_left.setVisibility(View.GONE);
+                    frameLayout.setVisibility(View.GONE);
+                }
             }
         });
 
@@ -372,15 +369,17 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         });
 
     }
+
     //搜索
     @OnClick(R.id.et_classify)
     public void seach() {
         DeviceUtils.hideSystemSoftKeyBoard(getActivity(), et_classify);
-        Intent intent=new Intent(getActivity(),SeachActivity.class);
+        Intent intent = new Intent(getActivity(), SeachActivity.class);
         ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), et_classify, "share");
         startActivity(intent, compat.toBundle());
 
     }
+
     //自营
     @OnClick(R.id.iv_self_produc1)
     public void self1() {
@@ -514,6 +513,16 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
         banner.setImageLoader(new BannerImageLoader());
         banner.setImages(img);
         banner.start();
+
+        //点击事件
+        banner.setOnBannerClickListener(new OnBannerClickListener() {
+            @Override
+            public void OnBannerClick(int position) {
+                String id = bannerBean.get(position - 1).getId();
+
+            }
+        });
+
         //5个按钮
         List<HomeBean.DataBean.BtnImgBean> buttonBeanList = bean.getData().getBtnImg();
 
@@ -553,7 +562,7 @@ public class HomeFragment extends MyBaseFragment implements MvpViewInterface {
                     case 1:
                       /*  intent.setClass(getActivity(), VipHomePagerActivity.class);
                         startActivity(intent);*/
-                        MyToast.makeTextAnim(MyApp.getContext(),"暂未开放",0,Gravity.CENTER,0,0).show();
+                        MyToast.makeTextAnim(MyApp.getContext(), "暂未开放", 0, Gravity.CENTER, 0, 0).show();
                         break;
                     case 2:
                         minProgess();

@@ -16,7 +16,6 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.alibaba.sdk.android.oss.common.utils.DateUtil;
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -32,7 +31,7 @@ import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.myview.CustomToast.MyToast;
-import car.myview.RushBuyCountDownTimerView;
+import car.myview.CountDownTimerView;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
@@ -117,7 +116,7 @@ public class OrderXqActivity extends MyBaseAcitivity {
     @BindView(R.id.tv_order_logistics_time)
     TextView tv_order_logistics_time;
     @BindView(R.id.downTimerView)
-    RushBuyCountDownTimerView downTime;
+    CountDownTimerView downTime;
     @BindView(R.id.ll_order_xq_countdown_time)
     LinearLayout ll_countdown_time;
     private String orderid;

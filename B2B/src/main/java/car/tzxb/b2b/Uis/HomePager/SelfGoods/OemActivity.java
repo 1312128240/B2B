@@ -1,5 +1,6 @@
 package car.tzxb.b2b.Uis.HomePager.SelfGoods;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -67,10 +68,10 @@ public class OemActivity extends MyBaseAcitivity {
         recyclerview.addItemDecoration(new SpaceItemDecoration(12, 2));
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(),R.layout.recommend_layout,beanList) {
             @Override
-            protected void convert(ViewHolder holder, BaseDataListBean.DataBean dataBean, int position) {
+            protected void convert(ViewHolder holder, final BaseDataListBean.DataBean dataBean, int position) {
                 //图片
                 int i = DeviceUtils.dip2px(MyApp.getContext(), 186);
-                ImageView iv_brand = holder.getView(R.id.iv_recommend);
+                final ImageView iv_brand = holder.getView(R.id.iv_recommend);
                 Glide.with(MyApp.getContext()).load(dataBean.getImg_url()).override(i, i).into(iv_brand);
                 //名字
                 TextView tv_name = holder.getView(R.id.tv_recommend_title);
@@ -84,23 +85,19 @@ public class OemActivity extends MyBaseAcitivity {
                 //隐藏
                 holder.getView(R.id.tv_recommend_price).setVisibility(View.GONE);
                 holder.getView(R.id.iv_gwc_icon).setVisibility(View.INVISIBLE);
+
+                //去详情
+                iv_brand.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(OemActivity.this, GoodsXqActivity.class);
+                        intent.putExtra("mainId",dataBean.getGoods_id());
+                        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(OemActivity.this,iv_brand,"share").toBundle());
+                    }
+                });
             }
         };
         recyclerview.setAdapter(adapter);
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                BaseDataListBean.DataBean dataBeen=beanList.get(position);
-                Intent intent=new Intent(OemActivity.this, GoodsXqActivity.class);
-                intent.putExtra("mainId", dataBeen.getGoods_id());
-                startActivity(intent);
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
     }
 
     private void getData() {

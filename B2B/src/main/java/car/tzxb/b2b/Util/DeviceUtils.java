@@ -24,17 +24,20 @@ import car.tzxb.b2b.MyApp;
 public class DeviceUtils {
     /**
      * 获取状态栏高度
+     *
      * @param mContext
      * @return
      */
     public static int getNavigationBarHeight(Context mContext) {
         Resources resources = mContext.getResources();
-        int resourceId = resources.getIdentifier("navigation_bar_height","dimen", "android");
+        int resourceId = resources.getIdentifier("navigation_bar_height", "dimen", "android");
         int height = resources.getDimensionPixelSize(resourceId);
         return height;
     }
+
     /**
      * 获取是否存在NavigationBar
+     *
      * @param context
      * @return
      */
@@ -59,29 +62,6 @@ public class DeviceUtils {
         return hasNavigationBar;
     }
 
-
-    /**
-     * dp转px
-     *
-     */
-    public static int dip2px(Context ctx,float dpValue) {
-        final float scale = ctx.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-
-    /**
-     * px转dp
-     * @param ctx
-     * @param pxValue
-     * @return
-     */
-
-     public static int px2dip(Context ctx,float pxValue) {
-     final float scale = ctx.getResources().getDisplayMetrics().density;
-     return (int) (pxValue / scale + 0.5f);
-     }
-
     /**
      * 版本名检测
      */
@@ -97,14 +77,15 @@ public class DeviceUtils {
         }
         return packInfo.versionName;
     }
+
     /**
      * 设置不调用系统键盘
      */
-    public static void hideSystemSoftKeyBoard(Activity activity ,EditText et){
+    public static void hideSystemSoftKeyBoard(Activity activity, EditText et) {
         if (Build.VERSION.SDK_INT <= 10) {
             et.setInputType(InputType.TYPE_NULL);
         } else {
-         activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+            activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             try {
                 Class<EditText> cls = EditText.class;
                 Method setShowSoftInputOnFocus = cls.getMethod("setShowSoftInputOnFocus", boolean.class);
@@ -119,13 +100,47 @@ public class DeviceUtils {
     /**
      * 显示弹窗的方法
      */
-    public static void showPopWindow(View parent , PopupWindow popupWindow){
-        boolean b= DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext());
+    public static void showPopWindow(View parent, PopupWindow popupWindow) {
+        boolean b = DeviceUtils.checkDeviceHasNavigationBar(MyApp.getContext());
         if (b == true) {
-            int navigationBarHeight= DeviceUtils.getNavigationBarHeight(MyApp.getContext());
+            int navigationBarHeight = DeviceUtils.getNavigationBarHeight(MyApp.getContext());
             popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, navigationBarHeight);
         } else {
             popupWindow.showAtLocation(parent, Gravity.BOTTOM, 0, 0);
         }
     }
+
+    /**
+     * dp转px
+     */
+    public static int dip2px(Context ctx, float dpValue) {
+        final float scale = ctx.getResources().getDisplayMetrics().density;
+        return (int) (dpValue * scale + 0.5f);
+    }
+
+
+    /**
+     * px转dp
+     *
+     * @param ctx
+     * @param pxValue
+     * @return
+     */
+
+    public static int px2dip(Context ctx, float pxValue) {
+        final float scale = ctx.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
+
+    }
+
+    /**
+     * px转换成sp
+     */
+    public static  int px2sp(Context context, float pxValue) {
+        float fontScale = context.getResources().getDisplayMetrics().scaledDensity;
+        return (int) (pxValue / fontScale + 0.5f);
+    }
+
+
+
 }

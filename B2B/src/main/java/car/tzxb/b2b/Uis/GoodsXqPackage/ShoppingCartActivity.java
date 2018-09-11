@@ -46,6 +46,7 @@ import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
+import car.tzxb.b2b.Util.StringUtil;
 import car.tzxb.b2b.Views.PopWindow.Modify_DiscountsPop;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
@@ -650,8 +651,8 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
                 }
             }
         }
-
-        totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+mtotalPrice+"</font>"));
+        String entPrice= StringUtil.doubleConvert(mtotalPrice);
+        totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+entPrice+"</font>"));
         tv_discounts_total.setText(Html.fromHtml("优惠: "+"<font color='#FA3314'>"+"¥"+discounts_total+"</font>"));
         goPay.setText("去结算(" + mtotalCount + ")");
         if (mtotalCount == 0) {

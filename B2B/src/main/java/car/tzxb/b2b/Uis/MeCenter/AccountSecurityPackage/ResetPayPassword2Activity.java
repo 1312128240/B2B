@@ -130,8 +130,8 @@ public class ResetPayPassword2Activity extends MyBaseAcitivity implements Keyboa
     private void setPayPass(String endPass) {
         String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         //支付密码加密
-        String  stringA="pay_pwd=pay"+endPass+"&user_id="+userId;
-        String  stringB = stringA + "&key=!H1ereN3nfdF6wZcoeBdYUfQv7tq1Pq5t";
+        String  stringA="pay_pwd="+endPass+"&user_id="+userId;
+        String  stringB = stringA + "&key=H1ereN3nfdF6wZcoeBdYUfQv7tq1Pq5t";
         String  stringMd5= StringUtil.stringToMD5(stringB);
         String  stringUpper=StringUtil.UpperLowerCase(stringMd5).toString();
         //生成支付密码签名
@@ -170,10 +170,6 @@ public class ResetPayPassword2Activity extends MyBaseAcitivity implements Keyboa
     }
 
     private void deleActivity() {
-      /*  SettingsActivity a1= (SettingsActivity) SettingsActivity.sInstance;
-        if(a1!=null){
-            a1.finish();
-        }*/
         AccountSecurityHomePageActivity a2= (AccountSecurityHomePageActivity) AccountSecurityHomePageActivity.sInstance;
         if(a2!=null){
             a2.finish();

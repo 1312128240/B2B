@@ -1,5 +1,6 @@
 package car.tzxb.b2b.Uis.HomePager.FindShop;
 
+import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
@@ -43,6 +44,7 @@ import car.tzxb.b2b.Bean.FindShopsBenn;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.GoodsXqPackage.GoodsXqActivity;
+import car.tzxb.b2b.Uis.HomePager.SelfGoods.OemActivity;
 import car.tzxb.b2b.Uis.MeCenter.BrowhistoryActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
@@ -114,17 +116,20 @@ public class FindShopsActivity extends MyBaseAcitivity {
                     }
                 });
                 //3张图片
-                ImageView iv1=holder.getView(R.id.iv_find_shop1);
-                ImageView iv2=holder.getView(R.id.iv_find_shop2);
-                ImageView iv3=holder.getView(R.id.iv_find_shop3);
+                final ImageView iv1=holder.getView(R.id.iv_find_shop1);
+                final ImageView iv2=holder.getView(R.id.iv_find_shop2);
+                final ImageView iv3=holder.getView(R.id.iv_find_shop3);
                 final List<FindShopsBenn.DataBean.GoodsBean> goodsBeen=dataBean.getGoods();
                 //商品图片
-                String imgUrl1=goodsBeen.get(0).getImg_url();
-                String imgUrl2=goodsBeen.get(1).getImg_url();
-                String imgUrl3=goodsBeen.get(2).getImg_url();
-                Glide.with(MyApp.getContext()).load(imgUrl1).error(R.drawable.bucket_no_picture).into(iv1);
-                Glide.with(MyApp.getContext()).load(imgUrl2).error(R.drawable.bucket_no_picture).into(iv2);
-                Glide.with(MyApp.getContext()).load(imgUrl3).error(R.drawable.bucket_no_picture).into(iv3);
+                if(goodsBeen.size()>2){
+                    String imgUrl1=goodsBeen.get(0).getImg_url();
+                    String imgUrl2=goodsBeen.get(1).getImg_url();
+                    String imgUrl3=goodsBeen.get(2).getImg_url();
+                    Glide.with(MyApp.getContext()).load(imgUrl1).error(R.drawable.bucket_no_picture).into(iv1);
+                    Glide.with(MyApp.getContext()).load(imgUrl2).error(R.drawable.bucket_no_picture).into(iv2);
+                    Glide.with(MyApp.getContext()).load(imgUrl3).error(R.drawable.bucket_no_picture).into(iv3);
+                }
+
 
                 iv1.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -132,7 +137,7 @@ public class FindShopsActivity extends MyBaseAcitivity {
                         Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
                         String mainId=goodsBeen.get(0).getID();
                         intent.putExtra("mainId", mainId);
-                        startActivity(intent);
+                        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FindShopsActivity.this,iv1,"share").toBundle());
                     }
                 });
 
@@ -142,7 +147,7 @@ public class FindShopsActivity extends MyBaseAcitivity {
                         Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
                         String mainId=goodsBeen.get(1).getID();
                         intent.putExtra("mainId", mainId);
-                        startActivity(intent);
+                        startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FindShopsActivity.this,iv2,"share").toBundle());
                     }
                 });
 
@@ -152,7 +157,7 @@ public class FindShopsActivity extends MyBaseAcitivity {
                          Intent intent=new Intent(FindShopsActivity.this, GoodsXqActivity.class);
                          String mainId=goodsBeen.get(2).getID();
                          intent.putExtra("mainId", mainId);
-                         startActivity(intent);
+                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(FindShopsActivity.this,iv3,"share").toBundle());
                      }
                  });
 
@@ -230,7 +235,7 @@ public class FindShopsActivity extends MyBaseAcitivity {
                 .execute(new GenericsCallback<FindShopsBenn>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                      Log.i("发现好店",e.toString());
                     }
 
                     @Override

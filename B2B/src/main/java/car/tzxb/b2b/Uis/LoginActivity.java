@@ -45,6 +45,7 @@ import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.ActiclePackage.ArticleWebViewActivity;
 import car.tzxb.b2b.Uis.MeCenter.FindPassWordActivity;
+import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopActivity;
 import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopEntranceActivity;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
@@ -464,7 +465,7 @@ public class LoginActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_open_shop)
     public void open() {
         if (isFastClick()) {
-            Intent intent = new Intent(this, OpenShopEntranceActivity.class);
+            Intent intent = new Intent(this, OpenShopActivity.class);
             intent.putExtra("from", "login");
             startActivity(intent);
         }

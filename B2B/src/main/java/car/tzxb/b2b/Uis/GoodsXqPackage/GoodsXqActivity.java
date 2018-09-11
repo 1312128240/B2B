@@ -285,6 +285,8 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
 
                         if (response.getStatus() == 1) {
                             MyToast.makeTextAnim(MyApp.getContext(), "加入购物车成功", 0, Gravity.CENTER, 0, 0).show();
+                        }else {
+                            MyToast.makeTextAnim(MyApp.getContext(), response.getMsg(), 0, Gravity.CENTER, 0, 0).show();
                         }
 
                     }

@@ -18,6 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
@@ -73,7 +74,9 @@ public class ActivityEntrance extends MyBaseAcitivity{
     public void doBusiness(Context mContext) {
         tv_title.setText("活动专区");
         int wh=DeviceUtils.dip2px(MyApp.getContext(),180);
-        Glide.with(mContext).load("file:///android_asset/loading.gif").asGif().override(wh,wh).into(iv_gift);
+        //diskCacheStrategy(DiskCacheStrategy.SOURCE)为其添加缓存策略,
+        // 其中缓存策略可以为:Source及None,None为不缓存,Source缓存原型.如果为ALL和Result就不行
+        Glide.with(mContext).load("file:///android_asset/loading.gif").asGif().override(wh,wh).diskCacheStrategy(DiskCacheStrategy.SOURCE).into(iv_gift);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -263,8 +263,8 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         if(response.getStatus()==1){
-                             beanList.remove(index);
-                             DataHelper(beanList,false);
+
+                             Refresh();
                         }else {
                             MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
                         }

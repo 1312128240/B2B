@@ -1,6 +1,7 @@
 package car.tzxb.b2b.fragments;
 import android.app.Activity;
 import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -30,6 +31,8 @@ import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
 import com.google.android.flexbox.FlexboxLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
+import com.youth.banner.loader.ImageLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 import butterknife.BindView;
@@ -341,6 +344,14 @@ public class GoodsFragment extends MyBaseFragment implements ScollListener {
         //设置图片资源:可选图片网址/资源文件，默认用Glide加载,也可自定义图片的加载框架
         //所有设置参数方法都放在此方法之前执行
         banner.setImageLoader(new BannerImageLoader());
+        banner.setImageLoader(new ImageLoader() {
+            @Override
+            public void displayImage(Context context, Object path, ImageView imageView) {
+                 imageView.setTransitionName("share");
+                //Glide 加载图片简单用法
+                Glide.with(MyApp.getContext()).load(path).into(imageView);
+            }
+        });
         banner.setImages(imgList);
         banner.start();
     }

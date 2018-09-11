@@ -130,7 +130,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 .execute(new GenericsCallback<MyCenterBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                        Log.i("走错误", "aa");
+                        Log.i("走错误", e.toString());
                         notLogin();
                     }
 
@@ -192,7 +192,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
         CollectViews.get(1).setText(scList.get(1) + "\n收藏店铺");
         CollectViews.get(2).setText(scList.get(2) + "\n浏览记录");
         //金库
-        List<Integer> jkList = response.getData().getMyProperty();
+        List<Double> jkList = response.getData().getMyProperty();
         PropertyViews.get(0).setText(Html.fromHtml(jkList.get(0) + "  张" + "<br>" + "优惠券"));
         PropertyViews.get(1).setText(Html.fromHtml(jkList.get(1) + "  个" + "<br>" + "金币"));
         PropertyViews.get(2).setText(Html.fromHtml(jkList.get(2) + "  分" + "<br>" + "积分"));

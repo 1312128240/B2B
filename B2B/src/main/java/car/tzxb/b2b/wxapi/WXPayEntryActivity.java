@@ -17,6 +17,7 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
 import com.alipay.sdk.app.PayTask;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -48,6 +49,8 @@ import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
+import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.ResetPasswordActivity;
+import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
@@ -145,6 +148,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     public void queryBalance() {
         String userId = SPUtil.getInstance(this).getUserId("UserId", null);
+        Log.i("我的余额", Constant.baseUrl + "orders/orders_mobile.php?m=user_balance" + "&user_id=" + userId);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "orders/orders_mobile.php?m=user_balance")
@@ -158,9 +162,8 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                        double balance = response.getBalance() + 110;
+                        double balance = response.getBalance();
                         initLv2(balance);
-
                     }
                 });
     }
@@ -269,13 +272,17 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     }
 
     private void BalancePay() {
-        if(isShow){
-           showDialogFragment();
-        }else {
-            MyToast.makeTextAnim(MyApp.getContext(),"余额充足",0,Gravity.CENTER,0,0).show();
+        if (isShow) {
+            showDialogFragment();
+        } else {
+            Intent intent = new Intent(WXPayEntryActivity.this, ResetPayPasswordActivity.class);
+            intent.putExtra("from", "WxPay");
+            intent.putExtra("orderSeqnos", order_seqnos);
+            startActivity(intent);
         }
     }
 
+    //是否去充值余额
     private void showDialogFragment() {
         final AlterDialogFragment dialogFragment = new AlterDialogFragment();
         Bundle bundle = new Bundle();
@@ -283,29 +290,27 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
         bundle.putString("ok", "确认");
         bundle.putString("no", "取消");
         dialogFragment.setArguments(bundle);
-        if (isStateEnable()) {
-            dialogFragment.show(getSupportFragmentManager(), "order");
-        }
+
+        dialogFragment.show(getSupportFragmentManager(), "order");
+
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
-                if (isStateEnable()) {
-                    dialogFragment.dismiss();
-                }
+
+                dialogFragment.dismiss();
+
 
             }
 
             @Override
             public void sure() {
-                if (isStateEnable()) {
-                    dialogFragment.dismiss();
-                }
-                if("order".equals(from)){
-                    OrderActivity orderActivity= (OrderActivity) OrderActivity.sInstance;
+                dialogFragment.dismiss();
+                if ("order".equals(from)) {
+                    OrderActivity orderActivity = (OrderActivity) OrderActivity.sInstance;
                     ActivityManager.getInstance().deleteActivity(orderActivity);
                 }
                 startActivity(new Intent(WXPayEntryActivity.this, MyWalletActivity.class));
-                finish();
+                WXPayEntryActivity.this.finish();
             }
         });
     }

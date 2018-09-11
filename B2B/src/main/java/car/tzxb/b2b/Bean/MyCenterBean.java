@@ -42,7 +42,7 @@ public class MyCenterBean implements Serializable{
         private UserInfoBean UserInfo;
         public   List<Integer> UserCollect;
         private List<Integer> OrderNumber;
-        private List<Integer> MyProperty;
+        private List<Double> MyProperty;
 
         public UserInfoBean getUserInfo() {
             return UserInfo;
@@ -57,7 +57,7 @@ public class MyCenterBean implements Serializable{
         }
 
 
-        public List<Integer> getMyProperty() {
+        public List<Double> getMyProperty() {
             return MyProperty;
         }
 

@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">同致相伴</string>
-    <string name="version">v1.0.5</string>
+    <string name="version">v1.0.6</string>
     <string name="login_phone"><font size="12">请输入手机号</font></string>
     <string name="login_phone2"><font size="12">手机号/健行快养服务商账号</font></string>
     <string name="login_pass"><font size="12">请输入密码</font></string>
@@ -10,7 +10,7 @@
     <string name="open_shop1"><font size="12">请与门店招牌上的一样</font></string>
     <string name="open_shop2"><font size="12">请填写联系人姓名</font></string>
     <string name="open_shop4"><font size="12">填写详细地址\n(详细至门牌号,请与营业执照一致)</font></string>
-
+    <string name="open_shop5"><font size="12">请填写真实编号</font></string>
     <string name="input_pass"><font size="12">请输入密码</font></string>
 
     <string name="agin_input_pass"><font size="12">请再次输入密码</font></string>
@@ -20,7 +20,7 @@
     <string name="mesg"><font size="12">选填:给商家留言(50字以内)</font></string>
     <string name="feedback"><font size="12"> 请告诉我们您的意见和建议,我们将不断改进</font></string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--  tv_seales.setText(Html.fromHtml("销量:  "+"<font color='#ff0000'><big>" + dataChildBean.getSales_count()+ "</big>"));-->
 

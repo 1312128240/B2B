@@ -87,7 +87,6 @@
         <activity android:name=".Uis.MeCenter.MyAddressActivity" />
         <activity android:name=".Uis.MeCenter.EditAddressActivity" />
         <activity android:name=".Uis.MeCenter.CollectActivity" />
-
         <activity android:name=".Uis.Order.OrderActivity" />
         <activity android:name=".Uis.Order.GoodsListActivity" />
         <activity android:name=".Uis.Order.OrderXqActivity" />
@@ -145,7 +144,8 @@
         <activity android:name=".Uis.MeCenter.IntegralShop.IntegralOneActivity" />
         <activity android:name=".Uis.MeCenter.IntegralShop.IntegralExchangeActivity" />
         <activity android:name=".Uis.MeCenter.IntegralShop.IntegralXqActivity" />
-        <activity android:name=".Uis.GoodsXqPackage.ShoppingCartActivity"></activity>
+        <activity android:name=".Uis.GoodsXqPackage.ShoppingCartActivity" />
+        <activity android:name=".Uis.HomePager.ActivityPackage.SecKillActivity"></activity>
     </application>
 
 </manifest>

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import car.myview.RushBuyCountDownTimerView;
+import car.myview.CountDownTimerView;
 
 /**
  * Created by Administrator on 2018/1/13 0013.
@@ -146,7 +146,7 @@ public class DateUtils {
         return timeList;
     }
 
-    public void initTime(RushBuyCountDownTimerView view, String endTime) {
+    public void initTime(CountDownTimerView view, String endTime) {
         String currentTimeStr = cuttentStr();
         int result = compareDate(currentTimeStr, endTime);
         if (result == 1) {

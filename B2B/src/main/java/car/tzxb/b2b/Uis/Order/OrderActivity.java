@@ -20,13 +20,16 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -97,11 +100,13 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     private String dealer_name;
     private String dealer_mobile;
     private String dealer_address;
-
+    private String isCar = "0";
     public static AppCompatActivity sInstance = null;
+    //  private String from;
+
     @Override
     public void initParms(Bundle parms) {
-
+        //from = getIntent().getStringExtra("from");
         shopId = getIntent().getStringExtra("shopId");
         carId = getIntent().getStringExtra("carId");
         num = getIntent().getStringExtra("num");
@@ -118,7 +123,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
     @Override
     public void doBusiness(Context mContext) {
-        sInstance=this;
+        sInstance = this;
         rb1.setChecked(true);
         rg.setOnCheckedChangeListener(this);
         rb1.setText("送货上门");
@@ -126,8 +131,11 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         iv_fgx.setVisibility(View.VISIBLE);
         tv_default_address.setVisibility(View.VISIBLE);
         ll_zf_type.setVisibility(View.GONE);
+
         getData();
+
     }
+
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -180,6 +188,34 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
     }
 
+  /*  *//**
+     * 优惠过来
+     *//*
+    private void getSeckillData() {
+        String userid = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+      Log.i("秒杀订单",Constant.baseUrl + "orders/shopping_cars_moblie.php?m=limit_shop"+"&user_id="+userid+"&pro_id="+proId+"&num="+num+"&shop_id="+shopId);
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=limit_shop")
+                .tag(this)
+                .addParams("user_id", userid)
+                .addParams("pro_id", proId)
+                .addParams("num", num)
+                .addParams("shop_id", shopId)
+                .build()
+                .execute(new GenericsCallback<OrderBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+                        Log.i("走错误",e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(OrderBean response, int id) {
+                        dataBean = response.getData();
+                        initData();
+                    }
+                });
+    }*/
 
     /**
      * 购物车过来
@@ -204,7 +240,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 .execute(new GenericsCallback<OrderBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-                       Log.i("走错误",e.toString());
+                        Log.i("走错误", e.toString());
                     }
 
                     @Override
@@ -272,9 +308,9 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 addressLayout.setVisibility(View.GONE);
                 tv_goods_offset.setText("¥" + offset2);
                 double pay = dataBean.getAmount_pay() - dataBean.getAll_offset();
-                Log.i("总价钱是",dataBean.getAmount_pay()+"");
-                DecimalFormat df  = new DecimalFormat("######0.00");
-                tv_finally_price.setText(Html.fromHtml("实付款  " + "<font color='#FA3314'><big>" + "¥" + df.format(pay)+ "</big></font>"));
+                Log.i("总价钱是", dataBean.getAmount_pay() + "");
+                DecimalFormat df = new DecimalFormat("######0.00");
+                tv_finally_price.setText(Html.fromHtml("实付款  " + "<font color='#FA3314'><big>" + "¥" + df.format(pay) + "</big></font>"));
                 break;
         }
 
@@ -298,11 +334,11 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
             if (rb2.isChecked()) {
                 if (special_money > 0) {
                     //收取服务费
-                    String hint = "尊敬的合作伙伴,根据协议,您本次订单将收取服务费" +"<font color='#FA3314'>"+"¥"+special_money +"</font>"+"元";
+                    String hint = "尊敬的合作伙伴,根据协议,您本次订单将收取服务费" + "<font color='#FA3314'>" + "¥" + special_money + "</font>" + "元";
                     showHintDialog1(hint);
                 } else {
                     //为您优惠
-                    String hint = "尊敬的合作伙伴，根据协议，您本次订单达到优惠条件,优惠"+"<font color='#FA3314'>"+"¥"+special_money +"</font>"+"元";
+                    String hint = "尊敬的合作伙伴，根据协议，您本次订单达到优惠条件,优惠" + "<font color='#FA3314'>" + "¥" + special_money + "</font>" + "元";
                     showHintDialog1(hint);
                 }
             } else {
@@ -336,27 +372,29 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         bundle.putString("ok", "立即付款");
         bundle.putString("no", "再想想");
         dialogFragment.setArguments(bundle);
-        if (isStateEnable()) {
-            dialogFragment.show(getSupportFragmentManager(), "order");
-        }
+
+        dialogFragment.show(getSupportFragmentManager(), "order");
+
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
             @Override
             public void cancle() {
-                 onBackPressed();
+                onBackPressed();
             }
 
             @Override
             public void sure() {
+
+                dialogFragment.dismiss();
+
                 Intent intent = new Intent(OrderActivity.this, WXPayEntryActivity.class);
                 double total = response.getData().getTotal_fee();
                 intent.putExtra("total", String.valueOf(total));
-                intent.putExtra("from","order");
-                intent.putExtra("order_seqnos", response.getData().getCount_seqnos());
+                intent.putExtra("from", "order");
+                intent.putExtra("order_seqnos", response.getData().getOrder_seqno());
                 intent.putExtra("orderid", response.getData().getOrder_id());
                 startActivity(intent);
-                if (isStateEnable()) {
-                    dialogFragment.dismiss();
-                }
+
+
             }
         });
 
@@ -369,7 +407,9 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         String orderType = tv_distribution.getText().toString();
         Log.i("提交订单", Constant.baseUrl + "orders/orders_mobile.php?m=order_add" + "&user_id=" + userId + "&username=" + mobile +
                 "&dealer_address=" + dealer_address + "&dealer_name=" + dealer_name + "&dealer_mobile=" + dealer_mobile + "&message=" + mesg
-                + "&order_type=" + orderType + "&expect_time=" + "&pay_device=Android" + "&coupon_id=0" + "&is_car=0" + "&carid_proid=" + carId+"&special_id="+special_id);
+                + "&order_type=" + orderType + "&expect_time=" + "&pay_device=Android" + "&coupon_id=0" + "&is_car=" + isCar + "&carid_proid=" +
+                carId + "&special_id=" + special_id + "&pro_type=0" + "&shop_id=" + shopId);
+
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "orders/orders_mobile.php?m=order_add")
@@ -384,20 +424,24 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 .addParams("expect_time", "")
                 .addParams("pay_device", "Android")
                 .addParams("coupon_id", "0")
-                .addParams("is_car", "0")
+                .addParams("is_car", isCar)
+                .addParams("pro_type", "0")
+                .addParams("shop_id", shopId)
                 .addParams("carid_proid", carId)
-                .addParams("special_id",special_id)
+                .addParams("special_id", special_id)
                 .build()
                 .execute(new GenericsCallback<BaseDataBean>(new JsonGenericsSerializator()) {
                     @Override
                     public void onError(Call call, Exception e, int id) {
-
+                        MyToast.makeTextAnim(MyApp.getContext(), "提交失败", 0, Gravity.CENTER, 0, 0).show();
                     }
 
                     @Override
                     public void onResponse(BaseDataBean response, int id) {
                         if (response.getStatus() == 1) {
                             showDialogFragment(response);
+                        } else {
+                            MyToast.makeTextAnim(MyApp.getContext(), "提交失败", 0, Gravity.CENTER, 0, 0).show();
                         }
                     }
                 });
@@ -444,6 +488,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     @Override
     public void onDestroy() {
         super.onDestroy();
-        sInstance=null;
+        sInstance = null;
     }
 }

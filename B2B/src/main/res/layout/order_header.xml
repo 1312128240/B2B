@@ -29,12 +29,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <car.myview.RushBuyCountDownTimerView
+            <car.myview.CountDownTimerView
                 android:id="@+id/downTimerView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-            </car.myview.RushBuyCountDownTimerView>
+            </car.myview.CountDownTimerView>
 
             <TextView
                 android:layout_width="wrap_content"
