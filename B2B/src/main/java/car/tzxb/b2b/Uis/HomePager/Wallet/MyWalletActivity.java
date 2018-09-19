@@ -146,10 +146,17 @@ public class MyWalletActivity extends MyBaseAcitivity {
 
                     @Override
                     public void onResponse(MyWalletBean response, int id) {
-                        beanList = response.getData().getDetail();
+                        MyWalletBean.DataBean xBean=response.getData();
+                        beanList = xBean.getDetail();
                         adapter.add(beanList, true);
                         //可用余额
-                        tv_my_balance.setText(Html.fromHtml("¥ "+"<big>"+response.getData().getB2b_balance()+"</big>"));
+                        String balance=xBean.getB2b_balance();
+                        if(balance==null||"".equals(balance)){
+                            tv_my_balance.setText(Html.fromHtml("¥ "+"<big>"+0.00+"</big>"));
+                        }else {
+                            tv_my_balance.setText(Html.fromHtml("¥ "+"<big>"+xBean.getB2b_balance()+"</big>"));
+                        }
+
                     }
                 });
 

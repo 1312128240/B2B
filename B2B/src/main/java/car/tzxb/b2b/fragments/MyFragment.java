@@ -185,7 +185,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
             tv_username.setText(userBean.getNackname());
         }
 
-        Glide.with(MyApp.getContext()).load(userBean.getHead_img()).asBitmap().into(cv_headerImager);
+        Glide.with(MyApp.getContext()).load(userBean.getHead_img()).asBitmap().error(R.mipmap.my_icon_dhi).into(cv_headerImager);
         //收藏
         List<Integer> scList = response.getData().getUserCollect();
         CollectViews.get(0).setText(scList.get(0) + "\n收藏商品");
@@ -238,8 +238,9 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                 LinearLayout parent = holder.getView(R.id.order_item_parent);
                 parent.setLayoutParams(parasm);
                 parent.setGravity(Gravity.CENTER);
+                int wh=DeviceUtils.dip2px(MyApp.getContext(),25);
                 //图片
-                Glide.with(getContext()).load(img[position]).override(50, 50).into((ImageView) holder.getView(R.id.iv_order));
+                Glide.with(getContext()).load(img[position]).override(wh,wh).into((ImageView) holder.getView(R.id.iv_order));
                 //标题
                 TextView tv = holder.getView(R.id.tv_order_title);
                 if (position == 2) {

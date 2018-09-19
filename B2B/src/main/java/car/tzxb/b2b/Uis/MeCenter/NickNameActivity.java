@@ -58,39 +58,16 @@ public class NickNameActivity extends MyBaseAcitivity {
     }
     @OnClick(R.id.btn_set_nick)
     public void nick(){
-        String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
-        final String nickName=et_nick.getText().toString();
+       // String userId= SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
+        String nickName=et_nick.getText().toString();
         if(TextUtils.isEmpty(nickName)){
             AnimationUtil.Sharke(MyApp.getContext(),et_nick);
             MyToast.makeTextAnim(MyApp.getContext(),"昵称不能为空",0, Gravity.CENTER,0,0).show();
             return;
         }
-
-        OkHttpUtils
-                .post()
-                .tag(this)
-                .url(Constant.baseUrl+"item/index.php?c=Home&m=UpdateUsersInfo")
-                .addParams("user_id",userId)
-                .addParams("nackname",nickName)
-                .build()
-                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.i("保存昵称失败",e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(BaseStringBean response, int id) {
-                        Log.i("保存昵称成功","cccc");
-                        if(response.getStatus()==1){
-                            Intent intent=new Intent();
-                            intent.putExtra("nick",nickName);
-                            setResult(RESULT_OK, intent);
-                            finish();
-                        }else {
-                            MyToast.makeTextAnim(MyApp.getContext(),"保存失败",0, Gravity.CENTER,0,0).show();
-                        }
-                    }
-                });
+        Intent intent=new Intent();
+        intent.putExtra("nick",nickName);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

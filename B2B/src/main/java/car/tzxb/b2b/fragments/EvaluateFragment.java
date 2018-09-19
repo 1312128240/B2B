@@ -163,7 +163,7 @@ public class EvaluateFragment extends MyBaseFragment {
 
     private void Refresh() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        Log.i("评论的是", Constant.baseUrl + "item/index.php?c=Goods&m=GetGoodsCommentInfo" + "&id=" + goodsId + "&user_id=" + userId + "&succ=" + index);
+        Log.i("商品评论的是", Constant.baseUrl + "item/index.php?c=Goods&m=GetGoodsCommentInfo" + "&id=" + goodsId + "&user_id=" + userId + "&succ=" + index);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "item/index.php?c=Goods&m=GetGoodsCommentInfo")

@@ -87,7 +87,8 @@ public class OemActivity extends MyBaseAcitivity {
                 holder.getView(R.id.iv_gwc_icon).setVisibility(View.INVISIBLE);
 
                 //去详情
-                iv_brand.setOnClickListener(new View.OnClickListener() {
+                View view=holder.getView(R.id.parent);
+                view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Intent intent=new Intent(OemActivity.this, GoodsXqActivity.class);
@@ -95,6 +96,7 @@ public class OemActivity extends MyBaseAcitivity {
                         startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(OemActivity.this,iv_brand,"share").toBundle());
                     }
                 });
+
             }
         };
         recyclerview.setAdapter(adapter);

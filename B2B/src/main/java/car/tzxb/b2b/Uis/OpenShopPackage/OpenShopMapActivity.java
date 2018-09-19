@@ -2,10 +2,16 @@ package car.tzxb.b2b.Uis.OpenShopPackage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
+
+import com.baidu.location.BDLocation;
+import com.baidu.location.BDLocationListener;
+import com.baidu.location.LocationClient;
+import com.baidu.location.LocationClientOption;
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
@@ -34,7 +40,7 @@ import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 
-public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCoderResultListener,BaiduMap.OnMapClickListener{
+public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCoderResultListener,BaiduMap.OnMapClickListener,BDLocationListener{
 
     @BindView(R.id.open_shop_mapview)
     MapView mapView;
@@ -42,20 +48,21 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     TextView tv_title;
     @BindView(R.id.tv_open_shop_latlog)
     TextView tv_ll;
-    private String address;
+  /*  private String address;
     private String city;
-
+    private String from;*/
     private BaiduMap baiduMap;
     private GeoCoder mSearch;
     private String resultAddress;
+    private LatLng latLng;
 
+    public LocationClient mLocationClient = null;
     @Override
     public void initParms(Bundle parms) {
 
-        address = getIntent().getStringExtra("address");
+    /*    address = getIntent().getStringExtra("address");
         city = getIntent().getStringExtra("city");
-
-
+        from = getIntent().getStringExtra("from");*/
     }
 
     @Override
@@ -68,13 +75,14 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("标记地图");
-
+        initMap();
+        showMyLocation();
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(this);
-        mSearch.geocode(new GeoCodeOption().city(city).address(address));
-        initMap();
-
+       //mSearch.geocode(new GeoCodeOption().city(city).address(address)); //调用此方法发起搜索
     }
+
+
 
     @Override
     protected BasePresenter bindPresenter() {
@@ -99,16 +107,35 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         onBackPressed();
     }
 
+    private void showMyLocation() {
+        mLocationClient = new LocationClient(this);
+        mLocationClient.registerLocationListener(this);
+        LocationClientOption option = new LocationClientOption();
+        option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);
+        option.setCoorType("bd09ll");
+        int span = 0;
+        option.setScanSpan(span);
+        option.setIsNeedAddress(true);
+        option.setOpenGps(true);
+        option.setLocationNotify(true);
+        option.setIsNeedLocationDescribe(true);
+        option.setIsNeedLocationPoiList(true);
+        option.setIgnoreKillProcess(false);
+        option.SetIgnoreCacheException(false);
+        option.setEnableSimulateGps(false);
+        mLocationClient.setLocOption(option);
+        mLocationClient.start();
+    }
+
     @Override
     public void onGetGeoCodeResult(GeoCodeResult result) {
-             //获取地理编码,即地址转坐标
-
-
+     /*        //搜索城市,获取地理编码,即地址转坐标
         if (result == null || result.error != SearchResult.ERRORNO.NO_ERROR) {
             //没有检索到结果
             mSearch.geocode(new GeoCodeOption().city(city).address(city+"政府"));
             return;
         }
+        latLng = result.getLocation();
         Log.i("精确找到了",result.getLocation().latitude+"________"+result.getLocation().longitude);
 
         //获取地理编码结果,开始定位
@@ -119,22 +146,27 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         baiduMap.addOverlay(option);
         MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(location);
         baiduMap.animateMapStatus(msu);
-
          //发起逆地理编码
-        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(location));
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(location));*/
     }
 
     @Override
     public void onGetReverseGeoCodeResult(ReverseGeoCodeResult reverseGeoCodeResult) {
-        //反地理编码,即坐标转址
-
-         resultAddress = reverseGeoCodeResult.getAddress()+reverseGeoCodeResult.getSematicDescription();
-         tv_ll.setText(resultAddress);
+        //反地理编码,即坐标转地址
+       //  resultAddress = reverseGeoCodeResult.getAddress()+reverseGeoCodeResult.getSematicDescription();
+        resultAddress=reverseGeoCodeResult.getSematicDescription();
+        tv_ll.setText(resultAddress);
     }
+
+
+
     @OnClick(R.id.btn_sumbit_open_shop_latlog)
     public void submit(){
         Intent intent=new Intent();
-        intent.putExtra("ResultAddress",resultAddress);
+        Bundle bundle=new Bundle();
+        bundle.putString("ResultAddress",resultAddress);
+        bundle.putParcelable("latLng",latLng);
+        intent.putExtra("map",bundle);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -165,7 +197,8 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     public void onMapClick(LatLng ll) {
            //在此处理点击事件
         baiduMap.clear();
-      Log.i("点击图标的经纬度",ll.latitude+"______"+ll.longitude);
+        latLng=ll;
+        Log.i("点击地图的经纬度",ll.latitude+"______"+ll.longitude);
         //获取地理编码结果,开始定位
         MarkerOptions option = new MarkerOptions();
         option.position(ll);
@@ -175,7 +208,6 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
         baiduMap.animateMapStatus(msu);
         //发起逆地理编码
         mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(ll));
-
     }
 
     @Override
@@ -185,4 +217,36 @@ public class OpenShopMapActivity extends MyBaseAcitivity implements OnGetGeoCode
     }
 
 
+    @Override
+    public void onReceiveLocation(BDLocation bdLocation) {
+        int type = bdLocation.getLocType();
+
+        double lat = -1;
+        double lng = -1;
+
+        if (type == 61 || type == 65 || type == 66 || type == 161) {
+
+            lat = bdLocation.getLatitude();
+            lng = bdLocation.getLongitude();
+
+        } else {
+            //定位错误默认位置
+            lng = 116.465037;
+            lat = 39.876425;
+        }
+        LatLng location = new LatLng(lat, lng);
+        //发起逆地理编码
+        mSearch.reverseGeoCode(new ReverseGeoCodeOption().location(location));
+        latLng=location;
+        Log.i("定位位置",latLng.latitude+"____"+latLng.longitude);
+        MarkerOptions option = new MarkerOptions();
+        option.position(location);
+        option.icon(BitmapDescriptorFactory.fromResource(R.mipmap.register_icon_coordinate));
+        baiduMap.addOverlay(option);
+        MapStatusUpdate msu = MapStatusUpdateFactory.newLatLng(location);
+        baiduMap.animateMapStatus(msu);
+        mLocationClient.stop();
+        mLocationClient.unRegisterLocationListener(this);
+        mLocationClient = null;
+    }
 }

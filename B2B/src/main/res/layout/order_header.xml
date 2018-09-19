@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -56,7 +56,7 @@
         android:id="@+id/rl_choice_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingBottom="6dp">
 
         <TextView
@@ -136,7 +136,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:padding="10dp"
         android:visibility="gone">
 
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="物流信息"
-            android:textColor="@color/colorBlack2"
+            android:textColor="@android:color/black"
             android:textSize="15sp" />
 
         <ImageView
@@ -163,7 +163,7 @@
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/iv_order_logistics"
             android:layout_toRightOf="@+id/iv_order_logistics"
-            android:textColor="@color/colorBlack2"
+            android:textColor="@android:color/black"
             android:textSize="15sp"
             tools:text="商家已发货" />
 
@@ -187,9 +187,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="140px"
+        android:layout_height="70dp"
         android:layout_marginTop="6dp"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:orientation="horizontal">
 
         <android.support.v7.widget.RecyclerView
@@ -203,7 +203,7 @@
 
         <TextView
             android:id="@+id/tv_order_number"
-            android:layout_width="200px"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="center"
@@ -215,9 +215,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="40dp"
         android:layout_marginTop="1dp"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="35dp">
 
@@ -228,7 +228,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="配送方式"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
 
         <TextView
@@ -237,15 +237,15 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="送货上门"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_zf_type"
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="40dp"
         android:layout_marginTop="20px"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -256,7 +256,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="支付方式"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_pay_type2"
@@ -266,13 +266,13 @@
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="center"
             android:text="在线支付"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
-        android:background="@color/colorWhite"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -283,7 +283,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="发票类型"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_invoice_type2"
@@ -293,8 +293,8 @@
             android:drawableRight="@mipmap/store_icon_right"
             android:gravity="center"
             android:text="暂不支持发票"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
 
-</LinearLayout>
+</merge>

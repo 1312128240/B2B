@@ -8,6 +8,7 @@
 
     <include layout="@layout/base_actionbar" />
 
+
     <LinearLayout
         android:id="@+id/ll_test"
         android:background="#333333"
@@ -40,6 +41,7 @@
             android:layout_width="50dp"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recy_find_shop"

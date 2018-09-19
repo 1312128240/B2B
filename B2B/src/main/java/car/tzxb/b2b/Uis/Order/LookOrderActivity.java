@@ -82,7 +82,6 @@ public class LookOrderActivity extends MyBaseAcitivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         Refresh();
     }
 

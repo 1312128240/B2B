@@ -347,7 +347,7 @@ public class LoginActivity extends MyBaseAcitivity {
         String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
         String pwdMd5 = StringUtil.stringToMD5(strB);
         StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);
-        //生成签名才能获取验证码
+        //生成签名再生成获取验证码
         Long time = new Date().getTime() / 1000;
         String m = "login";
         String stringA = "login_type=" + login_type + "&m=" + m + "&pwd=" + Uppass + "&timestamp=" + time + "&usern=" + phone + "&key=6ljH6wpC4vDPy%Ruqlr4JJmG0kLo%^yN";
@@ -465,7 +465,7 @@ public class LoginActivity extends MyBaseAcitivity {
     @OnClick(R.id.tv_open_shop)
     public void open() {
         if (isFastClick()) {
-            Intent intent = new Intent(this, OpenShopActivity.class);
+            Intent intent = new Intent(this,OpenShopEntranceActivity.class);
             intent.putExtra("from", "login");
             startActivity(intent);
         }

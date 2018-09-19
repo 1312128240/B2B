@@ -1,17 +1,24 @@
 package car.tzxb.b2b.Views.DialogFragments;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Util.DeviceUtils;
 
 
 public class LoadingDialog extends DialogFragment {
@@ -24,8 +31,31 @@ public class LoadingDialog extends DialogFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.loading_dialog, container);
-        return view;
+        int p1= DeviceUtils.dip2px(getContext(),15);
+        LinearLayout parent=new LinearLayout(getContext());
+        parent.setOrientation(LinearLayout.VERTICAL);
+        parent.setGravity(Gravity.CENTER_HORIZONTAL);
+        parent.setBackground(getResources().getDrawable(R.drawable.loading_bg));
+        parent.setPadding(0,p1,0,p1);
+        //进度条
+        int p2= DeviceUtils.dip2px(getContext(),35);
+        ProgressBar progressBar=new ProgressBar(getContext());
+        progressBar.setLayoutParams(new LinearLayout.LayoutParams(p2,p2));
+        progressBar.setIndeterminateDrawable(getResources().getDrawable(R.drawable.dialog_loading));
+        //textview
+        int p3= DeviceUtils.dip2px(getContext(),25);
+        TextView tv=new TextView(getContext());
+        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(p3,15,p3,0);
+        tv.setText("加载中...");
+        tv.setLayoutParams(params);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
+        tv.setGravity(Gravity.CENTER);
+        tv.setTextColor(Color.WHITE);
+        //添加进容器
+        parent.addView(progressBar);
+        parent.addView(tv);
+        return parent;
     }
 
     // 使用framgment碎片出现上述异常的原因是在activity 调用onSaveInstanceState后，

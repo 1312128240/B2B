@@ -393,7 +393,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 intent.putExtra("order_seqnos", response.getData().getOrder_seqno());
                 intent.putExtra("orderid", response.getData().getOrder_id());
                 startActivity(intent);
-
+                finish();
 
             }
         });

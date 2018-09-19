@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="40dp"
         android:layout_marginTop="20px"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -18,7 +18,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="优惠券"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,9 +32,9 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="40dp"
         android:layout_marginTop="20px"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -44,7 +44,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="商品总价"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_goods_total_price"
@@ -53,13 +53,13 @@
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="¥0.00"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
-        android:background="@color/colorWhite"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -70,7 +70,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="服务费"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_goods_total_offset"
@@ -79,14 +79,13 @@
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="¥0.00"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
-
-        android:background="@color/colorWhite"
+        android:layout_height="40dp"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -96,7 +95,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="商品优惠"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_goods_discounts"
@@ -105,14 +104,14 @@
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="- ¥0.00"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="80px"
+        android:layout_height="40dp"
         android:layout_marginBottom="50dp"
-        android:background="@color/colorWhite"
+        android:background="@android:color/white"
         android:paddingLeft="10dp"
         android:paddingRight="10dp">
 
@@ -122,7 +121,7 @@
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="订单优惠"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -130,6 +129,7 @@
             android:drawablePadding="10dp"
             android:gravity="center"
             android:text="-¥0.00"
-            android:textColor="@color/colorBlack2" />
+            android:textColor="@android:color/black" />
     </LinearLayout>
-</LinearLayout>
+
+</merge>

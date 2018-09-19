@@ -225,7 +225,6 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                     MyToast.makeTextAnim(MyApp.getContext(), "店铺", 0, Gravity.CENTER, 0, 0).show();
                     break;
                 case R.id.rb_to_gwc:
-                  //  startActivity(new Intent(this, ShoppingCarActivity.class));
                     startActivity(new Intent(this,ShoppingCartActivity.class));
                     if("fragment".equals(from)){
                         finish();

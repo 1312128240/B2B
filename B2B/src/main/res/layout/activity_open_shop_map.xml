@@ -17,7 +17,7 @@
     </com.baidu.mapapi.map.MapView>
   <TextView
       android:id="@+id/tv_open_shop_latlog"
-      android:text="深圳观澜湖"
+      tools:text="深圳观澜湖"
       android:gravity="center"
       android:padding="15dp"
       android:layout_marginLeft="20dp"

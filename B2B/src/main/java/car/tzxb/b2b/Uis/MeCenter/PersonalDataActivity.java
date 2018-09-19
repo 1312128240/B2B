@@ -8,15 +8,13 @@ import android.net.Uri;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
+import android.support.design.widget.Snackbar;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
@@ -24,11 +22,11 @@ import com.alibaba.sdk.android.oss.OSSClient;
 import com.alibaba.sdk.android.oss.ServiceException;
 import com.alibaba.sdk.android.oss.callback.OSSCompletedCallback;
 import com.alibaba.sdk.android.oss.common.auth.OSSCredentialProvider;
-import com.alibaba.sdk.android.oss.common.auth.OSSCustomSignerCredentialProvider;
 import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -38,13 +36,11 @@ import com.jaiky.imagespickers.ImageSelector;
 import com.jaiky.imagespickers.ImageSelectorActivity;
 import com.jaiky.imagespickers.utils.FileUtils;
 import com.lljjcoder.citypickerview.widget.CityPicker;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myview.CircleImageView.CircleImageView;
@@ -55,6 +51,8 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.MyCenterBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.OpenShopPackage.OpenShopMapActivity;
+import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.GlideLoader;
 import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.SPUtil;
@@ -81,6 +79,10 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
     private String p, c, a,head_Img;
     private File file;
     private LoadingDialog loadingDialog;
+    private String selcity;
+    private String lat;
+    private String lon;
+    private String nickname;
 
 
     @Override
@@ -143,6 +145,7 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
      */
     @OnClick(R.id.tv_nick)
     public void nick() {
+
         startActivityForResult(NickNameActivity.class,null,99);
     }
 
@@ -188,9 +191,8 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
                    /* address = province.trim() + "," + city.trim() + "," + district.trim();
                     //为TextView赋值
                     tv_province.setText(province.trim() + "-" + city.trim() + "-" + district.trim());*/
-                    tv_address.setText(p + "-" + c + "-" + a);
-                    showLoad();
-                    save();
+                    selcity = p + "-" + c + "-" + a;
+                    tv_address.setText( selcity);
                 }
 
                 @Override
@@ -277,9 +279,7 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
      */
     private void upOss(final File file) {
         final String endpoint = "https://oss-cn-shanghai.aliyuncs.com ";
-
         OkHttpUtils.get()
-              //  .url("https://www.yntzxb.cn/mobile_api/sts-server/sts.php")
                 .url(Constant.baseUrl+"sts-server/sts.php")
                 .tag(this)
                 .build()
@@ -333,23 +333,26 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
 
     }
 
-    private void save() {
+   private void save() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         String sex = tv_sex.getText().toString();
         String xxAddress = et_xx_address.getText().toString();
+        Log.i("保存设置",Constant.baseUrl + "item/index.php?c=Home&m=UpdateUsersInfo"+"&user_id="+userId+"&head_img="+head_Img+"&sex="+sex+"&province="+p
+        +"&city="+c+"&area="+a+"&address="+xxAddress+"&coordinate_Longitude="+lon+"&coordinate_Latitude="+lat+"&nackname="+nickname);
         OkHttpUtils
                 .post()
                 .tag(this)
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=UpdateUsersInfo")
                 .addParams("user_id", userId)
-                .addParams("head_img",head_Img+"")
+                .addParams("head_img",head_Img)
                 .addParams("sex", sex)
                 .addParams("province", p)
                 .addParams("city", c)
                 .addParams("area", a)
+                .addParams("nackname",nickname)
                 .addParams("address", xxAddress+"")
-                .addParams("coordinate_Longitude", "")
-                .addParams("coordinate_Latitude", "")
+                .addParams("coordinate_Longitude",lon)
+                .addParams("coordinate_Latitude", lat)
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
                     @Override
@@ -360,7 +363,8 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
 
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
-                       loadingDialog.dismiss();
+                        Log.i("保存资料返回",response.getMsg()+"");
+                        loadingDialog.dismiss();
                     }
                 });
     }
@@ -397,14 +401,14 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
     private void initUi(MyCenterBean.DataBean.UserInfoBean userBean) {
 
         //头像
-      String  headImg = userBean.getHead_img();
-        if (headImg != null) {
-            Glide.with(MyApp.getContext()).load(headImg).asBitmap().placeholder(R.mipmap.my_icon_dhi).error(R.mipmap.my_icon_dhi).into(civ);
+     String  head_Img = userBean.getHead_img();
+        if ( head_Img != null) {
+            Glide.with(MyApp.getContext()).load( head_Img).asBitmap().placeholder(R.mipmap.my_icon_dhi).error(R.mipmap.my_icon_dhi).into(civ);
         }
         //昵称
-        String nick = userBean.getNackname();
-        if (!"".equals(nick)) {
-            tv_nick.setText(nick);
+        nickname = userBean.getNackname();
+        if (!"".equals(nickname)) {
+            tv_nick.setText(nickname);
         } else {
             tv_nick.setHint("未设置");
         }
@@ -419,8 +423,13 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
         p = userBean.getProvince();
         c = userBean.getCity();
         a = userBean.getArea();
-        tv_address.setText(p + "-" + c + "-" + a);
+        selcity = p + "-" + c + "-" + a;
+        tv_address.setText(selcity);
         et_xx_address.setText(userBean.getShop_address());
+
+        //经纬度
+        lat = userBean.getCoordinate_Latitude();
+        lon = userBean.getCoordinate_Longitude();
     }
 
 
@@ -449,11 +458,24 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
             }
         }else if(requestCode==99){
             if(resultCode==RESULT_OK&&data!=null){
-                String nick=data.getStringExtra("nick");
-                tv_nick.setText(nick);
+                nickname = data.getStringExtra("nick");
+                tv_nick.setText(nickname);
+                save();
+            }
+        }else if(requestCode==111){
+            if (resultCode == RESULT_OK && data != null) {
+                Bundle bundle = data.getBundleExtra("map");
+                String address = bundle.getString("ResultAddress");
+                et_xx_address.setText(address);
+                LatLng latLng = bundle.getParcelable("latLng");
+                lat= String.valueOf(latLng.latitude);
+                lon= String.valueOf(latLng.longitude);
+                save();
+                Log.i("传递过来经纬度", latLng.longitude + "_____" + latLng.latitude);
             }
         }
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -464,7 +486,7 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
 
     @Override
     public void onPermissionsGranted(int requestCode, List<String> perms, boolean isAllGranted) {
-        if (requestCode == 101) {
+        if (requestCode == 111) {
             Log.i("权限", "同意:" + perms.size() + "个权限,isAllGranted=" + isAllGranted);
         }
 
@@ -472,15 +494,10 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
 
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms, boolean isAllDenied) {
-        if (requestCode == 101) {
+        if (requestCode == 111) {
             if (isAllDenied) {
                 Log.i("权限", "拒绝:" + perms.size() + "个权限,isAllDenied=" + isAllDenied);
-                MyToast.makeTextAnim(MyApp.getContext(), "需要开启权限才能使用", 1, Gravity.CENTER, 0, 0).show();
-            }
-        } else {
-            if (isAllDenied) {
-                Log.i("权限", "拒绝:" + perms.size() + "个权限,isAllDenied=" + isAllDenied);
-                MyToast.makeTextAnim(MyApp.getContext(), "需要开启权限才能使用", 1, Gravity.CENTER, 0, 0).show();
+                MyToast.makeTextAnim(MyApp.getContext(), "需要开启定位权限才能使用", 1, Gravity.CENTER, 0, 0).show();
             }
         }
     }
@@ -490,4 +507,24 @@ public class PersonalDataActivity extends MyBaseAcitivity implements PermissionU
         loadingDialog.setCancelable(false);
         loadingDialog.show(getSupportFragmentManager(),"set");
     }
+
+    @OnClick(R.id.tv_open_shop_marker)
+    public void open_map(){
+        boolean b = PermissionUtil.hasPermissons(this, Manifest.permission.ACCESS_COARSE_LOCATION);
+        Log.i("有权限吗",b+"");
+        if (!b) {
+
+            PermissionUtil.getLocationPermissions(this,111);
+
+        } else {
+            if (p==null||c==null||a==null) {
+                Snackbar.make(tv_title, "请输入省市区", Snackbar.LENGTH_SHORT).show();
+                AnimationUtil.Sharke(MyApp.getContext(), tv_address);
+                return;
+            }
+            startActivityForResult(new Intent(this,OpenShopMapActivity.class),111);
+        }
+    }
+
+
 }

@@ -3,13 +3,9 @@ package car.tzxb.b2b.Uis.HomePager.FindShop;
 import android.app.ActivityOptions;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.IdRes;
-import android.support.design.widget.TabLayout;
-import android.support.v4.widget.PopupWindowCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -126,8 +122,8 @@ public class FindShopsActivity extends MyBaseAcitivity {
                     String imgUrl2=goodsBeen.get(1).getImg_url();
                     String imgUrl3=goodsBeen.get(2).getImg_url();
                     Glide.with(MyApp.getContext()).load(imgUrl1).error(R.drawable.bucket_no_picture).into(iv1);
-                    Glide.with(MyApp.getContext()).load(imgUrl2).error(R.drawable.bucket_no_picture).into(iv2);
-                    Glide.with(MyApp.getContext()).load(imgUrl3).error(R.drawable.bucket_no_picture).into(iv3);
+                    Glide.with(MyApp.getContext()).load(imgUrl2).override(246,228).error(R.drawable.bucket_no_picture).into(iv2);
+                    Glide.with(MyApp.getContext()).load(imgUrl3).override(246,228).error(R.drawable.bucket_no_picture).into(iv3);
                 }
 
 

@@ -10,13 +10,10 @@ import android.support.design.widget.Snackbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.alibaba.sdk.android.oss.ClientConfiguration;
 import com.alibaba.sdk.android.oss.ClientException;
 import com.alibaba.sdk.android.oss.OSS;
@@ -28,6 +25,7 @@ import com.alibaba.sdk.android.oss.common.auth.OSSStsTokenCredentialProvider;
 import com.alibaba.sdk.android.oss.internal.OSSAsyncTask;
 import com.alibaba.sdk.android.oss.model.PutObjectRequest;
 import com.alibaba.sdk.android.oss.model.PutObjectResult;
+import com.baidu.mapapi.model.LatLng;
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -56,7 +54,6 @@ import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.GlideLoader;
 import car.tzxb.b2b.Util.PermissionUtil;
-import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.Views.DialogFragments.LoadingDialog;
@@ -98,23 +95,19 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     EditText et_license_no;
     @BindView(R.id.tv_up_img_num)
     TextView tv_img_num;
-    private String address;
     public boolean isUpload1 = false;
     public boolean isUpload2 = false;
     public boolean isUpload3 = false;
     public StringBuilder sb1 = new StringBuilder();
     public StringBuilder sb_shop = new StringBuilder();
     public StringBuilder sb3 = new StringBuilder();
-    private String mobile;
-    private String password = null;
     private int type;
-    private String recommend;
-    private String tjrId;
-    private String city;
     private final int REQUEST_CODE_LOCATION = 101;
     private final int REQUEST_CODE_CAMERA = 102;
-    private String from;
     private LoadingDialog loadingDialog;
+    private LatLng latLng;
+    private String selcity,recommend,tjrId,city,mobile,password,from;
+    private String district;
 
     @Override
     public void initParms(Bundle parms) {
@@ -145,6 +138,7 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         onBackPressed();
     }
 
+    //省市区选择
     @OnClick(R.id.tv_province)
     public void province() {
         if (isFastClick()) {
@@ -176,10 +170,10 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                     //城市
                     city = citySelected[1];
                     //区县（如果设定了两级联动，那么该项返回空）
-                    String district = citySelected[2];
+                    district = citySelected[2];
                     //邮编
                     //  String code = citySelected[3];
-                    address = province.trim() + "," + city.trim() + "," + district.trim();
+                    selcity = province.trim() + "," + city.trim() + "," + district.trim();
                     //为TextView赋值
                     tv_province.setText(province.trim() + "-" + city.trim() + "-" + district.trim());
                 }
@@ -210,7 +204,6 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
             }
         });
     }
-
 
     //门店招牌照片
     @OnClick(R.id.tv_upload_sign)
@@ -333,27 +326,17 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
     public void marker() {
         boolean b = PermissionUtil.hasPermissons(this, Manifest.permission.ACCESS_COARSE_LOCATION);
 
-        if (b == false) {
+        if (!b) {
 
             PermissionUtil.getLocationPermissions(this, REQUEST_CODE_LOCATION);
 
         } else {
-            if (city == null) {
+            if (selcity == null) {
                 Snackbar.make(tv_title, "请输入省市区", Snackbar.LENGTH_SHORT).show();
                 AnimationUtil.Sharke(MyApp.getContext(), tv_province);
                 return;
             }
-            String address = et_shop_address.getText().toString();
-            if (TextUtils.isEmpty(address)) {
-                Snackbar.make(tv_title, "请填写详细地址", Snackbar.LENGTH_SHORT).show();
-                AnimationUtil.Sharke(MyApp.getContext(), et_shop_address);
-                return;
-            }
-
-            Intent intent = new Intent(this, OpenShopMapActivity.class);
-            intent.putExtra("city", city);
-            intent.putExtra("address", address);
-            startActivityForResult(intent, 88);
+          startActivityForResult(new Intent(this,OpenShopMapActivity.class),88);
         }
 
     }
@@ -525,8 +508,11 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
              }
          }else if(requestCode==88){
              if (resultCode == RESULT_OK && data != null) {
-                 address = data.getStringExtra("ResultAddress");
-                 et_shop_address.setText(address);
+                  Bundle bundle=data.getBundleExtra("map");
+                  String address=bundle.getString("ResultAddress");
+                  et_shop_address.setText(address);
+                  latLng = bundle.getParcelable("latLng");
+                  Log.i("传递过来经纬度", latLng.longitude+"_____"+ latLng.latitude);
              }
          }
     }
@@ -610,10 +596,10 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         if (isFastClick()) {
             String shop_name = et_shop_name.getText().toString();
             String shop_lxr_name = et_shop_lxr_name.getText().toString();
-            String shop_lxr_address = et_shop_address.getText().toString();
             String shop_lxr_tell = et_tell.getText().toString();
             String license_no = et_license_no.getText().toString();
-            // String tjr=tv_tjr.getText().toString();
+            String resultAddress=et_shop_address.getText().toString();
+            String finalPass=passToMd5(password);
             if (TextUtils.isEmpty(shop_name)) {
                 MyToast.makeTextAnim(this, "请输入店铺名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
@@ -627,24 +613,25 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 MyToast.makeTextAnim(this, "请填写联系人名字", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
-            if (tjrId == null) {
+            if (tjrId == null||recommend==null) {
                 MyToast.makeTextAnim(this, "请填写推荐人信息", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
+
 
             if (type == 0) {
                 MyToast.makeTextAnim(this, "请选择门店主营类型", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
-            if (address == null) {
+            if (selcity == null) {
                 MyToast.makeTextAnim(this, "请输入门店所在省市区", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
-
-            if (TextUtils.isEmpty(shop_lxr_address)) {
-                MyToast.makeTextAnim(this, "请输入门店详细地址", 0, Gravity.CENTER, 0, 0).show();
+            if(latLng==null||TextUtils.isEmpty(resultAddress)){
+                MyToast.makeTextAnim(this, "请在地图上标记详细地址", 0, Gravity.CENTER, 0, 0).show();
                 return;
             }
+
             if (isUpload1 == false) {
                 MyToast.makeTextAnim(this, "请上传门店招牌照片", 0, Gravity.CENTER, 0, 0).show();
                 return;
@@ -658,14 +645,11 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                 return;
             }
 
-            //密码加密
-            String strA = "password=" + password;
-            String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
-            String pwdMd5 = StringUtil.stringToMD5(strB);
-            StringBuilder Uppass = StringUtil.UpperLowerCase(pwdMd5);
 
-            Log.i("注册返回", Constant.baseUrl + "user_type/register.php?m=register" + "&mobile=" + mobile + "&username=" + shop_lxr_name + "&password=" + password
-                    + "&group=4" + "&type=4" + "&selcity=" + address + "&tjr=" + tjrId + "&recommend=" + recommend + "&shop_name=" + shop_name + "&shop_address=" + shop_lxr_address
+
+
+            Log.i("注册返回", Constant.baseUrl + "user_type/register.php?m=register" + "&mobile=" + mobile + "&username=" + shop_lxr_name + "&password=" +finalPass
+                    + "&group=4" + "&type=4" + "&selcity=" +selcity + "&tjr=" + tjrId + "&recommend=" + recommend + "&shop_name=" + shop_name + "&shop_address=" +resultAddress
                     + "&shop_img=" + sb1 + "," + sb_shop + "&user_zhizhao=" + sb3 + "&user_zhizhao_no=" + license_no + "&name=" + shop_lxr_name);
             //开始注册
             OkHttpUtils
@@ -676,15 +660,17 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
                     .addParams("username", mobile)
                     .addParams("name", shop_lxr_name)
                     .addParams("nickname", shop_lxr_name)
-                    .addParams("password", Uppass.toString())
+                    .addParams("password",finalPass)
                     .addParams("group", "4")
                     .addParams("shop_type", String.valueOf(type))
                     .addParams("tell", shop_lxr_tell)
-                    .addParams("selcity", address)
-                    .addParams("tjr", tjrId + "")
-                    .addParams("recommend", recommend + "")
+                    .addParams("coordinate_Longitude",String.valueOf(latLng.longitude))
+                    .addParams("coordinate_Latitude",String.valueOf(latLng.latitude))
+                    .addParams("tjr", tjrId)
+                    .addParams("recommend", recommend)
                     .addParams("shop_name", shop_name)
-                    .addParams("shop_address", shop_lxr_address)
+                    .addParams("selcity", selcity)
+                    .addParams("shop_address",resultAddress)
                     .addParams("shop_img", sb1 + "," + sb_shop)
                     .addParams("user_zhizhao", sb3.toString())
                     .addParams("user_zhizhao_no", license_no)
@@ -746,6 +732,15 @@ public class OpenShopActivity extends MyBaseAcitivity implements PermissionUtil.
         });
     }
 
+    //密码md5加密
+    public String passToMd5(String password){
+        //密码加密
+        String strA = "pwd=" + password;
+        String strB = strA + "&key=!qJwHh!8Ln6ELn3rbFMk5c$vW#l13QLe";
+        String pwdMd5 = StringUtil.stringToMD5(strB);
+        String finalPass = StringUtil.UpperLowerCase(pwdMd5).toString();
+        return finalPass;
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
