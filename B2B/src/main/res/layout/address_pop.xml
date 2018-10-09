@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="430dp">
+        <TextView
+            android:id="@+id/tv_chose_address"
+            android:textColor="@android:color/black"
+            android:background="@android:color/white"
+            android:text="请选择收货地址"
+            android:gravity="center"
+            android:paddingRight="@dimen/ui_10_dip"
+            android:drawableRight="@drawable/ad_close"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recy_address"
+            android:background="@android:color/white"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp">
+            
+        </android.support.v7.widget.RecyclerView>
+        
+        <TextView
+            android:id="@+id/tv_add_address"
+            android:text="添加收货地址"
+            android:gravity="center"
+            android:textColor="@android:color/white"
+            android:background="#FA3314"
+            android:layout_width="match_parent"
+            android:layout_height="50dp" />
+    </LinearLayout>
+</FrameLayout>

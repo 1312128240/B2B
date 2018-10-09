@@ -53,7 +53,7 @@ public class ActivityEntrance extends MyBaseAcitivity{
     @BindView(R.id.coordinatorlayout)
     CoordinatorLayout coordinatorLayout;
     @BindView(R.id.iv_empty_activity)
-    ImageView iv_empty;
+    TextView iv_empty;
     @BindView(R.id.iv_gift)
     ImageView iv_gift;
     private List<ActivityDivisionBean.DataBeanX.DataBean> beanList=new ArrayList<>();

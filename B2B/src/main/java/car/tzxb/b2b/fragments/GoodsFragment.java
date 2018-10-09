@@ -232,19 +232,19 @@ public class GoodsFragment extends MyBaseFragment implements ScollListener {
          int minWidth=DeviceUtils.dip2px(MyApp.getContext(),80);
          int height=DeviceUtils.dip2px(MyApp.getContext(),25);
          FlexboxLayout.LayoutParams layoutParams=new FlexboxLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, height);
-        layoutParams.setMargins(0,0,15,15);
+         layoutParams.setMargins(0,0,15,15);
         for (int i = 0; i <ggList.size() ; i++) {
-            rb=new RadioButton(MyApp.getContext());
+            rb = new RadioButton(MyApp.getContext());
             rb.setLayoutParams(layoutParams);
             rb.setGravity(Gravity.CENTER);
             rb.setMinWidth(minWidth);
             rb.setMinHeight(height);
             rb.setButtonDrawable(null);
-            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
-            String gg=ggList.get(i);
-            if(!"".equals(gg)){
+            rb.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            String gg = ggList.get(i);
+            if (!"".equals(gg)) {
                 rb.setText(gg);
-            }else {
+            } else {
                 rb.setText("默认");
             }
             rb.setId(i);
@@ -252,7 +252,7 @@ public class GoodsFragment extends MyBaseFragment implements ScollListener {
             rb.setTextColor(MyApp.getContext().getResources().getColorStateList(R.color.tv_color2));
             rg_gg.addView(rb);
         }
-        Log.i("添加进去没有",rg_gg.getChildCount()+"");
+
         rg_gg.setOnCheckedChangeListener(new FlexRadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(@IdRes int checkedId) {
@@ -428,8 +428,9 @@ public class GoodsFragment extends MyBaseFragment implements ScollListener {
         if(comment.getWhole()==0){
             tv_hpl.setText(Html.fromHtml("好评率   <font color='#ff0000'>" +"0%" + "</font>"));
         }else {
-            int hpl= comment.getGood()/comment.getWhole()*100;
-            tv_hpl.setText(Html.fromHtml("好评率 " + "<font color='#ff0000'>" + hpl+"%" + "</font>"));
+            double hpl =(double) comment.getGood() /comment.getWhole()*100;
+            int result=(int)hpl;
+            tv_hpl.setText(Html.fromHtml("<font color='#FA3314'><big>"+result +"%"+"</big></font>" +"<br>"+"好评度"));
         }
        //底部评论
         recy_ev.setLayoutManager(new LinearLayoutManager(getContext()));

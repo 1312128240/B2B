@@ -10,6 +10,7 @@ import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 
 
 public class RechargeSuccessActivity extends MyBaseAcitivity {
@@ -50,17 +51,14 @@ public class RechargeSuccessActivity extends MyBaseAcitivity {
         Intent intent=new Intent(this,LookOrderActivity.class);
         intent.putExtra("index", 0);
         startActivity(intent);
-
-        WXPayEntryActivity wxPayEntryActivity= (WXPayEntryActivity) WXPayEntryActivity.sInstance;
-        wxPayEntryActivity.finish();
-        this. finish();
+        RechargeSuccessActivity.this. finish();
+        ActivityManagerUtils.getInstance().finishActivityclass(WXPayEntryActivity.class);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        WXPayEntryActivity wxPayEntryActivity= (WXPayEntryActivity) WXPayEntryActivity.sInstance;
-        wxPayEntryActivity.finish();
-        this. finish();
+        ActivityManagerUtils.getInstance().finishActivityclass(WXPayEntryActivity.class);
+        RechargeSuccessActivity.this. finish();
     }
 }

@@ -2,9 +2,7 @@ package car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage;
 
 import android.content.Context;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.telecom.GatewayInfo;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -32,6 +30,7 @@ import car.tzxb.b2b.Bean.BaseDataBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
@@ -155,13 +154,10 @@ public class ResetPasswordActivity extends MyBaseAcitivity {
   }
 
     private void deleActivity() {
-        SettingsActivity a1= (SettingsActivity) SettingsActivity.sInstance;
-        AccountSecurityHomePageActivity a2= (AccountSecurityHomePageActivity) AccountSecurityHomePageActivity.sInstance;
-        AccountSecurityYzmActivity a3= (AccountSecurityYzmActivity) AccountSecurityYzmActivity.sInstance;
-        a1.finish();
-        a2.finish();
-        a3.finish();
-        this.finish();
+        ActivityManagerUtils.getInstance().finishActivityclass(SettingsActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityHomePageActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityYzmActivity.class);
+        ResetPasswordActivity.this.finish();
         //退出重新登录
         SPUtil.getInstance(MyApp.getContext()).dele("UserId");
         MobclickAgent.onProfileSignOff();

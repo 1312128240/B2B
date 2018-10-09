@@ -41,8 +41,6 @@ public class SettingsActivity extends MyBaseAcitivity {
     CircleImageView civ;
     @BindView(R.id.tv_cache)
     TextView tv_cache;
-    public static AppCompatActivity sInstance = null;
-
 
     @Override
     public void initParms(Bundle parms) {
@@ -58,7 +56,6 @@ public class SettingsActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("设置");
-        sInstance = this;
         try {
             String dataSize = DataCleanManager.getTotalCacheSize(MyApp.getContext());
             tv_cache.setText(dataSize);
@@ -111,7 +108,6 @@ public class SettingsActivity extends MyBaseAcitivity {
      */
     @OnClick(R.id.btn_exit_app)
     public void exit() {
-
         final AlterDialogFragment alterDialogFragment = new AlterDialogFragment();
         Bundle bundle = new Bundle();
         bundle.putString("title", "您确定要退出吗");
@@ -205,12 +201,6 @@ public class SettingsActivity extends MyBaseAcitivity {
 
                     }
                 });
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sInstance = null;
     }
 
 }

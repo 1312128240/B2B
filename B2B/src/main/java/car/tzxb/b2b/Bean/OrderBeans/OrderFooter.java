@@ -20,6 +20,46 @@ public class OrderFooter {
     private Object amount_offset;
     private double amount_pay_able;
     private Object amount_real;
+    private String payment_status;
+    private String express_status;
+    private String is_refund;
+    private Object is_return;
+    private Object return_status;
+    private String refund_status;
+    private String order_buy_type;
+    private String add_time;
+    private String name;
+    private String mobile;
+    private String expect_time;
+    private String message;
+    private String shop_id;
+    private String accept_name;
+    private String coupon_type;
+    private String coupon_id;
+    private String aid;
+    private Object payment_id;
+    private String payment_type;
+    private String ProId;
+    private String Count;
+
+    public String getCount() {
+        return Count;
+    }
+
+    public void setCount(String count) {
+        Count = count;
+    }
+
+
+    public String getProId() {
+        return ProId;
+    }
+
+    public void setProId(String proId) {
+        ProId = proId;
+    }
+
+
 
     public String getShop_name() {
         return shop_name;
@@ -173,25 +213,6 @@ public class OrderFooter {
         this.shop_id = shop_id;
     }
 
-    private String payment_status;
-    private String express_status;
-    private String is_refund;
-    private Object is_return;
-    private Object return_status;
-    private String refund_status;
-    private String order_buy_type;
-    private String add_time;
-    private String name;
-    private String mobile;
-    private String expect_time;
-    private String message;
-    private String shop_id;
-    private String accept_name;
-    private String coupon_type;
-    private String coupon_id;
-    private String aid;
-    private Object payment_id;
-    private String payment_type;
 
     public Object getAmount_coupon() {
         return amount_coupon;

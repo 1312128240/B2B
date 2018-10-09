@@ -2,37 +2,29 @@ package car.tzxb.b2b.Uis.MeCenter.IntegralShop;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.IdRes;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
-import car.myrecyclerviewadapter.MultiItemTypeAdapter;
 import car.myrecyclerviewadapter.SpaceItemDecoration;
 import car.myrecyclerviewadapter.base.ViewHolder;
 import car.tzxb.b2b.BasePackage.BasePresenter;
@@ -45,7 +37,7 @@ import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class IntegralOneActivity extends MyBaseAcitivity {
+public class IntegralOneActivity extends MyBaseAcitivity implements RadioGroup.OnCheckedChangeListener{
 
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
@@ -58,6 +50,7 @@ public class IntegralOneActivity extends MyBaseAcitivity {
     @BindView(R.id.recy_jf)
     RecyclerView recy;
     private String userid;
+    private List<BaseDataListBean.DataBean> lists=new ArrayList<>();
     private CommonAdapter<BaseDataListBean.DataBean> adapter;
     List<BaseDataListBean.DataBean> goodsList = new ArrayList<>();
 
@@ -75,35 +68,25 @@ public class IntegralOneActivity extends MyBaseAcitivity {
     public void doBusiness(Context mContext) {
         tv_title.setText("积分商城");
         userid = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-
-        getShop();
-
+        rg.setOnCheckedChangeListener(this);
         initAdapter();
 
-        getGoods();
-        // getNotice();
+
+      //  getNotice();
+
+    }
+    @Override
+    protected BasePresenter bindPresenter() {
+        return null;
     }
 
-    private void getGoods() {
-        Log.i("积分商品", Constant.baseUrl + "goods/integralgoods.php?m=integralshop_list&id=12");
-        OkHttpUtils
-                .get()
-                .tag(this)
-                .url(Constant.baseUrl + "goods/integralgoods.php?m=integralshop_list&id=12")
-                .build()
-                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-
-                    }
-
-                    @Override
-                    public void onResponse(BaseDataListBean response, int id) {
-                        goodsList = response.getData();
-                        adapter.add(goodsList, true);
-                    }
-                });
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getShop();
     }
+
+
 
     private void getNotice() {
         OkHttpUtils
@@ -125,10 +108,7 @@ public class IntegralOneActivity extends MyBaseAcitivity {
 
     }
 
-    @Override
-    protected BasePresenter bindPresenter() {
-        return null;
-    }
+
 
 
     private void initAdapter() {
@@ -137,9 +117,9 @@ public class IntegralOneActivity extends MyBaseAcitivity {
         final int wh = DeviceUtils.dip2px(MyApp.getContext(), 178);
         adapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(), R.layout.recommend_layout, goodsList) {
             @Override
-            protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
+            protected void convert(ViewHolder holder, final BaseDataListBean.DataBean bean, int position) {
                 //图片
-                ImageView iv = holder.getView(R.id.iv_recommend);
+                final ImageView iv = holder.getView(R.id.iv_recommend);
                 Glide.with(MyApp.getContext()).load(bean.getPic()).override(wh, wh).into(iv);
                 //名字
                 holder.setText(R.id.tv_recommend_title, bean.getTitle());
@@ -149,29 +129,26 @@ public class IntegralOneActivity extends MyBaseAcitivity {
                 tv_price.setText("原价" + bean.getMarket_price());
                 //隐藏控件
                 holder.getView(R.id.iv_gwc_icon).setVisibility(View.GONE);
+
+                //跳转
+                View parent=holder.getView(R.id.parent);
+                parent.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(IntegralOneActivity.this,IntegralXqActivity.class);
+                        intent.putExtra("product_id", bean.getId());
+                        ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(IntegralOneActivity.this,iv, "share");
+                        startActivity(intent, compat.toBundle());
+                    }
+                });
             }
         };
         recy.setAdapter(adapter);
-        adapter.setOnItemClickListener(new MultiItemTypeAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, RecyclerView.ViewHolder holder, int position) {
-                Intent intent=new Intent(IntegralOneActivity.this,IntegralXqActivity.class);
-                String  product_id=goodsList.get(position).getId();
-                intent.putExtra("product_id", product_id);
-                ActivityOptionsCompat compat = ActivityOptionsCompat.makeSceneTransitionAnimation(IntegralOneActivity.this, view, "share");
-                startActivity(intent, compat.toBundle());
-            }
-
-            @Override
-            public boolean onItemLongClick(View view, RecyclerView.ViewHolder holder, int position) {
-                return false;
-            }
-        });
     }
 
 
     private void getShop() {
-        Log.i("积分商城", Constant.baseUrl + "goods/integralgoods.php?m=store_list" + "&userid=" + userid);
+        Log.i("积分商城门店", Constant.baseUrl + "goods/integralgoods.php?m=store_list" + "&userid=" + userid);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -187,10 +164,9 @@ public class IntegralOneActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseDataListBean response, int id) {
                         if (response.getData().size() != 0) {
+                            lists = response.getData();
                             initUi(response);
                         }
-
-
                     }
                 });
     }
@@ -198,16 +174,13 @@ public class IntegralOneActivity extends MyBaseAcitivity {
 
     private void initUi(BaseDataListBean response) {
         RadioButton rb = null;
-        final GradientDrawable gd = new GradientDrawable();
-        gd.setCornerRadius(30);
-        gd.setColor(Color.RED);
         int i1 = DeviceUtils.dip2px(MyApp.getContext(), 6);
         int i2 = DeviceUtils.dip2px(MyApp.getContext(), 12);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT);
         params.setMargins(i1, 0, i1, 0);
-
+        rg.removeAllViews();
         List<BaseDataListBean.DataBean> list1 = response.getData();
-        for (int i = 0; i < list1.size(); i++) {
+        for (int i = 0; i <list1.size(); i++) {
             rb = new RadioButton(this);
             BaseDataListBean.DataBean bean = list1.get(i);
             rb.setText(bean.getShop_name());
@@ -215,25 +188,13 @@ public class IntegralOneActivity extends MyBaseAcitivity {
             rb.setLayoutParams(params);
             rb.setButtonDrawable(null);
             rb.setPadding(i2, 0, i2, 0);
+            rb.setBackground(getResources().getDrawable(R.drawable.red_white_select));
+            rb.setTextColor(getResources().getColorStateList(R.color.tv_color4));
             rg.addView(rb);
-            rb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton rb, boolean isChecked) {
-                    if (isChecked) {
-                        rb.setBackground(gd);
-                        rb.setTextColor(Color.WHITE);
-                    } else {
-                        rb.setBackground(null);
-                        rb.setTextColor(Color.BLACK);
-                    }
-                }
-            });
         }
 
         RadioButton rb1 = rg.findViewById(0);
-        if (rg.getChildCount() != 0) {
-            rb1.setChecked(true);
-        }
+        rb1.setChecked(true);
 
         //积分信息
         BaseDataListBean.InfoBean inforBean = response.getInfo().get(0);
@@ -252,14 +213,51 @@ public class IntegralOneActivity extends MyBaseAcitivity {
 
     }
 
+
     @OnClick(R.id.tv_actionbar_back)
     public void back() {
         onBackPressed();
+    }
+
+    @OnClick(R.id.tv_actionbar_title)
+    public void test(){
+       startActivity(IntegralXqActivity.class);
     }
 
     //兑换记录
     @OnClick(R.id.tv_dh_jf)
     public void dh() {
         startActivity(IntegralExchangeActivity.class);
+    }
+
+    @Override
+    public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+
+       String id=lists.get(checkedId).getID();
+
+       getGoods(id);
+
+    }
+
+    private void getGoods(String id){
+        Log.i("积分商品", Constant.baseUrl + "goods/integralgoods.php?m=integralshop_list&id="+id);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl + "goods/integralgoods.php?m=integralshop_list")
+                .addParams("id",id)
+                .build()
+                .execute(new GenericsCallback<BaseDataListBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseDataListBean response, int id) {
+                        goodsList = response.getData();
+                        adapter.add(goodsList, true);
+                    }
+                });
     }
 }

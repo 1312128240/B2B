@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tolas="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginTop="1dp"
     android:background="@color/colorWhite"
     android:orientation="vertical"
@@ -17,7 +17,7 @@
             android:id="@+id/civ_ev"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tolas:background="@mipmap/ic_launcher" />
+            tools:background="@mipmap/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_ev_title"
@@ -26,7 +26,7 @@
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@+id/civ_ev"
             android:textColor="@color/colorBlack2"
-            tolas:text="同致相伴" />
+            tools:text="同致相伴" />
 
         <TextView
             android:id="@+id/tv_ev_time"
@@ -35,7 +35,7 @@
             android:layout_alignParentRight="true"
             android:gravity="end"
             android:textColor="@color/colorLightGray2"
-            tolas:text="2018-11-22" />
+            tools:text="2018-11-22" />
     </LinearLayout>
 
 
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="25dp"
-        android:text="宝贝收到了"
+        tools:text="宝贝收到了"
         android:textColor="@color/colorBlack" />
 
 </LinearLayout>

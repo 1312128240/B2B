@@ -6,7 +6,6 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +17,7 @@ import android.widget.Toast;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.umeng.analytics.MobclickAgent;
 import butterknife.ButterKnife;
-import car.tzxb.b2b.Util.ActivityManager;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 
 import static car.tzxb.b2b.config.Constant.isDebug;
 
@@ -34,11 +33,11 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     /** 是否禁止旋转屏幕 **/
     private boolean isAllowScreenRoate = false;
     /** 当前Activity渲染的视图View **/
-    private View mContextView = null;
+    public View mContextView = null;
     // 两次点击按钮之间的点击间隔不能少于1000毫秒
-    private  final int MIN_CLICK_DELAY_TIME = 1000;
+    public final int MIN_CLICK_DELAY_TIME = 1000;
     private  long lastClickTime;
-    private BasePresenter presenter = null;
+    public BasePresenter presenter = null;
     protected final String TAG = this.getClass().getSimpleName();
 
 
@@ -58,7 +57,7 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
           presenter = bindPresenter();
           ButterKnife.bind(this);
 
-        ActivityManager.getInstance().addActivity(this);
+       ActivityManagerUtils.getInstance().addActivity(this);
 
         if (!isAllowScreenRoate) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -189,10 +188,10 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
         }
         return super .onTouchEvent(event);
     }
+
     /**
      * 防止快速点击
      */
-
     public  boolean isFastClick() {
         boolean flag = false;
         long curClickTime = System.currentTimeMillis();
@@ -261,6 +260,6 @@ public abstract class MyBaseAcitivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         OkHttpUtils.getInstance().cancelTag(TAG);
-        ActivityManager.getInstance().deleteActivity(this);
+        ActivityManagerUtils.getInstance().finishActivity(this);
     }
 }

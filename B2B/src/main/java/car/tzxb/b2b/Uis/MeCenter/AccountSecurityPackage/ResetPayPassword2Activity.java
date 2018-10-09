@@ -28,6 +28,7 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
@@ -170,14 +171,9 @@ public class ResetPayPassword2Activity extends MyBaseAcitivity implements Keyboa
     }
 
     private void deleActivity() {
-        AccountSecurityHomePageActivity a2= (AccountSecurityHomePageActivity) AccountSecurityHomePageActivity.sInstance;
-        if(a2!=null){
-            a2.finish();
-        }
-        AccountSecurityYzmActivity a3= (AccountSecurityYzmActivity) AccountSecurityYzmActivity.sInstance;
-        ResetPayPasswordActivity a4= (ResetPayPasswordActivity) ResetPayPasswordActivity.sInstance;
-        a3.finish();
-        a4.finish();
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityHomePageActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityYzmActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(ResetPayPasswordActivity.class);
         this.finish();
         onBackPressed();
     }

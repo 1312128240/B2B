@@ -82,10 +82,11 @@ public class OemActivity extends MyBaseAcitivity {
                 tv_sales.setTextSize(TypedValue.COMPLEX_UNIT_SP,12);
                 tv_sales.setTextColor(Color.parseColor("#FA3314"));
                 tv_sales.setText("¥"+dataBean.getSeal_price());
+                //销量
+                holder.setText(R.id.tv_recommend_sales2,"销量 "+dataBean.getSales());
                 //隐藏
                 holder.getView(R.id.tv_recommend_price).setVisibility(View.GONE);
                 holder.getView(R.id.iv_gwc_icon).setVisibility(View.INVISIBLE);
-
                 //去详情
                 View view=holder.getView(R.id.parent);
                 view.setOnClickListener(new View.OnClickListener() {

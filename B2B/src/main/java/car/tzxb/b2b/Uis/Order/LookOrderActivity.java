@@ -29,8 +29,10 @@ import car.tzxb.b2b.Bean.OrderBeans.OrderHeader;
 import car.tzxb.b2b.Bean.OrderBeans.OrderItem;
 import car.tzxb.b2b.Bean.OrderBeans.OrderFooter;
 import car.tzxb.b2b.Bean.OrderStatusBean;
+import car.tzxb.b2b.MainActivity;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.ShoppingCartActivity;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
@@ -55,13 +57,11 @@ public class LookOrderActivity extends MyBaseAcitivity {
     private List<Object> resultList=new ArrayList<>();
     private OrderAdapter adapter;
     private List<OrderStatusBean.DataBean.OrderListBean> beanList;
-    private int position;
+    private int position,pager;
     private String m;
     private LoadingDialog loadingDialog;
-    private int pager;
     private View loadview;
     private LoadMoreWrapper<Object> loadMoreWrapper;
-
     @Override
     public void initParms(Bundle parms) {
         position = getIntent().getIntExtra("index",-1);
@@ -142,7 +142,7 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     //确认收货
                     notarize(aid);
                 }else if("已取消".equals(status)){
-                    deleItem(index,aid);
+                    deleItem(aid);
                 }
             }
 
@@ -185,9 +185,14 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     @Override
                     public void sure() {
                         alterDialogFragment.dismiss();
-                        deleItem(index,aid);
+                        deleItem(aid);
                     }
                 });
+            }
+
+            @Override
+            public void click4(String proId, String number, String shopId) {
+                AgainOrder(proId,number,shopId);
             }
 
             @Override
@@ -205,6 +210,8 @@ public class LookOrderActivity extends MyBaseAcitivity {
             }
         });
     }
+
+
 
     /**
      * 取消订单
@@ -242,9 +249,8 @@ public class LookOrderActivity extends MyBaseAcitivity {
 
     /**
      * 删除订单
-     * @param index
      */
-    private void deleItem(final int index,String aid) {
+    private void deleItem(String aid) {
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
         OkHttpUtils
                 .get()
@@ -307,8 +313,6 @@ public class LookOrderActivity extends MyBaseAcitivity {
                             public void onResponse(BaseStringBean response, int id) {
                                 if(response.getStatus()==1){
                                     tablayout.getTabAt(4).select();
-                                    pager=0;
-                                    Refresh();
                                 }else {
                                     MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0,Gravity.CENTER,0,0).show();
                                 }
@@ -340,6 +344,39 @@ public class LookOrderActivity extends MyBaseAcitivity {
                     @Override
                     public void onResponse(BaseStringBean response, int id) {
                         MyToast.makeTextAnim(MyApp.getContext(),response.getMsg(),0, Gravity.CENTER,0,0).show();
+                    }
+                });
+    }
+
+    /**
+     * 再来一单
+     */
+    private void AgainOrder(String proId, String number, String shopId) {
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("再来一单",Constant.baseUrl+"orders/order_list_mobile.php?m=order_shopping_add"+"&pro_id="+proId+"&number="+number
+                 +"&shop_id="+shopId+"&user_id="+userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_shopping_add")
+                .addParams("pro_id",proId)
+                .addParams("number",number)
+                .addParams("shop_id",shopId)
+                .addParams("user_id",userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                          if("1".equals(String.valueOf(response.getStatus()))){
+                              Intent intent=new Intent(LookOrderActivity.this, ShoppingCartActivity.class);
+                              startActivity(intent);
+                              finish();
+                          }
                     }
                 });
     }
@@ -395,6 +432,9 @@ public class LookOrderActivity extends MyBaseAcitivity {
             //商品信息
             List<OrderStatusBean.DataBean.OrderListBean.ChildDataBean> xxBean=xBean.getChild_data();
             OrderItem orderGoodsItem=null;
+
+            StringBuilder sb_proId=new StringBuilder();
+            StringBuilder sb_number=new StringBuilder();
             for (int j = 0; j <xxBean.size() ; j++) {
                 OrderStatusBean.DataBean.OrderListBean.ChildDataBean childBean=xxBean.get(j);
                 orderGoodsItem=new OrderItem();
@@ -404,6 +444,9 @@ public class LookOrderActivity extends MyBaseAcitivity {
                 orderGoodsItem.setReal_price(childBean.getReal_price());
                 orderGoodsItem.setQuantity(childBean.getQuantity());
                 dataList.add(orderGoodsItem);
+                //拼接商品id,和数量
+                sb_proId.append(childBean.getProduct_id()).append(",");
+                sb_number.append(childBean.getQuantity()).append(",");
             }
 
             //尾部信息
@@ -411,6 +454,9 @@ public class LookOrderActivity extends MyBaseAcitivity {
             footerBean.setAmount_pay_able(xBean.getAmount_pay_able());
             footerBean.setNumber(xBean.getNumbers());
             footerBean.setStatus(xBean.getStatus());
+            footerBean.setShop_id(xBean.getShop_id());
+            footerBean.setProId(sb_proId.toString());
+            footerBean.setCount(sb_number.toString());
             footerBean.setOrder_seqno(xBean.getOrder_seqno());
             footerBean.setAid(xBean.getAid());
             footerBean.setIndex(i);
@@ -429,7 +475,6 @@ public class LookOrderActivity extends MyBaseAcitivity {
         }
         loadMoreWrapper.setLoadMoreView(loadview);
         loadMoreWrapper.notifyDataSetChanged();
-
     }
 
 
@@ -513,4 +558,5 @@ public class LookOrderActivity extends MyBaseAcitivity {
             loadingDialog.dismiss();
         }
     }
+
 }

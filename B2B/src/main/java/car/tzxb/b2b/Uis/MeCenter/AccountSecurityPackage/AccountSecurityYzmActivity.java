@@ -52,7 +52,6 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
     private int index;
     private String title;
     private String mobile;
-    public static AppCompatActivity sInstance = null;
     @Override
     public void initParms(Bundle parms) {
         index = parms.getInt("index",-1);
@@ -66,7 +65,6 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
 
     @Override
     public void doBusiness(Context mContext) {
-        sInstance=this;
         tv_title.setText(title);
         mobile = SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
         String maskNumber = mobile.substring(0,3)+"****"+ mobile.substring(7, mobile.length());
@@ -245,9 +243,4 @@ public class AccountSecurityYzmActivity extends MyBaseAcitivity {
         onBackPressed();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sInstance=null;
-    }
 }

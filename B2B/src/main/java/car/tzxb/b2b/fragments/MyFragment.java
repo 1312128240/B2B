@@ -139,6 +139,7 @@ public class MyFragment extends MyBaseFragment implements RadioGroup.OnCheckedCh
                         hasLogin(response);
                     }
                 });
+
     }
 
     /**

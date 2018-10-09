@@ -24,11 +24,13 @@ import car.myview.CustomToast.MyToast;
 import car.tzxb.b2b.BasePackage.BasePresenter;
 import car.tzxb.b2b.BasePackage.MyBaseAcitivity;
 import car.tzxb.b2b.Bean.BaseStringBean;
-import car.tzxb.b2b.Util.ActivityManager;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
+import car.tzxb.b2b.Util.DateUtils;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.PermissionUtil;
 import car.tzxb.b2b.Util.UpdateApp.DownLoadApk;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
+import car.tzxb.b2b.Views.DialogFragments.NationalDayDialogFragment;
 import car.tzxb.b2b.config.Constant;
 import car.tzxb.b2b.fragments.ClassifyFragment;
 import car.tzxb.b2b.fragments.HomeFragment;
@@ -73,19 +75,21 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
         }
     }
 
+    //创建handler
     private static class MyHandler extends Handler {
-        private final WeakReference<Activity> mActivity;
+        private WeakReference<MainActivity> activityWeakReference;
 
-        private MyHandler(Activity activity) {
-            mActivity = new WeakReference<Activity>(activity);
+        private MyHandler(MainActivity activity) {
+            activityWeakReference = new WeakReference<MainActivity>(activity);
         }
 
         @Override
         public void handleMessage(Message msg) {
-            if (mActivity.get() == null) {
-                return;
+            super.handleMessage(msg);
+            MainActivity activity = activityWeakReference.get();
+            if (activity != null) {
+                isExit = false;
             }
-            isExit = false;
         }
     }
 
@@ -104,6 +108,19 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
     public void doBusiness(Context mContext) {
         initNavigationBar();
         checkVersion();
+        showDialogFrament();
+    }
+
+    private void showDialogFrament() {
+        //国庆通知弹窗
+        String endTime="2018-10-07 23:59:59";
+        String currentTime=new DateUtils().cuttentStr();
+        int result=new DateUtils().compareDate(currentTime,endTime);
+        if(result==1){
+            NationalDayDialogFragment nationalDayDialogFragment=new NationalDayDialogFragment();
+            nationalDayDialogFragment.setCancelable(false);
+            nationalDayDialogFragment.show(getSupportFragmentManager(),"nation");
+        }
     }
 
     public void checkVersion() {
@@ -224,8 +241,7 @@ public class MainActivity extends MyBaseAcitivity implements BottomNavigationBar
             // 利用handler延迟发送更改状态信息
             mHandler.sendEmptyMessageDelayed(0, 2000);
         } else {
-
-            ActivityManager.getInstance().exit();
+            ActivityManagerUtils.getInstance().exit();
 
         }
     }

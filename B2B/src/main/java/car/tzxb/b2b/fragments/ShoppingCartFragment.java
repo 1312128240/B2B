@@ -16,14 +16,17 @@ import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.bumptech.glide.Glide;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
 import com.example.mylibrary.HttpClient.utils.JsonGenericsSerializator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import car.myrecyclerviewadapter.CommonAdapter;
@@ -58,7 +61,7 @@ import okhttp3.Call;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInterface,ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener {
+public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInterface, ShopcatAdapter.CheckInterface, ShopcatAdapter.ModifyCountInterface, ShopcatAdapter.GroupEditorListener {
 
     MvpContact.Presenter presenter = new ShoppingCarPresenterIml(this);
     @BindView(R.id.listView)
@@ -90,14 +93,14 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
     @BindView(R.id.recy_empty_shopping)
     RecyclerView recy_empty;
     private double mtotalPrice = 0.00;
-    private double discounts_total=0.00;
+    private double discounts_total = 0.00;
     private int mtotalCount = 0;
     private boolean flag = false;                //false就是编辑，ture就是完成
     private ShopcatAdapter adapter;
     private List<OrderHeader> groups = new ArrayList<>();         //组元素的列表
     private Map<String, List<OrderItem>> childs = new HashMap<>(); //子元素的列表*/
     private String userId;
-    private StringBuilder sb1,sb2,sb3,sb4,sb5;
+    private StringBuilder sb1, sb2, sb3, sb4, sb5;
 
 
     @Override
@@ -111,7 +114,7 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
         tv_title.setText("购物车");
         tv_right.setText("编缉");
         recy_empty.setLayoutManager(new GridLayoutManager(getContext(), 2));
-        recy_empty.addItemDecoration(new SpaceItemDecoration(10,2));
+        recy_empty.addItemDecoration(new SpaceItemDecoration(10, 2));
     }
 
 
@@ -125,8 +128,8 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
     @Override
     public void showData(Object o) {
         ShopCarBean bean = (ShopCarBean) o;
-        List<ShopCarBean.DataBean> beanList =bean.getData();
-        Log.i("什么情况",beanList.size()+"");
+        List<ShopCarBean.DataBean> beanList = bean.getData();
+        Log.i("什么情况", beanList.size() + "");
         if (beanList.size() == 0) {
             getGuess();
         } else {
@@ -146,30 +149,30 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
 
     @Override
     public void showErro() {
-          getGuess();
+        getGuess();
     }
 
     @Override
     protected void onVisible() {
         super.onVisible();
         RefreshData();
-        Log.i("购物车可见时执行一次","aaa");
+        Log.i("购物车可见时执行一次", "aaa");
     }
 
     @OnClick(R.id.tv_empty_Shopping)
     public void shopping() {
-        MainActivity mainActivity= (MainActivity) getActivity();
+        MainActivity mainActivity = (MainActivity) getActivity();
         mainActivity.select(0);
     }
 
-    public void RefreshData(){
-
+    public void RefreshData() {
+        mtotalCount = 0;
         allCheckBox.setChecked(false);
-        totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
-        tv_discounts_total.setText(Html.fromHtml("优惠: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
+        totalPrice.setText(Html.fromHtml("合计: " + "<font color='#FA3314'>" + "¥" + 0.00 + "</font>"));
+        tv_discounts_total.setText(Html.fromHtml("优惠: " + "<font color='#FA3314'>" + "¥" + 0.00 + "</font>"));
         goPay.setText("去结算(" + 0 + ")");
         userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list"+"&user_id="+ userId +"&shop_id=-1&type=0";
+        String url = Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId + "&shop_id=-1&type=0";
         presenter.PresenterGetData(url, null);
 
         Log.i("购物车fragmentUrl", Constant.baseUrl + "orders/shopping_cars_moblie.php?m=shopping_list" + "&user_id=" + userId + "&shop_id=-1" + "&type=0");
@@ -246,7 +249,7 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
 
     //整理数据
     private void DataHelpers(List<ShopCarBean.DataBean> beanList) {
-        if(groups.size()!=0&&childs.size()!=0){
+        if (groups.size() != 0 && childs.size() != 0) {
             groups.clear();
             childs.clear();
         }
@@ -323,22 +326,21 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
             OrderHeader group = groups.get(i);
             if (group.isActionBarEditor()) {
                 group.setActionBarEditor(false);
+                tv_right.setText("完成");
+                orderInfo.setVisibility(View.VISIBLE);
+                delGoods.setVisibility(View.GONE);
+                //保存数量
+                SavaAllNumber();
+
             } else {
                 group.setActionBarEditor(true);
+                tv_right.setText("编辑");
+                orderInfo.setVisibility(View.INVISIBLE);
+                delGoods.setVisibility(View.VISIBLE);
             }
 
         }
         adapter.notifyDataSetChanged();
-
-        if (flag) {
-            orderInfo.setVisibility(View.INVISIBLE);
-            delGoods.setVisibility(View.VISIBLE);
-            tv_right.setText("完成");
-        } else {
-            orderInfo.setVisibility(View.VISIBLE);
-            delGoods.setVisibility(View.GONE);
-            tv_right.setText("编辑");
-        }
 
     }
 
@@ -398,9 +400,9 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
     }
 
 
-
     @OnClick(R.id.go_pay)
     public void goPay() {
+
         if (mtotalCount == 0) {
             MyToast.makeTextAnim(MyApp.getContext(), "请选择要支付的商品", 0, Gravity.CENTER, 0, 0).show();
             return;
@@ -562,9 +564,75 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
         ModifyDiscounts(shopId, aid);
     }
 
-    @Override
-    public void groupEditor(int groupPosition) {
 
+    @Override
+    public void groupEditor(int groupPosition, boolean isEdit) {
+        if (!isEdit) {
+            OrderHeader group = groups.get(groupPosition);
+            List<OrderItem> child = childs.get(group.getId());
+
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            StringBuilder sb4 = new StringBuilder();
+
+            for (int i = 0; i < child.size(); i++) {
+                OrderItem item = child.get(i);
+                sb1.append(item.getShop_id()).append(",");
+                sb2.append(item.getAid()).append(",");
+                sb3.append(item.getCount()).append(",");
+                sb4.append(item.getProduct_id()).append(",");
+            }
+            SaveNumber(sb1, sb2, sb3, sb4);
+        }
+
+    }
+
+    private void SavaAllNumber() {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        StringBuilder sb3 = new StringBuilder();
+        StringBuilder sb4 = new StringBuilder();
+        for (int i = 0; i < groups.size(); i++) {
+            OrderHeader group = groups.get(i);
+            List<OrderItem> child = childs.get(group.getId());
+            for (int j = 0; j <child.size() ; j++) {
+
+                OrderItem item = child.get(i);
+                sb1.append(item.getShop_id()).append(",");
+                sb2.append(item.getAid()).append(",");
+                sb3.append(item.getCount()).append(",");
+                sb4.append(item.getProduct_id()).append(",");
+
+                SaveNumber(sb1, sb2, sb3, sb4);
+            }
+        }
+
+    }
+
+    //保存数量
+    private void SaveNumber(StringBuilder sb1, StringBuilder sb2, StringBuilder sb3, StringBuilder sb4) {
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=update_number")
+                .tag(this)
+                .addParams("user_id", userId)
+                .addParams("shop_id", sb1.toString())
+                .addParams("car_id", sb2.toString())
+                .addParams("number", sb3.toString())
+                .addParams("pro_id", sb4.toString())
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        Log.i("修改数量返回", response.getMsg() + "____" + response.getStatus());
+                    }
+                });
     }
 
     /**
@@ -631,13 +699,13 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
     private void calulate() {
         mtotalPrice = 0.00;
         mtotalCount = 0;
-        discounts_total=0.00;
+        discounts_total = 0.00;
 
         sb1 = new StringBuilder();
         sb2 = new StringBuilder();
         sb3 = new StringBuilder();
         sb4 = new StringBuilder();
-        sb5=new StringBuilder();
+        sb5 = new StringBuilder();
         for (int i = 0; i < groups.size(); i++) {
             OrderHeader group = groups.get(i);
             List<OrderItem> child = childs.get(group.getId());
@@ -650,7 +718,7 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
                     //总价钱
                     mtotalPrice += good.getPrice() * good.getCount();
                     //总优惠
-                    discounts_total+=good.getDiscount_amount();
+                    discounts_total += good.getDiscount_amount();
                     //拼接shopId
                     sb1.append(good.getShop_id()).append(",");
                     //拼接carId
@@ -662,10 +730,10 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
                 }
             }
         }
-         //截取2位
-        String entPrice= StringUtil.doubleConvert(mtotalPrice);
-        totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+entPrice+"</font>"));
-        tv_discounts_total.setText(Html.fromHtml("优惠: "+"<font color='#FA3314'>"+"¥"+discounts_total+"</font>"));
+        //截取2位
+        String entPrice = StringUtil.doubleConvert(mtotalPrice);
+        totalPrice.setText(Html.fromHtml("合计: " + "<font color='#FA3314'>" + "¥" + entPrice + "</font>"));
+        tv_discounts_total.setText(Html.fromHtml("优惠: " + "<font color='#FA3314'>" + "¥" + discounts_total + "</font>"));
         goPay.setText("去结算(" + mtotalCount + ")");
         if (mtotalCount == 0) {
             setCartNum();
@@ -717,4 +785,6 @@ public class ShoppingCartFragment extends MyBaseFragment implements MvpViewInter
         setCartNum();
         adapter.notifyDataSetChanged();
     }
+
+
 }

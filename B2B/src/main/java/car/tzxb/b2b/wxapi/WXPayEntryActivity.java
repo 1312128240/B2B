@@ -9,7 +9,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,7 +16,6 @@ import android.view.Gravity;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import com.alipay.sdk.app.PayTask;
 import com.example.mylibrary.HttpClient.OkHttpUtils;
 import com.example.mylibrary.HttpClient.callback.GenericsCallback;
@@ -31,11 +29,9 @@ import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.unionpay.UPPayAssistEx;
 import com.unionpay.uppay.PayActivity;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.BindDrawable;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,12 +45,12 @@ import car.tzxb.b2b.Bean.PayResult;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.HomePager.Wallet.MyWalletActivity;
-import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.ResetPasswordActivity;
 import car.tzxb.b2b.Uis.MeCenter.AccountSecurityPackage.ResetPayPasswordActivity;
 import car.tzxb.b2b.Uis.Order.LookOrderActivity;
 import car.tzxb.b2b.Uis.Order.OfflinePaymentActivity;
 import car.tzxb.b2b.Uis.Order.OrderActivity;
-import car.tzxb.b2b.Util.ActivityManager;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
+import car.tzxb.b2b.Util.RsaUtils;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Views.DialogFragments.AlterDialogFragment;
 import car.tzxb.b2b.config.Constant;
@@ -90,7 +86,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private final int SDK_PAY_FLAG = 1;
     private String from;
     private boolean isShow;
-    public static AppCompatActivity sInstance = null;
 
     @Override
     public void initParms(Bundle parms) {
@@ -116,7 +111,6 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
 
     @Override
     public void doBusiness(Context mContext) {
-        sInstance = this;
         tv_title.setText("收银台");
         tv_money.setText(Html.fromHtml("¥" + "<big>" + total + "</big>"));
         if ("Recharge".equals(from)) {
@@ -247,6 +241,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     public void pay() {
         if (isFastClick()) {
             if ("Recharge".equals(from)) {
+                Log.i("余额充值",from+"");
                 RechargePay();
             } else {
                 switch (position) {
@@ -306,8 +301,7 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
             public void sure() {
                 dialogFragment.dismiss();
                 if ("order".equals(from)) {
-                    OrderActivity orderActivity = (OrderActivity) OrderActivity.sInstance;
-                    ActivityManager.getInstance().deleteActivity(orderActivity);
+                    ActivityManagerUtils.getInstance().finishActivityclass(OrderActivity.class);
                 }
                 startActivity(new Intent(WXPayEntryActivity.this, MyWalletActivity.class));
                 WXPayEntryActivity.this.finish();
@@ -321,13 +315,21 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
     private void RechargePay() {
         String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
         String username = SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile", null);
+
+        String stringC = "username="+username+"&total_fee=" +total + "&user_id=" + userId;
+
+        Log.i("原内容",stringC);
+
+        String result= RsaUtils.base64Encrypted(stringC,RsaUtils.PUblicKey);
+
+        Log.i("Rsa加密",result);
+
+        Log.i("余额充值",Constant.baseUrl + "orders/user_wallet.php?m=wallet_order"+"&sign="+result+"&pay_device=Android");
         OkHttpUtils
                 .get()
                 .tag(this)
                 .url(Constant.baseUrl + "orders/user_wallet.php?m=wallet_order")
-                .addParams("user_id", userId)
-                .addParams("username", username)
-                .addParams("total_fee", total)
+                .addParams("sign", result)
                 .addParams("pay_device", "Android")
                 .build()
                 .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
@@ -570,9 +572,4 @@ public class WXPayEntryActivity extends MyBaseAcitivity implements IWXAPIEventHa
         }
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sInstance = null;
-    }
 }

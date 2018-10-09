@@ -82,6 +82,8 @@ public class BaseDataListBean {
         private String content;
         private String type;
         private String contents;
+        private String orderstatus;
+        private String id;
         private String Name;
         private String shop_id;
         private String product_title;
@@ -97,7 +99,7 @@ public class BaseDataListBean {
         private String p_title;
         private String goods_id;
         private String product_id;
-        private String id;
+
         private String img_url;
         private String goods_name;
         private String is_point_product;
@@ -110,6 +112,16 @@ public class BaseDataListBean {
         private String stock_distributor_all;
         private String sales;
         private String cost_point;
+
+        public String getOrderstatus() {
+            return orderstatus;
+        }
+
+        public void setOrderstatus(String orderstatus) {
+            this.orderstatus = orderstatus;
+        }
+
+
 
 
         public String getContents() {

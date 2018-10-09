@@ -111,6 +111,7 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
         presenter.PresenterGetData(url, map);
     }
 
+
     public void inittab() {
         String[] str = {"商品", "详情", "评价"};
         for (int i = 0; i <str.length ; i++) {
@@ -292,17 +293,12 @@ public class GoodsXqActivity extends MyBaseAcitivity implements RadioGroup.OnChe
                 });
     }
 
-
     @Override
     public void showData(Object o) {
         goodsXqBean = (GoodsXqBean) o;
 
         this.ResultBean=goodsXqBean.getData();
     }
-
-
-
-
 
 
     @Override

@@ -49,7 +49,7 @@ import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.config.Constant;
 import okhttp3.Call;
 
-public class SeachActivity extends MyBaseAcitivity {
+public class SeachActivity extends MyBaseAcitivity{
 
     @BindView(R.id.tv_actionbar_title)
     TextView tv_title;
@@ -83,18 +83,17 @@ public class SeachActivity extends MyBaseAcitivity {
 
     @Override
     public void doBusiness(Context mContext) {
-        tv_title.setText("搜索");
-        tv_back.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,null,null);
-        rech_history.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recy_content.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
+        initUi();
         initHot();
         initRecy_history();
-        getSeachHistory();
         initRecy_content();
-        initEvent();
     }
 
-    private void initEvent() {
+    private void initUi() {
+        tv_title.setText("搜索");
+        tv_back.setVisibility(View.INVISIBLE);
+        rech_history.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+        recy_content.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         et_seach.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -108,14 +107,14 @@ public class SeachActivity extends MyBaseAcitivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-                  if(s.length()>0){
-                      ll_content.setVisibility(View.GONE);
-                      recy_content.setVisibility(View.VISIBLE);
-                      Seach(s.toString());
-                  }else {
-                      ll_content.setVisibility(View.VISIBLE);
-                      recy_content.setVisibility(View.GONE);
-                  }
+                if(s.length()>0){
+                    ll_content.setVisibility(View.GONE);
+                    recy_content.setVisibility(View.VISIBLE);
+                    Seach(s.toString());
+                }else {
+                    ll_content.setVisibility(View.VISIBLE);
+                    recy_content.setVisibility(View.GONE);
+                }
             }
         });
     }
@@ -123,7 +122,7 @@ public class SeachActivity extends MyBaseAcitivity {
 
     private void Seach(String s) {
 
-        Log.i("搜索内容",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&search="+s);
+        Log.i("搜索内容",Constant.baseUrl+"item/index.php?c=Goods&m=GoodsList"+"&search="+s+"&user_id="+userId);
         OkHttpUtils
                 .get()
                 .tag(this)
@@ -147,7 +146,6 @@ public class SeachActivity extends MyBaseAcitivity {
 
     private void initRecy_content() {
        recy_content.setLayoutManager(new LinearLayoutManager(this));
-
         contentAdapter = new CommonAdapter<BaseDataListBean.DataBean>(MyApp.getContext(),R.layout.tv_item,contentList) {
             @Override
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
@@ -203,9 +201,14 @@ public class SeachActivity extends MyBaseAcitivity {
         }
     }
 
-    private void getSeachHistory() {
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getSeachHistory();
+    }
 
-        Log.i("搜索历史", Constant.baseUrl + "item/index.php?c=Home&m=UserSearchHistory&user_id=" + userId);
+    private void getSeachHistory() {
+        Log.i("搜索历史", Constant.baseUrl + "item/index.php?c=Home&m=UserSearchHistory"+"&user_id="+userId);
         OkHttpUtils
                 .get()
                 .url(Constant.baseUrl + "item/index.php?c=Home&m=UserSearchHistory")

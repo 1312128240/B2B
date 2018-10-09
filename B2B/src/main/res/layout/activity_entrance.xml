@@ -54,10 +54,13 @@
         </android.support.v7.widget.RecyclerView>
     </android.support.design.widget.CoordinatorLayout>
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_empty_activity"
+        android:text="暂无活动商品"
+        android:gravity="center"
         android:visibility="gone"
-        android:src="@drawable/activity_state_empty"
+        android:drawableTop="@drawable/activity_state_empty"
+        android:drawablePadding="15dp"
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />

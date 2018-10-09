@@ -18,7 +18,7 @@ import car.tzxb.b2b.R;
 
 public class SignDialogFragment extends DialogFragment implements View.OnClickListener{
 
-    Clicklistener clicklistener;
+   public   Clicklistener clicklistener;
    public void setListener(Clicklistener listener){
        this.clicklistener=listener;
    }

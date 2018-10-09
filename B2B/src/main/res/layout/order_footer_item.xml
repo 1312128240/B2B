@@ -29,15 +29,15 @@
             android:id="@+id/tv_order_status_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="6dp"
-            android:textColor="@color/colorBlack2"
+            android:layout_marginRight="10dp"
+            android:textColor="@android:color/black"
             tools:text="共1件" />
 
         <TextView
             android:id="@+id/tv_order_status_total"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack2"
+            android:textColor="@android:color/black"
             tools:text="合计:¥126.00" />
     </LinearLayout>
 
@@ -49,6 +49,17 @@
         android:paddingBottom="6dp">
 
         <TextView
+            android:id="@+id/tv_view4"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/bg5"
+            android:gravity="center"
+            android:padding="5dp"
+            android:text="再来一单"
+            android:textColor="@android:color/black" />
+        <TextView
             android:id="@+id/tv_view3"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
@@ -58,8 +69,8 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="提醒发货"
-            android:textColor="@color/colorBlack"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_view2"
@@ -71,8 +82,8 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="提醒发货"
-            android:textColor="@color/colorBlack"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="@android:color/black" />
 
         <TextView
             android:id="@+id/tv_view1"
@@ -84,8 +95,8 @@
             android:gravity="center"
             android:padding="5dp"
             android:text="提醒发货"
-            android:textColor="#ff4e3c"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:textColor="#ff4e3c" />
     </LinearLayout>
 
 </LinearLayout>

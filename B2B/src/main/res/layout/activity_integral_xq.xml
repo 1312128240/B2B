@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/parent"
     tools:context="car.tzxb.b2b.Uis.MeCenter.IntegralShop.IntegralXqActivity">
 
     <include layout="@layout/base_red_actionbar" />
@@ -68,6 +69,7 @@
                 android:padding="10dp">
 
                 <TextView
+
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -101,8 +103,9 @@
 
             <Button
                 android:id="@+id/btn_dh"
+                android:background="@drawable/bg16"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
+                android:layout_height="45dp"
                 android:layout_margin="20dp"
                 android:text="兑换"
                 android:textColor="@color/colorWhite" />

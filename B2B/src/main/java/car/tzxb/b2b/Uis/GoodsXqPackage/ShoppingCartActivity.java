@@ -118,6 +118,8 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
         super.onResume();
         getData();
     }
+
+
     private void initLv() {
         adapter = new ShopcatAdapter(groups, childs, this);
         adapter.setCheckInterface(this);//关键步骤1：设置复选框的接口
@@ -133,6 +135,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
 
 
     private void  getData() {
+        mtotalCount = 0;
         allCheckBox.setChecked(false);
         totalPrice.setText(Html.fromHtml("合计: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
         tv_discounts_total.setText(Html.fromHtml("优惠: "+"<font color='#FA3314'>"+"¥"+0.00+"</font>"));
@@ -196,6 +199,7 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
                     }
                 });
     }
+
 
     private void initGuessRecy(final List<BaseDataListBean.DataBean> guessList) {
 
@@ -312,22 +316,21 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
             OrderHeader group = groups.get(i);
             if (group.isActionBarEditor()) {
                 group.setActionBarEditor(false);
+                tv_right.setText("完成");
+                orderInfo.setVisibility(View.VISIBLE);
+                delGoods.setVisibility(View.GONE);
+                //保存数量
+                SavaAllNumber();
+
             } else {
                 group.setActionBarEditor(true);
+                tv_right.setText("编辑");
+                orderInfo.setVisibility(View.INVISIBLE);
+                delGoods.setVisibility(View.VISIBLE);
             }
 
         }
         adapter.notifyDataSetChanged();
-
-        if (flag) {
-            orderInfo.setVisibility(View.INVISIBLE);
-            delGoods.setVisibility(View.VISIBLE);
-            tv_right.setText("完成");
-        } else {
-            orderInfo.setVisibility(View.VISIBLE);
-            delGoods.setVisibility(View.GONE);
-            tv_right.setText("编辑");
-        }
 
     }
 
@@ -552,10 +555,75 @@ public class ShoppingCartActivity extends MyBaseAcitivity implements ShopcatAdap
     }
 
     @Override
-    public void groupEditor(int groupPosition) {
+    public void groupEditor(int groupPosition, boolean isEdit) {
+        if (!isEdit) {
+            OrderHeader group = groups.get(groupPosition);
+            List<OrderItem> child = childs.get(group.getId());
+
+            StringBuilder sb1 = new StringBuilder();
+            StringBuilder sb2 = new StringBuilder();
+            StringBuilder sb3 = new StringBuilder();
+            StringBuilder sb4 = new StringBuilder();
+
+            for (int i = 0; i < child.size(); i++) {
+                OrderItem item = child.get(i);
+                sb1.append(item.getShop_id()).append(",");
+                sb2.append(item.getAid()).append(",");
+                sb3.append(item.getCount()).append(",");
+                sb4.append(item.getProduct_id()).append(",");
+            }
+            SaveNumber(sb1, sb2, sb3, sb4);
+        }
 
     }
 
+    //保存数量
+    private void SaveNumber(StringBuilder sb1, StringBuilder sb2, StringBuilder sb3, StringBuilder sb4) {
+        OkHttpUtils
+                .get()
+                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=update_number")
+                .tag(this)
+                .addParams("user_id", userId)
+                .addParams("shop_id", sb1.toString())
+                .addParams("car_id", sb2.toString())
+                .addParams("number", sb3.toString())
+                .addParams("pro_id", sb4.toString())
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        Log.i("修改数量返回", response.getMsg() + "____" + response.getStatus());
+                    }
+                });
+    }
+
+
+    private void SavaAllNumber() {
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        StringBuilder sb3 = new StringBuilder();
+        StringBuilder sb4 = new StringBuilder();
+        for (int i = 0; i < groups.size(); i++) {
+            OrderHeader group = groups.get(i);
+            List<OrderItem> child = childs.get(group.getId());
+            for (int j = 0; j <child.size() ; j++) {
+
+                OrderItem item = child.get(i);
+                sb1.append(item.getShop_id()).append(",");
+                sb2.append(item.getAid()).append(",");
+                sb3.append(item.getCount()).append(",");
+                sb4.append(item.getProduct_id()).append(",");
+
+                SaveNumber(sb1, sb2, sb3, sb4);
+            }
+        }
+
+    }
     /**
      * 修改查询促销信息
      */

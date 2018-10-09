@@ -19,7 +19,7 @@ public class AccountSecurityHomePageActivity extends MyBaseAcitivity {
     TextView tv_title;
     @BindView(R.id.tv_bind_mobile)
     TextView tv_bind_mobile;
-    public static AppCompatActivity sInstance = null;
+
     @Override
     public void initParms(Bundle parms) {
 
@@ -33,7 +33,6 @@ public class AccountSecurityHomePageActivity extends MyBaseAcitivity {
     @Override
     public void doBusiness(Context mContext) {
         tv_title.setText("账户安全");
-        sInstance=this;
         String mobile= SPUtil.getInstance(MyApp.getContext()).getMobile("Mobile",null);
         String maskNumber = mobile.substring(0,3)+"****"+mobile.substring(7,mobile.length());
         tv_bind_mobile.setText("已绑定:  "+maskNumber);
@@ -69,12 +68,4 @@ public class AccountSecurityHomePageActivity extends MyBaseAcitivity {
         intent.putExtra("title","换绑手机");
         startActivity(intent);
     }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sInstance=null;
-    }
-
 }

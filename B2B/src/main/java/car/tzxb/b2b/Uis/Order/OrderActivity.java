@@ -87,21 +87,13 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
     LinearLayout addressLayout;
     @BindView(R.id.tv_goods_discounts)
     TextView tv_goods_discounts;
-    private String shopId;
-    private String carId;
-    private String num;
-    private String proId;
+    private String shopId,carId,num,proId,mesg,special_id,dealer_name,dealer_mobile,dealer_address;
     private OrderBean.DataBean dataBean;
-    private String mesg;
-    private String special_id;
     private double offset1;
     private double offset2;
     private double special_money;
-    private String dealer_name;
-    private String dealer_mobile;
-    private String dealer_address;
     private String isCar = "0";
-    public static AppCompatActivity sInstance = null;
+
     //  private String from;
 
     @Override
@@ -123,7 +115,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
 
     @Override
     public void doBusiness(Context mContext) {
-        sInstance = this;
         rb1.setChecked(true);
         rg.setOnCheckedChangeListener(this);
         rb1.setText("送货上门");
@@ -187,35 +178,6 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
                 });
 
     }
-
-  /*  *//**
-     * 优惠过来
-     *//*
-    private void getSeckillData() {
-        String userid = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
-      Log.i("秒杀订单",Constant.baseUrl + "orders/shopping_cars_moblie.php?m=limit_shop"+"&user_id="+userid+"&pro_id="+proId+"&num="+num+"&shop_id="+shopId);
-        OkHttpUtils
-                .get()
-                .url(Constant.baseUrl + "orders/shopping_cars_moblie.php?m=limit_shop")
-                .tag(this)
-                .addParams("user_id", userid)
-                .addParams("pro_id", proId)
-                .addParams("num", num)
-                .addParams("shop_id", shopId)
-                .build()
-                .execute(new GenericsCallback<OrderBean>(new JsonGenericsSerializator()) {
-                    @Override
-                    public void onError(Call call, Exception e, int id) {
-                        Log.i("走错误",e.toString());
-                    }
-
-                    @Override
-                    public void onResponse(OrderBean response, int id) {
-                        dataBean = response.getData();
-                        initData();
-                    }
-                });
-    }*/
 
     /**
      * 购物车过来
@@ -372,7 +334,7 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         bundle.putString("ok", "立即付款");
         bundle.putString("no", "再想想");
         dialogFragment.setArguments(bundle);
-
+        dialogFragment.setCancelable(false);
         dialogFragment.show(getSupportFragmentManager(), "order");
 
         dialogFragment.setOnClick(new AlterDialogFragment.CustAlterDialgoInterface() {
@@ -485,9 +447,4 @@ public class OrderActivity extends MyBaseAcitivity implements RadioGroup.OnCheck
         onBackPressed();
     }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        sInstance = null;
-    }
 }

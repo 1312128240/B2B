@@ -81,7 +81,7 @@ public class MyWalletActivity extends MyBaseAcitivity {
                 TextView tv1 = holder.getView(R.id.tv_offline_payment);
                 tv1.setVisibility(View.VISIBLE);
                 tv1.setPadding(0,0,0,10);
-                tv1.setTextColor(Color.parseColor("#030303"));
+                tv1.setTextColor(Color.BLACK);
                 tv1.setBackgroundColor(Color.parseColor("#FFFFFF"));
                 tv1.setText(dataBean.getTitle());
                 holder.getView(R.id.ll_gold_sign).setVisibility(View.GONE);

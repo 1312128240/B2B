@@ -33,8 +33,8 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private Context context;
     private List<Object> data;
     private int ITEM_HEADER = 1, ITEM_CONTENT = 2, ITEM_FOOTER = 3;
-    //private View headerView;
-    TextClickListener listener;
+    public TextClickListener listener;
+
     public void setTextClickListener(TextClickListener textClickListener){
         this.listener=textClickListener;
     }
@@ -67,6 +67,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             view = LayoutInflater.from(context).inflate(R.layout.order_footer_item, parent, false);
             return new OrderAdapter.MyViewHolderFooter(view);
         }
+
         return null;
     }
 
@@ -163,6 +164,14 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                     listener.click3(datas.getStatus(),datas.getIndex(),datas.getAid());
                 }
             });
+            ((MyViewHolderFooter) holder).tv4.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.click4(datas.getProId(),datas.getCount(),datas.getShop_id());
+                }
+            });
+
+
         }
 
     }
@@ -232,7 +241,7 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         @BindView(R.id.tv_view1) TextView tv1;
         @BindView(R.id.tv_view2) TextView tv2;
         @BindView(R.id.tv_view3) TextView tv3;
-
+        @BindView(R.id.tv_view4) TextView tv4;
         public MyViewHolderFooter(View view) {
             super(view);
             ButterKnife.bind(this, view);
@@ -251,6 +260,10 @@ public class OrderAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         void click3(String status,int index,String adid);
 
+        void click4(String proId,String number,String shopId);
+
         void itemClick(String aid);
+
+
     }
 }

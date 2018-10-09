@@ -43,7 +43,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
     private CheckInterface checkInterface;
     private ModifyCountInterface modifyCountInterface;
     private GroupEditorListener groupEditorListener;
-    private int count = 0;
+   // private int count = 0;
     private boolean flag = true; //组的编辑按钮是否可见，true可见，false不可见
 
 
@@ -383,7 +383,7 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
      * 监听编辑状态
      */
     public interface GroupEditorListener {
-        void groupEditor(int groupPosition);
+        void groupEditor(int groupPosition,boolean isEdit);
     }
 
     /**
@@ -403,12 +403,13 @@ public class ShopcatAdapter extends BaseExpandableListAdapter {
         @Override
         public void onClick(View v) {
             if (editor.getId() == v.getId()) {
-                groupEditorListener.groupEditor(groupPosition);
+
                 if (group.isEditor()) {
                     group.setEditor(false);
                 } else {
                     group.setEditor(true);
                 }
+                groupEditorListener.groupEditor(groupPosition,group.isEditor());
                 notifyDataSetChanged();
             }
         }

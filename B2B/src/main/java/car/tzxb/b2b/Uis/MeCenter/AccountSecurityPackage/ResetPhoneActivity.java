@@ -30,6 +30,7 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
 import car.tzxb.b2b.Uis.MeCenter.SettingsActivity;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 import car.tzxb.b2b.Util.AnimationUtil;
 import car.tzxb.b2b.Util.SPUtil;
 import car.tzxb.b2b.Util.StringUtil;
@@ -200,13 +201,11 @@ public class ResetPhoneActivity extends MyBaseAcitivity {
     }
 
     private void deleteActivity(String new_phone) {
-        SettingsActivity a1= (SettingsActivity) SettingsActivity.sInstance;
-        AccountSecurityHomePageActivity a2= (AccountSecurityHomePageActivity) AccountSecurityHomePageActivity.sInstance;
-        AccountSecurityYzmActivity a3= (AccountSecurityYzmActivity) AccountSecurityYzmActivity.sInstance;
-        a1.finish();
-        a2.finish();
-        a3.finish();
-        this.finish();
+
+        ActivityManagerUtils.getInstance().finishActivityclass(SettingsActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityHomePageActivity.class);
+        ActivityManagerUtils.getInstance().finishActivityclass(AccountSecurityYzmActivity.class);
+        ResetPhoneActivity.this.finish();
         //保存新手机号
         SPUtil.getInstance(MyApp.getContext()).putMobile("Mobile",new_phone);
         //删除用户id

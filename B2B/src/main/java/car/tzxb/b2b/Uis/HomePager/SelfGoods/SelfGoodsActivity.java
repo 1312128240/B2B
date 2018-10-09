@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.widget.NestedScrollView;
@@ -97,7 +98,10 @@ public class SelfGoodsActivity extends MyBaseAcitivity implements NestedScrollVi
                 int position=tab.getPosition();
                   TextView tv = tab.getCustomView().findViewById(position);
                   tv.setTextColor(Color.parseColor("#000000"));
-                  tv.setBackground(getResources().getDrawable(R.drawable.bg2));
+                  GradientDrawable d=new GradientDrawable();
+                  d.setCornerRadius(30);
+                  d.setColor(Color.WHITE);
+                  tv.setBackground(d);
                   showLoad();
                   pager=0;
                   cateId=categoryBeanList.get(position).getId();
@@ -108,7 +112,7 @@ public class SelfGoodsActivity extends MyBaseAcitivity implements NestedScrollVi
             public void onTabUnselected(TabLayout.Tab tab) {
                 TextView tv = tab.getCustomView().findViewById(tab.getPosition());
                 tv.setTextColor(Color.parseColor("#ffffff"));
-                tv.setBackground(getResources().getDrawable(R.drawable.bg9));
+                tv.setBackground(null);
             }
 
             @Override
@@ -137,13 +141,13 @@ public class SelfGoodsActivity extends MyBaseAcitivity implements NestedScrollVi
             protected void convert(ViewHolder holder, BaseDataListBean.DataBean bean, int position) {
                  //图片
                 ImageView iv=holder.getView(R.id.iv_category);
-                Glide.with(MyApp.getContext()).load(bean.getImg_url()).into(iv);
+                Glide.with(MyApp.getContext()).load(bean.getPic()).into(iv);
                 //标题
                  holder.setText(R.id.tv_catagroy_name,"\u3000\u3000"+bean.getGoods_name());
                 //价格
                 holder.setText(R.id.tv_category_pice,"¥"+bean.getSeal_price());
                 TextView tv_maker=holder.getView(R.id.tv_maker_price);
-                tv_maker.setText(Html.fromHtml("原价:¥" + bean.getMarket_price()));
+                tv_maker.setText(Html.fromHtml("¥"+ bean.getMarket_price()));
                 tv_maker.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
                 //类型
                 holder.setText(R.id.tv_goods_type,bean.getDealer());

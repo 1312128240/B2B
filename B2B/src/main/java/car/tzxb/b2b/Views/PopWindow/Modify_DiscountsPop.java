@@ -110,7 +110,7 @@ public class Modify_DiscountsPop extends PopupWindow {
             //内部优惠数据
             final List<DiscountsBean.DataBean.TitlesBean> giftBeen=dataBean.getTitles();
             cb_select.setVisibility(View.VISIBLE);
-           DiscountsInnerAdapter innerAdapter=new DiscountsInnerAdapter(getContext(),giftBeen);
+            DiscountsInnerAdapter innerAdapter=new DiscountsInnerAdapter(getContext(),giftBeen);
             lv.setAdapter(innerAdapter);
             //单选
             cb_select.setId(position);

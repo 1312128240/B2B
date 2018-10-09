@@ -38,6 +38,8 @@ import car.tzxb.b2b.Bean.BaseStringBean;
 import car.tzxb.b2b.Bean.OrderXqBean;
 import car.tzxb.b2b.MyApp;
 import car.tzxb.b2b.R;
+import car.tzxb.b2b.Uis.GoodsXqPackage.ShoppingCartActivity;
+import car.tzxb.b2b.Util.ActivityManagerUtils;
 import car.tzxb.b2b.Util.DateUtils;
 import car.tzxb.b2b.Util.DeviceUtils;
 import car.tzxb.b2b.Util.SPUtil;
@@ -324,7 +326,6 @@ public class OrderXqActivity extends MyBaseAcitivity {
         }
     }
 
-
     @OnClick(R.id.tv_view3)
     public void view3(){
         if("商家已发货".equals(bean.getStatus())||("交易成功".equals(bean.getStatus()))){
@@ -334,6 +335,47 @@ public class OrderXqActivity extends MyBaseAcitivity {
         }else if("已取消".equals(bean.getStatus())){
              deleOrder();
         }
+    }
+
+    @OnClick(R.id.tv_view4)
+    public void view4(){
+         StringBuilder proId=new StringBuilder();
+         StringBuilder number=new StringBuilder();
+        for (int i = 0; i <bean.getChild_data().size() ; i++) {
+            OrderXqBean.DataBean.OrderDetailsBean.ChildDataBean xBean=bean.getChild_data().get(i);
+            proId.append(xBean.getProduct_id()).append(",");
+            number.append(xBean.getQuantity()).append(",");
+        }
+        String userId = SPUtil.getInstance(MyApp.getContext()).getUserId("UserId", null);
+        Log.i("再来一单",Constant.baseUrl+"orders/order_list_mobile.php?m=order_shopping_add"+"&pro_id="+proId+"&number="+number
+                +"&shop_id="+bean.getShop_id()+"&user_id="+userId);
+        OkHttpUtils
+                .get()
+                .tag(this)
+                .url(Constant.baseUrl+"orders/order_list_mobile.php?m=order_shopping_add")
+                .addParams("pro_id",proId.toString())
+                .addParams("number",number.toString())
+                .addParams("shop_id",bean.getShop_id())
+                .addParams("user_id",userId)
+                .build()
+                .execute(new GenericsCallback<BaseStringBean>(new JsonGenericsSerializator()) {
+                    @Override
+                    public void onError(Call call, Exception e, int id) {
+
+                    }
+
+                    @Override
+                    public void onResponse(BaseStringBean response, int id) {
+                        if("1".equals(String.valueOf(response.getStatus()))){
+                            Intent intent=new Intent(OrderXqActivity.this, ShoppingCartActivity.class);
+                            startActivity(intent);
+                            finish();
+                            //关闭上个界面
+                            ActivityManagerUtils.getInstance().finishActivityclass(LookOrderActivity.class);
+                        }
+                    }
+                });
+
     }
     //删除订单
     private void deleOrder() {
@@ -357,6 +399,8 @@ public class OrderXqActivity extends MyBaseAcitivity {
             }
         });
     }
+
+
 
     private void delOrder(String aid) {
         String userId=SPUtil.getInstance(MyApp.getContext()).getUserId("UserId",null);
